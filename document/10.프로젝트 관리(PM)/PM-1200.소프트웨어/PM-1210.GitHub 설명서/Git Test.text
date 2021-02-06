@@ -9,9 +9,13 @@
 
 4. Git Commit 시 발생하는 이벤트 내용을 아래와 같이 정리합니다.
  - 파일을 Commit 했는데 되돌리기
-
+ - 특정 Commit 시점으로 변경
+ - 최근 Commit 시점으로 변경
 
 5. 파일 변경 시 라인 옆 색상 부분을 확인합니다. (Git Gutter)
  - Commit 전 파일의 변경사항을 확인할 수 있도록 하는 기능
  - 파랑색은 수정된 내용
  - 녹색은 추가된 내용
+
+6. Branch 추가
+ - Branch_sub1 추가되고, Git Test.text 파일 내용을 수정
