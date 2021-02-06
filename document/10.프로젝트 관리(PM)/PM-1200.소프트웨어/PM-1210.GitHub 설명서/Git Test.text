@@ -18,4 +18,5 @@
  - 녹색은 추가된 내용
 
 6. Branch 추가
- - Branch_sub1 추가되고, Git Test.text 파일 내용을 수정
+ - branch_sub1 추가되고, Git Test.text 파일 내용을 수정
+ - 그리고 branch_sub1에 수정된 Git Test.text 파일 Commit
