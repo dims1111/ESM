@@ -89,6 +89,14 @@ DATABASES = {
 (esm_env) C:\ESM\source\esm>python manage.py migrate
 ```
 
+* App 생성
+```python
+프로젝트 폴더 밑에 생성할 경우
+ - (esm_env) C:\ESM\source\esm>python manage.py startapp esm_sys_1000
+자신이 원하는 폴더 밑에 생성할 경우
+ - (esm_env) C:\ESM\source\esm\esm_sys>django-admin startapp esm_sys_1030
+```
+
 
 ## Git Pull / Push
 
