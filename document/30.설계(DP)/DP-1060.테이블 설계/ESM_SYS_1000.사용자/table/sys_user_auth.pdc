@@ -1,0 +1,69 @@
+-- 테이블 삭제
+drop table esm.sys_user_auth cascade constraint;
+
+-- 테이블 생성
+create table esm.sys_user_auth
+(
+	 user_auth_id               number         not null
+	,user_id                    number         not null
+	,auth_id                    number         not null
+	,begin_date                 date           default sysdate
+	,end_date                   date
+	,remark                     varchar2(2000) 
+	,create_date_time           date           default sysdate
+	,create_by                  number         default -1
+	,update_date_time           date           default sysdate
+	,update_by                  number         default -1
+)
+tablespace esm
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64k
+    minextents 1
+    maxextents unlimited
+  );
+
+-- create/recreate primary, unique and foreign key constraints 
+alter table esm.sys_user_auth
+  add constraint sys_user_auth_pk primary key (user_auth_id)
+  using index 
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+
+  
+-- create/recreate indexes 
+create index esm.sys_user_auth_ix1 on esm.sys_user_auth (user_id, begin_date)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+create index esm.sys_user_auth_ix2 on esm.sys_user_auth (auth_id)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+-- add comments to the table 
+comment on table esm.sys_user_auth                         is '[시스템] 사용자별권한';
+
+-- add comments to the columns 
+comment on column esm.sys_user_auth.user_auth_id           is '사용자별권한ID';
+comment on column esm.sys_user_auth.user_id                is '사용자ID';
+comment on column esm.sys_user_auth.auth_id                is '권한ID';
+comment on column esm.sys_user_auth.begin_date             is '시작일자';
+comment on column esm.sys_user_auth.end_date               is '종료일자';
+comment on column esm.sys_user_auth.remark                 is '비고';
+--
+comment on column esm.sys_user_auth.create_date_time       is '생성일시';
+comment on column esm.sys_user_auth.create_by              is '생성자ID';
+comment on column esm.sys_user_auth.update_date_time       is '수정일시';
+comment on column esm.sys_user_auth.update_by              is '수정자ID';
+
+
+
