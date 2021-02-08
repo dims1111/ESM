@@ -1,0 +1,67 @@
+-- 테이블 삭제
+drop table esm.sys_lang_code cascade constraint;
+
+-- 테이블 생성
+create table esm.sys_lang_code
+(
+     lang_id                    number         not null
+	,lang_type_cd               varchar2(0100) not null 
+    ,lang_name_ko               varchar2(2000) not null
+    ,lang_name_en               varchar2(2000) not null
+    ,remark                     varchar2(2000) 
+    ,create_date_time           date           default sysdate
+    ,create_by                  number         default -1
+    ,update_date_time           date           default sysdate
+    ,update_by                  number         default -1
+)
+tablespace esm
+pctfree 10
+initrans 1
+storage 
+(
+   initial 128k
+   next 128k
+   minextents 1
+   maxextents unlimited
+)
+logging
+nocompress;
+
+-- 키 인덱스
+alter table esm.sys_lang_code
+  add constraint sys_lang_code_pk primary key (lang_id)
+  using index 
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+
+-- 유니크 인덱스  
+create unique index esm.sys_lang_code_uk on esm.sys_lang_code (lang_type_cd)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;  
+
+-- 노멀 인덱스
+create index esm.sys_lang_code_ix1 on esm.sys_lang_code (lang_type_cd, lang_name_ko)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+
+-- 테이블 설명
+comment on table esm.sys_lang_code                              is '[시스템] 언어코드';
+    
+-- 컬럼 설명
+comment on column esm.sys_lang_code.lang_id                     is '언어ID';
+comment on column esm.sys_lang_code.lang_type_cd                is '언어유형코드';
+comment on column esm.sys_lang_code.lang_name_ko                is '언어명(한글)';
+comment on column esm.sys_lang_code.lang_name_en                is '언어명(영문)';
+comment on column esm.sys_lang_code.remark                      is '비고';
+--
+comment on column esm.sys_lang_code.create_date_time            is '생성일시';
+comment on column esm.sys_lang_code.create_by                   is '생성자ID';
+comment on column esm.sys_lang_code.update_date_time            is '수정일시';
+comment on column esm.sys_lang_code.update_by                   is '수정자ID';
+
