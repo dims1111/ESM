@@ -14,19 +14,19 @@ Electronic Service Management(전자복무관리)
 
 # 파이썬 장고 설치 절차
 
-1. 가상환경을 생성
+1. 가상환경 생성
  - C:\ESM\source>python -m venv esm_env(가상환경명)
 
-2. 가상환경에 진입
+2. 가상환경 진입
  - C:\ESM\source>call esm_env/scripts/activate
- 
-   가상환경에서 빠져나오는 명령어 
+
+   가상환경 종료
  - C:\ESM\source>call esm_env/scripts/deactivate        
 
-3. 가상환경 안에서 Django 설치
+3. 가상환경 내부에서 Django 설치
  - (esm_env) C:\ESM\source>pip install django
 
-4. 프로젝트를 생성해줍니다.
+4. 프로젝트 생성
  - (esm_env) C:\ESM\source>django-admin startproject esm(프로젝트명)
 
 5. 환경이 제대로 설정 됐는지 확인하기 위해 서버를 실행
