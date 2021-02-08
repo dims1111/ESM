@@ -1,0 +1,60 @@
+-- 테이블 삭제
+drop table esm.sys_user_info cascade constraint;
+
+-- 테이블 생성
+create table esm.sys_user_info
+(
+  user_id          number not null,
+  user_account     varchar2(30) not null,
+  user_name        varchar2(50) not null,
+  password         varchar2(64) not null,
+  hp_number        varchar2(30),
+  email_addr       varchar2(50),
+  remark           varchar2(2000),
+  create_date_time date default sysdate,
+  create_by        number default -1,
+  update_date_time date default sysdate,
+  update_by        number default -1
+)
+tablespace esm
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64k
+    minextents 1
+    maxextents unlimited
+  );
+  
+-- add comments to the table 
+comment on table esm.sys_user_info                         is '[시스템] 사용자정보';
+
+-- add comments to the columns 
+comment on column esm.sys_user_info.user_id                is '사용자ID';
+comment on column esm.sys_user_info.user_account           is '사용자계정';
+comment on column esm.sys_user_info.user_name              is '사용자명';
+comment on column esm.sys_user_info.password               is '비밀번호';
+comment on column esm.sys_user_info.hp_number              is '휴대번호';
+comment on column esm.sys_user_info.email_addr             is '이메일주소';
+comment on column esm.sys_user_info.remark                 is '비고';
+comment on column esm.sys_user_info.create_date_time       is '생성일시';
+comment on column esm.sys_user_info.create_by              is '생성자ID';
+comment on column esm.sys_user_info.update_date_time       is '수정일시';
+comment on column esm.sys_user_info.update_by              is '수정자ID';
+  
+-- create/recreate indexes 
+create index esm.sys_user_info_ix1 on esm.sys_user_info (user_account, password)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+-- create/recreate primary, unique and foreign key constraints 
+alter table esm.sys_user_info
+  add constraint sys_user_info_pk primary key (user_id)
+  using index 
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
