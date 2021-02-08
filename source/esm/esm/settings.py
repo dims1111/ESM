@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'esm_sys.esm_sys_1010',
     'esm_sys.esm_sys_1020',
     'esm_sys.esm_sys_1030',
+
+    'static_template',
 ]
 
 MIDDLEWARE = [
