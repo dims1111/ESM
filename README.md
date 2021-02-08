@@ -78,13 +78,13 @@ git add *
 * Stage에 추가된 내용을 입력
 
 ```bash
-git commit -m "GitHub 설명서-Command line Push 추가(p40)"
+git commit -m "Commit된 내용을 기술"
 ```
 
 * Remote와 동기화 작업
 
 ```bash
-git pull
+git pull origin master
 ```
 
 * Stage에 Commit된 내용을 Push
