@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from esm_sys.esm_sys_1000 import views
+from authApp import views as authAppViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', authAppViews.login),
+    path('test/', views.test)
 ]

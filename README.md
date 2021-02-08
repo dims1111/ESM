@@ -63,9 +63,56 @@ c:\users\dims\appdata\local\programs\python\python36\python.exe -m pip install -
 로컬 도메인 : [https://127.0.0.1:8000](https://127.0.0.1:8000/)
 ```
 
+* 데이터베이스 설정
 
+```python
+C:\ESM\source\esm\esm\settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'vis1226',
+        'USER': 'esm',
+        'PASSWORD': 'esm',
+        'HOST':'210.112.232.29',
+        'PORT':'1531',
+    },
+}
+```
 
+* migrations
+```python
+(esm_env) C:\ESM\source\esm>python manage.py makemigrations
+```
 
+* migrate
+```python
+(esm_env) C:\ESM\source\esm>python manage.py migrate
+```
+
+* App 생성
+```python
+프로젝트 폴더 밑에 생성할 경우
+ - (esm_env) C:\ESM\source\esm>python manage.py startapp esm_sys_1000
+자신이 원하는 폴더 밑에 생성할 경우
+ - (esm_env) C:\ESM\source\esm\esm_sys>django-admin startapp esm_sys_1030
+```
+
+* settings.py -> apps등 록
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # esm_sys 디렉토리 하위 apps 등록
+    'esm_sys.esm_sys_1000',
+    'esm_sys.esm_sys_1010',
+    'esm_sys.esm_sys_1020',
+    'esm_sys.esm_sys_1030',
+]
+```
 
 ## Git Pull / Push
 
