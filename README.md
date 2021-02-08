@@ -63,8 +63,31 @@ c:\users\dims\appdata\local\programs\python\python36\python.exe -m pip install -
 로컬 도메인 : [https://127.0.0.1:8000](https://127.0.0.1:8000/)
 ```
 
+* 데이터베이스 설정
 
+```python
+C:\ESM\source\esm\esm\settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'vis1226',
+        'USER': 'esm',
+        'PASSWORD': 'esm',
+        'HOST':'210.112.232.29',
+        'PORT':'1531',
+    },
+}
+```
 
+* migrations
+```python
+(esm_env) C:\ESM\source\esm>python manage.py makemigrations
+```
+
+* migrate
+```python
+(esm_env) C:\ESM\source\esm>python manage.py migrate
+```
 
 
 ## Git Pull / Push
