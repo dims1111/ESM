@@ -93,9 +93,6 @@ git pull origin master
 git push origin master
 ```
 
-<<<<<<< HEAD
-test
-=======
 
 ## MakrDown
 ```bash
