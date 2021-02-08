@@ -97,6 +97,22 @@ DATABASES = {
  - (esm_env) C:\ESM\source\esm\esm_sys>django-admin startapp esm_sys_1030
 ```
 
+* settings.py -> apps등 록
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # esm_sys 디렉토리 하위 apps 등록
+    'esm_sys.esm_sys_1000',
+    'esm_sys.esm_sys_1010',
+    'esm_sys.esm_sys_1020',
+    'esm_sys.esm_sys_1030',
+]
+```
 
 ## Git Pull / Push
 

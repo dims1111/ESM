@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # esm_sys 디렉토리 하위 apps 등록
+    'esm_sys.esm_sys_1000',
+    'esm_sys.esm_sys_1010',
+    'esm_sys.esm_sys_1020',
+    'esm_sys.esm_sys_1030',
 ]
 
 MIDDLEWARE = [
