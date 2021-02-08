@@ -21,7 +21,7 @@ Electronic Service Management(전자복무관리)
 * 가상환경 생성 
 
 ```python
-C:\ESM\source>python -m venv esm_env(가상환경명)
+C:\ESM\source>python -m venv esm_env
 ```
 
 
