@@ -16,29 +16,26 @@ Electronic Service Management(전자복무관리)
 # 파이썬 장고 설치 절차
 
 1. 가상환경 생성
- - C:\ESM\source>python -m venv esm_env(가상환경명)
+ → C:\ESM\source>python -m venv esm_env(가상환경명)
 
-2. 가상환경 진입
- - C:\ESM\source>call esm_env/scripts/activate
-
-   가상환경 종료
- - C:\ESM\source>call esm_env/scripts/deactivate        
+2. 가상환경 진입/종료
+ → C:\ESM\source>call esm_env/scripts/activate, C:\ESM\source>call esm_env/scripts/deactivate
 
 3. [가상환경] 패키지 설치 확인
- - pip list
+ → pip list
 
 4. [가상환경] pip 업그레이드
- - c:\users\dims\appdata\local\programs\python\python36\python.exe -m pip install --upgrade pip
+ → c:\users\dims\appdata\local\programs\python\python36\python.exe -m pip install --upgrade pip
 
 5. [가상환경] Django 패키지 설치
- - (esm_env) C:\ESM\source>pip install django
+ → (esm_env) C:\ESM\source>pip install django
 
 6. [가상환경] 프로젝트 생성 : esm
- - (esm_env) C:\ESM\source>django-admin startproject esm
+ → (esm_env) C:\ESM\source>django-admin startproject esm
 
 7. [가상환경 ] 환경이 제대로 설정 됐는지 확인하기 위해 서버를 실행
- - (esm_env) C:\ESM\source\esm>python manage.py runserver
- - 로컬 도메인 : https://127.0.0.1:8000
+ → (esm_env) C:\ESM\source\esm>python manage.py runserver
+ → 로컬 도메인 : https://127.0.0.1:8000
 
 
 감사합니다.
