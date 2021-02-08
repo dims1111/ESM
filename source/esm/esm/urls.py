@@ -20,6 +20,6 @@ from authApp import views as authAppViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', authAppViews.login),
+    path('', authAppViews.login),
     path('test/', views.test)
 ]
