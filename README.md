@@ -156,7 +156,7 @@ $ pip freeze > requirements.txt
 $ pip install -r ./requirements.txt –user
 ```
 
-## Git 환경 세팅
+## Git 환경 세팅 : 로컬에서 아래 명령어 수행
 ```bash
 git config --global push.default current # 현재 브랜치로 푸쉬하도록 세팅
 git config --global pull.default current # 현재 브랜치로 푸쉬하도록 세팅
