@@ -63,4 +63,3 @@ def login(request):
 			print(e)
 		else:
 			print("정상적으로 로그인 하였습니다. 이제 메인 화면을 작성하시기 바랍니다.")
-	
