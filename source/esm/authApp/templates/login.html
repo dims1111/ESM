@@ -60,8 +60,8 @@
 {% block contents %}
 
 
-
     <form class="form-signin text-center" method="POST">
+      {% csrf_token %}
       <img
         class="mb-4 rounded-circle"
         src="https://source.unsplash.com/random/350x350"
@@ -75,6 +75,7 @@
       <input
         type="text"
         id="loginId2"
+        name="userid"
         class="form-control mb-3"
         placeholder="사용자 ID"
         required
@@ -86,6 +87,7 @@
       <input
         type="password"
         id="loginPassword"
+        name="password"
         class="form-control"
         placeholder="비밀번호"
         required=""
