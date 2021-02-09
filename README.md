@@ -145,3 +145,13 @@ git push origin master
 ```bash
 https://typora.io/#windows
 ```
+
+
+## 의존성 모듈 작성 및 설치
+```bash
+# 의존성 모듈 작성
+$ pip freeze > requirements.txt
+
+# 의존성 모듈 설치
+$ pip install -r ./requirements.txt –user
+```
