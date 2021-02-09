@@ -15,6 +15,26 @@ Electronic Service Management(전자복무관리)
 [참고] 프로젝트 참여 여러분 최선을 다하여 많은 성과를 내어 보도록 합시다.
 
 
+## 가상환경 on/off 및 runserver 배치 파일
+
+* 가상환경 시작 
+
+```python
+C:\ESM\source\esm>eon.bat
+```
+
+* 가상환경 종료 
+
+```python
+C:\ESM\source\esm>eoff.bat
+```
+
+* 서버 실행 
+
+```python
+C:\ESM\source\esm>run.bat
+```
+
 
 ## 파이썬 장고 설치
 
