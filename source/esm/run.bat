@@ -1,0 +1,1 @@
+cmd /k "cd /d C:\ESM\source\esm_env\Scripts & activate & cd /d C:\ESM\source\esm & python manage.py runserver"
