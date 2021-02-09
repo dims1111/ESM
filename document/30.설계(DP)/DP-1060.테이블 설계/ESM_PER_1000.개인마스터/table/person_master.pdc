@@ -1,0 +1,82 @@
+-- 테이블 삭제
+drop table esm.person_master cascade constraint;
+
+
+-- 테이블 생성
+create table esm.person_master
+(
+     person_id               number         not null
+    ,person_name_ko          varchar2(0100) not null
+    ,person_name_en          varchar2(0200) not null
+    ,resident_number         varchar2(0013) not null
+    ,birth_date              date           not null
+    ,gender_code             varchar2(0030) not null
+    ,internal_email_addr     varchar2(0050)
+    ,external_email_addr     varchar2(0050)
+    ,hp_phone_number         varchar2(0030)
+    ,home_phone_number       varchar2(0030)
+    ,company_phone_number    varchar2(0030)
+    ,create_date_time        date           default sysdate
+    ,create_by               number         default -1
+    ,update_date_time        date           default sysdate
+    ,update_by               number         default -1
+)
+tablespace esm
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64k
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- 주 인덱스
+alter table esm.person_master
+  add constraint person_master_pk primary key (person_id)
+  using index 
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+
+
+-- 노멀 인덱스
+create index esm.person_master_ix1 on esm.person_master (person_name_ko)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+create index esm.person_master_ix2 on esm.person_master (resident_number)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+      
+-- 테이블 설명
+comment on table esm.person_master                         is '[개인정보] 개인마스터';
+
+
+-- 항목 설명
+comment on column esm.person_master.person_id              is '개인ID';
+comment on column esm.person_master.person_name_ko         is '성명(한글)';
+comment on column esm.person_master.person_name_en         is '성명(영문)';
+comment on column esm.person_master.resident_number        is '주민등록번호';
+comment on column esm.person_master.birth_date             is '생년월일';
+comment on column esm.person_master.gender_code            is '성별코드';
+comment on column esm.person_master.internal_email_addr    is '내부이메일주소';
+comment on column esm.person_master.external_email_addr    is '외부이메일주소';
+comment on column esm.person_master.hp_phone_number        is '휴대전화';
+comment on column esm.person_master.home_phone_number      is '자택전화';
+comment on column esm.person_master.company_phone_number   is '회사전화';
+--
+comment on column esm.person_master.create_date_time       is '생성일시';
+comment on column esm.person_master.create_by              is '생성자ID';
+comment on column esm.person_master.update_date_time       is '수정일시';
+comment on column esm.person_master.update_by              is '수정자ID';
+  
+
