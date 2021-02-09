@@ -22,11 +22,11 @@ def login(request):
     srchUserAccount = request.POST['userid']
     srchPassword = request.POST['password']
 
-	# DB연결
-	connection = cx_Oracle.connect('esm/esm@210.112.232.29:1531/vis1226')
+    # DB연결
+    connection = cx_Oracle.connect('esm/esm@210.112.232.29:1531/vis1226')
 
-	# 커서생성
-	cursor = connection.cursor()
+    # 커서생성
+    cursor = connection.cursor()
 	
 	# 테이블에 존재하는 비밀번호
 	vPassword = ""
@@ -54,7 +54,7 @@ def login(request):
         	print('로그인에 성공')
         	return render(request, 'test.html')
       	else:
-			print('로그인에 실패')
+			    print('로그인에 실패')
         	return render(request, 'login.html')
 
     # POST방식이 아닐 시
