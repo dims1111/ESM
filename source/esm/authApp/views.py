@@ -38,9 +38,9 @@ def login(request):
 				cursor.execute( \
 				"""
 					select su.password 
-					from esm.sys_user su
-					where 1=1
-					and su.user_account = :user_account
+					  from esm.sys_user su
+				     where 1=1
+					   and su.user_account = :user_account
 				""", user_account = srchUserAccount
 				)          	
 
