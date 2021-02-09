@@ -1,0 +1,81 @@
+-- 테이블 삭제
+drop table esm.sys_auth_menu cascade constraint;
+
+-- 테이블 생성
+create table esm.sys_auth_menu
+(
+     auth_menu_id               number         not null
+    ,auth_id                    number         not null
+    ,menu_id                    number         not null
+	,user_yn                    varchar2(0001) default 'Y' not null
+	,user_insert_yn             varchar2(0001) default 'Y' not null
+	,user_update_yn             varchar2(0001) default 'Y' not null
+	,user_delete_yn             varchar2(0001) default 'Y' not null
+	,user_print_yn              varchar2(0001) default 'Y' not null
+	,user_batch_yn              varchar2(0001) default 'Y' not null
+	,user_excel_down_yn         varchar2(0001) default 'Y' not null
+	,user_excel_up_yn           varchar2(0001) default 'Y' not null
+    ,remark                     varchar2(2000) 
+    ,create_date_time           date           default sysdate
+    ,create_by                  number         default -1
+    ,update_date_time           date           default sysdate
+    ,update_by                  number         default -1
+)
+tablespace esm
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64k
+    minextents 1
+    maxextents unlimited
+  );
+
+-- 주 키
+alter table esm.sys_auth_menu
+  add constraint sys_auth_menu_pk primary key (auth_menu_id)
+  using index 
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+
+  
+-- create/recreate indexes 
+create index esm.sys_auth_menu_ix1 on esm.sys_auth_menu (auth_id)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+create index esm.sys_auth_menu_ix2 on esm.sys_auth_menu (menu_id)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+-- add comments to the table 
+comment on table esm.sys_auth_menu                         is '[시스템] 권한별메뉴';
+
+-- add comments to the columns 
+comment on column esm.sys_auth_menu.auth_menu_id           is '권한별메뉴ID';
+comment on column esm.sys_auth_menu.auth_id                is '권한ID';
+comment on column esm.sys_auth_menu.menu_id                is '메뉴ID';
+comment on column esm.sys_auth_menu.user_yn                is '사용여부(Y/N)';
+comment on column esm.sys_auth_menu.user_insert_yn         is '신규여부(Y/N)';
+comment on column esm.sys_auth_menu.user_update_yn         is '수정여부(Y/N)';
+comment on column esm.sys_auth_menu.user_delete_yn         is '삭제여부(Y/N)';
+comment on column esm.sys_auth_menu.user_print_yn          is '출력여부(Y/N)';
+comment on column esm.sys_auth_menu.user_batch_yn          is '처리여부(Y/N)';
+comment on column esm.sys_auth_menu.user_excel_down_yn     is '엑셀다운로드여부(Y/N)';
+comment on column esm.sys_auth_menu.user_excel_up_yn       is '엑셀업로드여부(Y/N)';
+comment on column esm.sys_auth_menu.remark                 is '비고';
+--
+comment on column esm.sys_auth_menu.create_date_time       is '생성일시';
+comment on column esm.sys_auth_menu.create_by              is '생성자ID';
+comment on column esm.sys_auth_menu.update_date_time       is '수정일시';
+comment on column esm.sys_auth_menu.update_by              is '수정자ID';
+
+
+
