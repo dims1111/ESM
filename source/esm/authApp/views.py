@@ -13,14 +13,23 @@ import os
 # 한글 지원 방법
 os.putenv('NLS_LANG', '.UTF8')
 
+# 메인화면
+def main(request):
+	# 세션여부 체크
+	if (request.session.is_empty()):
+		return redirect('/login')
+
+	# 메인화면 렌더링
+	return render(request, 'main.html')
+
 # login 함수
 @transaction.atomic
 def login(request):
 
-	# POST 방식
+	# GET 방식
 	if request.method == 'GET':
 		return render(request, 'login.html')
-	# GET 방식
+	# POST 방식
 	else:
 		# 입력값 가져오기
 		srchUserAccount = request.POST['userid']
@@ -54,7 +63,8 @@ def login(request):
 				# 쿼리문을 통해 가져온 데이터베이스와 
 				if vPassword == srchPassword:
 					print('로그인에 성공')
-					return render(request, 'test.html')
+					request.session['loginSuccess'] = True # Temp 세션값
+					return redirect('/')
 				else:
 					print('로그인에 실패')
 					return render(request, 'login.html')
