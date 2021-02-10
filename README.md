@@ -160,6 +160,20 @@ git pull origin master
 git push origin master
 ```
 
+## Git reset
+
+* 현재까지의 커밋내용 확인
+
+```bash
+git reflog
+```
+
+* 커밋내용 확인 후 원하는 커밋위치로 가기
+
+```bash
+git reset --hard HEAD{?}
+```
+
 
 ## MakrDown
 ```bash
