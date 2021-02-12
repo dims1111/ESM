@@ -1,1 +1,21 @@
-<h1>test</h1>
+{% extends "base.html" %}
+
+{% block header %}
+{% endblock %}
+
+{%block contents%}
+    <input type="checkbox" id="switch" name="switch" class="input-switch" checked>
+    <label for="switch" class="label-switch">
+        <span class="marble"></span>
+        <span class="on">KOR</span>
+        <span class="off">ENG</span>
+    </label>
+
+    <script>
+    $(function() {
+        $("#switch").change(function() {
+            console.log($(this).is(':checked'))
+        });
+    });
+    </script>
+{% endblock %}
