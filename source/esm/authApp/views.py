@@ -19,8 +19,36 @@ def main(request):
 	if (request.session.is_empty()):
 		return redirect('/login')
 
+	params = {
+		'mainMenuList': [
+			{ 'mainCd': '1', 'mainNm': '복무관리', 'icon': 'face', 'active': 'active' },
+			{ 'mainCd': '2', 'mainNm': '교육소집', 'icon': 'schedule', 'active': '' },
+			{ 'mainCd': '3', 'mainNm': '전자결재', 'icon': 'insert_drive_file', 'active': '' },
+			{ 'mainCd': '4', 'mainNm': '게시판', 'icon': 'assignment', 'active': '' },
+			{ 'mainCd': '5', 'mainNm': '복무현황', 'icon': 'analytics', 'active': '' },
+			{ 'mainCd': '6', 'mainNm': '인증관리', 'icon': 'security', 'active': '' },
+			{ 'mainCd': '7', 'mainNm': '시스템', 'icon': 'settings', 'active': '' }
+		],
+		'subMenuList': [
+			{ 'subNm': '명부관리', 'level': 1, 'url': '', 'mainCd': '1', 'mainNm': '복무관리' },
+			{ 'subNm': '명부', 'level': 2, 'url': '/url1', 'mainCd': '1', 'mainNm': '복무관리' },
+			{ 'subNm': '명부기록', 'level': 2, 'url': '/url2', 'mainCd': '1', 'mainNm': '복무관리' },
+			{ 'subNm': '출퇴근', 'level': 1, 'url': '', 'mainCd': '1', 'mainNm': '복무관리' },
+			{ 'subNm': '출퇴근기록', 'level': 2, 'url': '/url3', 'mainCd': '1', 'mainNm': '복무관리' },
+			{ 'subNm': '출퇴근사진', 'level': 2, 'url': '/url4', 'mainCd': '1', 'mainNm': '복무관리' },
+			{ 'subNm': '복무확인서', 'level': 1, 'url': '', 'mainCd': '1', 'mainNm': '복무관리' },
+			{ 'subNm': '신청', 'level': 2, 'url': '/url5', 'mainCd': '1', 'mainNm': '복무관리' },
+			{ 'subNm': '대리신청', 'level': 2, 'url': '/url6', 'mainCd': '1', 'mainNm': '복무관리' },
+			{ 'subNm': '발급현황', 'level': 2, 'url': '/url7', 'mainCd': '1', 'mainNm': '복무관리' },
+
+			{ 'subNm': '교육정보', 'level': 1, 'url': '', 'mainCd': '2', 'mainNm': '교육소집' },
+			{ 'subNm': '교육소집계획', 'level': 2, 'url': '/url8', 'mainCd': '2', 'mainNm': '교육소집' },
+			{ 'subNm': '교육소집통지확인', 'level': 2, 'url': '/url9', 'mainCd': '2', 'mainNm': '교육소집' },
+		]
+	}
+
 	# 메인화면 렌더링
-	return render(request, 'main.html')
+	return render(request, 'main.html', params)
 
 # login 함수
 @transaction.atomic
