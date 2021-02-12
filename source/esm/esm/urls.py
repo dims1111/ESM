@@ -24,8 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', authAppViews.main),
     path('login/', authAppViews.login),
-    path('ems_sys_1000/', include ("esm_sys.esm_sys_1000.urls")),
-    path('ems_sys_1010/', include ("esm_sys.esm_sys_1010.urls")),
-    path('ems_sys_1020/', include ("esm_sys.esm_sys_1020.urls")),
-    path('ems_sys_1030/', include ("esm_sys.esm_sys_1030.urls")),
+    path('esm_sys_1000/', include ("esm_sys.esm_sys_1000.urls")),
+    path('esm_sys_1010/', include ("esm_sys.esm_sys_1010.urls")),
+    path('esm_sys_1020/', include ("esm_sys.esm_sys_1020.urls")),
+    path('esm_sys_1030/', include ("esm_sys.esm_sys_1030.urls")),
 ]
