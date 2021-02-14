@@ -5,218 +5,294 @@
 <meta charset="utf-8" lang="ko" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<title>Scholarship</title>
+<title>복무관리시스템</title>
 
 <style type="text/css">
+  body {
+    background: #f8f8f8;
+  }
+  .top {
+    background: var(--p1);
+    height: 40px;
+    min-width: 960px;
+  }
+  
+  .nav-tabs {
+    border-bottom: 2px solid var(--p1);
+    background: rgba(var(--p1-rgb), 0.3);
+  }
+  
   .nav-tabs>li {
     position: relative;
-    border-color: #e9edf0;
-    border-top-style: solid;
-    border-top-width: 1px;
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-right-style: solid;
-    border-right-width: 1px;
-  }
-
-  .nav-tabs>li>a {
-    display: inline-block;
   }
 
   .nav-tabs>li>span {
     display: none;
     cursor: pointer;
     position: absolute;
-    font-size: 20px;
-    right: 6px;
-    top: 6px;
-    color: red;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #EF6461;
   }
 
-  .nav-tabs>li:hover>span {
+  ul.nav-tabs li:hover>span {
     display: inline-block;
   }
 
-  .nav-tabs>li:hover>span {
-    display: inline-block;
+  .nav-tabs .nav-link {
+    margin-bottom: 0 !important;
+    border: 0 !important;
+    background: rgba(var(--p1-rgb), 0.5);
+    padding-right: 28px;
+    font-weight: 500;
+    font-size: 13px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    color: white !important;
   }
 
-  .nav-tabs .nav-link.active,
-  .show>.nav-tabs .nav-link {
-    color: black;
-    font-weight: 500 !important;
-  }
-
-  .badge {
-    color: #fff !important;
-    background-color: #0d6fb8;
-    border-radius: 0;
-    padding: 0 0.5em;
-    line-height: 20px;
-  }
-
-  #navs {
-    border-bottom: 2px solid rgb(31, 142, 205);
-    min-height: 37px;
-  }
-
-  #navs .nav-item .nav-link {
-    border: none !important;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-  }
-
-  #navs .nav-item {
-    border: none !important;
-  }
-
-  #navs .nav-item .nav-link.active {
-    margin-bottom: -1px;
-    border-top: 2px solid rgb(31, 142, 205) !important;
-    border-left: 2px solid rgb(31, 142, 205) !important;
-    border-right: 2px solid rgb(31, 142, 205) !important;
+  .nav-tabs .nav-link.active {
+    background: var(--p1);
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
   }
 
   .tab-content {
     flex: 1;
   }
+  
+  .menu-content li {
+    font-size: 13px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 32px;
+    cursor: pointer;
+  }
+
+  .menu-content li[mm].active {
+    background: #E4E4E4;
+    font-weight: 800;
+  }
+  
+  .expand {
+    display: initial;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    font-size: 30px;
+    transition: transform 0.2s ease-in-out;
+    user-select: none;
+  }
+  
+  .expand.rotate {
+    /* display: none; */
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .sidebar-main {
+    background: var(--p1);
+    flex: 0 0 80px;
+    text-align: center;
+    font-size: 13px;
+    color: #fff;
+    z-index: 2;
+    /* border-top-right-radius: 1rem; */
+  }
+
+  .sidebar-main__item {
+    position: relative;
+    cursor: pointer;
+  }
+  .sidebar-main__item:hover,
+  .sidebar-main__item.active {
+    background: #fff;
+    color: var(--p1);
+  }
+  .sidebar-main__item.active:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    background: var(--p5);
+  }
+
+  .sidebar-main__icon {
+    font-size: 28px;
+  }
+
+  .sidebar-sub {
+    position: relative;
+    background: #fff;
+    color: #444;
+    flex: 0 0 170px;
+    font-size: 17px;
+    box-shadow: 4px 0px 13px -11px;
+    transition: all 0.2s ease-in-out;
+    z-index: 1;
+  }
+
+  .sidebar-sub.collapsed {
+    flex-basis: 0;
+    width: 0px;
+    padding: 0 !important;
+    border-right: 2px solid var(--p2);
+  }
+
+  .sidebar-sub__toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--p2);
+    width: 10px;
+    height: 37px;
+    transform: translateX(100%);
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    cursor: pointer;
+  }
+
+  #menu-content .menu {
+    border-bottom: 1px solid #dee2e6;
+  }
+  #menu-content .menu:nth-child(1) {
+    border-top: 1px solid #dee2e6;
+  }
+
+  .sub-menu {
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  #menu-content .sub-menu:nth-last-child(1) {
+    border-bottom: 0;
+  }
+
+  .menu__name {
+    color: var(--p1);
+  }
+
+  .sidebar-sub__title {
+    color: var(--p1);
+  }
+
 </style>
 {% endblock %}
 
 {%block contents%}
-<div class="wrap" style="display: flex; flex-direction: column; height: 100%; padding-bottom: 12px;">
+{% for m in mn %}
+  {{m}}
+{% endfor %}
+
+<div class="wrap d-flex flex-column h-100 pb-1">
   <!-- Top -->
-  <div class="main_header" style="flex: 0 0 50px; width: 100%; background: #c5a2a2; height: 50px; position: relative; min-width: 960px;">
-    <a href="/" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-      <img class="rounded-circle" src="http://source.unsplash.com/random/50x50"> <!--  /static/img/logo_top.gif -->
-    </a>
-    <div class="fa fa-bars sidebarCollapse" style="margin-top:12px;float:left;"></div>
-    <div class="far fa-times-circle" id="close_all_tab"
-      style="margin-top:12px;float:left; color:red; font-size: 20px; cursor:pointer;"></div>
-    <div class="main_conf">
-      <ul>
-        <li style="margin-top:4px;">
-          <a href="/comm/langChang"><span class="badge badge-light;"
-              style="font-size:14px;color:black;">{{log.lang}}</span></a>
-          <span
-            style="font-size:14px;font-weight:bolder;color:black; padding: 0 0.4em; line-height: 20px;">{{log.deptname}}
-          </span>
-          <span
-            style="font-size:14px;font-weight:bolder;color:black; padding: 0 0.4em; line-height: 20px;">{{log.user_name}}
-            ({{log.kaist_uid}})</span>
-        </li>
-        <li><a href="/logout" class="btn btn_red btn_short btn-sm" style="padding:1px 10px;">{{ld.logout}}</a>
-        </li>
-      </ul>
+  <div class="top w-100 sticky-top navbar navbar-dark sticky-top flex-md-nowrap p-0">
+    <div class="d-inline-block input-group input-group-sm ml-3">
+      <input type="text" class="form-control rounded-pill" ria-describedby="inputGroup-sizing-sm" style="width: 200px">
     </div>
+    <a href="/" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+      {% load static %}
+      <img src="{% static 'img/built1-logo.png' %}" style="width: 80px;">
+    </a>
   </div>
 
-  <div class="content" style="display: flex; height: 100%">
-    <!-- Sidebar start -->
-    <div class="nav-side-menu " data-mcs-theme="minimal" style="flex: 0 0 200px; background: #d8d8d8;">
-      <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
-      <div id="static_menu">
-        <i class="fas fa-money-check-alt"></i> 장학서비스
-      </div>
-      <div class="menu-list">
-        <ul id="menu-content" class="menu-content collapse out">
-        {% comment %} 
-        mn [
-          {
-            lv: 3
-            uis: 1, -- 1일 경우 ul항목도 렌더링, 그 외엔 li만 렌더링
-            active: '',
-            owk: '',
-            icons: '',
-            url: '',
-            owname: '',
-            menuname: '',
-          },
-          {
-            lv: 3
-            uis: 1이 아님,
-            uie: 1, -- ul의 끝
-            active: '',
-            owk: '',
-            icons: '',
-            url: '',
-            owname: '',
-            menuname: '',
-          },
+  <div class="container-fluid d-flex h-100">
+    <div class="row w-100 flex-nowrap">
+      <!-- Sidebar start -->
+      <div class="sidebar-main mt-2 pt-3">
+        <ul id="mainList">
 
-        ]
-        {% endcomment %}
-          <li data-toggle="collapse" data-target="#test1" class="collapsed  active selected-menu"title="중분류1">
-            <i class=""></i> 중분류1 <span class="arrow"></span>
+        {% for item in mainMenuList %}
+          <li class="sidebar-main__item py-2 {{item.active}}">
+            <span class="main__icon material-icons" mcd="{{item.mainCd}}">{{item.icon}}</span>
+            <div class="mt-1">{{item.mainNm}}</div>
           </li>
-          <ul class="sub-menu collapse active" id="test1">
-            <li class="" mm="/test/1000" own="me" data-toggle="tooltip" data-placement="right" title="소메뉴1 /test/1000">소메뉴1</li>
-            <li class="" mm="/test/1020" own="me" data-toggle="tooltip" data-placement="right" title="소메뉴2 /test/1020">소메뉴2</li>
-          </ul>
-
-          <li data-toggle="collapse" data-target="#test2" class="collapsed  active selected-menu"title="중분류2">
-            <i class=""></i> 중분류2 <span class="arrow"></span>
-          </li>
-          <ul class="sub-menu collapse active" id="test2">
-            <li class="" mm="/test2/1000" own="me" data-toggle="tooltip" data-placement="right" title="소메뉴3 /test2/1000">소메뉴3</li>
-            <li class="" mm="/test2/1020" own="me" data-toggle="tooltip" data-placement="right" title="소메뉴4 /test2/1020">소메뉴4</li>
-          </ul>
-
-
-    {% for m in mn%}
-      {% if m.lv == 3 %}
-        {% if m.uis == 1 %}
-          <ul class="sub-menu collapse {{m.active}}" id="{{m.owk}}">
-        {% endif %}
-            <li class="{{m.icons}}" mm="{{m.url}}" own="{{m.owname}}" data-toggle="tooltip" data-placement="right" title="{{m.menuname}} {{m.url}}">{{m.menuname}}</li>
-      {%else%}
-        {% if m.uie == 1%}
-          </ul>
-        {% endif %}
-        <li data-toggle="collapse" data-target="#{{m.menucode}}" class="collapsed  {{m.active}}{% if m.active %} selected-menu{% endif %}"title="{{m.menuname}}">
-          <i class="{{m.icons}}"></i> {{m.menuname}} <span class="arrow"></span>
-        </li>
-      {% endif %}
-    {% endfor %}
+        {% endfor %}
         </ul>
       </div>
-    </div>
-    <!-- Sidebar end -->
+      <div class="sidebar-sub px-3 mt-2">
+        <div id="toggleSidebar" class="sidebar-sub__toggle"></div>
+        <div class="font-weight-bold mt-3 mb-4 d-flex align-items-center overflow-hidden">
+          <span class="sidebar-sub__title">복무관리</span>
+          <div class="ml-auto">
+            <span id="showAll" class="material-icons border small" style="cursor: pointer;">add</span>
+            <span id="hideAll" class="material-icons border small" style="cursor: pointer;">remove</span>
+          </div>
+        </div>
+        <div class="overflow-hidden">
+          <ul id="menu-content" class="menu-content collapse show out">
+            <li class="menu" data-toggle="collapse" data-target="#test1">
+              <div class="menu__name font-weight-bold">명부관리</div>
+              <span class="expand material-icons">expand_less</span>
+            </li>
+            <ul class="sub-menu collapse show active" id="test1">
+              <li class="pl-2" mm="/url1" own="me" data-toggle="tooltip" data-placement="right" title="명부 /url1">명부</li>
+              <li class="pl-2" mm="/url2" own="me" data-toggle="tooltip" data-placement="right" title="명부기록 /url2">명부기록</li>
+            </ul>
+            <li class="menu" data-toggle="collapse" data-target="#test2">
+              <div class="menu__name font-weight-bold">출퇴근</div>
+              <span class="expand material-icons">expand_less</span>
+            </li>
+            <ul class="sub-menu collapse show active" id="test2">
+              <li class="pl-2" mm="/url3" own="me" data-toggle="tooltip" data-placement="right" title="출퇴근기록 /url3">출퇴근기록</li>
+              <li class="pl-2" mm="/url4" own="me" data-toggle="tooltip" data-placement="right" title="출퇴근사진 /url4">출퇴근사진</li>
+            </ul>
+            <li class="menu" data-toggle="collapse" data-target="#test3">
+              <div class="menu__name font-weight-bold">복무확인서</div>
+              <span class="expand material-icons">expand_less</span>
+            </li>
+            <ul class="sub-menu collapse show active" id="test3">
+              <li class="pl-2" mm="/url5" own="me" data-toggle="tooltip" data-placement="right" title="신청 /url5">신청</li>
+              <li class="pl-2" mm="/url6" own="me" data-toggle="tooltip" data-placement="right" title="대리신청 /url6">대리신청</li>
+              <li class="pl-2" mm="/url7" own="me" data-toggle="tooltip" data-placement="right" title="발급현황 /url7">발급현황</li>
+            </ul>
+            <li class="menu" data-toggle="collapse" data-target="#test4">
+              <div class="menu__name font-weight-bold">국외여행허가추천서</div>
+              <span class="expand material-icons">expand_less</span>
+            </li>
+            <ul class="sub-menu collapse show active" id="test4">
+              <li class="pl-2" mm="/url8" own="me" data-toggle="tooltip" data-placement="right" title="신청 /url8">신청</li>
+              <li class="pl-2" mm="/url9" own="me" data-toggle="tooltip" data-placement="right" title="발급 /url9">발급</li>
+              <li class="pl-2" mm="/url10" own="me" data-toggle="tooltip" data-placement="right" title="발급현황 /url10">발급현황</li>
+            </ul>
+          </ul>
+        </div>
+      </div>
+      <!-- Sidebar end -->
 
-    <!-- Menu start -->
-    <div id="container_body" class="" style="height:100%; width: 100%; height: 100%;">
-      <div class="" style="height: 100%; display: flex; flex-direction: column;">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs " id="navs" role="tablist" style="margin-bottom: 0px; margin-left: 16px; margin-right: 4px;">
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#home">Home</a><span>x</span>
-          </li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content" style="margin-left: 16px; margin-right: 4px;">
-          <div id="home" class="tab-pane active" style="height: 100%; display: flex; flex-direction: column;">
-            <div id="cont_head_wrapper" class="chw">
-              <div class="cont_head" style="  width: 50%;">
-                <div id="cont_head_text">Main</div>
+      <!-- Menu start -->
+      <div id="container_body" style="flex: 1 0 680px;">
+        <div class="d-flex flex-column h-100">
+          <!-- Nav tabs -->
+          <ul id="navs" class="nav nav-tabs mb-0 ml-3 mt-2 rounded" style="overflow: hidden;" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#home">Home</a><span class="material-icons small">clear</span>
+            </li>
+          </ul>
+          <!-- Tab panes -->
+          <div class="tab-content ml-3">
+            <div id="home" class="tab-pane w-100 h-100 active">
+              <div id="cont_head_wrapper" class="chw">
+                <div id="cont_nav_wrap">
+                  <nav id="cont_nav" aria-label="breadcrumb" class="my-2" style="font-size:13px;text-align:left;">
+                    <div style="display: inline-block; ">
+                      <ol class="breadcrumb">
+                        <li class="breadcrumb-item active"><span class="material-icons small">home</span></li>
+                        <li class="breadcrumb-item active" id="nav_step1">두번째메뉴</li>
+                        <li class="breadcrumb-item" aria-current="page" id="nav_step2">
+                        </li>마마 다다 나나</li>
+                      </ol>
+                    </div>
+                  </nav>
+                </div>
               </div>
-              <div id="cont_nav_wrap">
-                <nav id="cont_nav" aria-label="breadcrumb" style="font-size:12px;text-align:right;">
-                  <div style="display: inline-block; ">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item active">Scholarship</li>
-                      <li class="breadcrumb-item active" id="nav_step1">Main</li>
-                      <li class="breadcrumb-item" aria-current="page" style="" id="nav_step2">
-                      </li>
-                      Home
-                      </li>
-                    </ol>
-                  </div>
-                </nav>
-              </div>
+              {% block content %}
+              {% endblock %}
+              <iframe id="content_frm" class="w-100 h-100" src="/esm_sys_1000/test"></iframe>
             </div>
-            {% block content %}
-            {% endblock %}
-            <iframe id="content_frm" class="m_frame" src="/ems_sys_1000/test" style="flex: 1"></iframe>
           </div>
         </div>
       </div>
@@ -228,14 +304,11 @@
 <!-- New Tab Template -->
 <div id="newtab" class="container tab-pane active" style="display: none;">
   <div id="cont_head_wrapper">
-    <div class="cont_head" style="  width: 50%;">
-      <div id="cont_head_text">초기화면 정해주세요</div>
-    </div>
     <div id="cont_nav_wrap">
-      <nav id="cont_nav" aria-label="breadcrumb" style="font-size:12px;text-align:right;">
+      <nav id="cont_nav" aria-label="breadcrumb" class="my-2" style="font-size:13px;text-align:left;">
         <div style="display: inline-block;">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active">Scholarship</li>
+            <li class="breadcrumb-item active"><span class="material-icons small">home</span></li>
             <li class="breadcrumb-item active" id="nav_step1">Content Template</li>
             <li class="breadcrumb-item" aria-current="page" style="" id="nav_step2">
               Template
@@ -246,82 +319,76 @@
       </nav>
     </div>
   </div>
-  <iframe id="content_frm" class="m_frame" src=""></iframe>
+  <iframe id="content_frm" class="w-100 h-100" src=""></iframe>
 </div>
 
 <script type="text/javascript">
   $(document).ready(function () {
-
-    // ie에서 navbar 계속 늘어나는 문제 임시 해결책
-    var agent = navigator.userAgent.toLowerCase();
-    if ((navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1)) {
-      $(window).on("resize", function () {
-        var w_width = $(this).width();
-        $("#navs").css("max-width", w_width - 233);
-      });
-    }
-
-
-    $('.sidebarCollapse').on('click', function () {
-      $('.nav-side-menu, #container_body').toggleClass('active');
-    });
-
-    $(".nav-tabs").on("click", "a", function (e) {
-      e.preventDefault();
-      if (!$(this).hasClass('add-contact')) {
-        $(this).tab('show');
-      }
-    })
+    $(".nav-tabs")
+      .on("click", "a", function (e) {
+        e.preventDefault();
+        if (!$(this).hasClass('add-contact')) {
+          $(this).tab('show');
+        }
+      })
       .on("click", "span", function () {
-        var anchor = $(this).siblings('a');
-        var isGrdModified = $(anchor.attr('href')).find('#content_frm').get(0).contentWindow.checkChangeData(true);
+        var $a =$(this).siblings('a');
+        var isActive = $a.hasClass('active');
+        var tabId = $a.attr('href');
+        var tabWin = $(tabId).find('#content_frm').get(0).contentWindow;
+
+        /* 변경사항 체크로직
+        var isGrdModified = tabWin.checkChangeData(true);
         if (isGrdModified) {
-          if (!confirm($(anchor.attr('href')).find('#content_frm').get(0).contentWindow.ld.changedButClose)) {
+          if (!confirm(tabWin.ld.changedButClose)) {
             return;
           }
         }
-        $(anchor.attr('href')).remove();
+        */
+
+        $(tabId).remove();
         $(this).parent().remove();
-        var len = $(".nav-tabs").children().length; //think about it ;)
-        var bReload = true;
-        for (var i = 0; i < len; i++) {
-          var title = $(".nav-tabs").children().get(i).innerText;
-          var html = $(".nav-tabs").children().get(i).innerHTML;//.hasClass("active");
-          var j = i + 1;
-          if (html.indexOf("active") > -1) {
-            $('.nav-tabs li:nth-child(' + j + ') a').click();
-            return;
-          }
+
+        // 활성화 된 화면을 닫는 경우 첫 탭 클릭
+        if (isActive) {
+          $(".nav-tabs li.nav-item").children('a').first().click();
         }
-        $(".nav-tabs li").children('a').first().click();
       });
+
+    // 탭화면 추가
     function addNavTab(tabId, tabNm, mm) {
-      var id = $(".nav-tabs").children().length; //think about it ;)
-      var bReload = true;
-      for (var i = 0; i < id; i++) {
-        var title = $(".nav-tabs").children().get(i).innerText;
-        var j = i + 1;
-        if (title.replace(" x ", "") == tabNm) {
-          $('.nav-tabs li:nth-child(' + j + ') a').click();
-          bReload = false;
+      var len = $(".nav-tabs li.nav-item").length;
+
+      for (var i = 0; i < len; i++) {
+        var $a = $(".nav-tabs").children().eq(i).find('a');
+        var title = $a.text();
+        if (title.replace(" x ", "").trim() == tabNm.trim()) {
+          $a.click();
           return;
         }
       }
-      if (id >= 8) {
-        alert("{{ld.maxScreens}}")
-        alert(ld.maxScreens);
+
+      // 최대 8개까지
+      if (len >= 8) {
+        alert('최대 탭 8');
         return;
       }
 
       var tabContent = $("#newtab").html();
-      $('.nav-tabs').append('<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#' + tabId + '">' + tabNm + '</a> <span> x </span></li>');
-      id++;
-      $('.tab-content').append('<div class="container tab-pane fade" id="' + tabId + '">' + tabContent + '</div>');
-      $('.nav-tabs li:nth-child(' + id++ + ') a').click();
+      $('.tab-content').append('<div class="tab-pane w-100 h-100 active" id="' + tabId + '">' + tabContent + '</div>');
+
+      $('.nav-tabs').append('<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#' + tabId + '">' + tabNm + '</a><span class="material-icons small">clear</span></li>');
+      $('.nav-tabs').children('li').last().find('a').click();
 
       /* 이미 열려있는 창을 새로 로드하지 않도록 탭추가후에 화면 로드 처리 */
       $('#' + tabId + ' #content_frm').attr('src', mm);
     }
+
+    // 대메뉴 클릭
+    $("#mainList > li").click(function() {
+      $(this).siblings().removeClass('active');
+      $(this).addClass('active');
+    });
 
     // 소메뉴 클릭
     $('#menu-content li[mm]').on('click', function () {
@@ -340,33 +407,35 @@
 
       // breadscrumb 생성
       
-      var higherMenuText = $(this).parent(".sub-menu").prev("li").text().replace(/[\t\s]/g, ''); // 현 메뉴의 상단 분류 제목
+      var higherMenuText = $(this).parent(".sub-menu").prev("li").find('div').text().replace(/[\t\s]/g, ''); // 현 메뉴의 상단 분류 제목
       $('#' + tabId + ' #nav_step1').text(higherMenuText);
       $('#' + tabId + ' #nav_step2').text($(this).text());
-      $('#' + tabId + ' #cont_head_text').text($(this).text());
     });
 
-    $('#menu-content li.collapsed ').each(function () {
-
-      $(this).on('click', function () {
-        $('#menu-content .collapse').collapse('hide');
-        $('#menu-content .collapsed').removeClass('selected-menu');
-        $(this).addClass('selected-menu');
-        $(this).addClass('active');
-      });
+    $('#showAll').click(function() {
+      $('ul.sub-menu').collapse('show');
+    });
+    
+    $('#hideAll').click(function() {
+      $('ul.sub-menu').collapse('hide');
     });
 
-    $('#cont_head_text').text($(".sub-menu li.active").text());
+    $('ul.sub-menu').on('show.bs.collapse', function () {
+      $(this).prev().find('span.expand').removeClass('rotate');
+    })
 
+    $('ul.sub-menu').on('hide.bs.collapse', function () {
+      $(this).prev().find('span.expand').addClass('rotate');
+    })
+
+    $('#toggleSidebar').click(function() {
+      $('.sidebar-sub').toggleClass('collapsed');
+    })
+
+    /* 아직 안씀
     $(window).on('resize', function () {
       if (typeof (window.innerWidth) == 'number') {
-
         var visible_height = $(window).height();
-
-        $('.m_frame').each(function () {
-          // $(this).height(visible_height - $('div.main_header').height() - $('#navs').height() - 36 - 8); //-5 는 ie cont_head_wrapper
-        });
-        // $('.nav-side-menu').height(visible_height - $('div.main_header').height() - 8)
       }
     }).trigger('resize');
 
@@ -392,10 +461,8 @@
       $('.tab-content').empty();
       return true;
     });
-
-
-
-  }).trigger('resize'); // ready end
+    */
+  }); //.trigger('resize'); // ready end
 </script>
 
 {%endblock%}

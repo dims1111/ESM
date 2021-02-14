@@ -1,4 +1,114 @@
 /* 구글 웹폰트 적용('Noto Sans KR') */
-* {
-  font-family: 'Noto Sans KR', sans-serif;
+html, body {
+  font-family: 'Noto Sans KR', 'Nanum Gothic';
+}
+
+:root {
+  --p1: #2a9d8f;
+  --p1-rgb: 42, 157, 143;
+  --p2: #FFA62B;
+  --p3: #EFEFEF;
+  --p4: #998FC7;
+  --p5: #EF6461;
+}
+
+.material-icons,
+.material-icons-outlined {
+  user-select: none;
+}
+
+.material-icons.small {
+  font-size: 1.25rem;
+}
+
+.breadcrumb {
+  align-items: center;
+  background: #fff;
+  margin-bottom: 0;
+  /* box-shadow: 0 0 10px 1px #888; */
+}
+
+.tab-content>.active {
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+}
+
+
+/* input 스위치 */
+.input-switch {
+  display: none;
+}
+.input-switch:checked+.label-switch {
+  background-color: #0bba82;
+}
+.input-switch:checked+.label-switch .on {
+  display: inline-block;
+}
+.input-switch:checked+.label-switch .off {
+  display: none;
+}
+.input-switch:checked+.label-switch .marble {
+  left: calc(100% - 1px);
+  transform: translateX(-100%);
+}
+
+.label-switch {
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 26px;
+  line-height: 26px;
+  -webkit-border-radius: 13px;
+  -moz-border-radius: 13px;
+  border-radius: 13px;
+  background-color: #ed4956;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -ms-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
+}
+
+.label-switch > * {
+  vertical-align: middle;
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -ms-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
+  font-size: 13px;
+}
+
+.label-switch > .marble {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+}
+
+.label-switch > .on {
+  display: none;
+  padding-left: 12px;
+}
+
+.label-switch > .off {
+  float: right;
+  padding-right: 12px;
 }
