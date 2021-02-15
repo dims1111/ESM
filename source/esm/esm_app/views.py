@@ -1,5 +1,8 @@
 # 장고 프렘임워크에서 템플릿 렌더링 및 URL 리다이렉트
+from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
+
+import json
 
 # 단일 트랜잭션 처리를 위한 패키지 임포트
 from django.db import transaction
@@ -13,41 +16,37 @@ import os
 # 한글 지원 방법
 os.putenv('NLS_LANG', '.UTF8')
 
-
-
 # 메인화면
 def main(request):
 	# 세션여부 체크
 	if (request.session.is_empty()):
 		return redirect('/login')
 
-	params = {
-		'mainMenuList': [
-			{ 'mainCd': '1', 'mainNm': '복무관리', 'icon': 'face', 'active': 'active' },
-			{ 'mainCd': '2', 'mainNm': '교육소집', 'icon': 'schedule', 'active': '' },
-			{ 'mainCd': '3', 'mainNm': '전자결재', 'icon': 'insert_drive_file', 'active': '' },
-			{ 'mainCd': '4', 'mainNm': '게시판', 'icon': 'assignment', 'active': '' },
-			{ 'mainCd': '5', 'mainNm': '복무현황', 'icon': 'analytics', 'active': '' },
-			{ 'mainCd': '6', 'mainNm': '인증관리', 'icon': 'security', 'active': '' },
-			{ 'mainCd': '7', 'mainNm': '시스템', 'icon': 'settings', 'active': '' }
-		],
-		'subMenuList': [
-			{ 'subNm': '명부관리', 'level': 1, 'url': '', 'mainCd': '1', 'mainNm': '복무관리' },
-			{ 'subNm': '명부', 'level': 2, 'url': '/url1', 'mainCd': '1', 'mainNm': '복무관리' },
-			{ 'subNm': '명부기록', 'level': 2, 'url': '/url2', 'mainCd': '1', 'mainNm': '복무관리' },
-			{ 'subNm': '출퇴근', 'level': 1, 'url': '', 'mainCd': '1', 'mainNm': '복무관리' },
-			{ 'subNm': '출퇴근기록', 'level': 2, 'url': '/url3', 'mainCd': '1', 'mainNm': '복무관리' },
-			{ 'subNm': '출퇴근사진', 'level': 2, 'url': '/url4', 'mainCd': '1', 'mainNm': '복무관리' },
-			{ 'subNm': '복무확인서', 'level': 1, 'url': '', 'mainCd': '1', 'mainNm': '복무관리' },
-			{ 'subNm': '신청', 'level': 2, 'url': '/url5', 'mainCd': '1', 'mainNm': '복무관리' },
-			{ 'subNm': '대리신청', 'level': 2, 'url': '/url6', 'mainCd': '1', 'mainNm': '복무관리' },
-			{ 'subNm': '발급현황', 'level': 2, 'url': '/url7', 'mainCd': '1', 'mainNm': '복무관리' },
+	params = {}
 
-			{ 'subNm': '교육정보', 'level': 1, 'url': '', 'mainCd': '2', 'mainNm': '교육소집' },
-			{ 'subNm': '교육소집계획', 'level': 2, 'url': '/url8', 'mainCd': '2', 'mainNm': '교육소집' },
-			{ 'subNm': '교육소집통지확인', 'level': 2, 'url': '/url9', 'mainCd': '2', 'mainNm': '교육소집' },
-		]
-	}
+	connectionDns = 'esm/esm@210.112.232.29:1531/vis1226'
+	try:
+		# DB연결, 커서생성
+		with cx_Oracle.connect(connectionDns) as connection, connection.cursor() as cursor:
+			# 쿼리문입력(입력받은 아이디와 같은 아이디의 패스워드 값 가져오기)
+			cursor.execute(
+			"""
+				SELECT t.MENU_ID
+						, t.MENU_NAME_KO
+						, t.MENU_NAME_EN
+						, t.ICONS
+						, DECODE(ROW_NUMBER() OVER (ORDER BY t.sort_order), 1, 'active', NULL) AS ACTIVE -- 임시컬럼
+					FROM SYS_MENU t
+				WHERE t.PRENT_MENU_ID = 1
+					AND t.USE_YN = 'Y'
+				ORDER BY t.SORT_ORDER
+			""")          	
+
+			# 결과값 가져오기 
+			mainMenuList = rows_to_dict_list(cursor)
+			params['mainMenuList'] = mainMenuList
+	except Exception as e:
+		print(e)
 
 	# 메인화면 렌더링
 	return render(request, 'main.html', params)
@@ -62,7 +61,7 @@ def login(request):
 	# POST 방식
 	else:
 		# 입력값 가져오기
-		srchUserAccount = request.POST['userid']
+		srchUserAccount = request.POST['userAccount']
 		srchPassword = request.POST['password']
 
 		# 테이블에 존재하는 비밀번호
@@ -103,3 +102,47 @@ def login(request):
 			print(e)
 		else:
 			print("정상적으로 로그인 하였습니다. 이제 메인 화면을 작성하시기 바랍니다.")
+
+def getSubMenuList(request):
+	menuId = request.POST['menuId']
+	results = {}
+
+	connectionDns = 'esm/esm@210.112.232.29:1531/vis1226'
+	try:
+		# DB연결, 커서생성
+		with cx_Oracle.connect(connectionDns) as connection, connection.cursor() as cursor:
+			# 쿼리문입력(입력받은 아이디와 같은 아이디의 패스워드 값 가져오기)
+			cursor.execute(
+			"""
+				SELECT LEVEL AS TREE_LEVEL
+							,SM.MENU_ID
+							,SM.MENU_NAME_KO
+							,SM.MENU_NAME_EN
+							,SM.URL
+							,SM.PRENT_MENU_ID
+					FROM ESM.SYS_MENU SM
+				WHERE 1 = 1
+					AND SM.USE_YN = 'Y'
+				START WITH SM.PRENT_MENU_ID = :menuId
+				CONNECT BY PRIOR SM.MENU_ID = SM.PRENT_MENU_ID
+				ORDER SIBLINGS BY SM.SORT_ORDER
+			""", menuId = menuId)       	
+
+			# 결과값 가져오기 
+			subMenuList = rows_to_dict_list(cursor)
+			results['subMenuList'] = subMenuList
+	except Exception as e:
+		print(e)
+	
+	return JsonResponse(results)
+
+
+# 커서를 List Dictionary 형태로 변환
+def rows_to_dict_list(cursor):
+	columns = [camelCase(i[0]) for i in cursor.description]
+	return [dict(zip(columns, row)) for row in cursor]
+
+# 문자 카멜케이스로 변경
+def camelCase(st):
+    output = ''.join(x for x in st.title() if x.isalnum())
+    return output[0].lower() + output[1:]
