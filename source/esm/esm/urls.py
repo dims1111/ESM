@@ -17,7 +17,7 @@ from django import urls
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-from authApp import views as authAppViews
+from esm_app import views as authAppViews
 
 
 urlpatterns = [

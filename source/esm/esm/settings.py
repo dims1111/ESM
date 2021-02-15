@@ -39,15 +39,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 전자식 복무관리 시스템
 
-    'authApp',
-    # esm_sys 디렉토리 하위 apps 등록
+    # 정적 템플릿
+    'static_template',
+
+    # 로그인 / 로그아웃 / 홈
+    'esm_app',
+
+    # 시스템관리
     'esm_sys.esm_sys_1000',
     'esm_sys.esm_sys_1010',
     'esm_sys.esm_sys_1020',
     'esm_sys.esm_sys_1030',
-
-    'static_template',
 ]
 
 MIDDLEWARE = [
@@ -91,6 +95,8 @@ WSGI_APPLICATION = 'esm.wsgi.application'
 #     }
 # }
 
+# 전자식 복무관리 시스템
+# 오라클 개발서버 접속정보
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
@@ -141,7 +147,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+# 전자식 복무관리 시스템
 # static 경로에 있는 파일을 public하게 오픈
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')

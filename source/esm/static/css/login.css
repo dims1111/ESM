@@ -1,17 +1,8 @@
-{% extends "base.html" %}
-
-{% block header %}
-
-<style>
-  * {
+  html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-
-  html,
-  body {
-    height: 100%;
   }
 
   body {
@@ -111,73 +102,3 @@
   -o-transform: translateX(16px);
   background: #07ce72;
 }
-</style>
-
-
-
-{% endblock %}
-
-
-
-{% block contents %}
-
-
-    <form class="form-signin text-center" method="POST">
-      {% csrf_token %}
-      <img
-        class="mb-4 rounded-circle"
-        src="https://source.unsplash.com/random/350x350"
-        alt=""
-        width="150"
-        height="150"
-      />
-      <div class="text-left font-weight-bolder">
-        <label for="loginId" class="mb-0">Username or email address</label>
-      </div>
-      <input
-        type="text"
-        id="loginId2"
-        name="userid"
-        class="form-control mb-3"
-        placeholder="사용자 ID"
-        required
-        autofocus
-      />
-      <div class="text-left font-weight-bolder">
-        <label for="loginPassword" class="mb-0">Password</label>
-      </div>
-      <input
-        type="password"
-        id="loginPassword"
-        name="password"
-        class="form-control"
-        placeholder="비밀번호"
-        required=""
-      />
-      <!--  -->
-
-      <section class="setting st-login" style="display: inline-block;">
-        <p>
-           한국어
-         <label class="btn-switch">
-           <input type="checkbox">
-           <i class="slide-object"></i>
-         </label>
-        </p>
-      </section>
-
-      <!--  -->
-
-      <label class="mb-3"
-        ><input type="checkbox" value="remember-me" style="margin-left: 10px;"/> ID 저장</label
-      >
-      <button class="btn btn-lg btn-primary btn-block" type="submit">
-        로그인
-      </button>
-      <p class="mt-5 mb-5 text-muted">© Copyright Built1 Corporation 2021</p>
-    </form>
-
-  {% endblock %}
-
-
-  

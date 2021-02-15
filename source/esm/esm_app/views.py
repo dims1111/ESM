@@ -13,6 +13,8 @@ import os
 # 한글 지원 방법
 os.putenv('NLS_LANG', '.UTF8')
 
+
+
 # 메인화면
 def main(request):
 	# 세션여부 체크
