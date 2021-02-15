@@ -204,7 +204,6 @@
       <!-- Sidebar start -->
       <div class="sidebar-main mt-2 pt-3">
         <ul id="mainList">
-
         {% for item in mainMenuList %}
           <li class="sidebar-main__item py-2 {{item.active}}">
             <span class="main__icon material-icons" mcd="{{item.mainCd}}">{{item.icon}}</span>
@@ -280,10 +279,10 @@
                   <nav id="cont_nav" aria-label="breadcrumb" class="my-2" style="font-size:13px;text-align:left;">
                     <div style="display: inline-block; ">
                       <ol class="breadcrumb">
-                        <li class="breadcrumb-item active"><span class="material-icons small">home</span></li>
-                        <li class="breadcrumb-item active" id="nav_step1">두번째메뉴</li>
+                        <li class="breadcrumb-item active"><span class="material-icons small">settings</span><span> 시스템</span></li>
+                        <li class="breadcrumb-item active" id="nav_step1">기준정보</li>
                         <li class="breadcrumb-item" aria-current="page" id="nav_step2">
-                        </li>마마 다다 나나</li>
+                        </li>메뉴등록</li>
                       </ol>
                     </div>
                   </nav>
@@ -291,7 +290,7 @@
               </div>
               {% block content %}
               {% endblock %}
-              <iframe id="content_frm" class="w-100 h-100" src="/esm_sys_1000/test"></iframe>
+              <iframe id="content_frm" class="w-100 h-100" src="/esm_sys_1020"></iframe>
             </div>
           </div>
         </div>
