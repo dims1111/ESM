@@ -11,14 +11,15 @@ create table esm.sys_menu
   ,prent_menu_id              number         not null
   ,icons                      varchar2(1000)
   ,sort_order                 number
-  ,user_yn                    varchar2(0001) default 'Y' not null
-  ,user_insert_yn             varchar2(0001) default 'Y' not null
-  ,user_update_yn             varchar2(0001) default 'Y' not null
-  ,user_delete_yn             varchar2(0001) default 'Y' not null
-  ,user_print_yn              varchar2(0001) default 'Y' not null
-  ,user_batch_yn              varchar2(0001) default 'Y' not null
-  ,user_excel_down_yn         varchar2(0001) default 'Y' not null
-  ,user_excel_up_yn           varchar2(0001) default 'Y' not null
+  ,use_yn                     varchar2(0001) default 'Y' not null
+  ,search_yn                  varchar2(0001) default 'Y' not null
+  ,insert_yn                  varchar2(0001) default 'Y' not null
+  ,update_yn                  varchar2(0001) default 'Y' not null
+  ,delete_yn                  varchar2(0001) default 'Y' not null
+  ,print_yn                   varchar2(0001) default 'Y' not null
+  ,batch_yn                   varchar2(0001) default 'Y' not null
+  ,excel_down_yn              varchar2(0001) default 'Y' not null
+  ,excel_up_yn                varchar2(0001) default 'Y' not null
   ,remark                     varchar2(2000) 
   ,create_date_time           date           default sysdate
   ,create_by                  number         default -1
@@ -71,14 +72,15 @@ comment on column esm.sys_menu.url                         is 'URL';
 comment on column esm.sys_menu.prent_menu_id               is '상위메뉴ID';
 comment on column esm.sys_menu.icons                       is '아이콘';
 comment on column esm.sys_menu.sort_order                  is '정렬순서';
-comment on column esm.sys_menu.user_yn                     is '사용여부(Y/N)';
-comment on column esm.sys_menu.user_insert_yn              is '신규여부(Y/N)';
-comment on column esm.sys_menu.user_update_yn              is '수정여부(Y/N)';
-comment on column esm.sys_menu.user_delete_yn              is '삭제여부(Y/N)';
-comment on column esm.sys_menu.user_print_yn               is '출력여부(Y/N)';
-comment on column esm.sys_menu.user_batch_yn               is '처리여부(Y/N)';
-comment on column esm.sys_menu.user_excel_down_yn          is '엑셀다운로드여부(Y/N)';
-comment on column esm.sys_menu.user_excel_up_yn            is '엑셀업로드여부(Y/N)';
+comment on column esm.sys_menu.use_yn                      is '사용여부(Y/N)';
+comment on column esm.sys_menu.search_yn                   is '조회여부(Y/N)';
+comment on column esm.sys_menu.insert_yn                   is '신규여부(Y/N)';
+comment on column esm.sys_menu.update_yn                   is '수정여부(Y/N)';
+comment on column esm.sys_menu.delete_yn                   is '삭제여부(Y/N)';
+comment on column esm.sys_menu.print_yn                    is '출력여부(Y/N)';
+comment on column esm.sys_menu.batch_yn                    is '처리여부(Y/N)';
+comment on column esm.sys_menu.excel_down_yn               is '엑셀다운로드여부(Y/N)';
+comment on column esm.sys_menu.excel_up_yn                 is '엑셀업로드여부(Y/N)';
 comment on column esm.sys_menu.remark                      is '비고';
 --
 comment on column esm.sys_menu.create_date_time            is '생성일시';
