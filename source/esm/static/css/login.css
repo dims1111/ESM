@@ -1,4 +1,9 @@
-  html, body {
+/* 구글 웹폰트 적용('Noto Sans KR') */
+html, body {
+  font-family: 'Noto Sans KR', 'Nanum Gothic';
+}
+
+html, body {
     height: 100%;
     margin: 0;
     padding: 0;
