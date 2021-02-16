@@ -1,14 +1,45 @@
-{% extends "base.html" %}
+{% extends "bizform.html" %}
 
 {% block header %}
-    
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/bizform.css' %}" />
 {% endblock %}
+
 {% block contents %}
-<div class="container">
-  <div class="row">
-    <div class="col-12">
-      <h1>esm_sys/esm_sys_1020/templates/esm_sys_1020.html</h1>
-    </div>
-  </div>
+
+<!-- div.container>div.item.item${$}*10 / tab -->
+<div class="container_space"></div>
+<div class="container_top">
+  <div class="top_item top1">조회</div>
+  <div class="top_item top2">초기화</div>
+  <div class="top_item top3">출력</div>
 </div>
+
+<div class="container_space"></div>
+<div class="container_search1">
+  <div class="search_item1 search1">검색항목1</div>
+  <div class="search_item1 search2">검색항목2</div>
+  <div class="search_item1 search3">검색항목3</div>
+  <div class="search_item1 search4">검색항목4</div>
+</div>
+
+<div class="container_space"></div>
+<div class="container_control1">
+  <div class="control_action1">
+    <div class="action1_item1 action1">저장</div>
+    <div class="action1_item1 action2">행추가</div>
+    <div class="action1_item1 action3">행삭제</div>
+    <div class="action1_item1 action4">엑셀다운</div>
+    <div class="action1_item1 action5">엑셀업로드</div>
+  </div>
+  <div class="control_title1">
+    <div class="title1_item title1">그리드 제목 및 데이터 건수 표기</div>
+  </div>  
+</div>
+
+<div class="container_space"></div>
+<div class="container_grid1">
+</div>  
+
+<div class="container_space"></div>
 {% endblock %}

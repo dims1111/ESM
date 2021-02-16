@@ -1,0 +1,157 @@
+html, body {
+    height: 98%;
+    width: 99%;
+    background: #fafafa;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-left: 5px;
+}
+
+/* 여백 */
+.container_space {
+    background: rgb(228, 75, 241);
+    height: 6px;
+    width: 100%;
+}
+
+
+/* 검색출력 */
+.container_top {
+    background: chocolate;
+    height: 34px;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    align-items: flex-end;
+    text-align: center;
+    text-align-last: center;
+}
+
+.top_item {
+    height: 30px;
+    width: 80px;
+    border: 1px solid #BADCD8;
+}
+
+.top1 {
+    background: #2A9D8F;    
+}
+
+.top2 {
+    background: #BADCD8;
+}
+
+.top3 {
+    background: #a3c2be;
+}
+
+/* 검색영역 */
+.container_search1 {
+    background: rgb(180, 207, 218);
+    height: 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    text-align: center;
+    text-align-last: center;
+}
+
+.search_item1 {
+    height: 36px;
+    width: 80px;
+    border: 1px solid #d0da98;
+}
+
+.search1 {
+    background: #2a9d5a;
+    flex-basis: 25%;
+}
+
+.search2 {
+    background: #badcbf;
+    flex-basis: 25%;
+}
+
+.search3 {
+    background: #a3c2aa;
+    flex-basis: 25%;
+}
+
+.search4 {
+    background: #e6b469;
+    flex-basis: 25%;
+}
+
+
+/* 컨트롤영역1 - 제목1 및 엑션1  */
+.container_control1 {
+    background: rgb(218, 167, 192);
+    height: 34px;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+}
+
+/* 컨트롤영역1 - 제목 */
+.control_title1 {
+    height: 30px;
+    flex-basis: 40%;
+    border: 1px solid #d0da98;
+}
+
+.title1_item, .title1 {
+    background: #70b4c0;
+}
+
+/* 컨트롤영역1 - 저장, 행추가, 행삭제, 엑셀다운, 엑셀업로드 */
+.control_action1 {
+    height: 30px;
+    flex-basis: 60%;
+    border: 1px solid #d0da98;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    align-items: flex-end;
+    text-align: center;
+    text-align-last: center;
+}
+
+.control_item1 {
+    height: 30px;
+    width: 80px;
+    border: 1px solid #d0da98;
+}
+
+.action1 {
+    background: #2a9d5a;
+}
+
+.action2 {
+    background: #badcbf;
+}
+
+.action3 {
+    background: #a3c2aa;
+}
+
+.action4 {
+    background: #e6b469;
+}
+
+.action5 {
+    background: #70b4c0;
+}
+
+
+
+/* 그리드1 */
+.container_grid1 {
+    background: rgb(63, 233, 233);
+    height: 82%;
+    width: 100%;
+}
