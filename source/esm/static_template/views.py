@@ -1,6 +1,5 @@
-from django.shortcuts import render
-
 # Create your views here.
+from django.http import request
 from django.shortcuts import render
 
 # 오라클 접속하기 위한 패키지
@@ -9,6 +8,7 @@ import cx_Oracle
 # esm 프로젝트 settings 오라클 접속 DNS 임포트
 from esm.settings import connectionDns as connDns
 
+from esm_app import views as esmAppViews
 
 # 조회 쿼리 수행
 def searchExecute(sqlString, sqlParam):	
@@ -30,7 +30,7 @@ def searchExecute(sqlString, sqlParam):
             'cd' : '-1',
             'msg' : e
         }
-        return mainMenuList
+        esmAppViews.err400(request, mainMenuList)
 
 # 조회 쿼리 수행 
 # 위 함수와 병합하여 처리가 필요한데 매개변수가 1..n개 형식도 다른데 병합 처리 ???
@@ -52,7 +52,7 @@ def searchExecute2(sqlString, parentMenuId):
         mainMenuList = {
             'cd' : '-1',
             'msg' : e
-        }
+        }        
         return mainMenuList
 
 
@@ -66,3 +66,11 @@ def rows_to_dict_list(cursor):
 def camelCase(st):
     output = ''.join(x for x in st.title() if x.isalnum())
     return output[0].lower() + output[1:]
+
+
+# 예외 처리
+def esmExceptionNum(errNum):    
+    if errNum == 1000:
+        return '사용자 계정 또는 이메일 주소가 존재하지 않습니다.'
+    elif errNum == 1010:
+        return '비밀번호가 일치하지 않습니다.'

@@ -12,7 +12,7 @@ class sql:
               from esm.sys_menu sm
              where 1=1
                and sm.parent_menu_id = 1
-               and sm.use_yn        = 'Y'
+               and sm.use_yn         = 'Y'
              order by sm.sort_order
         """
     

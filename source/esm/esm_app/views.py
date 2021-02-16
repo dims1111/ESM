@@ -5,6 +5,9 @@ from django.shortcuts import render, redirect
 # 단일 트랜잭션 처리를 위한 패키지 임포트
 from django.db import transaction
 
+# 장고 모델에서 필터 처리를 위한 Q 클래스 임포트
+from django.db.models import Q
+
 # 장고 내부 비밀번호 생성 및 체크 클래스 임포트
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -19,6 +22,12 @@ from static_template import views as stViews
 
 # 로그인 모델 내 SysUser 클래스 임포트
 from . models import SysUser
+
+# static_template 예외처리 함수 임포트
+from static_template.views import esmExceptionNum
+
+
+
 
 # Create your views here.
 # 한글 지원 방법
@@ -84,26 +93,36 @@ def login(request):
 			vResult['msg'] = '비밀번호는 필수 항목입니다.'
 		else:            
 			try:
-				# 사용자 클래스에의서 키 값으로 데이터를 조회
-				vSysUser = SysUser.objects.get(user_account=srhUserAccount)
-
-				# 비밀번호 체크
-				if not check_password(srhPassword, vSysUser.password):
-					# 세션에 사용자정보 담기
-					request.session['user_id'] = vSysUser.user_id
-					request.session['user_account'] = vSysUser.user_account
-					request.session['user_name'] = vSysUser.user_name
-
-					# 홈으로 이동
-					return redirect('/')
+				# 단일 데이터 조회 : get
+				# vSysUser = SysUser.objects.get(user_account=srhUserAccount)
+				
+				# 다중 데이터 조회 : filter
+				vPassword = ''
+				if not SysUser.objects.filter(Q(user_account=srhUserAccount) | Q(email_addr=srhUserAccount)).exists():
+					# [오류] 사용자 계정 또는 이메일 주소 미 존재					
+					raise Exception(esmExceptionNum(1000))
 				else:
-					# 비밀번호 오류처리
-					vResult['cd'] = 'E'
-					vResult['msg'] = '비밀번호가 일치하지 않습니다.'
-			except:
-				# 사용자 클래스에 값이 존재하지 않을 경우 오류처리
+					vSysUser = SysUser.objects.filter(Q(user_account=srhUserAccount) | Q(email_addr=srhUserAccount)).values()
+					
+					# 사용자 정보가 존재
+					for ca in vSysUser:
+						# 세션에 사용자정보 추가
+						vPassword = ca.get('password')						
+						request.session['user_id'] = ca.get('user_id')
+						request.session['user_account'] = ca.get('user_ccount')
+						request.session['user_name'] = ca.get('user_name')
+
+					# 비밀번호 체크
+					if check_password(srhPassword, vPassword):						
+						# 홈으로 이동
+						return redirect('/')
+					else:						
+						# [오류] 비밀번호 불일치
+						raise Exception(esmExceptionNum(1010))
+
+			except Exception as e:
 				vResult['cd'] = 'E'
-				vResult['msg'] = '사용자 정보가 존재하지 않습니다.'
+				vResult['msg'] = e
 		
 		print('cd =>', vResult['cd'])
 		print('msg =>',vResult['msg'])
@@ -119,3 +138,7 @@ def logout(request):
 
 	# 세션이 삭제되면 로그인 화면으로 전환
 	return redirect('/login')
+
+# 400 오류 발생
+def err400(request, param):
+	return render(request, "404ERR.html", param)
