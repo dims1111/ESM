@@ -2,7 +2,8 @@
 
 {% block header %}
 	{% load static %}
-	<link rel="stylesheet" href="{% static 'css/bizform.css' %}" />
+	<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+  <link rel="stylesheet" href="{% static 'css/bizform.css' %}" />  
 {% endblock %}
 
 {% block contents %}
@@ -12,13 +13,15 @@
 <div class="container_space"></div>
 <div class="container_top">
   <div class="top1">
-    <div class="top1_group1 top1_item1">조회조건</div>
+    <div class="top1_group1 top1_item1">
+      <i class="xi-bars"> 조회조건</i>      
+    </div>
   </div>
 
   <div class="top2">
-    <div class="top2_group1 top2_item1">조회</div>
-    <div class="top2_group1 top2_item2">초기화</div>
-    <div class="top2_group1 top2_item3">출력</div>
+    <div class="top2_group1 top2_item1"><i class="xi-search"> 조회</i></div>
+    <div class="top2_group1 top2_item2"><i class="xi-refresh"> 초기화</i></div>
+    <div class="top2_group1 top2_item3"><i class="xi-print"> 출력</i></div>
   </div>  
 </div>
 
@@ -37,10 +40,11 @@
 <div class="container_space"></div>
 <div class="container_control1">
   <div class="title1">
-    <div class="title1_group1 title1_item1">메뉴목록 (47건)</div>
+    <div class="title1_group1 title1_item1">
+      <i class="xi-list-dot"> 메뉴목록 (47건)</i></div>
   </div> 
   <div class="action1">
-    <div class="action1_group1 action1_item1">저장</div>
+    <div class="action1_group1 action1_item1"><i class="xi-save"> 저장</i></div>
     <div class="action1_group1 action1_item2">행추가</div>
     <div class="action1_group1 action1_item3">행삭제</div>
     <div class="action1_group1 action1_item4">엑셀다운</div>

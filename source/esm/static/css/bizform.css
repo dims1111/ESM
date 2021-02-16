@@ -1,11 +1,11 @@
 html, body {
+    font-family: 'Noto Sans KR', 'Nanum Gothic';
     height: 98%;
     width: 99%;
     background: #fafafa;
     margin-top: 4px;
     margin-bottom: 4px;
-    margin-left: 4px;
-    font-family: 'Noto Sans KR', 'Nanum Gothic';
+    margin-left: 4px;    
     font-size: 13px;
     color: #031b18;
 }
@@ -19,7 +19,7 @@ html, body {
 
 /* 헤더라인 */
 .container_top_line {
-    background: #2A9D8F;
+    background: #1d7268;
     height: 2px;
     width: 100%;
 }
@@ -54,14 +54,16 @@ html, body {
             .top1_item1 {                
                 display: flex;
                 background: #2A9D8F;
-                color: #eefcfa;
-                font-weight: bold;
+                color: #eefcfa;                
                 align-items: center;
                 justify-content: center;
                 align-content: center;
                 border-top-left-radius: 8px;
                 border-top-right-radius: 8px;
                 margin-left: 12px;
+                border-top: 2px solid #1d7268;
+                border-left: 2px solid #1d7268;
+                border-right: 2px solid #1d7268;
             }
 
     .top2 {
@@ -99,7 +101,7 @@ html, body {
 
             .top2_item3{
                 display: flex;
-                background: #a3c2be;
+                background: #BADCD8;
             }
 
 
@@ -185,14 +187,15 @@ html, body {
 
             .title1_item1 {                
                 display: flex;
-                background: #2A9D8F;
-                color: #eefcfa;
-                font-weight: bold;                
+                background: #2A9D8F;                                
                 justify-content: center;
                 align-content: center;
                 border-top-left-radius: 8px;
                 border-top-right-radius: 8px;
                 margin-left: 12px;
+                border-top: 2px solid #1d7268;
+                border-left: 2px solid #1d7268;
+                border-right: 2px solid #1d7268;
             }
 
     .action1 {
@@ -249,4 +252,42 @@ html, body {
     background: #f1f1f0;
     height: 86%;
     width: 100%;
+}
+
+
+/* 웹 폰트 */
+/* 검색조건 */
+.xi-bars {
+    font-size: 14px;
+    color: #eefcfa;
+}
+
+/* 그리드 제목 */
+.xi-list-dot {
+    font-size: 14px;
+    color: #eefcfa;
+}
+
+/* 조회 */
+.xi-search {
+    font-size: 12px;
+    color: #eefcfa;
+}
+
+/* 저장 */
+.xi-save {
+    font-size: 12px;
+    color: #eefcfa;
+}
+
+/* 출력 */
+.xi-print {
+    font-size: 12px;
+    color: #0e413b;
+}
+
+/* 초기화 */
+.xi-refresh {
+    font-size: 12px;
+    color: #0e413b;
 }
