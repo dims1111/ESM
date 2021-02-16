@@ -17,12 +17,27 @@ html, body {
     width: 100%;
 }
 
+/* 여백 */
+.container_space2 {
+    background: #fafafa;
+    height: 8px;
+    width: 100%;
+}
+
 /* 헤더라인 */
 .container_top_line {
     background: #1d7268;
     height: 2px;
     width: 100%;
 }
+
+/* 헤더라인 */
+.container_bottom_line {
+    background: #259e90;
+    height: 1px;
+    width: 100%;
+}
+
 
 
 /* 검색출력 */
@@ -210,7 +225,7 @@ html, body {
         .action1_group1 {
             display: flex;
             height: 98%;
-            width: 80px;            
+            width: 80px;
             border-radius: 2px;
             margin-inline-end: 2px;
             align-content: center;
@@ -239,11 +254,13 @@ html, body {
             .action1_item4{
                 display: flex;
                 background: #a3c2be;
+                width: 100px;
             }
 
             .action1_item5{
                 display: flex;
                 background: #a3c2be;
+                width: 100px;
             }
 
 
@@ -274,10 +291,10 @@ html, body {
     color: #eefcfa;
 }
 
-/* 저장 */
-.xi-save {
+/* 초기화 */
+.xi-refresh {
     font-size: 12px;
-    color: #eefcfa;
+    color: #0e413b;
 }
 
 /* 출력 */
@@ -286,8 +303,33 @@ html, body {
     color: #0e413b;
 }
 
-/* 초기화 */
-.xi-refresh {
+
+/* 저장 */
+.xi-save {
+    font-size: 12px;
+    color: #eefcfa;
+}
+
+/* 행추가 */
+.xi-plus {
+    font-size: 12px;
+    color: #0e413b;
+}
+
+/* 행삭제 */
+.xi-minus-min {
+    font-size: 12px;
+    color: #0e413b;
+}
+
+/* 엑셀다운로드 */
+.xi-folder-download-o {
+    font-size: 12px;
+    color: #0e413b;
+}
+
+/* 엑셀업로드 */
+.xi-folder-upload-o {
     font-size: 12px;
     color: #0e413b;
 }
