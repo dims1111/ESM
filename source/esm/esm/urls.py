@@ -13,20 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django import urls
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-from esm_app import views as appViews
 
-
+# Create your urls here.
+# 프로젝트에서 사용할 앱의 경로 및 기능을 패턴으로 정의
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', appViews.main),
-    path('login/', appViews.login),
-    path('app/', include('esm_app.urls')),
-    path('esm_sys_1000/', include ("esm_sys.esm_sys_1000.urls")),
-    path('esm_sys_1010/', include ("esm_sys.esm_sys_1010.urls")),
-    path('esm_sys_1020/', include ("esm_sys.esm_sys_1020.urls")),
-    path('esm_sys_1030/', include ("esm_sys.esm_sys_1030.urls")),
+	path('admin/', admin.site.urls),                                # 장고 Admin
+	path('', include("esm_app.urls")),                               # 로그인, 로그아웃, 홈    
+	path('home/', include('esm_app.urls')),
+	path('esm_sys_1000/', include ("esm_sys.esm_sys_1000.urls")),   # 사용자등록
+	path('esm_sys_1010/', include ("esm_sys.esm_sys_1010.urls")),   # 메뉴등록
+	path('esm_sys_1020/', include ("esm_sys.esm_sys_1020.urls")),   # 언어코드등록
 ]

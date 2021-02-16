@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 전자식 복무관리 시스템
-
     # 정적 템플릿
     'static_template',
 
@@ -48,10 +47,9 @@ INSTALLED_APPS = [
     'esm_app',
 
     # 시스템관리
-    'esm_sys.esm_sys_1000',
-    'esm_sys.esm_sys_1010',
-    'esm_sys.esm_sys_1020',
-    'esm_sys.esm_sys_1030',
+    'esm_sys.esm_sys_1000',     # 사용자등록
+    'esm_sys.esm_sys_1010',     # 메뉴등록
+    'esm_sys.esm_sys_1020',     # 언어코드등록
 ]
 
 MIDDLEWARE = [
@@ -108,6 +106,9 @@ DATABASES = {
     },
 }
 
+# 전자식 복무관리 시스템
+# 동적 쿼리 접속을 위한 오라클 DNS 정보
+connectionDns = 'esm/esm@210.112.232.29:1531/vis1226'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
