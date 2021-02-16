@@ -1,0 +1,26 @@
+﻿{% extends "base.html" %}
+
+{% block header %}  
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+      if (window.parent.location.pathname != '/') {
+        $("#hArea").css("display", "none");
+      }
+
+      $("#goHome").on("click", function () {
+        window.parent.location.href = "/";
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block contents %}
+  <div class="maindiv">
+    <div class='jumbotron text-center'>
+      <h1>ERROR</h1>
+      <p>contents</p>
+    </div>
+    <h3 id="hArea" class='text-center'><span id="goHome">HOME</span></h3>
+  </div>
+{% endblock %}

@@ -17,7 +17,9 @@
     <a href="/" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
       {% load static %}
       <img src="{% static 'img/built1-logo.png' %}" style="width: 80px;">
-    </a>
+    </a>     
+    <a class="nav-link" href="#">{{ user_name }}</a>
+    <a class="nav-link" href="logout/">logout</a>
   </div>
 
   <div class="container-fluid d-flex h-100">

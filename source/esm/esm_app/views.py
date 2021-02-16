@@ -11,6 +11,9 @@ from django.db.models import Q
 # 장고 내부 비밀번호 생성 및 체크 클래스 임포트
 from django.contrib.auth.hashers import make_password, check_password
 
+# 장고 로그아웃 처리를 위한 클래스 임포트
+from django.contrib.auth import logout as auth_logout
+
 # 시스템 변수 설정을 위한 패키지
 import os
 
@@ -27,22 +30,25 @@ from . models import SysUser
 from static_template.views import esmExceptionNum
 
 
-
-
 # Create your views here.
 # 한글 지원 방법
 os.putenv('NLS_LANG', '.UTF8')
+
+
 
 # 메인 메뉴 조회 및 홈 화면으로 이동
 def home(request):
 	# 세션여부 체크
 	if (request.session.is_empty()):
 		return redirect('/login')
-
+	
 	# 대 메뉴 조회
 	params = {}
 	sqlParams = ()
-	params['mainMenuList'] = stViews.searchExecute(sql.masterMenu, sqlParams)
+	params['mainMenuList'] = stViews.searchExecute(request, sql.masterMenu, sqlParams)
+
+	print("aaaaaaaaaaaaaaa => ", request.session.get('user_name'))
+	print("params => ", params)
 
 	# 메인화면 렌더링
 	return render(request, 'home.html', params)
@@ -56,7 +62,7 @@ def getSubMenuList(request):
 	params = {}
 	print('sql.subMenu =>', sql.subMenu)
 	print('parentMenuId =>', parentMenuId)
-	params['subMenuList'] = stViews.searchExecute2(sql.subMenu, parentMenuId)
+	params['subMenuList'] = stViews.searchExecute2(request, sql.subMenu, parentMenuId)
 	return JsonResponse(params)
 
 
@@ -132,13 +138,25 @@ def login(request):
 # 로그아웃
 def logout(request):
 	# 세션에 user_id가 존재하는지 확인
-	if request.session.get('user_id'):
-		# 세션을 삭제
-		del(request.session['user_id'])
+	if not (request.session.is_empty()):
+		# 브라우저 세션 삭제
+		request.session.clear()
+
+		# 장고 세션 삭제
+		auth_logout(request)
 
 	# 세션이 삭제되면 로그인 화면으로 전환
 	return redirect('/login')
+	
 
-# 400 오류 발생
-def err400(request, param):
-	return render(request, "404ERR.html", param)
+
+# 404 오류 발생
+def page_not_found_view(request, exception=None):
+    data = {}
+    return render(request, "err404.html", status=404)
+
+
+# 500 오류 발생
+def server_error_view(request):
+    data = {}
+    return render(request, "err500.html", status=500)

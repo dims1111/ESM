@@ -26,7 +26,11 @@ SECRET_KEY = '10go6ztc)0!*vgeqz5_*rgk1@3t%k6azlpif-m^mo86ojomh*s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# 도메이 접속 권한 IP
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+
+# 브라우저 닫을 시 세션 삭제
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
 # Application definition
