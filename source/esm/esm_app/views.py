@@ -42,9 +42,11 @@ def home(request):
 # 서브 메뉴 조회
 def getSubMenuList(request):
 	parentMenuId = request.POST['menuId']
-	
+
 	# 대 메뉴 조회
 	params = {}
+	print('sql.subMenu =>', sql.subMenu)
+	print('parentMenuId =>', parentMenuId)
 	params['subMenuList'] = stViews.searchExecute2(sql.subMenu, parentMenuId)
 	return JsonResponse(params)
 

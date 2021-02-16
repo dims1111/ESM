@@ -21,8 +21,9 @@ from django.urls.conf import include
 # 프로젝트에서 사용할 앱의 경로 및 기능을 패턴으로 정의
 urlpatterns = [
 	path('admin/', admin.site.urls),                                # 장고 Admin
-	path('', include("esm_app.urls")),                               # 로그인, 로그아웃, 홈    
+	path('', include("esm_app.urls")),                              # 로그인, 로그아웃, 홈    
 	path('home/', include('esm_app.urls')),
+	path('menu/', include('esm_app.urls')),
 	path('esm_sys_1000/', include ("esm_sys.esm_sys_1000.urls")),   # 사용자등록
 	path('esm_sys_1010/', include ("esm_sys.esm_sys_1010.urls")),   # 메뉴등록
 	path('esm_sys_1020/', include ("esm_sys.esm_sys_1020.urls")),   # 언어코드등록

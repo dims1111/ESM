@@ -263,7 +263,7 @@
 
       $.ajax({
         type: 'POST',
-        url: '/app/getSubMenuList',
+        url: '/menu/getSubMenuList',
         data: {
           csrfmiddlewaretoken: $('*[name="csrfmiddlewaretoken"]').val(),
           menuId: menuId,
@@ -309,10 +309,10 @@
                 'data-toggle': 'tooltip',
                 'data-placement': 'right',
                 'data-url': item.url,
-                'data-parent-menu-id': item.prentMenuId,
+                'data-parent-menu-id': item.parentMenuId,
                 'data-menu-id': item.menuId,
               })
-              $ul.attr('id', 'group' + item.prentMenuId);
+              $ul.attr('id', 'group' + item.parentMenuId);
               $li.click(openMenu)
               $ul.append($li);
               isgroup = true;

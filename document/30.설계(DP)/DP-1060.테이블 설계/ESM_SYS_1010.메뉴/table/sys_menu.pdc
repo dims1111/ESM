@@ -7,8 +7,8 @@ create table esm.sys_menu
    menu_id                    number         not null
   ,menu_name_ko               varchar2(0100) not null
   ,menu_name_en               varchar2(0200) not null
-  ,url                        varchar2(0200) 
-  ,prent_menu_id              number         not null
+  ,url                        varchar2(0200)
+  ,parent_menu_id             number         not null
   ,icons                      varchar2(1000)
   ,sort_order                 number
   ,use_yn                     varchar2(0001) default 'Y' not null
@@ -20,7 +20,7 @@ create table esm.sys_menu
   ,batch_yn                   varchar2(0001) default 'Y' not null
   ,excel_down_yn              varchar2(0001) default 'Y' not null
   ,excel_up_yn                varchar2(0001) default 'Y' not null
-  ,remark                     varchar2(2000) 
+  ,remark                     varchar2(2000)
   ,create_date_time           date           default sysdate
   ,create_by                  number         default -1
   ,update_date_time           date           default sysdate
@@ -29,7 +29,7 @@ create table esm.sys_menu
 tablespace esm
 pctfree 10
 initrans 1
-storage 
+storage
 (
 initial 128k
 next 128k
@@ -42,14 +42,14 @@ nocompress;
 -- 키 인덱스
 alter table esm.sys_menu
 add constraint sys_menu_pk primary key (menu_id)
-using index 
+using index
 tablespace esm
 pctfree 10
 initrans 2
 maxtrans 255;
 
 -- 노멀 인덱스
-create index esm.sys_menu_ix1 on esm.sys_menu (prent_menu_id, menu_id)
+create index esm.sys_menu_ix1 on esm.sys_menu (parent_menu_id, menu_id)
 tablespace esm
 pctfree 10
 initrans 2
@@ -69,7 +69,7 @@ comment on column esm.sys_menu.menu_id                     is '메뉴ID';
 comment on column esm.sys_menu.menu_name_ko                is '메뉴명(한글)';
 comment on column esm.sys_menu.menu_name_en                is '메뉴명(영문)';
 comment on column esm.sys_menu.url                         is 'URL';
-comment on column esm.sys_menu.prent_menu_id               is '상위메뉴ID';
+comment on column esm.sys_menu.parent_menu_id               is '상위메뉴ID';
 comment on column esm.sys_menu.icons                       is '아이콘';
 comment on column esm.sys_menu.sort_order                  is '정렬순서';
 comment on column esm.sys_menu.use_yn                      is '사용여부(Y/N)';

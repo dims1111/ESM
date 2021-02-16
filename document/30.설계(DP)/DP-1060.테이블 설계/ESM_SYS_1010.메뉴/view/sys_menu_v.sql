@@ -7,7 +7,7 @@ select lpad(' ', 2 * (level - 1)) || sm.menu_name_ko as menu_name_ko_dis
       ,sm.menu_name_ko
       ,sm.menu_name_en
       ,sm.url
-      ,sm.prent_menu_id
+      ,sm.parent_menu_id
       ,sm.icons
       ,sm.sort_order
       ,sm.use_yn
@@ -26,6 +26,6 @@ select lpad(' ', 2 * (level - 1)) || sm.menu_name_ko as menu_name_ko_dis
       ,sm.update_by
   from esm.sys_menu sm
  where 1=1
- start with sm.prent_menu_id = -1
-connect by prior sm.menu_id = sm.prent_menu_id
+ start with sm.parent_menu_id = -1
+connect by prior sm.menu_id = sm.parent_menu_id
  order siblings by sm.sort_order

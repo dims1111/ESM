@@ -42,7 +42,7 @@ def searchExecute2(sqlString, parentMenuId):
             # 쿼리 실행
             print('sqlString =>' ,sqlString, type(sqlString))
             print('parentMenuId =>' ,parentMenuId, type(parentMenuId))
-            cursor.execute(sqlString, parent_menu_id=parentMenuId)
+            cursor.execute(sqlString, p_parent_menu_id=parentMenuId)
 
             # 쿼리 결과값 가져오기 
             mainMenuList = rows_to_dict_list(cursor)
