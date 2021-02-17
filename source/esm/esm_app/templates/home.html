@@ -11,18 +11,28 @@
 <div class="wrap d-flex flex-column h-100 pb-1">
   <!-- Top -->
   <div class="top w-100 sticky-top navbar navbar-dark sticky-top flex-md-nowrap p-0">
-    <div class="d-inline-block input-group input-group-sm ml-3">
-      <input type="text" class="form-control rounded-pill" ria-describedby="inputGroup-sizing-sm" style="width: 200px">
+    <div class="container" style="max-width: 100%;">
+      <a href="/">
+        {% load static %}
+        <img src="{% static 'img/built1-logo.png' %}" style="width: 80px;">
+      </a>
+      <div class="d-flex mr-3">
+        <input type="checkbox" id="changeLang" name="switch" class="input-switch" checked>
+        <label for="changeLang" class="label-switch mr-3">
+            <span class="marble"></span>
+            <span class="on">KOR</span>
+            <span class="off">ENG</span>
+        </label>
+
+        <span class="text-white mr-3">{{session.user_name}}</span>
+        <a href="/logout">
+          <span class="text-white">logout</span>
+        </a>
+      </div>
     </div>
-    <a href="/" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-      {% load static %}
-      <img src="{% static 'img/built1-logo.png' %}" style="width: 80px;">
-    </a>     
-    <a class="nav-link" href="#">홍길동</a><!--{{ user_name }}</a> -->
-    <a class="nav-link" href="logout/">logout</a>
   </div>
 
-  <div class="container-fluid d-flex h-100">
+  <div class="container-fluid d-flex h-100 pl-0 justify-content-center">
     <div class="row w-100 flex-nowrap">
       <!-- Sidebar start -->
       <div class="sidebar-main mt-2 pt-3">
@@ -37,14 +47,14 @@
       </div>
       <div class="sidebar-sub px-3 mt-2">
         <div id="toggleSidebar" class="sidebar-sub__toggle"></div>
-        <div class="font-weight-bold mt-3 mb-4 d-flex align-items-center overflow-hidden">
+        <div class="font-weight-bold mt-3 mb-4 d-flex align-items-center overflow-hidden text-nowrap">
           <span class="sidebar-sub__title">복무관리</span>
           <div class="ml-auto">
             <span id="showAll" class="material-icons border small" style="cursor: pointer;">add</span>
             <span id="hideAll" class="material-icons border small" style="cursor: pointer;">remove</span>
           </div>
         </div>
-        <div class="overflow-hidden">
+        <div class="overflow-hidden text-nowrap">
           <!-- 서브메뉴 -->
           <ul id="menu-content" class="menu-content collapse show out"></ul>
         </div>
@@ -65,9 +75,9 @@
             <div id="home" class="tab-pane w-100 h-100 active">
               <div id="cont_head_wrapper" class="chw">
                 <div id="cont_nav_wrap">
-                  <nav id="cont_nav" aria-label="breadcrumb" class="my-2" style="font-size:13px;text-align:left;">
+                  <nav id="cont_nav" aria-label="breadcrumb" class="my-1 text-right" style="font-size:13px;">
                     <div style="display: inline-block; ">
-                      <ol class="breadcrumb">
+                      <ol class="breadcrumb py-0">
                         <li class="breadcrumb-item active">
                           <span id="nav1Icon" class="material-icons small">settings</span>
                           <span id="nav1Text"> 시스템</span>
@@ -95,9 +105,9 @@
 <div id="newtab" class="container tab-pane active" style="display: none;">
   <div id="cont_head_wrapper">
     <div id="cont_nav_wrap">
-      <nav id="cont_nav" aria-label="breadcrumb" class="my-2" style="font-size:13px;text-align:left;">
+      <nav id="cont_nav" aria-label="breadcrumb" class="my-1 text-right" style="font-size:13px;">
         <div style="display: inline-block;">
-          <ol class="breadcrumb">
+          <ol class="breadcrumb py-0">
             <li class="breadcrumb-item active">
               <span id="nav1Icon" class="material-icons small">home</span>
               <span id="nav1Text"> 시스템</span>
@@ -154,7 +164,7 @@
         var title = $a.text();
         if (title.replace(" x ", "").trim() == tabNm.trim()) {
           $a.click();
-          return;
+          return true;
         }
       }
 
@@ -193,17 +203,9 @@
       $('ul.sub-menu').collapse('hide');
     });
 
-    $('ul.sub-menu').on('show.bs.collapse', function () {
-      $(this).prev().find('span.expand').removeClass('rotate');
-    })
-
-    $('ul.sub-menu').on('hide.bs.collapse', function () {
-      $(this).prev().find('span.expand').addClass('rotate');
-    })
-
     $('#toggleSidebar').click(function() {
       $('.sidebar-sub').toggleClass('collapsed');
-    })
+    });
 
     /* 아직 안씀
     $(window).on('resize', function () {
@@ -241,16 +243,16 @@
       var url = $(this).data('url');
       if (!url) return;
 
-      // 현 엘리먼트만 active class 적용
-      $('#menu-content li').removeClass('active');
-      $(this).addClass('active');
-
       // 탭 정보 파싱
       var tabId = url.replace(/\//g, "").replace(".html", "");
       var tabNm = $(this).text();
 
       // Nav영역에 탭 추가
       if (!addNavTab(tabId, tabNm, url)) return;
+
+      // 현 엘리먼트만 active class 적용
+      $('#menu-content li').removeClass('active');
+      $(this).addClass('active');
 
       // breadscrumb 생성
       $('div.tab-pane.active #nav1Icon').text($('#mainList > li.active > span').text());
@@ -281,6 +283,14 @@
             'class': 'sub-menu collapse show active'
           });
 
+          $ul.on('show.bs.collapse', function () {
+            $(this).prev().find('span.expand').removeClass('rotate');
+          });
+          
+          $ul.on('hide.bs.collapse', function () {
+            $(this).prev().find('span.expand').addClass('rotate');
+          });
+
           subMenuList.forEach(function(item, index) {
             if (item.treeLevel === 1) {
               if (isgroup) {
@@ -288,6 +298,13 @@
                 $('#menu-content').append($ul);
                 $ul = $('<ul />', {
                   'class': 'sub-menu collapse show active'
+                });
+                $ul.on('show.bs.collapse', function () {
+                  $(this).prev().find('span.expand').removeClass('rotate');
+                });
+                
+                $ul.on('hide.bs.collapse', function () {
+                  $(this).prev().find('span.expand').addClass('rotate');
                 });
               }
               
@@ -331,6 +348,11 @@
       });
     }
     gutSubMenuList();
+
+    // 언어 변경
+    $("#changeLang").change(function() {
+        console.log($(this).is(':checked') ? 'KOR' : 'ENG');
+    });
   });
 
 </script>

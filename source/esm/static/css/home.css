@@ -123,13 +123,13 @@ html, body {
     flex: 0 0 170px;
     font-size: 17px;
     box-shadow: 4px 0px 13px -11px;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-out;
     z-index: 1;
   }
 
   .sidebar-sub.collapsed {
     flex-basis: 0;
-    width: 0px;
+    width: 0;
     padding: 0 !important;
     border-right: 2px solid var(--p2);
   }
@@ -156,6 +156,10 @@ html, body {
 
   .sub-menu {
     border-bottom: 1px solid #dee2e6;
+  }
+
+  .sub-menu li.active {
+    background: #eee;
   }
   
   #menu-content .sub-menu:nth-last-child(1) {

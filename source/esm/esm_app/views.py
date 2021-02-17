@@ -21,13 +21,13 @@ import os
 from .query import sql
 
 # query 실행을 위한 클래스 임포트
-from static_template import views as stViews
+from esm_com import views as stViews
 
 # 로그인 모델 내 SysUser 클래스 임포트
 from . models import SysUser
 
-# static_template 예외처리 함수 임포트
-from static_template.views import esmExceptionNum
+# esm_com 예외처리 함수 임포트
+from esm_com.views import esmExceptionNum
 
 
 # Create your views here.
@@ -46,7 +46,7 @@ def home(request):
 	params = {}
 	sqlParams = ()
 	params['mainMenuList'] = stViews.searchExecute(request, sql.masterMenu, sqlParams)
-
+	params['session'] = request.session
 	print("aaaaaaaaaaaaaaa => ", request.session.get('user_name'))
 	print("params => ", params)
 

@@ -43,13 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 전자식 복무관리 시스템
-    # 정적 템플릿
-    'static_template',
+    ##### 전자식 복무관리 시스템 #####
 
     # 로그인 / 로그아웃 / 홈
     'esm_app',
-
+    # 공통 템플릿, 함수
+    'esm_com',
     # 시스템관리
     'esm_sys.esm_sys_1000',     # 사용자등록
     'esm_sys.esm_sys_1010',     # 메뉴등록
@@ -71,7 +70,7 @@ ROOT_URLCONF = 'esm.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'esm/templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,11 +115,11 @@ WSGI_APPLICATION = 'esm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'esmprod',
+        'NAME': 'vis1226',
         'USER': 'esm',
         'PASSWORD': 'esm',
-        'HOST':'localhost',
-        'PORT':'1522',
+        'HOST':'210.112.232.29',
+        'PORT':'1531',
     },
 }
 
