@@ -119,3 +119,9 @@ a {
   float: right;
   padding-right: 12px;
 }
+
+.context-menu-list {
+  font-size: 13px;
+  min-width: 130px;
+  width: 130px;
+}

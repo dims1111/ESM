@@ -336,6 +336,90 @@
     });
   });
 
+  
+  // nav 컨텍스트 메뉴 기능 추가 
+  $(function () {
+    $.contextMenu({
+      selector: "#navs > li",
+      items: {
+        refresh: {
+          name: "새로고침",
+          icon: "fa-refresh",
+          callback: function (itemKey, opt, e) {
+            opt.$trigger.find('a').click();
+            var $a = $(this).find('a');
+            var tabId = $a.attr('href');
+            var tabWin = $(tabId).find('#content_frm').get(0).contentWindow;
+            tabWin.location.reload(); // iframe 새로고침
+          },
+        },
+        sep1: "---------",
+        close: {
+          name: "닫기",
+          callback: function (itemKey, opt, e) {
+            var $a = opt.$trigger.find('a');
+            var isActive = $a.hasClass('active');
+            var tabId = $a.attr('href');
+            var tabWin = $(tabId).find('#content_frm').get(0).contentWindow;
+
+            $(tabId).remove();
+            $(opt.$trigger).remove();
+
+            if (isActive) {
+              $('#navs').children('li').first().find('a').click();
+            }
+          },
+        },
+        colseOthers: {
+          name: "다른 탭 닫기",
+          callback: function (itemKey, opt, e) {
+            opt.$trigger
+              .siblings()
+              .each(function() {
+                var $a = $(this).find('a');
+    
+                var isActive = $a.hasClass('active');
+                var tabId = $a.attr('href');
+                var tabWin = $(tabId).find('#content_frm').get(0).contentWindow;
+        
+                $(tabId).remove();
+                $(this).remove();
+                });
+            
+            opt.$trigger.find('a').click();
+          },
+          disabled: function (key, opt) {
+            if (opt.$trigger.siblings().length === 0) {
+              return true;
+            }
+          },
+        },
+        closeRight: {
+          name: "우측 탭 닫기",
+          callback: function (itemKey, opt, e) {
+            while (opt.$trigger.next().length) {
+              
+              var $a = opt.$trigger.next().find('a');
+              
+              var isActive = $a.hasClass('active');
+              var tabId = $a.attr('href');
+              var tabWin = $(tabId).find('#content_frm').get(0).contentWindow;
+
+              $(tabId).remove();
+              opt.$trigger.next().remove();
+            }
+            opt.$trigger.find('a').click();
+          },
+          disabled: function (key, opt) {
+            if (opt.$trigger.next().length === 0) {
+              return true;
+            }
+          },
+        },
+      },
+      // autoHide: true, // 컨텍스트메뉴에서 마우스가 멀어지면 자동으로 닫는 기능
+    });
+  });
 
 </script>
 
