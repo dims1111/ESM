@@ -1,12 +1,16 @@
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 
-# query 문장 매핑을 위한 클래스 임포트
-from .query import sql
 
+# 장고 모델에서 필터 처리를 위한 Q 클래스 임포트
+from django.db.models import Q
 
-# 로그인 모델 내 SysUser 클래스 임포트
+# esm_com 예외처리 함수 임포트
+from esm_com import message
+
+# 로그인 모델 내 SysMenu 클래스 임포트
 from . models import SysMenu
+
 
 # Create your views here.
 # 메뉴 클릭 후 첫 화면 오픈
@@ -15,11 +19,43 @@ def home(request):
 
 # 조회 버튼을 클릭
 def search(request):
-  return render(request, 'esm_sys_1020.html')
+  # 화면에서 검색조건의 값
+  srhMenuName = request.POST.get('menuName', None)
+  srhUrl = request.POST.get('url', None)
+  srhUseYn = request.POST.get('useYn', None)
 
-# 초기화 버튼을 클릭
-def clear(request):
-  return render(request, 'esm_sys_1020.html')
+  # print('메뉴명     =>', srhMenuName)
+  # print('URL       =>', srhUrl)
+  # print('사용여부   =>', srhUseYn)
+
+  # 화면별 코드 및 메시지 전달 변수
+  vResult = {}
+  vResult['cd'] = 'S'
+  vResult['msg'] = ''
+		          
+  try:    
+    # 메뉴 데이터 조회
+    if not SysMenu.objects.filter(Q(menu_name_ko=srhMenuName) | Q(menu_name_en=srhMenuName) | Q(url=srhUrl) | Q(use_yn=srhUseYn)).exists():      
+      raise Exception(message.esmErrMsg(1020), message.UserLangCd.langCd)
+    else:
+      SysMenu = SysMenu.objects.filter(Q(menu_name_ko=srhMenuName) | Q(menu_name_en=srhMenuName) | Q(url=srhUrl) | Q(use_yn=srhUseYn)).exists()      
+      
+      # 메뉴 데이터 확인
+      for ca in SysMenu:        
+        print('menu_id =>', ca.get('menu_id'))
+        print('menu_name_ko =>', ca.get('menu_name_ko'))
+
+  except Exception as e:
+    vResult['cd'] = 'E'
+    vResult['msg'] = e
+		
+  print('cd =>', vResult['cd'])
+  print('msg =>',vResult['msg'])
+
+  # 그리드에 데이터를 전달
+  # 1. 데이터가 존재하지 않을 경우
+  # 2. 데이터가 1건 이상일 경우 그리드에 표기
+  
 
 # 출력 버튼을 클릭
 def print(request):
@@ -27,14 +63,6 @@ def print(request):
 
 # 저장 버튼을 클릭
 def save(request):
-  return render(request, 'esm_sys_1020.html')
-
-# 행 추가 버튼을 클릭
-def gridRowAdd(request):
-  return render(request, 'esm_sys_1020.html')
-
-# 행 삭제 버튼을 클릭
-def gridRowDelete(request):
   return render(request, 'esm_sys_1020.html')
 
 # 엑셀업로드 버튼을 클릭

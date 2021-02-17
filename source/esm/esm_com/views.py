@@ -16,8 +16,8 @@ def searchExecute(request, sqlString, sqlParam):
 		# DB연결, 커서생성
         with cx_Oracle.connect(connDns) as connection, connection.cursor() as cursor:
             # 쿼리 실행
-            print('sqlString =>' ,sqlString, type(sqlString))
-            print('sqlParam =>' ,sqlParam, type(sqlParam))
+            # print('sqlString =>' ,sqlString, type(sqlString))
+            # print('sqlParam =>' ,sqlParam, type(sqlParam))
             cursor.execute(sqlString, sqlParam)
 
             # 쿼리 결과값 가져오기 
@@ -34,8 +34,8 @@ def searchExecute2(request, sqlString, parentMenuId):
 		# DB연결, 커서생성
         with cx_Oracle.connect(connDns) as connection, connection.cursor() as cursor:
             # 쿼리 실행
-            print('sqlString =>' ,sqlString, type(sqlString))
-            print('parentMenuId =>' ,parentMenuId, type(parentMenuId))
+            # print('sqlString =>' ,sqlString, type(sqlString))
+            # print('parentMenuId =>' ,parentMenuId, type(parentMenuId))
             cursor.execute(sqlString, p_parent_menu_id=parentMenuId)
 
             # 쿼리 결과값 가져오기 
@@ -54,11 +54,3 @@ def rows_to_dict_list(cursor):
 def camelCase(st):
     output = ''.join(x for x in st.title() if x.isalnum())
     return output[0].lower() + output[1:]
-
-
-# 예외 처리
-def esmExceptionNum(errNum):    
-    if errNum == 1000:
-        return '사용자 계정 또는 이메일 주소가 존재하지 않습니다.'
-    elif errNum == 1010:
-        return '비밀번호가 일치하지 않습니다.'

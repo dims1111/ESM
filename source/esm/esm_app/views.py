@@ -27,7 +27,7 @@ from esm_com import views as stViews
 from . models import SysUser
 
 # esm_com 예외처리 함수 임포트
-from esm_com.views import esmExceptionNum
+from esm_com import message
 
 
 # Create your views here.
@@ -47,9 +47,7 @@ def home(request):
 	sqlParams = ()
 	params['mainMenuList'] = stViews.searchExecute(request, sql.masterMenu, sqlParams)
 	params['session'] = request.session
-	print("aaaaaaaaaaaaaaa => ", request.session.get('user_name'))
-	print("params => ", params)
-
+	
 	# 메인화면 렌더링
 	return render(request, 'home.html', params)
 
@@ -59,9 +57,7 @@ def getSubMenuList(request):
 	parentMenuId = request.POST['menuId']
 
 	# 대 메뉴 조회
-	params = {}
-	print('sql.subMenu =>', sql.subMenu)
-	print('parentMenuId =>', parentMenuId)
+	params = {}	
 	params['subMenuList'] = stViews.searchExecute2(request, sql.subMenu, parentMenuId)
 	return JsonResponse(params)
 
@@ -79,8 +75,8 @@ def login(request):
 		srhUserAccount = request.POST.get('userAccount', None)
 		srhPassword = request.POST.get('password', None)
 
-		print('srhUserAccount =>', srhUserAccount)
-		print('srhPassword =>', srhPassword)
+		# print('srhUserAccount =>', srhUserAccount)
+		# print('srhPassword =>', srhPassword)
 
 		# 화면별 코드 및 메시지 전달 변수
 		vResult = {}
@@ -106,9 +102,9 @@ def login(request):
 				vPassword = ''
 				if not SysUser.objects.filter(Q(user_account=srhUserAccount) | Q(email_addr=srhUserAccount)).exists():
 					print("사용자 존재하지 않음 => ", srhUserAccount)
-					print(make_password(vPassword));
+					# print(make_password(vPassword));
 					# [오류] 사용자 계정 또는 이메일 주소 미 존재					
-					raise Exception(esmExceptionNum(1000))
+					raise Exception(message.esmErrMsg(1000), message.UserLangCd.langCd)
 				else:
 					vSysUser = SysUser.objects.filter(Q(user_account=srhUserAccount) | Q(email_addr=srhUserAccount)).values()
 					print("사용자 존재함 => ", srhUserAccount)
@@ -129,7 +125,7 @@ def login(request):
 						return redirect('/')
 					else:						
 						# [오류] 비밀번호 불일치
-						raise Exception(esmExceptionNum(1010))
+						raise Exception(message.esmErrMsg(1100), message.UserLangCd.langCd)
 
 			except Exception as e:
 				vResult['cd'] = 'E'

@@ -9,11 +9,8 @@ from . import views
 urlpatterns = [
   path('', views.home),
   path('search/', views.search),
-  path('clear/', views.clear),
   path('print/', views.print),
-	path('save/', views.save),	
-  path('gridRowAdd/', views.gridRowAdd),	
-  path('gridRowDelete/', views.gridRowDelete),	
-	path('excelDown', views.excelDown), 
+	path('save/', views.save),
+	path('excelDown', views.excelDown),
   path('excelUp', views.excelUp), 
 ]
