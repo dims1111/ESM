@@ -1,13 +1,11 @@
 html, body {
     font-family: 'Noto Sans KR', 'Nanum Gothic';
-    height: 98%;
-    width: 99%;
+    height: 100%;
     background: #fafafa;
-    margin-top: 4px;
-    margin-bottom: 4px;
-    margin-left: 4px;    
     font-size: 13px;
     color: #031b18;
+    margin: 0;
+    padding: 0;
 }
 
 /* 여백 */

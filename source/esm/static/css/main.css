@@ -1,6 +1,8 @@
 /* 구글 웹폰트 적용('Noto Sans KR') */
 html, body {
   font-family: 'Noto Sans KR', 'Nanum Gothic';
+  margin: 0;
+  padding: 0;
 }
 
 :root {
@@ -23,7 +25,7 @@ html, body {
 
 .breadcrumb {
   align-items: center;
-  background: #fff;
+  background: #f8f8f8;
   margin-bottom: 0;
   /* box-shadow: 0 0 10px 1px #888; */
 }
