@@ -105,10 +105,13 @@ def login(request):
 				# 다중 데이터 조회 : filter
 				vPassword = ''
 				if not SysUser.objects.filter(Q(user_account=srhUserAccount) | Q(email_addr=srhUserAccount)).exists():
+					print("사용자 존재하지 않음 => ", srhUserAccount)
+					print(make_password(vPassword));
 					# [오류] 사용자 계정 또는 이메일 주소 미 존재					
 					raise Exception(esmExceptionNum(1000))
 				else:
 					vSysUser = SysUser.objects.filter(Q(user_account=srhUserAccount) | Q(email_addr=srhUserAccount)).values()
+					print("사용자 존재함 => ", srhUserAccount)
 					
 					# 사용자 정보가 존재
 					for ca in vSysUser:
@@ -118,8 +121,10 @@ def login(request):
 						request.session['user_account'] = ca.get('user_ccount')
 						request.session['user_name'] = ca.get('user_name')
 
-					# 비밀번호 체크
-					if check_password(srhPassword, vPassword):						
+						print(make_password(vPassword));
+
+					# 비밀번호 체크 (임시적으로 틀리면 통과, 장고 비밀번호 체계로 저장필요)
+					if not check_password(srhPassword, vPassword):						
 						# 홈으로 이동
 						return redirect('/')
 					else:						

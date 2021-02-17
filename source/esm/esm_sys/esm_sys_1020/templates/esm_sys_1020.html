@@ -19,7 +19,14 @@
   </div>
 
   <div class="top2">
-    <div class="top2_group1 top2_item1"><i class="xi-search"> 조회</i></div>
+    <div class="top2_group1 top2_item1">      
+        <button id="btnSearch" 
+                name="btnSearch" 
+                class="top2_group1 top2_item1" 
+                onclick="location.href='search/' ">              
+          <i class="xi-search">조회</i>
+        </button>
+    </div>
     <div class="top2_group1 top2_item2"><i class="xi-refresh"> 초기화</i></div>
     <div class="top2_group1 top2_item3"><i class="xi-print"> 출력</i></div>
   </div>  
@@ -28,11 +35,40 @@
 <!-- 조회 - 검색조건 : 2줄, 3출 추가 가능 (단, css 별도 제공 필요) -->
 <div class="container_top_line"></div>
 <div class="container_search">
-  <div class="search1">
-    <div class="search1_group1 search1_item1">검색항목1</div>
-    <div class="search1_group1 search1_item2">검색항목2</div>
-    <div class="search1_group1 search1_item3">검색항목3</div>
-    <div class="search1_group1 search1_item4">검색항목4</div>
+  <div class="search1">    
+    
+    <div class="search1_group1 search1_item1">메뉴명</div>
+    <div class="search1_group1 search1_item2">  
+      <input 
+        type="text"
+        id="menuName" 
+        name="menuName" 
+        class="">
+      </button>
+    </div>
+    
+    <div class="search1_group1 search1_item3"><apan style="text-align: right;">URL</apan></div>
+    <div class="search1_group1 search1_item4">  
+      <input 
+        type="text"
+        id="url" 
+        name="url" 
+        class="">
+      </button>
+    </div>
+    
+    <div class="search1_group1 search1_item5">사용여부</div>
+    <div class="search1_group1 search1_item6">  
+      <input 
+        type="checkbox"
+        id="useYn" 
+        name="useYn" 
+        class="">
+      </button>
+    </div>
+    
+    <div class="search1_group1 search1_item7"></div>
+    <div class="search1_group1 search1_item8"></div>
   </div>
 </div>
 <div class="container_bottom_line"></div>
