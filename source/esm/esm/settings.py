@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 
     # 로그인 / 로그아웃 / 홈
     'esm_app',
-
+    # 공통 템플릿, 함수
+    'esm_com',
     # 시스템관리
     'esm_sys.esm_sys_1000',     # 사용자등록
     'esm_sys.esm_sys_1010',     # 메뉴등록
