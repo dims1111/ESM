@@ -27,7 +27,7 @@ html, body {
 /* 헤더라인 */
 .container_top_line {
     background: #1d7268;
-    height: 2px;
+    height: 1px;
     width: 100%;
 }
 
@@ -73,12 +73,12 @@ html, body {
                 align-items: center;
                 justify-content: center;
                 align-content: center;
-                border-top-left-radius: 8px;
-                border-top-right-radius: 8px;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
                 margin-left: 12px;
-                border-top: 2px solid #1d7268;
-                border-left: 2px solid #1d7268;
-                border-right: 2px solid #1d7268;
+                border-top: 1px solid #1d7268;
+                border-left: 1px solid #1d7268;
+                border-right: 1px solid #1d7268;
             }
 
     .top2 {
@@ -151,25 +151,25 @@ html, body {
 
             .search1_item1 {
                 display: flex;
-                background: #cbecd0;
+                background: #eaf5ec;
                 flex-basis: 25%;
             }
 
             .search1_item2 {
                 display: flex;
-                background: #badcbf;
+                background: #f2f5ea;
                 flex-basis: 25%;
             }
 
             .search1_item3 {
                 display: flex;
-                background: #b9d3bd;
+                background: #eaf3f5;
                 flex-basis: 25%;
             }
 
             .search1_item4 {
                 display: flex;
-                background: rgb(218, 208, 195);
+                background: #f2eaf5;
                 flex-basis: 25%;
             }
 
@@ -205,12 +205,12 @@ html, body {
                 background: #2A9D8F;                                
                 justify-content: center;
                 align-content: center;
-                border-top-left-radius: 8px;
-                border-top-right-radius: 8px;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
                 margin-left: 12px;
-                border-top: 2px solid #1d7268;
-                border-left: 2px solid #1d7268;
-                border-right: 2px solid #1d7268;
+                border-top: 1px solid #1d7268;
+                border-left: 1px solid #1d7268;
+                border-right: 1px solid #1d7268;
             }
 
     .action1 {
@@ -253,13 +253,13 @@ html, body {
 
             .action1_item4{
                 display: flex;
-                background: #a3c2be;
+                background: #badccb;
                 width: 100px;
             }
 
             .action1_item5{
                 display: flex;
-                background: #a3c2be;
+                background: #badccb;
                 width: 100px;
             }
 
@@ -323,13 +323,13 @@ html, body {
 }
 
 /* 엑셀다운로드 */
-.xi-folder-download-o {
+.xi-angle-down-min {
     font-size: 12px;
     color: #0e413b;
 }
 
 /* 엑셀업로드 */
-.xi-folder-upload-o {
+.xi-angle-up-min {
     font-size: 12px;
     color: #0e413b;
 }
