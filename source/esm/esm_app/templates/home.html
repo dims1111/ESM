@@ -178,7 +178,7 @@
 
       $('#navs').append('<li class="nav-item"><a class="nav-link" data-toggle="tab" data-menu-id="' + menuId + '"href="#tabs-' + menuId + '">' + menuNm + '</a><span class="material-icons small">clear</span></li>');
       $('#navs').children('li').last().find('a').click();
-      $('#' + menuId + ' #content_frm').attr('src', url);
+      $('#tabs-' + menuId + ' #content_frm').attr('src', url);
 
       return true;
     }
@@ -335,7 +335,6 @@
         console.log($(this).is(':checked') ? 'KOR' : 'ENG');
     });
   });
-
 
 
 </script>
