@@ -157,6 +157,10 @@ html, body {
   .sub-menu {
     border-bottom: 1px solid #dee2e6;
   }
+
+  .sub-menu li.active {
+    background: #eee;
+  }
   
   #menu-content .sub-menu:nth-last-child(1) {
     border-bottom: 0;

@@ -157,7 +157,7 @@
         var title = $a.text();
         if (title.replace(" x ", "").trim() == tabNm.trim()) {
           $a.click();
-          return;
+          return true;
         }
       }
 
@@ -196,17 +196,9 @@
       $('ul.sub-menu').collapse('hide');
     });
 
-    $('ul.sub-menu').on('show.bs.collapse', function () {
-      $(this).prev().find('span.expand').removeClass('rotate');
-    })
-
-    $('ul.sub-menu').on('hide.bs.collapse', function () {
-      $(this).prev().find('span.expand').addClass('rotate');
-    })
-
     $('#toggleSidebar').click(function() {
       $('.sidebar-sub').toggleClass('collapsed');
-    })
+    });
 
     /* 아직 안씀
     $(window).on('resize', function () {
@@ -244,16 +236,16 @@
       var url = $(this).data('url');
       if (!url) return;
 
-      // 현 엘리먼트만 active class 적용
-      $('#menu-content li').removeClass('active');
-      $(this).addClass('active');
-
       // 탭 정보 파싱
       var tabId = url.replace(/\//g, "").replace(".html", "");
       var tabNm = $(this).text();
 
       // Nav영역에 탭 추가
       if (!addNavTab(tabId, tabNm, url)) return;
+
+      // 현 엘리먼트만 active class 적용
+      $('#menu-content li').removeClass('active');
+      $(this).addClass('active');
 
       // breadscrumb 생성
       $('div.tab-pane.active #nav1Icon').text($('#mainList > li.active > span').text());
@@ -284,6 +276,14 @@
             'class': 'sub-menu collapse show active'
           });
 
+          $ul.on('show.bs.collapse', function () {
+            $(this).prev().find('span.expand').removeClass('rotate');
+          });
+          
+          $ul.on('hide.bs.collapse', function () {
+            $(this).prev().find('span.expand').addClass('rotate');
+          });
+
           subMenuList.forEach(function(item, index) {
             if (item.treeLevel === 1) {
               if (isgroup) {
@@ -291,6 +291,13 @@
                 $('#menu-content').append($ul);
                 $ul = $('<ul />', {
                   'class': 'sub-menu collapse show active'
+                });
+                $ul.on('show.bs.collapse', function () {
+                  $(this).prev().find('span.expand').removeClass('rotate');
+                });
+                
+                $ul.on('hide.bs.collapse', function () {
+                  $(this).prev().find('span.expand').addClass('rotate');
                 });
               }
               
