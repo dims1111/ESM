@@ -124,7 +124,7 @@
 
 <script type="text/javascript">
   $(function() {
-    $(".nav-tabs")
+    $("#navs")
       .on("click", "a", function (e) {
         e.preventDefault();
         if (!$(this).hasClass('add-contact')) {
@@ -151,18 +151,17 @@
 
         // 활성화 된 화면을 닫는 경우 첫 탭 클릭
         if (isActive) {
-          $(".nav-tabs li.nav-item").children('a').first().click();
+          $("#navs li.nav-item").children('a').first().click();
         }
       });
 
     // 탭화면 추가
-    function addNavTab(tabId, tabNm, mm) {
-      var len = $(".nav-tabs li.nav-item").length;
+    function addNavTab(menuId, menuNm, url) {
+      var len = $("#navs li.nav-item").length;
 
       for (var i = 0; i < len; i++) {
-        var $a = $(".nav-tabs").children().eq(i).find('a');
-        var title = $a.text();
-        if (title.replace(" x ", "").trim() == tabNm.trim()) {
+        var $a = $("#navs").children().eq(i).find('a');
+        if ($a.data('menuId') === menuId) {
           $a.click();
           return true;
         }
@@ -175,13 +174,11 @@
       }
 
       var tabContent = $("#newtab").html();
-      $('.tab-content').append('<div class="tab-pane w-100 h-100 active" id="' + tabId + '">' + tabContent + '</div>');
+      $('.tab-content').append('<div class="tab-pane w-100 h-100 active" id="tabs-' + menuId + '">' + tabContent + '</div>');
 
-      $('.nav-tabs').append('<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#' + tabId + '">' + tabNm + '</a><span class="material-icons small">clear</span></li>');
-      $('.nav-tabs').children('li').last().find('a').click();
-
-      /* 이미 열려있는 창을 새로 로드하지 않도록 탭추가후에 화면 로드 처리 */
-      $('#' + tabId + ' #content_frm').attr('src', mm);
+      $('#navs').append('<li class="nav-item"><a class="nav-link" data-toggle="tab" data-menu-id="' + menuId + '"href="#tabs-' + menuId + '">' + menuNm + '</a><span class="material-icons small">clear</span></li>');
+      $('#navs').children('li').last().find('a').click();
+      $('#' + menuId + ' #content_frm').attr('src', url);
 
       return true;
     }
@@ -220,22 +217,6 @@
     else {
       $('#close_all_tab').attr('title', 'close all tabs');
     }
-
-    $('#close_all_tab').on('click', function () {
-      var msg;
-      if ('{{log.lang}}' == 'kor') {
-        msg = 'Changes may not apply.\n But Close This?';
-      }
-      else {
-        msg = '변경사항이 적용되지 않을 수 있습니다. \n화면을 닫으시겠습니까?';
-      }
-      if (!confirm(msg)) {
-        return;
-      }
-      $('#navs').empty();
-      $('.tab-content').empty();
-      return true;
-    });
     */
 
     // 탭 열기
@@ -243,12 +224,12 @@
       var url = $(this).data('url');
       if (!url) return;
 
-      // 탭 정보 파싱
-      var tabId = url.replace(/\//g, "").replace(".html", "");
-      var tabNm = $(this).text();
+
+      var menuId = $(this).data('menuId');
+      var menuNm = $(this).data('menuNm');
 
       // Nav영역에 탭 추가
-      if (!addNavTab(tabId, tabNm, url)) return;
+      if (!addNavTab(menuId, menuNm, url)) return;
 
       // 현 엘리먼트만 active class 적용
       $('#menu-content li').removeClass('active');
@@ -324,7 +305,7 @@
               var $li = $('<li />', {
                 'text': item.menuNameKo,
                 'class': 'pl-2',
-                'title': item.menuNameKo + ' ' + item.url,
+                'data-menu-nm': item.menuNameKo,
                 'data-toggle': 'tooltip',
                 'data-placement': 'right',
                 'data-url': item.url,
@@ -354,6 +335,8 @@
         console.log($(this).is(':checked') ? 'KOR' : 'ENG');
     });
   });
+
+
 
 </script>
 
