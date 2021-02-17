@@ -46,7 +46,7 @@ def home(request):
 	params = {}
 	sqlParams = ()
 	params['mainMenuList'] = stViews.searchExecute(request, sql.masterMenu, sqlParams)
-
+	params['session'] = request.session
 	print("aaaaaaaaaaaaaaa => ", request.session.get('user_name'))
 	print("params => ", params)
 

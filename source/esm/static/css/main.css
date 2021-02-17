@@ -14,6 +14,10 @@ html, body {
   --p5: #EF6461;
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 .material-icons,
 .material-icons-outlined {
   user-select: none;
