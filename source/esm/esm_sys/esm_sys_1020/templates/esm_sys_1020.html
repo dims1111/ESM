@@ -22,13 +22,29 @@
     <div class="top2_group1 top2_item1">      
         <button id="btnSearch" 
                 name="btnSearch" 
-                class="top2_group1 top2_item1" 
+                class="btn_main btn_main_active" 
                 onclick="location.href='search/' ">              
-          <i class="xi-search">조회</i>
+          <i class="xi-search"> 조회</i>
         </button>
     </div>
-    <div class="top2_group1 top2_item2"><i class="xi-refresh"> 초기화</i></div>
-    <div class="top2_group1 top2_item3"><i class="xi-print"> 출력</i></div>
+
+    <div class="top2_group1 top2_item2">      
+      <button id="btnClear" 
+              name="btnClear" 
+              class="btn_sub btn_sub_active" 
+              onclick="location.href='clear/' ">              
+        <i class="xi-refresh"> 초기화</i>
+      </button>
+    </div>
+
+    <div class="top2_group1 top2_item3">      
+      <button id="btnPrint" 
+              name="btnPrint" 
+              class="btn_sub btn_sub_active" 
+              onclick="location.href='print/' ">              
+        <i class="xi-refresh"> 출력</i>
+      </button>
+    </div>
   </div>  
 </div>
 
@@ -82,11 +98,45 @@
       <i class="xi-sort-desc"> 메뉴목록 (47건)</i></div>
   </div> 
   <div class="action1">
-    <div class="action1_group1 action1_item1"><i class="xi-save"> 저장</i></div>
-    <div class="action1_group1 action1_item2"><i class="xi-plus-min"> 행추가</i></div>
-    <div class="action1_group1 action1_item3"><i class="xi-minus-min"> 행삭제</i></div>
-    <div class="action1_group1 action1_item4"><i class="xi-angle-down-min"> 엑셀다운로드</i></div>
-    <div class="action1_group1 action1_item5"><i class="xi-angle-up-min"> 엑셀업로드</i></div>
+    <div class="action1_group1 action1_item2">
+      <button id="btnSave" 
+        name="btnSave" 
+        class="btn_main btn_main_active" 
+        onclick="location.href='save/' ">
+      <i class="xi-save"> 저장</i>
+    </div>
+
+    <div class="action1_group1 action1_item2">
+      <button id="btnGridAdd" 
+        name="btnGridAdd" 
+        class="btn_sub btn_sub_active" 
+        onclick="location.href='gridRowAdd/' ">
+      <i class="xi-plus-min"> 행추가</i>
+    </div>
+
+    <div class="action1_group1 action1_item3">
+      <button id="btnGridDelete" 
+        name="btnGridDelete" 
+        class="btn_sub btn_sub_active" 
+        onclick="location.href='gridRowDelete/' ">
+      <i class="xi-minus-min"> 행삭제</i>
+    </div>
+
+    <div class="action1_group1 action1_item4">
+      <button id="btnExcelDown" 
+        name="btnExcelDown" 
+        class="btn_excel btn_excel_active" 
+        onclick="location.href='excelDown/' ">
+      <i class="xi-angle-down-min"> 엑셀다운로드</i>
+    </div>
+
+    <div class="action1_group1 action1_item5">
+      <button id="btnExcelUp" 
+        name="btnExcelUp" 
+        class="btn_excel btn_excel_active" 
+        onclick="location.href='excelUp/' ">
+      <i class="xi-angle-up-min"> 엑셀업로드</i>
+    </div>
   </div>   
 </div>
 

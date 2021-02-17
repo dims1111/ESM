@@ -100,6 +100,7 @@ html, body {
             align-items: center;         
         }
 
+            /* 저장 */
             .top2_item1 {
                 display: flex;
                 background: #2A9D8F;
@@ -107,11 +108,13 @@ html, body {
                 font-weight: bold
             }
 
+            /* 초기화 */
             .top2_item2 {
                 display: flex;
                 background: #BADCD8;
             }
 
+            /* 출력 */
             .top2_item3{
                 display: flex;
                 background: #BADCD8;
@@ -144,6 +147,7 @@ html, body {
             align-items: center; /* 가로 중앙정렬 */
         }
 
+            /* 검색항목 - 라벨1 */
             .search1_item1 {
                 display: flex;
                 background: #eaf5ec;
@@ -151,42 +155,49 @@ html, body {
                 text-align: right;
             }
 
+            /* 검색항목 - 입력항목1 */
             .search1_item2 {
                 display: flex;
                 background: #f2f5ea;
                 flex-basis: 17%;
             }
 
+            /* 검색항목 - 라벨2 */    
             .search1_item3 {
                 display: flex;
                 background: #eaf5ec;
                 flex-basis: 8%;
             }
 
+            /* 검색항목 - 입력항목2 */
             .search1_item4 {
                 display: flex;
                 background: #f2f5ea;
                 flex-basis: 17%;
             }
 
+            /* 검색항목 - 라벨3 */
             .search1_item5 {
                 display: flex;
                 background: #eaf5ec;
                 flex-basis: 8%;
             }
 
+            /* 검색항목 - 입력항목3 */
             .search1_item6 {
                 display: flex;
                 background: #f2f5ea;
                 flex-basis: 17%;
             }
 
+            /* 검색항목 - 라벨4 */
             .search1_item7 {
                 display: flex;
                 background: #eaf5ec;
                 flex-basis: 8%;
             }
 
+            /* 검색항목 - 입력항목4 */
             .search1_item8 {
                 display: flex;
                 background: #f2f5ea;
@@ -275,20 +286,20 @@ html, body {
             .action1_item4{
                 display: flex;
                 background: #badccb;
-                width: 100px;
+                width: 120px;
             }
 
             .action1_item5{
                 display: flex;
                 background: #badccb;
-                width: 100px;
+                width: 120px;
             }
 
 
 /* 그리드1 */
 .container_grid1 {
     background: #f1f1f0;
-    height: 88%;
+    height: 86%;
     width: 100%;
 }
 
@@ -315,13 +326,13 @@ html, body {
 /* 초기화 */
 .xi-refresh {
     font-size: 12px;
-    color: #0e413b;
+    color: #062420;
 }
 
 /* 출력 */
 .xi-print {
     font-size: 12px;
-    color: #0e413b;
+    color: #062420;
 }
 
 
@@ -334,23 +345,102 @@ html, body {
 /* 행추가 */
 .xi-plus-min {
     font-size: 12px;
-    color: #0e413b;
+    color: #062420;
 }
 
 /* 행삭제 */
 .xi-minus-min {
     font-size: 12px;
-    color: #0e413b;
+    color: #062420;
 }
 
 /* 엑셀다운로드 */
 .xi-angle-down-min {
     font-size: 12px;
-    color: #0e413b;
+    color: #062420;
 }
 
 /* 엑셀업로드 */
 .xi-angle-up-min {
     font-size: 12px;
-    color: #0e413b;
+    color: #062420;
+}
+
+
+
+/* 버튼 : 조회, 저장 */
+.btn_main { 
+    display:block; 
+    width:98%; 
+    height:98%; 
+    /* line-height:40px;  */
+    border:1px #006e62;     
+    margin:15px 
+    auto; 
+    background-color: #2A9D8F; 
+    text-align:center; 
+    cursor: pointer; 
+    color:#006e62;
+    transition:all 0.9s, 
+    color 0.3; 
+}
+.btn_main:hover{
+    color:#fff;
+}
+
+/* [활성] 조회 및 저장 */
+.btn_main_active:hover{ 
+    box-shadow:200px 0 0 0 #006e62 inset; 
+}
+
+
+/* [버튼] 출력, 초기화, 행추가, 행삭제 버튼 */
+.btn_sub { 
+    display:block; 
+    width:98%; 
+    height:98%; 
+    /* line-height:40px;  */
+    border:1px #BADCD8;     
+    margin:15px 
+    auto; 
+    background-color: #BADCD8; 
+    text-align:center; 
+    cursor: pointer; 
+    color:#006e62;
+    transition:all 0.9s, 
+    color 0.3; 
+}
+.btn_sub:hover{
+    color:#fff;
+}
+
+/* [활성] 출력, 초기화, 행추가, 행삭제 버튼 */
+.btn_sub_active:hover{ 
+    box-shadow:200px 0 0 0 #64cfbf inset; 
+}
+
+
+/* [버튼] 엑셀다운로드, 엑셀업로드 버튼 */
+.btn_excel { 
+    display:block; 
+    width:98%; 
+    height:98%; 
+    /* line-height:40px;  */
+    border:1px #badccb;     
+    margin:15px 
+    auto; 
+    background-color: #badccb; 
+    text-align:center; 
+    cursor: pointer; 
+    color:#006e62;
+    transition:all 0.9s, 
+    color 0.3; 
+}
+.btn_excel:hover{
+    color:#fff;
+}
+
+/* [활성] 엑셀다운로드, 엑셀업로드 버튼 */
+.btn_excel_active:hover{ 
+    box-shadow:200px 0 0 0 #9ddbbd inset; 
 }
