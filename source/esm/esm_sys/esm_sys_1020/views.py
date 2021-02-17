@@ -15,8 +15,6 @@ def home(request):
 
 # 조회 버튼을 클릭
 def search(request):
-  homeUrl = request.text
-  print(homeUrl)
   return render(request, 'esm_sys_1020.html')
 
 # 초기화 버튼을 클릭
