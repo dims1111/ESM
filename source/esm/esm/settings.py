@@ -117,11 +117,11 @@ WSGI_APPLICATION = 'esm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'esmprod',
+        'NAME': 'vis1226',
         'USER': 'esm',
         'PASSWORD': 'esm',
-        'HOST':'localhost',
-        'PORT':'1522',
+        'HOST':'210.112.232.29',
+        'PORT':'1531',
     },
 }
 
