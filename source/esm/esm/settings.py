@@ -43,9 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 전자식 복무관리 시스템
-    # 정적 템플릿
-    'static_template',
+    ##### 전자식 복무관리 시스템 #####
 
     # 로그인 / 로그아웃 / 홈
     'esm_app',
