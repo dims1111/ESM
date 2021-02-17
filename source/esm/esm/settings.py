@@ -99,14 +99,28 @@ WSGI_APPLICATION = 'esm.wsgi.application'
 
 # 전자식 복무관리 시스템
 # 오라클 개발서버 접속정보
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.oracle',
+#         'NAME': 'vis1226',
+#         'USER': 'esm',
+#         'PASSWORD': 'esm',
+#         'HOST':'210.112.232.29',
+#         'PORT':'1531',
+#     },
+# }
+
+# local oracle server
+# python manage.py inspectdb > esmdb.py
+# 속도가 너무 느려서 로컬로 접속하여 모델 작성
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'vis1226',
+        'NAME': 'esmprod',
         'USER': 'esm',
         'PASSWORD': 'esm',
-        'HOST':'210.112.232.29',
-        'PORT':'1531',
+        'HOST':'localhost',
+        'PORT':'1522',
     },
 }
 

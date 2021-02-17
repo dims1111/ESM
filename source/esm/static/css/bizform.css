@@ -203,7 +203,8 @@ html, body {
             .title1_item1 {                
                 display: flex;
                 background: #2A9D8F;                                
-                justify-content: center;
+                justify-content: left;
+                padding-left: 20px;                
                 align-content: center;
                 border-top-left-radius: 4px;
                 border-top-right-radius: 4px;
@@ -267,7 +268,7 @@ html, body {
 /* 그리드1 */
 .container_grid1 {
     background: #f1f1f0;
-    height: 86%;
+    height: 88%;
     width: 100%;
 }
 
@@ -280,7 +281,7 @@ html, body {
 }
 
 /* 그리드 제목 */
-.xi-list-dot {
+.xi-sort-desc {
     font-size: 14px;
     color: #eefcfa;
 }
@@ -311,7 +312,7 @@ html, body {
 }
 
 /* 행추가 */
-.xi-plus {
+.xi-plus-min {
     font-size: 12px;
     color: #0e413b;
 }
