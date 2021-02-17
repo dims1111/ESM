@@ -17,6 +17,13 @@
         <img src="{% static 'img/built1-logo.png' %}" style="width: 80px;">
       </a>
       <div class="d-flex mr-3">
+        <input type="checkbox" id="changeLang" name="switch" class="input-switch" checked>
+        <label for="changeLang" class="label-switch mr-3">
+            <span class="marble"></span>
+            <span class="on">KOR</span>
+            <span class="off">ENG</span>
+        </label>
+
         <span class="text-white mr-3">{{session.user_name}}</span>
         <a href="/logout">
           <span class="text-white">logout</span>
@@ -341,6 +348,11 @@
       });
     }
     gutSubMenuList();
+
+    // 언어 변경
+    $("#changeLang").change(function() {
+        console.log($(this).is(':checked') ? 'KOR' : 'ENG');
+    });
   });
 
 </script>
