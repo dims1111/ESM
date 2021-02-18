@@ -8,7 +8,7 @@ class SysMenu(models.Model):
     menu_name_ko = models.CharField(max_length=100, verbose_name="메뉴명(한글)")
     menu_name_en = models.CharField(max_length=200, verbose_name="메뉴명(영문)")
     url = models.CharField(max_length=200, blank=True, null=True, verbose_name="URL")
-    prent_menu_id = models.FloatField(verbose_name="상위메뉴ID")
+    parent_menu_id = models.FloatField(verbose_name="상위메뉴ID")
     icons = models.CharField(max_length=1000, blank=True, null=True, verbose_name="아이콘")
     sort_order = models.IntegerField(blank=True, null=True, verbose_name="정렬순서")
     use_yn = models.CharField(max_length=1, verbose_name="사용여부(Y/N)", default="Y")

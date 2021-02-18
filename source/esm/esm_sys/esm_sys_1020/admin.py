@@ -13,7 +13,7 @@ class SysMenuAdmin(admin.ModelAdmin):
         ,'menu_name_ko'
         ,'menu_name_en'
         ,'url'
-        ,'prent_menu_id'
+        ,'parent_menu_id'
         ,'icons'
         ,'sort_order'
         ,'use_yn'
