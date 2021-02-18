@@ -49,7 +49,7 @@ def home(request):
 	params['session'] = request.session
 	
 	# 메인화면 렌더링
-	return render(request, 'home.html', params)
+	return render(request, 'esm_app/home.html', params)
 
 
 # 서브 메뉴 조회
@@ -67,7 +67,7 @@ def getSubMenuList(request):
 def login(request):
 	# 도메인으로 접속할 경우
 	if request.method == 'GET':
-		return render(request, 'login.html')
+		return render(request, 'esm_app/login.html')
 
 	# 사용자 계정 및 비밀번호 입력 후 로그인 버튼을 클릭할 경우
 	elif request.method == 'POST':        
@@ -133,7 +133,7 @@ def login(request):
 		
 		print('cd =>', vResult['cd'])
 		print('msg =>',vResult['msg'])
-		return render(request, 'login.html', vResult)
+		return render(request, 'esm_app/login.html', vResult)
 
 
 # 로그아웃
@@ -154,10 +154,10 @@ def logout(request):
 # 404 오류 발생
 def page_not_found_view(request, exception=None):
     data = {}
-    return render(request, "err404.html", status=404)
+    return render(request, "esm_app/err404.html", status=404)
 
 
 # 500 오류 발생
 def server_error_view(request):
     data = {}
-    return render(request, "err500.html", status=500)
+    return render(request, "esm_app/err500.html", status=500)

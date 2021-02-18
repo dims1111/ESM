@@ -15,7 +15,7 @@ from . models import SysMenu
 # Create your views here.
 # 메뉴 클릭 후 첫 화면 오픈
 def home(request):  
-  return render(request, 'esm_sys_1020.html')
+  return render(request, 'esm_sys/esm_sys_1020.html')
 
 # 조회 버튼을 클릭
 def search(request):
@@ -59,16 +59,16 @@ def search(request):
 
 # 출력 버튼을 클릭
 def print(request):
-  return render(request, 'esm_sys_1020.html')
+  return render(request, 'esm_sys/esm_sys_1020.html')
 
 # 저장 버튼을 클릭
 def save(request):
-  return render(request, 'esm_sys_1020.html')
+  return render(request, 'esm_sys/esm_sys_1020.html')
 
 # 엑셀업로드 버튼을 클릭
 def excelDown(request):
-  return render(request, 'esm_sys_1020.html')  
+  return render(request, 'esm_sys/esm_sys_1020.html')  
 
 # 엑셀다운로드 버튼을 클릭
 def excelUp(request):
-  return render(request, 'esm_sys_1020.html')
+  return render(request, 'esm_sys/esm_sys_1020.html')
