@@ -1,55 +1,55 @@
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <!-- Learn more about this tag here: https://www.w3schools.com/css/css_rwd_viewport.asp -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <!-- Learn more about this tag here: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/jj676915(v=vs.85)?redirectedfrom=MSDN -->
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <!-- Minified bootstrap css  -->
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Learn more about this tag here: https://www.w3schools.com/css/css_rwd_viewport.asp -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Learn more about this tag here: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/jj676915(v=vs.85)?redirectedfrom=MSDN -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- Minified bootstrap css  -->
 
-        <title>전자식 복무관리 시스템</title>
-        
-        {% load static %}
-        <!-- Jquery -->
-        <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <title>전자식 복무관리 시스템</title>
 
-        <!-- 구글 웹폰트 적용('Noto Sans KR') -->
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+    {% load static %}
+    <!-- Jquery -->
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
 
-        <!-- xeicon -->
-        <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <!-- 구글 웹폰트 적용('Noto Sans KR') -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
 
-        <!-- bootstrap -->
-        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
-        <script src="{% static 'js/bootstrap.min.js' %}"></script>
-        {% load random_numbers %}
-        <link rel="stylesheet" href="{% static 'css/bizform.css'%}?v={% random_number %}" />
+    <!-- xeicon -->
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" />
 
-        <!-- css var 관련 포니필 추가 -->
-        <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    {% load random_numbers %}
+    <link rel="stylesheet" href="{% static 'css/bizform.css'%}?v={% random_number %}" />
 
-        <!-- 공통 자바스크립트 -->
-        <script src="{% static 'js/common.js' %}"></script>
+    <!-- css var 관련 포니필 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
 
-        <!-- jquery 커스터마이징 -->
-        <script src="{% static 'js/ajax.js' %}"></script>
-        
-        {% block header %}
-    
-        {% endblock %}
-    </head>
+    <!-- 공통 자바스크립트 -->
+    <script src="{% static 'js/common.js' %}"></script>
 
+    <!-- jquery 커스터마이징 -->
+    <script src="{% static 'js/ajax.js' %}"></script>
 
-    <body>
-        {% block contents %}
+    <!-- 리얼그리드 -->
+    <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs-lic.js'%}"></script>
+    <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs_eval.1.1.36.min.js'%}"></script>
+    <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs-api.1.1.36.js'%}"></script>
 
-        {% endblock %}
+    {% block header %} {% endblock %}
+  </head>
 
-        <script>
-            cssVars(); // css var 포니필 적용
-        </script>
-    </body>
+  <body>
+    {% block contents %} {% endblock %}
 
+    <script>
+      cssVars(); // css var 포니필 적용
+      RealGridJS.setRootContext("{% static '/plugins/realgridjs' %}");
+    </script>
+  </body>
 </html>

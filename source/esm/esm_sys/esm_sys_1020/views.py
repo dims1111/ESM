@@ -1,5 +1,6 @@
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
+from django.core import serializers
 
 
 # 장고 모델에서 필터 처리를 위한 Q 클래스 임포트
@@ -40,7 +41,6 @@ def search(request):
       raise Exception(message.esmErrMsg(1020), message.UserLangCd.langCd)
     else:
       print('query ->', queryset.query)
-
       # 메뉴 데이터 확인
       for ca in queryset:
         print('menu_id =>', ca.menu_id)
@@ -52,11 +52,13 @@ def search(request):
 		
   print('cd =>', vResult['cd'])
   print('msg =>',vResult['msg'])
-
+  # print(queryset.values('menu_id', 'menu_name_ko').order_by('sort_order'))
+  serialized_queryset = serializers.serialize('json', queryset)
   # 그리드에 데이터를 전달
   # 1. 데이터가 존재하지 않을 경우
   # 2. 데이터가 1건 이상일 경우 그리드에 표기
-  return JsonResponse({'test': 1, 'test2': 2})
+  return JsonResponse(serialized_queryset, safe=False)
+  
   
 
 # 출력 버튼을 클릭
