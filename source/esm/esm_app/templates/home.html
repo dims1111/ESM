@@ -3,7 +3,7 @@
 {% block header %}
   <title>전자식 복무관리 시스템</title>
   {% load static %}
-	<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+   <link rel="stylesheet" href="{% static 'css/home.css' %}" />
 {% endblock %}
 
 {%block contents%}
@@ -73,9 +73,9 @@
           <!-- Tab panes -->
           <div class="tab-content ml-3">
             <div id="home" class="tab-pane w-100 h-100 active">
-              <div id="cont_head_wrapper" class="chw">
+              <div id="cont_head_wrapper" class="mt-1 mb-2">
                 <div id="cont_nav_wrap">
-                  <nav id="cont_nav" aria-label="breadcrumb" class="my-1 text-right" style="font-size:13px;">
+                  <nav id="cont_nav" aria-label="breadcrumb" class="text-right" style="font-size:13px;">
                     <div style="display: inline-block; ">
                       <ol class="breadcrumb py-0">
                         <li class="breadcrumb-item active">
@@ -103,9 +103,9 @@
 
 <!-- New Tab Template -->
 <div id="newtab" class="container tab-pane active" style="display: none;">
-  <div id="cont_head_wrapper">
+  <div id="cont_head_wrapper" class="mt-1 mb-2">
     <div id="cont_nav_wrap">
-      <nav id="cont_nav" aria-label="breadcrumb" class="my-1 text-right" style="font-size:13px;">
+      <nav id="cont_nav" aria-label="breadcrumb" class="mt-1 mb-2 text-right" style="font-size:13px;">
         <div style="display: inline-block;">
           <ol class="breadcrumb py-0">
             <li class="breadcrumb-item active">

@@ -1,148 +1,52 @@
 {% extends "bizform.html" %}
 
 {% block header %}
-	{% load static %}
-	<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-  <link rel="stylesheet" href="{% static 'css/bizform.css' %}" />  
+
 {% endblock %}
 
 {% block contents %}
-
-<!-- div.container>div.item.item${$}*10 / tab -->
-<!-- 탑 - 고정 -->
-<div class="container_space"></div>
-<div class="container_top">
-  <div class="top1">
-    <div class="top1_group1 top1_item1">
-      <i class="xi-bars"> 조회조건</i>      
+<div class="container-fluid d-flex flex-column p-0 h-100">
+  <!-- 검색 조건 영역 -->
+  <div class="row no-gutters mb-2">
+    <div class="col-12">
+      <div class="search-header">
+        <div class="search-title">
+          <i class="xi-bars"> 조회조건</i>
+        </div>
+        <div class="search-buttons">
+          <button class="btn_sub active"><i class="xi-print"> 출력</i></button>
+          <button class="btn_sub active"><i class="xi-refresh"> 초기화</i></button>
+          <button class="btn_main "><i class="xi-search"> 조회</i></button>
+        </div>
+      </div>
+      <form class="search-content">
+        <label for="menuName">메뉴명</label>
+        <input type="text" name="menuName" id="menuName">
+        <label for="url">URL</label>
+        <input type="text" name="url" id="url">
+        <label for="useYn">사용여부</label>
+        <input type="checkbox" name="useYn" id="useYn">
+      </form>
     </div>
   </div>
-
-  <div class="top2">
-    <div class="top2_group1 top2_item1">      
-        <button id="btnSearch" 
-                name="btnSearch" 
-                class="btn_main btn_main_active" 
-                onclick="location.href='search/' ">              
-          <i class="xi-search"> 조회</i>
-        </button>
+  <div class="row no-gutters flex-grow-1">
+    <div class="col-12 d-flex flex-column">
+      <div class="search-header">
+        <div class="search-title">
+          <i class="xi-sort-desc"> 메뉴목록 (47건)</i>
+        </div>
+        <div class="search-buttons">
+          <button class="btn_sub active"><i class="xi-upload"> 엑셀업로드</i></button>
+          <button class="btn_sub active"><i class="xi-download"> 엑셀다운로드</i></button>
+          <button class="btn_sub active"><i class="xi-minus-min"> 행삭제</i></button>
+          <button class="btn_sub active"><i class="xi-plus-min"> 행추가</i></button>
+          <button class="btn_main active"><i class="xi-save"> 저장</i></button>
+        </div>
+      </div>
+      <div class="search-content flex-grow-1"></div>
     </div>
-
-    <div class="top2_group1 top2_item2">      
-      <button id="btnClear" 
-              name="btnClear" 
-              class="btn_sub btn_sub_active" 
-              onclick="location.href='clear/' ">              
-        <i class="xi-refresh"> 초기화</i>
-      </button>
-    </div>
-
-    <div class="top2_group1 top2_item3">      
-      <button id="btnPrint" 
-              name="btnPrint" 
-              class="btn_sub btn_sub_active" 
-              onclick="location.href='print/' ">              
-        <i class="xi-refresh"> 출력</i>
-      </button>
-    </div>
-  </div>  
-</div>
-
-<!-- 조회 - 검색조건 : 2줄, 3출 추가 가능 (단, css 별도 제공 필요) -->
-<div class="container_top_line"></div>
-<div class="container_search">
-  <div class="search1">    
-    
-    <div class="search1_group1 search1_item1">메뉴명</div>
-    <div class="search1_group1 search1_item2">  
-      <input 
-        type="text"
-        id="menuName" 
-        name="menuName" 
-        class="">
-      </button>
-    </div>
-    
-    <div class="search1_group1 search1_item3">URL</div>
-    <div class="search1_group1 search1_item4">  
-      <input 
-        type="text"
-        id="url" 
-        name="url" 
-        class="">
-      </button>
-    </div>
-    
-    <div class="search1_group1 search1_item5">사용여부</div>
-    <div class="search1_group1 search1_item6">  
-      <input 
-        type="checkbox"
-        id="useYn" 
-        name="useYn" 
-        class="">
-      </button>
-    </div>
-    
-    <div class="search1_group1 search1_item7"></div>
-    <div class="search1_group1 search1_item8"></div>
   </div>
 </div>
-<div class="container_bottom_line"></div>
 
 
-<!-- 액션1 : 생성, 처리 등 화면 기능에 맞는 버튼 추가 가능 (단, css 별도 제공 필요) -->
-<div class="container_space2"></div>
-<div class="container_control1">
-  <div class="title1">
-    <div class="title1_group1 title1_item1">
-      <i class="xi-sort-desc"> 메뉴목록 (47건)</i></div>
-  </div> 
-  <div class="action1">
-    <div class="action1_group1 action1_item2">
-      <button id="btnSave" 
-        name="btnSave" 
-        class="btn_main btn_main_active" 
-        onclick="location.href='save/' ">
-      <i class="xi-save"> 저장</i>
-    </div>
-
-    <div class="action1_group1 action1_item2">
-      <button id="btnGridAdd" 
-        name="btnGridAdd" 
-        class="btn_sub btn_sub_active" 
-        onclick="location.href='gridRowAdd/' ">
-      <i class="xi-plus-min"> 행추가</i>
-    </div>
-
-    <div class="action1_group1 action1_item3">
-      <button id="btnGridDelete" 
-        name="btnGridDelete" 
-        class="btn_sub btn_sub_active" 
-        onclick="location.href='gridRowDelete/' ">
-      <i class="xi-minus-min"> 행삭제</i>
-    </div>
-
-    <div class="action1_group1 action1_item4">
-      <button id="btnExcelDown" 
-        name="btnExcelDown" 
-        class="btn_excel btn_excel_active" 
-        onclick="location.href='excelDown/' ">
-      <i class="xi-angle-down-min"> 엑셀다운로드</i>
-    </div>
-
-    <div class="action1_group1 action1_item5">
-      <button id="btnExcelUp" 
-        name="btnExcelUp" 
-        class="btn_excel btn_excel_active" 
-        onclick="location.href='excelUp/' ">
-      <i class="xi-angle-up-min"> 엑셀업로드</i>
-    </div>
-  </div>   
-</div>
-
-<!-- 그리드1 : 마스터, 디테일, 서브 디테일 그리드 추가 가능 (단, css 별도 제공 필요)-->
-<div class="container_top_line"></div>
-  <div class="container_grid1">
-  </div>
-<div class="container_top_line"></div>
 {% endblock %}

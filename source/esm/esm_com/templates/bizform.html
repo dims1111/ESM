@@ -10,13 +10,22 @@
         <title>전자식 복무관리 시스템</title>
         
         {% load static %}
-        
+        <!-- Jquery -->
         <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
 
         <!-- 구글 웹폰트 적용('Noto Sans KR') -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+
+        <!-- xeicon -->
+        <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+        <!-- bootstrap -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        {% load random_numbers %}
+        <link rel="stylesheet" href="{% static 'css/bizform.css'%}?v={% random_number %}" />
 
         <!-- css var 관련 포니필 추가 -->
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
