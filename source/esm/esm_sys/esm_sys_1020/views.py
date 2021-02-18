@@ -84,8 +84,10 @@ def search(request):
   except Exception as e:
     commParam = {'cd' : 'E', 'msg' : '[Error Info.] '.join(e.args)}
 		
+  print('===========================================================================')	
   print('cd =>', commParam['cd'])
   print('msg =>',commParam['msg'])
+  print('===========================================================================')
 
   serialized_queryset = serializers.serialize('json', queryset)
   return JsonResponse(serialized_queryset, safe=False)
@@ -96,13 +98,11 @@ def doPrint(request):
   return render(request, 'esm_sys/esm_sys_1020.html')
 
 
-# 저장 버튼을 클릭
-
-
 # 트랜잭션 관리 방법 - 1. 세이브 포인트 방식, 2.데코레이트 방식
 # 1. 세이브 포이트 방식 : 사용자 여러개의 데이터를 저장 처리 시 로직에 의해서 커밋 또는 롤백 처리 시 사용
 # 2. 데코레이트 방식 : 해당 함수 내 오류가 없으면 자동 커밋, 오류가 존재하면 롤백 처리 (함수 위에 @transaction.atomic 작성)
 
+# 저장 버튼을 클릭
 # @transaction.atomic
 def save(request):
   # 화면별 코드 및 메시지 전달 변수  
