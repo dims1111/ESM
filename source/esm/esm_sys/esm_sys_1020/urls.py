@@ -8,9 +8,9 @@ from . import views
 # 현재 앱에서 사용하는 기능을 패턴으로 정의
 urlpatterns = [
   path('', views.home),
-  path('search/', views.search),
-  path('print/', views.print),
-	path('save/', views.save),
+  path('search', views.search),
+  path('print', views.doPrint),
+	path('save', views.save),
 	path('excelDown', views.excelDown),
   path('excelUp', views.excelUp), 
 ]
