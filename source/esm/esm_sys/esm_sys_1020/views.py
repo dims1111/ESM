@@ -1,4 +1,4 @@
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 
 
@@ -34,16 +34,17 @@ def search(request):
   vResult['msg'] = ''
 		          
   try:    
+    queryset = SysMenu.objects.filter(Q(menu_name_ko=srhMenuName) | Q(menu_name_en=srhMenuName) | Q(url=srhUrl) | Q(use_yn=srhUseYn))
     # 메뉴 데이터 조회
-    if not SysMenu.objects.filter(Q(menu_name_ko=srhMenuName) | Q(menu_name_en=srhMenuName) | Q(url=srhUrl) | Q(use_yn=srhUseYn)).exists():      
+    if not queryset.exists():
       raise Exception(message.esmErrMsg(1020), message.UserLangCd.langCd)
     else:
-      SysMenu = SysMenu.objects.filter(Q(menu_name_ko=srhMenuName) | Q(menu_name_en=srhMenuName) | Q(url=srhUrl) | Q(use_yn=srhUseYn)).exists()      
-      
+      print('query ->', queryset.query)
+
       # 메뉴 데이터 확인
-      for ca in SysMenu:        
-        print('menu_id =>', ca.get('menu_id'))
-        print('menu_name_ko =>', ca.get('menu_name_ko'))
+      for ca in queryset:
+        print('menu_id =>', ca.menu_id)
+        print('menu_name_ko =>', ca.menu_name_ko)
 
   except Exception as e:
     vResult['cd'] = 'E'
@@ -55,10 +56,11 @@ def search(request):
   # 그리드에 데이터를 전달
   # 1. 데이터가 존재하지 않을 경우
   # 2. 데이터가 1건 이상일 경우 그리드에 표기
+  return JsonResponse({'test': 1, 'test2': 2})
   
 
 # 출력 버튼을 클릭
-def print(request):
+def doPrint(request):
   return render(request, 'esm_sys/esm_sys_1020.html')
 
 # 저장 버튼을 클릭
