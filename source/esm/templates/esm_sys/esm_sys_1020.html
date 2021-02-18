@@ -150,6 +150,31 @@
         break;
       case "save":
         console.log("gubun ->", gubun);
+
+        var menuName = $("#menuName").val();
+        var url = $("#url").val();
+        var useYn = $("#useYn").is(":checked") ? "1" : "0";
+
+        // 보낼 파라미터
+        var params = {
+          menuName: menuName,
+          url: url,
+          useYn: useYn,
+        };
+        console.log("params ->", params);
+
+        // ajax POST 통신, 후에 공통으로 뺄거임
+        $.ajax({
+          type: "POST",
+          url: "/esm_sys_1020/save",
+          data: params,
+          // data: $('#srchForm').serialize(),
+          dataType: "json",
+          success: function (data) {
+            var result = JSON.parse(data);
+            console.log(result);
+          },
+        });
         break;
       case "addRow":
         console.log("gubun ->", gubun);
