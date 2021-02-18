@@ -24,9 +24,9 @@ def search(request):
   srhUrl = request.POST.get('url', None)
   srhUseYn = request.POST.get('useYn', None)
 
-  # print('메뉴명     =>', srhMenuName)
-  # print('URL       =>', srhUrl)
-  # print('사용여부   =>', srhUseYn)
+  print('메뉴명     =>', srhMenuName)
+  print('URL       =>', srhUrl)
+  print('사용여부   =>', srhUseYn)
 
   # 화면별 코드 및 메시지 전달 변수
   vResult = {}

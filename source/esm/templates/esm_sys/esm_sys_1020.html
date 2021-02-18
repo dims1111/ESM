@@ -14,12 +14,12 @@
           <i class="xi-bars"> 조회조건</i>
         </div>
         <div class="search-buttons">
-          <button class="btn_sub active"><i class="xi-print"> 출력</i></button>
-          <button class="btn_sub active"><i class="xi-refresh"> 초기화</i></button>
-          <button class="btn_main "><i class="xi-search"> 조회</i></button>
+          <button class="btn_sub active" onclick="doAction1('print');"><i class="xi-print"> 출력</i></button>
+          <button class="btn_sub active" onclick="doAction1('reset');"><i class="xi-refresh"> 초기화</i></button>
+          <button class="btn_main active" onclick="doAction1('search');"><i class="xi-search"> 조회</i></button>
         </div>
       </div>
-      <form class="search-content">
+      <form id="srchForm" class="search-content">
         <label for="menuName">메뉴명</label>
         <input type="text" name="menuName" id="menuName">
         <label for="url">URL</label>
@@ -36,11 +36,11 @@
           <i class="xi-sort-desc"> 메뉴목록 (47건)</i>
         </div>
         <div class="search-buttons">
-          <button class="btn_sub active"><i class="xi-upload"> 엑셀업로드</i></button>
-          <button class="btn_sub active"><i class="xi-download"> 엑셀다운로드</i></button>
-          <button class="btn_sub active"><i class="xi-minus-min"> 행삭제</i></button>
-          <button class="btn_sub active"><i class="xi-plus-min"> 행추가</i></button>
-          <button class="btn_main active"><i class="xi-save"> 저장</i></button>
+          <button class="btn_sub active" onclick="doAction1('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button>
+          <button class="btn_sub active" onclick="doAction1('excelDownload');"><i class="xi-download"> 엑셀다운로드</i></button>
+          <button class="btn_sub active" onclick="doAction1('delRow');"><i class="xi-minus-min"> 행삭제</i></button>
+          <button class="btn_sub active" onclick="doAction1('addRow');"><i class="xi-plus-min"> 행추가</i></button>
+          <button class="btn_main active" onclick="doAction1('save');"><i class="xi-save"> 저장</i></button>
         </div>
       </div>
       <div class="search-content flex-grow-1"></div>
@@ -48,5 +48,62 @@
   </div>
 </div>
 
+<script>
+  /* action1에대한 기능 */
+  function doAction1(gubun) {
+    switch (gubun) {
+      /* 조회 */
+      case 'search':
+        console.log('gubun ->', gubun);
+
+        var menuName = $('#menuName').val();
+        var url = $('#url').val();
+        var useYn = $('#useYn').is(':checked') ? '1' : '0';
+
+        // 보낼 파라미터
+        var params = {
+          menuName: menuName,
+          url: url,
+          useYn: useYn,
+        };
+        console.log('params ->', params);
+
+
+        // ajax POST 통신, 후에 공통으로 뺄거임
+        $.ajax({
+          type: 'POST',
+          url: '/esm_sys_1020/search',
+          data: params,
+          // data: $('#srchForm').serialize(),
+          dataType: 'json',
+          success: function(data) { 
+            alert(JSON.stringify(data, null, 2)) || console.log(data);
+          },
+        });
+        break;
+      case 'reset':
+        console.log('gubun ->', gubun);
+        break;
+      case 'print':
+        console.log('gubun ->', gubun);
+        break;
+      case 'save':
+        console.log('gubun ->', gubun);
+        break;
+      case 'addRow':
+        console.log('gubun ->', gubun);
+        break;
+      case 'delRow':
+        console.log('gubun ->', gubun);
+        break;
+      case 'excelDownload':
+        console.log('gubun ->', gubun);
+        break;
+      case 'excelUpload':
+        alert(gubun);
+        break;
+    }
+  }
+</script>
 
 {% endblock %}
