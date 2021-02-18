@@ -21,34 +21,57 @@ def home(request):
 # 조회 버튼을 클릭
 def search(request):
   # 화면에서 검색조건의 값
+  print('=================================================')
   srhMenuName = request.POST.get('menuName', None)
   srhUrl = request.POST.get('url', None)
   srhUseYn = request.POST.get('useYn', None)
 
+  print('=================================================')
   print('메뉴명     =>', srhMenuName)
   print('URL       =>', srhUrl)
   print('사용여부   =>', srhUseYn)
 
-  # 화면별 코드 및 메시지 전달 변수
-  vResult = {}
-  vResult['cd'] = 'S'
-  vResult['msg'] = ''
-		          
-  try:    
-    queryset = SysMenu.objects.filter(Q(menu_name_ko=srhMenuName) | Q(menu_name_en=srhMenuName) | Q(url=srhUrl) | Q(use_yn=srhUseYn))
+  if srhUseYn == '1':
+    srhUseYn = 'Y'
+  else:
+    srhUseYn = 'N'
+
+  # 화면별 코드 및 메시지 전달 변수  
+  vResult = {'cd' : 'S', 'msg' : ''}
+
+  # 조건 일치 데이터 menu_name_ko = 'esm_sys_1020'      : SysMenu.objects.filter(menu_name_ko='esm_sys_1020')
+  # 조건 외 데이터 menu_name_ko != 'esm_sys_1020'       : SysMenu.objects.exclude(menu_name_ko='esm_sys_1020')
+  # 특정 문자열 menu_name_ko like '%sys%' (대소구분)     : SysMenu.objects.filter(menu_name_ko__contains="sys")
+  # 특정 문자열 UPPER(menu_name_ko) like upper('%sys%') : SysMenu.objects.filter(menu_name_ko__icontains="sys")
+  # 시작 문자열 menu_name_ko like 'esm%'                : SysMenu.objects.filter(menu_name_ko__startswith="esm")
+  # 종료 문자열 menu_name_ko like '%020'                : SysMenu.objects.filter(menu_name_ko__endswith="020")
+  # 큰 값 age > 100                                     : SysMenu.objects.filter(age__gt=100)
+  # 작은 값 age < 100                                   : SysMenu.objects.filter(age__lt=100)
+  # 특정 문자열 menu_name_ko like '%sys%' (대소구분)     : SysMenu.objects.filter(menu_name_ko__exact="sys")
+  # 특정 문자열 menu_name_ko like '%sys%'               : SysMenu.objects.filter(menu_name_ko__iexact="sys")
+  # 특정 문자열 menu_name_ko is null                              : SysMenu.objects.filter(menu_name_ko__isnull=False)
+  # 특정 문자열 menu_name_ko in ('esm_sys_1010', 'esm_sys_1020')  : SysMenu.objects.filter(menu_name_ko__in=['esm_sys_1010', 'esm_sys_1020'])
+  # 날짜 년도   to_date(hire_date, 'yyyy') = '2000'               : SysMenu.objects.filter(hire_date__year=2000)
+  # 날짜 월   to_date(hire_date, 'mm') = '2000'                   : SysMenu.objects.filter(hire_date__month=02)
+  # 날짜 월   to_date(hire_date, 'dd') = '2000'                   : SysMenu.objects.filter(hire_date__day=01)
+
+
+  try:
+    queryset = SysMenu.objects.filter( \
+        (Q(menu_name_ko__iexact=srhMenuName) | Q(menu_name_en__iexact=srhMenuName)) \
+       & Q(url__iexact=srhUrl)
+    )
     # 메뉴 데이터 조회
     if not queryset.exists():
-      raise Exception(message.esmErrMsg(1020), message.UserLangCd.langCd)
+      raise Exception(message.esmErrMsg(1020), 'kor') #'message.UserLangCd.langCd')
     else:
       print('query ->', queryset.query)
       # 메뉴 데이터 확인
       for ca in queryset:
-        print('menu_id =>', ca.menu_id)
-        print('menu_name_ko =>', ca.menu_name_ko)
+        print('menu_id =>', ca.menu_id, 'menu_name_ko =>', ca.menu_name_ko, 'url =>', ca.url, 'user_yn =>', ca.use_yn)
 
   except Exception as e:
-    vResult['cd'] = 'E'
-    vResult['msg'] = e
+    vResult = {'cd' : 'E', 'msg' : e}
 		
   print('cd =>', vResult['cd'])
   print('msg =>',vResult['msg'])

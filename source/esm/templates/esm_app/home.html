@@ -1,27 +1,22 @@
-{% extends "esm_com/base.html" %}
-
-{% block header %}
-  <title>전자식 복무관리 시스템</title>
-  {% load static %}
-   <link rel="stylesheet" href="{% static 'css/home.css' %}" />
-{% endblock %}
-
-{%block contents%}
-{% csrf_token %}
+{% extends "esm_com/base.html" %} {% block header %}
+<title>전자식 복무관리 시스템</title>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %} {%block contents%} {% csrf_token %}
 <div class="wrap d-flex flex-column h-100 pb-1">
   <!-- Top -->
   <div class="top w-100 sticky-top navbar navbar-dark sticky-top flex-md-nowrap p-0">
-    <div class="container" style="max-width: 100%;">
+    <div class="container" style="max-width: 100%">
       <a href="/">
         {% load static %}
-        <img src="{% static 'img/built1-logo.png' %}" style="width: 80px;">
+        <img src="{% static 'img/built1-logo.png' %}" style="width: 80px" />
       </a>
       <div class="d-flex mr-3">
-        <input type="checkbox" id="changeLang" name="switch" class="input-switch" checked>
+        <input type="checkbox" id="changeLang" name="switch" class="input-switch" checked />
         <label for="changeLang" class="label-switch mr-3">
-            <span class="marble"></span>
-            <span class="on">KOR</span>
-            <span class="off">ENG</span>
+          <span class="marble"></span>
+          <span class="on">KOR</span>
+          <span class="off">ENG</span>
         </label>
 
         <span class="text-white mr-3">{{session.user_name}}</span>
@@ -37,12 +32,12 @@
       <!-- Sidebar start -->
       <div class="sidebar-main mt-2 pt-3">
         <ul id="mainList">
-        {% for item in mainMenuList %}
+          {% for item in mainMenuList %}
           <li class="sidebar-main__item py-2 {{item.active}}" data-menu-id="{{item.menuId}}">
             <span class="main__icon material-icons" mcd="{{item.mainCd}}">{{item.icons}}</span>
             <div class="mt-1">{{item.menuNameKo}}</div>
           </li>
-        {% endfor %}
+          {% endfor %}
         </ul>
       </div>
       <div class="sidebar-sub px-3 mt-2">
@@ -50,8 +45,8 @@
         <div class="font-weight-bold mt-3 mb-4 d-flex align-items-center overflow-hidden text-nowrap">
           <span class="sidebar-sub__title">복무관리</span>
           <div class="ml-auto">
-            <span id="showAll" class="material-icons border small" style="cursor: pointer;">add</span>
-            <span id="hideAll" class="material-icons border small" style="cursor: pointer;">remove</span>
+            <span id="showAll" class="material-icons border small" style="cursor: pointer">add</span>
+            <span id="hideAll" class="material-icons border small" style="cursor: pointer">remove</span>
           </div>
         </div>
         <div class="overflow-hidden text-nowrap">
@@ -62,10 +57,10 @@
       <!-- Sidebar end -->
 
       <!-- Menu start -->
-      <div id="container_body" style="flex: 1 0 680px;">
+      <div id="container_body" style="flex: 1 0 680px">
         <div class="d-flex flex-column h-100">
           <!-- Nav tabs -->
-          <ul id="navs" class="nav nav-tabs mb-0 ml-3 mt-2 rounded" style="overflow: hidden;" role="tablist">
+          <ul id="navs" class="nav nav-tabs mb-0 ml-3 mt-2 rounded" style="overflow: hidden" role="tablist">
             <li class="nav-item">
               <a class="nav-link active" data-toggle="tab" href="#home">Home</a><span class="material-icons small">clear</span>
             </li>
@@ -75,22 +70,21 @@
             <div id="home" class="tab-pane w-100 h-100 active">
               <div id="cont_head_wrapper" class="mt-1 mb-2">
                 <div id="cont_nav_wrap">
-                  <nav id="cont_nav" aria-label="breadcrumb" class="text-right" style="font-size:13px;">
-                    <div style="display: inline-block; ">
+                  <nav id="cont_nav" aria-label="breadcrumb" class="text-right" style="font-size: 13px">
+                    <div style="display: inline-block">
                       <ol class="breadcrumb py-0">
                         <li class="breadcrumb-item active">
                           <span id="nav1Icon" class="material-icons small">settings</span>
                           <span id="nav1Text"> 시스템</span>
                         </li>
-                        <li id="nav2Text"class="breadcrumb-item active">기준정보</li>
+                        <li id="nav2Text" class="breadcrumb-item active">기준정보</li>
                         <li id="nav3Text" class="breadcrumb-item" aria-current="page">메뉴등록</li>
                       </ol>
                     </div>
                   </nav>
                 </div>
               </div>
-              {% block content %}
-              {% endblock %}
+              {% block content %} {% endblock %}
               <iframe id="content_frm" class="w-100 h-100" src="/esm_sys_1020"></iframe>
             </div>
           </div>
@@ -102,17 +96,17 @@
 </div>
 
 <!-- New Tab Template -->
-<div id="newtab" class="container tab-pane active" style="display: none;">
+<div id="newtab" class="container tab-pane active" style="display: none">
   <div id="cont_head_wrapper" class="mt-1 mb-2">
     <div id="cont_nav_wrap">
-      <nav id="cont_nav" aria-label="breadcrumb" class="mt-1 mb-2 text-right" style="font-size:13px;">
-        <div style="display: inline-block;">
+      <nav id="cont_nav" aria-label="breadcrumb" class="mt-1 mb-2 text-right" style="font-size: 13px">
+        <div style="display: inline-block">
           <ol class="breadcrumb py-0">
             <li class="breadcrumb-item active">
               <span id="nav1Icon" class="material-icons small">home</span>
               <span id="nav1Text"> 시스템</span>
             </li>
-            <li id="nav2Text"class="breadcrumb-item active">중분류</li>
+            <li id="nav2Text" class="breadcrumb-item active">중분류</li>
             <li id="nav3Text" class="breadcrumb-item" aria-current="page"></li>
           </ol>
         </div>
@@ -123,19 +117,19 @@
 </div>
 
 <script type="text/javascript">
-  $(function() {
+  $(function () {
     $("#navs")
       .on("click", "a", function (e) {
         e.preventDefault();
-        if (!$(this).hasClass('add-contact')) {
-          $(this).tab('show');
+        if (!$(this).hasClass("add-contact")) {
+          $(this).tab("show");
         }
       })
       .on("click", "span", function () {
-        var $a =$(this).siblings('a');
-        var isActive = $a.hasClass('active');
-        var tabId = $a.attr('href');
-        var tabWin = $(tabId).find('#content_frm').get(0).contentWindow;
+        var $a = $(this).siblings("a");
+        var isActive = $a.hasClass("active");
+        var tabId = $a.attr("href");
+        var tabWin = $(tabId).find("#content_frm").get(0).contentWindow;
 
         /* 변경사항 체크로직
         var isGrdModified = tabWin.checkChangeData(true);
@@ -151,7 +145,7 @@
 
         // 활성화 된 화면을 닫는 경우 첫 탭 클릭
         if (isActive) {
-          $("#navs li.nav-item").children('a').first().click();
+          $("#navs li.nav-item").children("a").first().click();
         }
       });
 
@@ -160,8 +154,8 @@
       var len = $("#navs li.nav-item").length;
 
       for (var i = 0; i < len; i++) {
-        var $a = $("#navs").children().eq(i).find('a');
-        if ($a.data('menuId') === menuId) {
+        var $a = $("#navs").children().eq(i).find("a");
+        if ($a.data("menuId") === menuId) {
           $a.click();
           return true;
         }
@@ -169,39 +163,47 @@
 
       // 최대 8개까지
       if (len >= 8) {
-        alert('최대 탭 8');
+        alert("최대 탭 8");
         return;
       }
 
       var tabContent = $("#newtab").html();
-      $('.tab-content').append('<div class="tab-pane w-100 h-100 active" id="tabs-' + menuId + '">' + tabContent + '</div>');
+      $(".tab-content").append('<div class="tab-pane w-100 h-100 active" id="tabs-' + menuId + '">' + tabContent + "</div>");
 
-      $('#navs').append('<li class="nav-item"><a class="nav-link" data-toggle="tab" data-menu-id="' + menuId + '"href="#tabs-' + menuId + '">' + menuNm + '</a><span class="material-icons small">clear</span></li>');
-      $('#navs').children('li').last().find('a').click();
-      $('#tabs-' + menuId + ' #content_frm').attr('src', url);
+      $("#navs").append(
+        '<li class="nav-item"><a class="nav-link" data-toggle="tab" data-menu-id="' +
+          menuId +
+          '"href="#tabs-' +
+          menuId +
+          '">' +
+          menuNm +
+          '</a><span class="material-icons small">clear</span></li>'
+      );
+      $("#navs").children("li").last().find("a").click();
+      $("#tabs-" + menuId + " #content_frm").attr("src", url);
 
       return true;
     }
 
     // 대메뉴 클릭
-    $("#mainList > li").click(function() {      
-      if (!$(this).hasClass('active')) {
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
+    $("#mainList > li").click(function () {
+      if (!$(this).hasClass("active")) {
+        $(this).siblings().removeClass("active");
+        $(this).addClass("active");
         gutSubMenuList();
       }
     });
 
-    $('#showAll').click(function() {
-      $('ul.sub-menu').collapse('show');
-    });
-    
-    $('#hideAll').click(function() {
-      $('ul.sub-menu').collapse('hide');
+    $("#showAll").click(function () {
+      $("ul.sub-menu").collapse("show");
     });
 
-    $('#toggleSidebar').click(function() {
-      $('.sidebar-sub').toggleClass('collapsed');
+    $("#hideAll").click(function () {
+      $("ul.sub-menu").collapse("hide");
+    });
+
+    $("#toggleSidebar").click(function () {
+      $(".sidebar-sub").toggleClass("collapsed");
     });
 
     /* 아직 안씀
@@ -221,106 +223,105 @@
 
     // 탭 열기
     function openMenu(e) {
-      var url = $(this).data('url');
+      var url = $(this).data("url");
       if (!url) return;
 
-
-      var menuId = $(this).data('menuId');
-      var menuNm = $(this).data('menuNm');
+      var menuId = $(this).data("menuId");
+      var menuNm = $(this).data("menuNm");
 
       // Nav영역에 탭 추가
       if (!addNavTab(menuId, menuNm, url)) return;
 
       // 현 엘리먼트만 active class 적용
-      $('#menu-content li').removeClass('active');
-      $(this).addClass('active');
+      $("#menu-content li").removeClass("active");
+      $(this).addClass("active");
 
       // breadscrumb 생성
-      $('div.tab-pane.active #nav1Icon').text($('#mainList > li.active > span').text());
-      $('div.tab-pane.active #nav1Text').text($('#mainList > li.active > div').text());
-      $('div.tab-pane.active #nav2Text').text($(this).parent().prev().find('div').text());
-      $('div.tab-pane.active #nav3Text').text($(this).text());
+      $("div.tab-pane.active #nav1Icon").text($("#mainList > li.active > span").text());
+      $("div.tab-pane.active #nav1Text").text($("#mainList > li.active > div").text());
+      $("div.tab-pane.active #nav2Text").text($(this).parent().prev().find("div").text());
+      $("div.tab-pane.active #nav3Text").text($(this).text());
     }
 
     // 서브메뉴 조회
     function gutSubMenuList() {
-      var menuId = $('#mainList > li.active').data('menuId');
+      var menuId = $("#mainList > li.active").data("menuId");
 
       $.ajax({
-        type: 'POST',
-        url: '/menu/getSubMenuList',
+        type: "POST",
+        url: "/menu/getSubMenuList",
         data: {
           csrfmiddlewaretoken: $('*[name="csrfmiddlewaretoken"]').val(),
           menuId: menuId,
         },
-        dataType: 'json',
-        success: function(data) {
-          $('#menu-content').empty();
+        dataType: "json",
+        success: function (data) {
+          $("#menu-content").empty();
 
           var subMenuList = data.subMenuList;
-          
+
           var isgroup = false;
-          var $ul = $('<ul />', {
-            'class': 'sub-menu collapse show active'
+          var $ul = $("<ul />", {
+            class: "sub-menu collapse show active",
           });
 
-          $ul.on('show.bs.collapse', function () {
-            $(this).prev().find('span.expand').removeClass('rotate');
-          });
-          
-          $ul.on('hide.bs.collapse', function () {
-            $(this).prev().find('span.expand').addClass('rotate');
+          $ul.on("show.bs.collapse", function () {
+            $(this).prev().find("span.expand").removeClass("rotate");
           });
 
-          subMenuList.forEach(function(item, index) {
+          $ul.on("hide.bs.collapse", function () {
+            $(this).prev().find("span.expand").addClass("rotate");
+          });
+
+          subMenuList.forEach(function (item, index) {
             if (item.treeLevel === 1) {
               if (isgroup) {
                 isgroup = false;
-                $('#menu-content').append($ul);
-                $ul = $('<ul />', {
-                  'class': 'sub-menu collapse show active'
+                $("#menu-content").append($ul);
+                $ul = $("<ul />", {
+                  class: "sub-menu collapse show active",
                 });
-                $ul.on('show.bs.collapse', function () {
-                  $(this).prev().find('span.expand').removeClass('rotate');
+                $ul.on("show.bs.collapse", function () {
+                  $(this).prev().find("span.expand").removeClass("rotate");
                 });
-                
-                $ul.on('hide.bs.collapse', function () {
-                  $(this).prev().find('span.expand').addClass('rotate');
+
+                $ul.on("hide.bs.collapse", function () {
+                  $(this).prev().find("span.expand").addClass("rotate");
                 });
               }
-              
+
               // 중분류
-              var $li = $('<li />', {
-                'class': 'menu',
-                'data-toggle': 'collapse',
-                'data-target': '#group' + item.menuId,
+              var $li = $("<li />", {
+                class: "menu",
+                "data-toggle": "collapse",
+                "data-target": "#group" + item.menuId,
               });
-              var $div = $('<div />', { 'text': item.menuNameKo, 'class': 'menu__name font-weight-bold' });
-              var $span = $('<span />', { 'text': 'expand_less', 'class': 'expand material-icons' });
+              var $div = $("<div />", { text: item.menuNameKo, class: "menu__name font-weight-bold" });
+              var $span = $("<span />", { text: "expand_less", class: "expand material-icons" });
 
               $li.append($div);
               $li.append($span);
-              $('#menu-content').append($li);
+              $("#menu-content").append($li);
             } else if (item.treeLevel === 2) {
-              var $li = $('<li />', {
-                'text': item.menuNameKo,
-                'class': 'pl-2',
-                'data-menu-nm': item.menuNameKo,
-                'data-toggle': 'tooltip',
-                'data-placement': 'right',
-                'data-url': item.url,
-                'data-parent-menu-id': item.parentMenuId,
-                'data-menu-id': item.menuId,
-              })
-              $ul.attr('id', 'group' + item.parentMenuId);
-              $li.click(openMenu)
+              var $li = $("<li />", {
+                text: item.menuNameKo,
+                class: "pl-2",
+                "data-menu-nm": item.menuNameKo,
+                "data-toggle": "tooltip",
+                "data-placement": "right",
+                "data-url": item.url,
+                "data-parent-menu-id": item.parentMenuId,
+                "data-menu-id": item.menuId,
+              });
+              $ul.attr("id", "group" + item.parentMenuId);
+              $li.click(openMenu);
               $ul.append($li);
               isgroup = true;
 
-              if (subMenuList.length -1 === index) {
-                $('#menu-content').append($ul);
-                $ul = $('<ul />', {
-                  'class': 'sub-menu collapse show active'
+              if (subMenuList.length - 1 === index) {
+                $("#menu-content").append($ul);
+                $ul = $("<ul />", {
+                  class: "sub-menu collapse show active",
                 });
               }
             }
@@ -331,13 +332,12 @@
     gutSubMenuList();
 
     // 언어 변경
-    $("#changeLang").change(function() {
-        console.log($(this).is(':checked') ? 'KOR' : 'ENG');
+    $("#changeLang").change(function () {
+      console.log($(this).is(":checked") ? "KOR" : "ENG");
     });
   });
 
-  
-  // nav 컨텍스트 메뉴 기능 추가 
+  // nav 컨텍스트 메뉴 기능 추가
   $(function () {
     $.contextMenu({
       selector: "#navs > li",
@@ -346,10 +346,10 @@
           name: "새로고침",
           icon: "fa-refresh",
           callback: function (itemKey, opt, e) {
-            opt.$trigger.find('a').click();
-            var $a = $(this).find('a');
-            var tabId = $a.attr('href');
-            var tabWin = $(tabId).find('#content_frm').get(0).contentWindow;
+            opt.$trigger.find("a").click();
+            var $a = $(this).find("a");
+            var tabId = $a.attr("href");
+            var tabWin = $(tabId).find("#content_frm").get(0).contentWindow;
             tabWin.location.reload(); // iframe 새로고침
           },
         },
@@ -357,36 +357,34 @@
         close: {
           name: "닫기",
           callback: function (itemKey, opt, e) {
-            var $a = opt.$trigger.find('a');
-            var isActive = $a.hasClass('active');
-            var tabId = $a.attr('href');
-            var tabWin = $(tabId).find('#content_frm').get(0).contentWindow;
+            var $a = opt.$trigger.find("a");
+            var isActive = $a.hasClass("active");
+            var tabId = $a.attr("href");
+            var tabWin = $(tabId).find("#content_frm").get(0).contentWindow;
 
             $(tabId).remove();
             $(opt.$trigger).remove();
 
             if (isActive) {
-              $('#navs').children('li').first().find('a').click();
+              $("#navs").children("li").first().find("a").click();
             }
           },
         },
         colseOthers: {
           name: "다른 탭 닫기",
           callback: function (itemKey, opt, e) {
-            opt.$trigger
-              .siblings()
-              .each(function() {
-                var $a = $(this).find('a');
-    
-                var isActive = $a.hasClass('active');
-                var tabId = $a.attr('href');
-                var tabWin = $(tabId).find('#content_frm').get(0).contentWindow;
-        
-                $(tabId).remove();
-                $(this).remove();
-                });
-            
-            opt.$trigger.find('a').click();
+            opt.$trigger.siblings().each(function () {
+              var $a = $(this).find("a");
+
+              var isActive = $a.hasClass("active");
+              var tabId = $a.attr("href");
+              var tabWin = $(tabId).find("#content_frm").get(0).contentWindow;
+
+              $(tabId).remove();
+              $(this).remove();
+            });
+
+            opt.$trigger.find("a").click();
           },
           disabled: function (key, opt) {
             if (opt.$trigger.siblings().length === 0) {
@@ -398,17 +396,16 @@
           name: "우측 탭 닫기",
           callback: function (itemKey, opt, e) {
             while (opt.$trigger.next().length) {
-              
-              var $a = opt.$trigger.next().find('a');
-              
-              var isActive = $a.hasClass('active');
-              var tabId = $a.attr('href');
-              var tabWin = $(tabId).find('#content_frm').get(0).contentWindow;
+              var $a = opt.$trigger.next().find("a");
+
+              var isActive = $a.hasClass("active");
+              var tabId = $a.attr("href");
+              var tabWin = $(tabId).find("#content_frm").get(0).contentWindow;
 
               $(tabId).remove();
               opt.$trigger.next().remove();
             }
-            opt.$trigger.find('a').click();
+            opt.$trigger.find("a").click();
           },
           disabled: function (key, opt) {
             if (opt.$trigger.next().length === 0) {
@@ -420,7 +417,6 @@
       // autoHide: true, // 컨텍스트메뉴에서 마우스가 멀어지면 자동으로 닫는 기능
     });
   });
-
 </script>
 
 {%endblock%}
