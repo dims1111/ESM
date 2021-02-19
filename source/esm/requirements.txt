@@ -1,5 +1,6 @@
 asgiref==3.3.1
 cx-Oracle==8.1.0
 Django==3.1.6
+Pygments==2.8.0
 pytz==2021.1
 sqlparse==0.4.1
