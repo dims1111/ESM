@@ -68,7 +68,7 @@ def search(request):
     commParam['msg'] = langMag.title
 
     # 쿼리 문장 확인
-    print('query ->', queryset.query)
+    # print('query ->', queryset.query)
 
     # 데이터 확인 및 로직 처리
     # for ca in queryset:

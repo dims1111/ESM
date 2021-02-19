@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from esm.module_settings.logger import * # logger
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -118,8 +119,8 @@ DATABASES = {
         'NAME': 'vis1226',
         'USER': 'esm',
         'PASSWORD': 'esm',
-        'HOST':'210.112.232.29',
-        'PORT':'1531',
+        'HOST': '210.112.232.29',
+        'PORT': '1531',
     },
 }
 
