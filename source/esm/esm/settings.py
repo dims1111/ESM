@@ -27,15 +27,13 @@ SECRET_KEY = '10go6ztc)0!*vgeqz5_*rgk1@3t%k6azlpif-m^mo86ojomh*s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# 도메이 접속 권한 IP
+# 도메인 접속 권한 IP
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
 # 브라우저 닫을 시 세션 삭제
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,8 +46,10 @@ INSTALLED_APPS = [
 
     # 로그인 / 로그아웃 / 홈
     'esm_app',
+
     # 공통 템플릿, 함수
     'esm_com',
+
     # 시스템관리
     'esm_sys.esm_sys_1000',     # 사용자등록
     'esm_sys.esm_sys_1010',     # 메뉴등록
@@ -99,30 +99,30 @@ WSGI_APPLICATION = 'esm.wsgi.application'
 
 # 전자식 복무관리 시스템
 # 오라클 개발서버 접속정보
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.oracle',
-#         'NAME': 'vis1226',
-#         'USER': 'esm',
-#         'PASSWORD': 'esm',
-#         'HOST':'210.112.232.29',
-#         'PORT':'1531',
-#     },
-# }
-
-# local oracle server
-# python manage.py inspectdb > esmdb.py
-# 속도가 너무 느려서 로컬로 접속하여 모델 작성
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': 'vis1226',
         'USER': 'esm',
         'PASSWORD': 'esm',
-        'HOST': '210.112.232.29',
-        'PORT': '1531',
+        'HOST':'210.112.232.29',
+        'PORT':'1531',
     },
 }
+
+# local oracle server
+# python manage.py inspectdb > esmdb.py
+# 속도가 너무 느려서 로컬로 접속하여 모델 작성
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.oracle',
+#         'NAME': 'vis1226',
+#         'USER': 'esm',
+#         'PASSWORD': 'esm',
+#         'HOST': '210.112.232.29',
+#         'PORT': '1531',
+#     },
+# }
 
 # 전자식 복무관리 시스템
 # 동적 쿼리 접속을 위한 오라클 DNS 정보

@@ -16,8 +16,8 @@ def searchExecute(request, sqlString, sqlParam):
 		# DB연결, 커서생성
         with cx_Oracle.connect(connDns) as connection, connection.cursor() as cursor:
             # 쿼리 실행
-            # print('sqlString =>' ,sqlString, type(sqlString))
-            # print('sqlParam =>' ,sqlParam, type(sqlParam))
+            print('sqlString =>' ,sqlString, type(sqlString))
+            print('sqlParam =>' ,sqlParam, type(sqlParam))
             cursor.execute(sqlString, sqlParam)
 
             # 쿼리 결과값 가져오기 

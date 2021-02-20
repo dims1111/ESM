@@ -24,7 +24,7 @@ from django.db import transaction
 def home(request):  
   return render(request, 'esm_sys/esm_sys_1020.html')
 
-# 조회 버튼을 클릭
+# 조회 버튼
 def doSearch(request):
   # 화면에서 검색조건의 값
   srhMenuName = request.POST.get('menuName', None)
@@ -93,7 +93,7 @@ def doSearch(request):
   return JsonResponse(serialized_queryset, safe=False)
  
 
-# 출력 버튼을 클릭
+# 출력 버튼
 def doPrint(request):
   return render(request, 'esm_sys/esm_sys_1020.html')
 
@@ -102,8 +102,7 @@ def doPrint(request):
 # 1. 세이브 포이트 방식 : 사용자 여러개의 데이터를 저장 처리 시 로직에 의해서 커밋 또는 롤백 처리 시 사용
 # 2. 데코레이트 방식 : 해당 함수 내 오류가 없으면 자동 커밋, 오류가 존재하면 롤백 처리 (함수 위에 @transaction.atomic 작성)
 
-# 저장 버튼을 클릭
-@transaction.atomic
+# 저장 버튼
 def doSave(request):
   # 화면별 코드 및 메시지 전달 변수  
   commParam = {'cd' : 'S', 'msg' : ''}
@@ -121,7 +120,7 @@ def doSave(request):
   # sid = transaction.savepoint() 
   if rowStatus == 'D':
     print("삭제")
-    commParam = doDelete('2482754b88fb4d11bd1ffb028e297e27')
+    commParam = doDelete('85196e9c40f645ae975ef11c05564a54')
     # 메뉴 모델 오브젝트에서 키 값을 조회 후 변경 컬럼을 값 할당 후 저장
     # 삭제 했는데 왜 다시 업데이트도고, 인서트를 하지 흠냐 ...
 
@@ -144,8 +143,9 @@ def doSave(request):
   #serialized_queryset = serializers.serialize('json', dataSet)
   #return JsonResponse(serialized_queryset, safe=False)
 
-@transaction.atomic
-def doInser(request):
+
+# 신규처리
+def doInsert(request, now):
   try:
     # SysMenu.objects.bulk_create(dataSet)
     dataSet = SysMenu(
@@ -173,20 +173,21 @@ def doInser(request):
     )
 
     # 데이터 저장
-    dataSet.save()    
-    print('===========================================================================')
-    print('정상적으로 데이터를 신규로 저장하였습니다.')
-    print('===========================================================================')
+    with transaction.atomic():
+      dataSet.save()    
+      print('===========================================================================')
+      print('정상적으로 데이터를 신규로 저장하였습니다.')
+      print('===========================================================================')
 
   except Exception as e:   
     commParam = {'cd' : 'E', 'msg' : e.args[0]}
   return commParam
 
 
-@transaction.atomic
-def doUpdate(updateSet):
+# 수정 처리
+def doUpdate(updateSet, now):
   try:
-    dataSet = selectPk('659afabc84ea49db8158e8798d3cd2ef')
+    dataSet = SysMenu.objects.get(pk=updateSet)
     dataSet.menu_cd            = 'ML9000'                            # 메뉴코드
     dataSet.menu_name_ko       = '한글 메뉴명-7521'                   # 메뉴명(한글)
     dataSet.menu_name_en       = 'English Menu Name-7521'            # 메뉴명(영문)
@@ -208,46 +209,41 @@ def doUpdate(updateSet):
     dataSet.update_by          = -2                                  # 생성자ID
     
     # 데이터 저장
-    dataSet.save()
-    print('===========================================================================')
-    print('정상적으로 데이터를 수정하였습니다.')
-    print('===========================================================================')
+    with transaction.atomic():
+      dataSet.save()
+
+      print('===========================================================================')
+      print('정상적으로 데이터를 수정하였습니다.')
+      print('===========================================================================')
 
   except Exception as e:   
     commParam = {'cd' : 'E', 'msg' : e.args[0]}
   return commParam
 
 
-@transaction.atomic
+# 삭제 처리
 def doDelete(primaryKey):
   try:
-    dataSet = doSelectPk(primaryKey)
-    dataSet.delete()
     
-    # 데이터 저장
-    dataSet.save()
-    dataSet.commt()
-    print('===========================================================================')
-    print('정상적으로 데이터를 삭제하였습니다.')
-    print('===========================================================================')
+    dataSet = SysMenu.objects.get(pk=primaryKey)
+    
+    with transaction.atomic():
+      dataSet.delete()
+
+      print('===========================================================================')
+      print('정상적으로 데이터를 삭제하였습니다.')
+      print('===========================================================================')
 
   except Exception as e:   
     commParam = {'cd' : 'E', 'msg' : e.args[0]}
   return commParam
 
 
-def doSelectPk(primaryKey):
-  try:
-    dataSet = SysMenu.objects.get(pk=primaryKey)
-  except Exception as e:   
-    commParam = {'cd' : 'E', 'msg' : e.args[0]}
-  return dataSet
-
-
-# 엑셀업로드 버튼을 클릭
+# 엑셀업로드 버튼
 def doExcelDown(request):
-  return render(request, 'esm_sys/esm_sys_1020.html')  
+  return render(request, 'esm_sys/esm_sys_1020.html')
+  
 
-# 엑셀다운로드 버튼을 클릭
+# 엑셀다운로드 버튼
 def doExcelUp(request):
   return render(request, 'esm_sys/esm_sys_1020.html')
