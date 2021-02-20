@@ -69,12 +69,12 @@ def doSearch(request):
 
     # 쿼리 문장 확인
     # print('query ->', queryset.query)
-
+    
     # 데이터 확인 및 로직 처리
     # for ca in queryset:
     #   print('menu_cd =>', ca.menu_cd, 'menu_name_ko =>', ca.menu_name_ko, 'url =>', ca.url, 'user_yn =>', ca.use_yn)
 
-    # [정상] 데이터가 존재하지 읺음
+    # [정상] 데이터가 존재하지 않음
     if not querySet.exists():
       langMag.msgParam['errNum'] = 1020
       raise langMag.no_data_found(langMag.errMsg())
@@ -108,19 +108,87 @@ def doSave(request):
   commParam = {'cd' : 'S', 'msg' : ''}
 
   # 데이터 왔다 치고 
-  rowStatus = 'D'
-  now = datetime.datetime.now()
-
+  rowStatus = 'I'
   print('rowStatus =>', rowStatus)
 
   # 데이터베이스 일시 가져오기 로직 추가 필요
+  now = datetime.datetime.now()
+
+  # Json 데이터 처리
+  params = {
+	    {'key' : '7a25a64698a543c4845c6206e03badb7'
+	     ,'data' : {
+          'row_status'        : 'U'
+	        ,'menu_cd'          : 'ML9000'
+	        ,'menu_name_ko'     : '한글 메뉴명-ML9000'
+	        ,'menu_name_en'     : 'English Menu Name-ML9000'
+	        ,'url'              : '/esm_sys/esm_sys_9000'
+	        ,'parent_menu_cd'   : 'ML7500'
+	        ,'icons'            : ''
+	        ,'sort_order'       : 9000
+	        ,'use_yn'           : 'Y'
+	        ,'search_yn'        : 'Y'
+	        ,'insert_yn'        : 'Y'
+	        ,'update_yn'        : 'Y'
+	        ,'delete_yn'        : 'Y'
+	        ,'print_yn'         : 'Y'
+	        ,'batch_yn'         : 'Y'
+	        ,'excel_down_yn'    : 'Y'
+	        ,'excel_up_yn'      : 'Y'
+	        ,'remark'           : '테스트 메뉴 입력-ML9000'
+	        ,'create_date_time' : now
+	        ,'create_by'        : -1
+	        ,'update_date_time' : now
+	        ,'update_by'        : -1
+	        },
+	    }
+	   ,{
+        'key' : ''
+        ,'data' : {
+           'row_status'       : 'I'
+          ,'menu_cd'          : 'ML9010'
+          ,'menu_name_ko'     : '한글 메뉴명-ML9010'
+          ,'menu_name_en'     : 'English Menu Name-ML9000'
+          ,'url'              : '/esm_sys/esm_sys_9010'
+          ,'parent_menu_cd'   : 'ML7500'
+          ,'icons'            : ''
+          ,'sort_order'       : 9010
+          ,'use_yn'           : 'Y'
+          ,'search_yn'        : 'N'
+          ,'insert_yn'        : 'N'
+          ,'update_yn'        : 'N'
+          ,'delete_yn'        : 'N'
+          ,'print_yn'         : 'N'
+          ,'batch_yn'         : 'N'
+          ,'excel_down_yn'    : 'N'
+          ,'excel_up_yn'      : 'N'
+          ,'remark'           : '테스트 메뉴 입력-ML9010'
+          ,'create_date_time' : now
+          ,'create_by'        : -2
+          ,'update_date_time' : now
+          ,'update_by'        : -2
+        }
+      }
+    }
+
+
+  print(params, type(params))
+
+  for ca in params.get('row_status'):
+    print (ca)
+  
+
 
 
   # 트랜잭션 관리를 위한 세이브포인트 sid 할당
   # sid = transaction.savepoint() 
-  if rowStatus == 'D':
-    print("삭제")
-    commParam = doDelete('85196e9c40f645ae975ef11c05564a54')
+  # if rowStatus == 'I':
+  #   print("신규")
+  #   commParam = doInsert(request, now)
+
+  # elif rowStatus == 'D':
+  #   print("삭제")
+    # commParam = doDelete('85196e9c40f645ae975ef11c05564a54')
     # 메뉴 모델 오브젝트에서 키 값을 조회 후 변경 컬럼을 값 할당 후 저장
     # 삭제 했는데 왜 다시 업데이트도고, 인서트를 하지 흠냐 ...
 
@@ -144,7 +212,7 @@ def doSave(request):
   #return JsonResponse(serialized_queryset, safe=False)
 
 
-# 신규처리
+# 신규 처리
 def doInsert(request, now):
   try:
     # SysMenu.objects.bulk_create(dataSet)
