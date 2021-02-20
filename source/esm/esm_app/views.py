@@ -54,11 +54,11 @@ def home(request):
 
 # 서브 메뉴 조회
 def getSubMenuList(request):
-  parentMenuId = request.POST['menuId']
+  parentMenuCd = request.POST['parentMenuCd']
 
   # 대 메뉴 조회
   params = {}
-  params['subMenuList'] = stViews.searchExecute2(request, sql.subMenu, parentMenuId)
+  params['subMenuList'] = stViews.searchExecute2(request, sql.subMenu, parentMenuCd)
   return JsonResponse(params)
 
 
@@ -119,7 +119,7 @@ def login(request):
       except (langMag.no_data_found, langMag.no_data_match) as e:
         commParam = {'cd' : 'E', 'msg' : e}
       except Exception as e:
-        commParam = {'cd' : 'E', 'msg' : '[Error Info.] '.join(e.args)}
+        commParam = {'cd' : 'E', 'msg' : e.args[0]}
 
     return render(request, 'esm_app/login.html', commParam)
 

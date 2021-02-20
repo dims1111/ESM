@@ -33,7 +33,7 @@
       <div class="sidebar-main mt-2 pt-3">
         <ul id="mainList">
           {% for item in mainMenuList %}
-          <li class="sidebar-main__item py-2 {{item.active}}" data-menu-id="{{item.menuId}}">
+          <li class="sidebar-main__item py-2 {{item.active}}" data-menu-id="{{item.menuCd}}">
             <span class="main__icon material-icons" mcd="{{item.mainCd}}">{{item.icons}}</span>
             <div class="mt-1">{{item.menuNameKo}}</div>
           </li>
@@ -150,37 +150,37 @@
       });
 
     // 탭화면 추가
-    function addNavTab(menuId, menuNm, url) {
+    function addNavTab(menuCd, menuNm, url) {
       var len = $("#navs li.nav-item").length;
 
       for (var i = 0; i < len; i++) {
         var $a = $("#navs").children().eq(i).find("a");
-        if ($a.data("menuId") === menuId) {
+        if ($a.data("menuCd") === menuCd) {
           $a.click();
           return true;
         }
       }
 
       // 최대 8개까지
-      if (len >= 8) {
-        alert("최대 탭 8");
+      if (len >= 10) {
+        alert("최대 10개 화면을 사용할 수 있습니다. 화면을 닫고 사용하시기 바랍니다.");
         return;
       }
 
       var tabContent = $("#newtab").html();
-      $(".tab-content").append('<div class="tab-pane w-100 h-100 active" id="tabs-' + menuId + '">' + tabContent + "</div>");
+      $(".tab-content").append('<div class="tab-pane w-100 h-100 active" id="tabs-' + menuCd + '">' + tabContent + "</div>");
 
       $("#navs").append(
         '<li class="nav-item"><a class="nav-link" data-toggle="tab" data-menu-id="' +
-          menuId +
+          menuCd +
           '"href="#tabs-' +
-          menuId +
+          menuCd +
           '">' +
           menuNm +
           '</a><span class="material-icons small">clear</span></li>'
       );
       $("#navs").children("li").last().find("a").click();
-      $("#tabs-" + menuId + " #content_frm").attr("src", url);
+      $("#tabs-" + menuCd + " #content_frm").attr("src", url);
 
       return true;
     }
@@ -226,11 +226,11 @@
       var url = $(this).data("url");
       if (!url) return;
 
-      var menuId = $(this).data("menuId");
+      var menuCd = $(this).data("menuCd");
       var menuNm = $(this).data("menuNm");
 
       // Nav영역에 탭 추가
-      if (!addNavTab(menuId, menuNm, url)) return;
+      if (!addNavTab(menuCd, menuNm, url)) return;
 
       // 현 엘리먼트만 active class 적용
       $("#menu-content li").removeClass("active");
@@ -245,14 +245,14 @@
 
     // 서브메뉴 조회
     function gutSubMenuList() {
-      var menuId = $("#mainList > li.active").data("menuId");
+      var menuCd = $("#mainList > li.active").data("menuCd");
 
       $.ajax({
         type: "POST",
         url: "/menu/getSubMenuList",
         data: {
           csrfmiddlewaretoken: $('*[name="csrfmiddlewaretoken"]').val(),
-          menuId: menuId,
+          menuCd: menuCd,
         },
         dataType: "json",
         success: function (data) {
@@ -294,7 +294,7 @@
               var $li = $("<li />", {
                 class: "menu",
                 "data-toggle": "collapse",
-                "data-target": "#group" + item.menuId,
+                "data-target": "#group" + item.menuCd,
               });
               var $div = $("<div />", { text: item.menuNameKo, class: "menu__name font-weight-bold" });
               var $span = $("<span />", { text: "expand_less", class: "expand material-icons" });
@@ -310,10 +310,10 @@
                 "data-toggle": "tooltip",
                 "data-placement": "right",
                 "data-url": item.url,
-                "data-parent-menu-id": item.parentMenuId,
-                "data-menu-id": item.menuId,
+                "data-parent-menu-id": item.parentMenuCd,
+                "data-menu-id": item.menuCd,
               });
-              $ul.attr("id", "group" + item.parentMenuId);
+              $ul.attr("id", "group" + item.parentMenuCd);
               $li.click(openMenu);
               $ul.append($li);
               isgroup = true;

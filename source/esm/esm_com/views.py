@@ -28,15 +28,15 @@ def searchExecute(request, sqlString, sqlParam):
 
 # 조회 쿼리 수행 
 # 위 함수와 병합하여 처리가 필요한데 매개변수가 1..n개 형식도 다른데 병합 처리 ???
-def searchExecute2(request, sqlString, parentMenuId):	
+def searchExecute2(request, sqlString, parentMenuCd):	
     vDict = {}
     try:
 		# DB연결, 커서생성
         with cx_Oracle.connect(connDns) as connection, connection.cursor() as cursor:
             # 쿼리 실행
-            # print('sqlString =>' ,sqlString, type(sqlString))
-            # print('parentMenuId =>' ,parentMenuId, type(parentMenuId))
-            cursor.execute(sqlString, p_parent_menu_id=parentMenuId)
+            print('sqlString =>' ,sqlString, type(sqlString))
+            print('parentMenuCd =>' ,parentMenuCd, type(parentMenuCd))
+            cursor.execute(sqlString, p_parent_menu_cd=parentMenuCd)
 
             # 쿼리 결과값 가져오기 
             vDict = rows_to_dict_list(cursor)

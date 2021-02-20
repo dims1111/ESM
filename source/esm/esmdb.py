@@ -118,12 +118,91 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
+class PersonMaster(models.Model):
+    person_id = models.FloatField(primary_key=True)
+    person_name_ko = models.CharField(max_length=100)
+    person_name_en = models.CharField(max_length=200)
+    resident_number = models.CharField(max_length=13)
+    birth_date = models.DateField()
+    gender_code = models.CharField(max_length=30)
+    internal_email_addr = models.CharField(max_length=50, blank=True, null=True)
+    external_email_addr = models.CharField(max_length=50, blank=True, null=True)
+    hp_phone_number = models.CharField(max_length=30, blank=True, null=True)
+    home_phone_number = models.CharField(max_length=30, blank=True, null=True)
+    company_phone_number = models.CharField(max_length=30, blank=True, null=True)
+    create_date_time = models.DateField(blank=True, null=True)
+    create_by = models.FloatField(blank=True, null=True)
+    update_date_time = models.DateField(blank=True, null=True)
+    update_by = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'person_master'
+
+
+class SysAuth(models.Model):
+    auth_id = models.FloatField(primary_key=True)
+    auth_name_ko = models.CharField(max_length=100)
+    auth_name_en = models.CharField(max_length=200)
+    begin_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    remark = models.CharField(max_length=2000, blank=True, null=True)
+    create_date_time = models.DateField(blank=True, null=True)
+    create_by = models.FloatField(blank=True, null=True)
+    update_date_time = models.DateField(blank=True, null=True)
+    update_by = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sys_auth'
+
+
+class SysAuthMenu(models.Model):
+    auth_menu_id = models.FloatField(primary_key=True)
+    auth_id = models.FloatField()
+    menu_id = models.FloatField()
+    user_yn = models.CharField(max_length=1)
+    user_insert_yn = models.CharField(max_length=1)
+    user_update_yn = models.CharField(max_length=1)
+    user_delete_yn = models.CharField(max_length=1)
+    user_print_yn = models.CharField(max_length=1)
+    user_batch_yn = models.CharField(max_length=1)
+    user_excel_down_yn = models.CharField(max_length=1)
+    user_excel_up_yn = models.CharField(max_length=1)
+    remark = models.CharField(max_length=2000, blank=True, null=True)
+    create_date_time = models.DateField(blank=True, null=True)
+    create_by = models.FloatField(blank=True, null=True)
+    update_date_time = models.DateField(blank=True, null=True)
+    update_by = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sys_auth_menu'
+
+
+class SysLangCode(models.Model):
+    lang_id = models.FloatField(primary_key=True)
+    lang_type_cd = models.CharField(max_length=100)
+    lang_name_ko = models.CharField(max_length=2000)
+    lang_name_en = models.CharField(max_length=2000)
+    remark = models.CharField(max_length=2000, blank=True, null=True)
+    create_date_time = models.DateField(blank=True, null=True)
+    create_by = models.FloatField(blank=True, null=True)
+    update_date_time = models.DateField(blank=True, null=True)
+    update_by = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sys_lang_code'
+
+
 class SysMenu(models.Model):
-    menu_id = models.FloatField(primary_key=True)
+    menu_uid = models.CharField(primary_key=True, max_length=32)
+    menu_cd = models.CharField(max_length=20)
     menu_name_ko = models.CharField(max_length=100)
     menu_name_en = models.CharField(max_length=200)
     url = models.CharField(max_length=200, blank=True, null=True)
-    prent_menu_id = models.FloatField()
+    parent_menu_cd = models.CharField(max_length=20)
     icons = models.CharField(max_length=1000, blank=True, null=True)
     sort_order = models.FloatField(blank=True, null=True)
     use_yn = models.CharField(max_length=1)
@@ -150,7 +229,7 @@ class SysUser(models.Model):
     user_id = models.FloatField(primary_key=True)
     user_account = models.CharField(max_length=30)
     user_name = models.CharField(max_length=50)
-    password = models.CharField(max_length=64)
+    password = models.CharField(max_length=128)
     person_id = models.FloatField()
     hp_number = models.CharField(max_length=30, blank=True, null=True)
     email_addr = models.CharField(max_length=50, blank=True, null=True)
