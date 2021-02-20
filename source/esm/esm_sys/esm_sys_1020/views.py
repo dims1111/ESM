@@ -85,7 +85,7 @@ def doSearch(request):
       langMag.msgParam['errNum'] = 1020
       raise langMag.no_data_found(langMag.errMsg())
 
-  except langMag.no_data_found as e:
+  except langMag.noDataFound as e:
     commParam = {'cd' : 'S', 'msg' : e}
   except Exception as e:
     commParam = {'cd' : 'E', 'msg' : e.args[0]}
@@ -116,7 +116,7 @@ def doSave(request):
 
   # 세션 및 json 데이터 넘겨받기  
   #userId = request.get['user_id']  
-  request.session['user_id'] = '-1200'
+  userID = -1000
 
 
   # 데이터베이스 일시 가져오기 로직 추가 필요
@@ -183,7 +183,7 @@ def doSave(request):
 				],
       "U":
 				[
-					{ "menu_uid": "7a25a64698a543c4845c6206e03badb7"
+					{ "menu_uid": "f64bcf82e8194b8bb10b3a3e76a92a91"
             ,"menu_cd": "ML9100"
             ,"menu_name_ko": "한글 메뉴명-ML9100-update"
             ,"menu_name_en": "English Menu Name-ML9100-update"
@@ -204,7 +204,7 @@ def doSave(request):
             ,"update_date_time" : "2021-02-08 23:22:13"
             ,"update_by": -12
           },
-					{ "menu_uid": "7a25a64698a543c4845c6206e03badb9"
+					{ "menu_uid": "696d5dcdfdcc4e6ba1bb6b11539f7c49"
             ,"menu_cd": "ML9200"
             ,"menu_name_ko": "한글 메뉴명-ML9200-update"
             ,"menu_name_en": "English Menu Name-ML9200-update"
@@ -228,8 +228,8 @@ def doSave(request):
 				],
       "D":
 				[
-					{ "menu_uid": "7a25a64698a543c4845c6206e03badb7" },
-					{ "menu_uid": "7a25a64698a543c4845c6206e03badb9" }
+					{ "menu_uid": "4c4bb247b34144eb869dc75b03be4633" },
+					{ "menu_uid": "4824085222c74375a7553628c5e0c6d3" }
 				]  
 		}
   }
@@ -238,43 +238,47 @@ def doSave(request):
   # json 매개변수 값 추출
   dataObject = json.loads(jsonObject)
 
-  # json 데이터에서 신규/수정/삭제 데이터 추출
+  # json 데이터에서 신규/수정/삭제 데이터 추출  
   insertDataList = dataObject.get("dataSet").get('I')
   updateDataList = dataObject.get("dataSet").get('U')
   deleteDataList = dataObject.get("dataSet").get('D')
   
   # one 트랜잭션 설정을 위한 세이브포인트 할당
-  # @transaction.atomic # 데코레이터 방식
-  sid = transaction.savepoint()
+  with transaction.atomic():
+    try:
+      # 삭제 데이터가 존재하면 저장        
+      if deleteDataList is not None:
+        commParam = doDelete(deleteDataList, commParam)
 
-  try:
-    # 신규 데이터가 존재하면 저장
-    if len(insertDataList) >= 0:
-        commParam = doInsert(request, insertDataList, now, commParam)
+        # 오류가 발생하면 롤백처리 
+        if commParam['cd'] == 'E':
+          raise langMag.userException(commParam['msg'])
 
-    # 수정 데이터가 존재하면 저장
-    # elif len(updateDataList) >= 0:
-    #   with transaction.atomic():
-    #     commParam = doUpdate(request, updateDataList, now)
-    
-    # 삭제 데이터가 존재하면 저장
-    # elif len(deleteDataList) >= 0:
-    #   with transaction.atomic():
-    #     commParam = doUpdate(request, deleteDataList, now)
+      # 신규 데이터가 존재하면 저장
+      if insertDataList is not None:
+        commParam = doInsert(commParam, insertDataList, userID, now)
+        
+        # 오류가 발생하면 롤백처리
+        if commParam['cd'] == 'E':
+          raise langMag.userException(commParam['msg'])
+      
+      # 수정 데이터가 존재하면 저장
+      if updateDataList is not None:
+        commParam = doUpdate(commParam, updateDataList, userID, now)
+        
+        # 오류가 발생하면 롤백처리
+        if commParam['cd'] == 'E':
+          raise langMag.userException(commParam['msg'])
+ 
+    except langMag.userException as e:
+      commParam = {'cd' : 'E', 'msg' : e.args[0]}
+    except Exception as e:   
+      commParam = {'cd' : 'E', 'msg' : e.args[0]}
 
-    # 트랜잭션 전체 성공시 데이터 커밋
-    transaction.savepoint_commit(sid)
-
-  except Exception as e:   
-    commParam = {'cd' : 'E', 'msg' : e.args[0]}
-
-    # 트랜잭션 하나라도 실폐시 데이터 롤백
-    transaction.savepoint_rollback(sid)
-
-  print('===========================================================================')	
+  print('===========================================================================')
   print('cd =>', commParam['cd'])
   print('msg =>',commParam['msg'])
-  print('===========================================================================')	
+  print('===========================================================================')
 
   return HttpResponseRedirect('esm_sys_1010.html')
   # 여기는 어케 처리해야 되는지 도움말좀 달아 주세요.
@@ -286,102 +290,120 @@ def doSave(request):
 
 
 # 신규 데이터 처리
-def doInsert(request, dataList, now, commParam):
+@transaction.atomic
+def doInsert(commParam, dataList, userID, now):
   try:
+    i = 0
     bulkDataList = []    
-    userID = request.POST.get('user_id', -1)
     
-    # json 데이터 확인
-    for ca in dataList:
+    # dataList 데이터 확인
+    for ca in dataList:      
       # 신규 메뉴 클래스 생성
-      newSysMenu = SysMenu()
+      newData = SysMenu()
 
       # 신규 메뉴 클래스 항목별 값 할당
-      newSysMenu.menu_uid = None
-      newSysMenu.menu_cd = ca.get("menu_cd")
-      newSysMenu.menu_name_ko = ca.get("menu_name_ko")
-      newSysMenu.menu_name_en = ca.get("menu_name_en")
-      newSysMenu.url = ca.get("url")
-      newSysMenu.parent_menu_cd = ca.get("parent_menu_cd")
-      newSysMenu.icons = ca.get("icons")
-      newSysMenu.sort_order = ca.get("sort_order")
-      newSysMenu.use_yn = ca.get("use_yn")
-      newSysMenu.search_yn = ca.get("search_yn")
-      newSysMenu.insert_yn = ca.get("insert_yn")
-      newSysMenu.update_yn = ca.get("update_yn")
-      newSysMenu.delete_yn = ca.get("delete_yn")
-      newSysMenu.print_yn = ca.get("print_yn")
-      newSysMenu.batch_yn = ca.get("batch_yn")
-      newSysMenu.excel_down_yn = ca.get("excel_down_yn")
-      newSysMenu.remark = ca.get("remark")
-      newSysMenu.create_date_time = now
-      newSysMenu.create_by = userID
-      newSysMenu.update_date_time = now
-      newSysMenu.update_by = userID
+      newData.menu_uid          = None
+      newData.menu_cd           = ca.get('menu_cd')
+      newData.menu_name_ko      = ca.get('menu_name_ko')
+      newData.menu_name_en      = ca.get('menu_name_en')
+      newData.url               = ca.get('url')
+      newData.parent_menu_cd    = ca.get('parent_menu_cd')
+      newData.icons             = ca.get('icons')
+      newData.sort_order        = ca.get('sort_order')
+      newData.use_yn            = ca.get('use_yn')
+      newData.search_yn         = ca.get('search_yn')
+      newData.insert_yn         = ca.get('insert_yn')
+      newData.update_yn         = ca.get('update_yn')
+      newData.delete_yn         = ca.get('delete_yn')
+      newData.print_yn          = ca.get('print_yn')
+      newData.batch_yn          = ca.get('batch_yn')
+      newData.excel_down_yn     = ca.get('excel_down_yn')
+      newData.remark            = ca.get('remark')
+      newData.create_date_time  = now
+      newData.create_by         = userID
+      newData.update_date_time  = now
+      newData.update_by         = userID
 
       # 메뉴 클래스를 리스트에 추가      
-      bulkDataList.append(newSysMenu)
+      bulkDataList.append(newData)
+      i += 1
      
     # 대량 데이터 일괄 저장    
     SysMenu.objects.bulk_create(bulkDataList)
     print('===========================================================================')
-    print('정상적으로 데이터를 신규로 저장하였습니다.')
+    print(str(i) + '건의 데이터를 저장하였습니다.')
     print('===========================================================================')
 
-  except Exception as e:   
+  except Exception as e:
     commParam = {'cd' : 'E', 'msg' : e.args[0]}
   return commParam
 
 
 # 수정 처리
-def doUpdate(updateSet, now):
+@transaction.atomic
+def doUpdate(commParam, dataList, userID, now):
   try:
-    dataSet = SysMenu.objects.get(pk=updateSet)
-    dataSet.menu_cd            = 'ML9000'                            # 메뉴코드
-    dataSet.menu_name_ko       = '한글 메뉴명-7521'                   # 메뉴명(한글)
-    dataSet.menu_name_en       = 'English Menu Name-7521'            # 메뉴명(영문)
-    dataSet.url                = '/esm_sys/esm_sys_7521'             # URL
-    dataSet.parent_menu_cd     = 'ML7500'                            # 상위메뉴코드
-    dataSet.icons              = ''                                  # 아이콘
-    dataSet.sort_order         = 9001                                # 정렬순서
-    dataSet.use_yn             = 'Y'                                 # 사용여부(Y/N)
-    dataSet.search_yn          = 'N'                                 # 조회여부(Y/N)
-    dataSet.insert_yn          = 'N'                                 # 신규여부(Y/N)
-    dataSet.update_yn          = 'N'                                 # 수정여부(Y/N)
-    dataSet.delete_yn          = 'N'                                 # 삭제여부(Y/N)
-    dataSet.print_yn           = 'N'                                 # 출력여부(Y/N)
-    dataSet.batch_yn           = 'N'                                 # 생성여부(Y/N)
-    dataSet.excel_down_yn      = 'N'                                 # 엑셀다운로드여부
-    dataSet.excel_up_yn        = 'N'                                 # 엑셀업로드여부
-    dataSet.remark             = '테스트 메뉴 입력-7521'              # 비고        
-    dataSet.update_date_time   = now                                 # 수정일시
-    dataSet.update_by          = -2                                  # 생성자ID
+    i = 0
     
-    dataSet.save()
+    # dataList 데이터 확인
+    for ca in dataList:
+      updateData = SysMenu.objects.filter(pk=ca.get('menu_uid'))
+
+      if updateData.exists():
+        updateData.menu_cd           = ca.get('menu_cd')
+        updateData.menu_name_ko      = ca.get('menu_name_ko')
+        updateData.menu_name_en      = ca.get('menu_name_en')
+        updateData.url               = ca.get('url')
+        updateData.parent_menu_cd    = ca.get('parent_menu_cd')
+        updateData.icons             = ca.get('icons')
+        updateData.sort_order        = ca.get('sort_order')
+        updateData.use_yn            = ca.get('use_yn')
+        updateData.search_yn         = ca.get('search_yn')
+        updateData.insert_yn         = ca.get('insert_yn')
+        updateData.update_yn         = ca.get('update_yn')
+        updateData.delete_yn         = ca.get('delete_yn')
+        updateData.print_yn          = ca.get('print_yn')
+        updateData.batch_yn          = ca.get('batch_yn')
+        updateData.excel_down_yn     = ca.get('excel_down_yn')
+        updateData.remark            = ca.get('remark')
+        updateData.update_date_time  = now
+        updateData.update_by         = userID
+        
+        # 데이터 저장
+        updateData.save()
+        i += 1
 
     print('===========================================================================')
-    print('정상적으로 데이터를 수정하였습니다.')
+    print(str(i) + '건의 데이터를 수정하였습니다.')
     print('===========================================================================')
 
-  except Exception as e:   
+  except Exception as e:
+    print("@@@@@ 수정 오류 @@@@@ ")
     commParam = {'cd' : 'E', 'msg' : e.args[0]}
   return commParam
 
 
 # 삭제 처리
-def doDelete(primaryKey):
-  try:
-    
-    dataSet = SysMenu.objects.get(pk=primaryKey)
-    
-    with transaction.atomic():
-      dataSet.delete()
+def doDelete(dataList, commParam):
+  try:    
+    i = 0
 
-      print('===========================================================================')
-      print('정상적으로 데이터를 삭제하였습니다.')
-      print('===========================================================================')
+    # dataList 데이터 확인
+    for ca in dataList:      
+      # 신규 메뉴 클래스 생성
+      deleteData = SysMenu.objects.filter(pk=ca.get('menu_uid'))
+
+      # 자료가 존재하면 삭제
+      if deleteData.exists():
+        deleteData.delete()
+        i += 1
+
+    print('===========================================================================')
+    print(str(i) +'건의 데이터를 삭제하였습니다.')
+    print('===========================================================================')
 
   except Exception as e:   
+    print("@@@@@ 삭제 오류 @@@@@ ")
     commParam = {'cd' : 'E', 'msg' : e.args[0]}
   return commParam
 

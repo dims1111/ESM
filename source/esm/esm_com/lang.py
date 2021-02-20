@@ -6,11 +6,14 @@ class langMag:
   title = {'main' : '', 'sub1': '', 'sub2' : '', 'sub3' : ''}
 
   # 데이터가 존재하지 않는 예외 처리 클래스
-  class no_data_found(Exception):
+  class noDataFound(Exception):
     pass
   
   # 데이터 비교시 불일치 예외 처리 클래스
-  class no_data_match(Exception):
+  class noDataMatch(Exception):
+    pass
+
+  class userException(Exception):
     pass
 
   # 파일 형식에서 ORM형식으로 변경 예정  
@@ -35,6 +38,12 @@ class langMag:
         errDescr = '조회 조건에 일치하는 데이터가 존재하지 않습니다.'
       elif langCd == 'eng':
         errDescr = 'No data found.'
+
+    elif errNum == 1030:
+      if langCd == 'kor':
+        errDescr = '대기중'
+      elif langCd == 'eng':
+        errDescr = 'pendding'
     
     return errDescr
   

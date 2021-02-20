@@ -95,7 +95,7 @@ def login(request):
         if not queryset.exists():          
           print("사용자 미존재", langMag.msgParam)
           langMag.msgParam['errNum'] = 1000          
-          raise langMag.no_data_found(langMag.errMsg())
+          raise langMag.noDataFound(langMag.errMsg())
         else:
 
           print("사용자 존재", queryset, type(queryset))
@@ -112,9 +112,9 @@ def login(request):
             else:
               print("비밀번호 불일치")
               langMag.msgParam['errNum'] = 1010
-              raise langMag.no_data_match(langMag.errMsg())
+              raise langMag.noDataMatch(langMag.errMsg())
 
-      except (langMag.no_data_found, langMag.no_data_match) as e:
+      except (langMag.noDataFound, langMag.noDataMatch) as e:
         commParam = {'cd' : 'E', 'msg' : e}
       except Exception as e:
         commParam = {'cd' : 'E', 'msg' : e.args[0]}
