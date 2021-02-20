@@ -18,6 +18,12 @@ import datetime
 # 데이터베이스 트랜잭션 관리 임포트
 from django.db import transaction
 
+# 임포트 json 클랙스
+import json
+
+# 임포트 UUID 클래스
+import uuid
+
 
 # Create your views here.
 # 메뉴 클릭 후 첫 화면 오픈
@@ -107,96 +113,163 @@ def doSave(request):
   # 화면별 코드 및 메시지 전달 변수  
   commParam = {'cd' : 'S', 'msg' : ''}
 
-  # 데이터 왔다 치고 
-  rowStatus = 'I'
-  print('rowStatus =>', rowStatus)
+
+  # 세션 및 json 데이터 넘겨받기  
+  #userId = request.get['user_id']  
+  request.session['user_id'] = '-1200'
+
 
   # 데이터베이스 일시 가져오기 로직 추가 필요
   now = datetime.datetime.now()
 
-  # Json 데이터 처리
-  params = {
-	    {'key' : '7a25a64698a543c4845c6206e03badb7'
-	     ,'data' : {
-          'row_status'        : 'U'
-	        ,'menu_cd'          : 'ML9000'
-	        ,'menu_name_ko'     : '한글 메뉴명-ML9000'
-	        ,'menu_name_en'     : 'English Menu Name-ML9000'
-	        ,'url'              : '/esm_sys/esm_sys_9000'
-	        ,'parent_menu_cd'   : 'ML7500'
-	        ,'icons'            : ''
-	        ,'sort_order'       : 9000
-	        ,'use_yn'           : 'Y'
-	        ,'search_yn'        : 'Y'
-	        ,'insert_yn'        : 'Y'
-	        ,'update_yn'        : 'Y'
-	        ,'delete_yn'        : 'Y'
-	        ,'print_yn'         : 'Y'
-	        ,'batch_yn'         : 'Y'
-	        ,'excel_down_yn'    : 'Y'
-	        ,'excel_up_yn'      : 'Y'
-	        ,'remark'           : '테스트 메뉴 입력-ML9000'
-	        ,'create_date_time' : now
-	        ,'create_by'        : -1
-	        ,'update_date_time' : now
-	        ,'update_by'        : -1
-	        },
-	    }
-	   ,{
-        'key' : ''
-        ,'data' : {
-           'row_status'       : 'I'
-          ,'menu_cd'          : 'ML9010'
-          ,'menu_name_ko'     : '한글 메뉴명-ML9010'
-          ,'menu_name_en'     : 'English Menu Name-ML9000'
-          ,'url'              : '/esm_sys/esm_sys_9010'
-          ,'parent_menu_cd'   : 'ML7500'
-          ,'icons'            : ''
-          ,'sort_order'       : 9010
-          ,'use_yn'           : 'Y'
-          ,'search_yn'        : 'N'
-          ,'insert_yn'        : 'N'
-          ,'update_yn'        : 'N'
-          ,'delete_yn'        : 'N'
-          ,'print_yn'         : 'N'
-          ,'batch_yn'         : 'N'
-          ,'excel_down_yn'    : 'N'
-          ,'excel_up_yn'      : 'N'
-          ,'remark'           : '테스트 메뉴 입력-ML9010'
-          ,'create_date_time' : now
-          ,'create_by'        : -2
-          ,'update_date_time' : now
-          ,'update_by'        : -2
-        }
-      }
-    }
+  # 화면 그리드에서 넘겨준 json 데이터 형식
+  # 레벨1 : dataSet으로 고정
+  # 레벨2 : I, U, D로 구분
+  # 레벨3 : I, U의 경우 항목별 값 모두 넘기기
+  #         D의 경우 Pirimary Key 값 넘기기
+  # 결론 : 그리드에서 넘길 경우 I, U, D를 그룹핑 하여 넘기기 
+  jsonObject = '''
+  {
+    "dataSet":
+		{
+			"I":
+				[
+					{ "menu_id": ""
+            ,"menu_cd": "ML9100"
+            ,"menu_name_ko": "한글 메뉴명-ML9100"
+            ,"menu_name_en": "English Menu Name-ML9100"
+            ,"url": "/esm_sys/esm_sys_9100"
+            ,"parent_menu_cd": "ML7500"
+            ,"icons": ""
+            ,"sort_order": 9100
+            ,"use_yn": "Y"
+            ,"search_yn": "Y"
+            ,"insert_yn": "Y"
+            ,"update_yn": "Y"
+            ,"delete_yn": "Y"
+            ,"print_yn": "Y"
+            ,"batch_yn": "Y"
+            ,"excel_down_yn": "Y"
+            ,"excel_up_yn": "Y"
+            ,"remark": "테스트 메뉴 입력-ML9100"
+            ,"create_date_time": "2021-02-08 22:15:12"
+            ,"create_by": -1
+            ,"update_date_time" : "2021-02-08 22:15:16"
+            ,"update_by": -1
+          },
+					{ "menu_id": ""
+            ,"menu_cd": "ML9200"
+            ,"menu_name_ko": "한글 메뉴명-ML9200"
+            ,"menu_name_en": "English Menu Name-ML9200"
+            ,"url": "/esm_sys/esm_sys_9200"
+            ,"parent_menu_cd": "ML7500"
+            ,"icons": ""
+            ,"sort_order": 9100
+            ,"use_yn": "Y"
+            ,"search_yn": "Y"
+            ,"insert_yn": "N"
+            ,"update_yn": "N"
+            ,"delete_yn": "Y"
+            ,"print_yn": "N"
+            ,"batch_yn": "Y"
+            ,"excel_down_yn": "Y"
+            ,"excel_up_yn": "N"
+            ,"remark": "테스트 메뉴 입력-ML9200"
+            ,"create_date_time": "2021-02-08 23:15:12"
+            ,"create_by": -2
+            ,"update_date_time" : "2021-02-08 23:15:13"
+            ,"update_by": -2
+          }
+				],
+      "U":
+				[
+					{ "menu_uid": "7a25a64698a543c4845c6206e03badb7"
+            ,"menu_cd": "ML9100"
+            ,"menu_name_ko": "한글 메뉴명-ML9100-update"
+            ,"menu_name_en": "English Menu Name-ML9100-update"
+            ,"url": "/esm_sys/esm_sys_9100-update"
+            ,"parent_menu_cd": "ML7500"
+            ,"icons": "1"
+            ,"sort_order": 9101
+            ,"use_yn": "Y"
+            ,"search_yn": "N"
+            ,"insert_yn": "N"
+            ,"update_yn": "Y"
+            ,"delete_yn": "N"
+            ,"print_yn": "N"
+            ,"batch_yn": "N"
+            ,"excel_down_yn": "Y"
+            ,"excel_up_yn": "N"
+            ,"remark": "테스트 메뉴 입력-ML9100-update"
+            ,"update_date_time" : "2021-02-08 23:22:13"
+            ,"update_by": -12
+          },
+					{ "menu_uid": "7a25a64698a543c4845c6206e03badb9"
+            ,"menu_cd": "ML9200"
+            ,"menu_name_ko": "한글 메뉴명-ML9200-update"
+            ,"menu_name_en": "English Menu Name-ML9200-update"
+            ,"url": "/esm_sys/esm_sys_9200-update"
+            ,"parent_menu_cd": "ML7500"
+            ,"icons": "2"
+            ,"sort_order": 9102
+            ,"use_yn": "Y"
+            ,"search_yn": "Y"
+            ,"insert_yn": "Y"
+            ,"update_yn": "N"
+            ,"delete_yn": "N"
+            ,"print_yn": "N"
+            ,"batch_yn": "N"
+            ,"excel_down_yn": "Y"
+            ,"excel_up_yn": "N"
+            ,"remark": "테스트 메뉴 입력-ML9200-update"
+            ,"update_date_time" : "2021-02-08 23:33:44"
+            ,"update_by": -22
+          }
+				],
+      "D":
+				[
+					{ "menu_uid": "7a25a64698a543c4845c6206e03badb7" },
+					{ "menu_uid": "7a25a64698a543c4845c6206e03badb9" }
+				]  
+		}
+  }
+  '''
 
+  # json 매개변수 값 추출
+  dataObject = json.loads(jsonObject)
 
-  print(params, type(params))
-
-  for ca in params.get('row_status'):
-    print (ca)
+  # json 데이터에서 신규/수정/삭제 데이터 추출
+  insertDataList = dataObject.get("dataSet").get('I')
+  updateDataList = dataObject.get("dataSet").get('U')
+  deleteDataList = dataObject.get("dataSet").get('D')
   
+  # one 트랜잭션 설정을 위한 세이브포인트 할당
+  # @transaction.atomic # 데코레이터 방식
+  sid = transaction.savepoint()
 
+  try:
+    # 신규 데이터가 존재하면 저장
+    if len(insertDataList) >= 0:
+        commParam = doInsert(request, insertDataList, now, commParam)
 
+    # 수정 데이터가 존재하면 저장
+    # elif len(updateDataList) >= 0:
+    #   with transaction.atomic():
+    #     commParam = doUpdate(request, updateDataList, now)
+    
+    # 삭제 데이터가 존재하면 저장
+    # elif len(deleteDataList) >= 0:
+    #   with transaction.atomic():
+    #     commParam = doUpdate(request, deleteDataList, now)
 
-  # 트랜잭션 관리를 위한 세이브포인트 sid 할당
-  # sid = transaction.savepoint() 
-  # if rowStatus == 'I':
-  #   print("신규")
-  #   commParam = doInsert(request, now)
+    # 트랜잭션 전체 성공시 데이터 커밋
+    transaction.savepoint_commit(sid)
 
-  # elif rowStatus == 'D':
-  #   print("삭제")
-    # commParam = doDelete('85196e9c40f645ae975ef11c05564a54')
-    # 메뉴 모델 오브젝트에서 키 값을 조회 후 변경 컬럼을 값 할당 후 저장
-    # 삭제 했는데 왜 다시 업데이트도고, 인서트를 하지 흠냐 ...
+  except Exception as e:   
+    commParam = {'cd' : 'E', 'msg' : e.args[0]}
 
-    # elif rowStatus == 'U':
-    #   print("수정")
-
-    # 데이터 커밋    
-    # transaction.savepoint_commit(sid)
+    # 트랜잭션 하나라도 실폐시 데이터 롤백
+    transaction.savepoint_rollback(sid)
 
   print('===========================================================================')	
   print('cd =>', commParam['cd'])
@@ -212,40 +285,48 @@ def doSave(request):
   #return JsonResponse(serialized_queryset, safe=False)
 
 
-# 신규 처리
-def doInsert(request, now):
+# 신규 데이터 처리
+def doInsert(request, dataList, now, commParam):
   try:
-    # SysMenu.objects.bulk_create(dataSet)
-    dataSet = SysMenu(
-       menu_cd                 = 'ML9000'                            # 메뉴코드
-      ,menu_name_ko            = '한글 메뉴명-ML9000'                 # 메뉴명(한글)
-      ,menu_name_en            = 'English Menu Name-ML9000'          # 메뉴명(영문)
-      ,url                     = '/esm_sys/esm_sys_9000'             # URL
-      ,parent_menu_cd          = 'ML7500'                            # 상위메뉴코드
-      ,icons                   = ''                                  # 아이콘
-      ,sort_order              = 9000                                # 정렬순서
-      ,use_yn                  = 'Y'                                 # 사용여부(Y/N)
-      ,search_yn               = 'Y'                                 # 조회여부(Y/N)
-      ,insert_yn               = 'Y'                                 # 신규여부(Y/N)
-      ,update_yn               = 'Y'                                 # 수정여부(Y/N)
-      ,delete_yn               = 'Y'                                 # 삭제여부(Y/N)
-      ,print_yn                = 'Y'                                 # 출력여부(Y/N)
-      ,batch_yn                = 'Y'                                 # 생성여부(Y/N)
-      ,excel_down_yn           = 'Y'                                 # 엑셀다운로드여부
-      ,excel_up_yn             = 'Y'                                 # 엑셀업로드여부
-      ,remark                  = '테스트 메뉴 입력-ML9000'            # 비고
-      ,create_date_time        = now                                 # 생성일시
-      ,create_by               = -1                                  # 생성자ID
-      ,update_date_time        = now                                 # 수정일시
-      ,update_by               = -1                                  # 생성자ID
-    )
+    bulkDataList = []    
+    userID = request.POST.get('user_id', -1)
+    
+    # json 데이터 확인
+    for ca in dataList:
+      # 신규 메뉴 클래스 생성
+      newSysMenu = SysMenu()
 
-    # 데이터 저장
-    with transaction.atomic():
-      dataSet.save()    
-      print('===========================================================================')
-      print('정상적으로 데이터를 신규로 저장하였습니다.')
-      print('===========================================================================')
+      # 신규 메뉴 클래스 항목별 값 할당
+      newSysMenu.menu_uid = None
+      newSysMenu.menu_cd = ca.get("menu_cd")
+      newSysMenu.menu_name_ko = ca.get("menu_name_ko")
+      newSysMenu.menu_name_en = ca.get("menu_name_en")
+      newSysMenu.url = ca.get("url")
+      newSysMenu.parent_menu_cd = ca.get("parent_menu_cd")
+      newSysMenu.icons = ca.get("icons")
+      newSysMenu.sort_order = ca.get("sort_order")
+      newSysMenu.use_yn = ca.get("use_yn")
+      newSysMenu.search_yn = ca.get("search_yn")
+      newSysMenu.insert_yn = ca.get("insert_yn")
+      newSysMenu.update_yn = ca.get("update_yn")
+      newSysMenu.delete_yn = ca.get("delete_yn")
+      newSysMenu.print_yn = ca.get("print_yn")
+      newSysMenu.batch_yn = ca.get("batch_yn")
+      newSysMenu.excel_down_yn = ca.get("excel_down_yn")
+      newSysMenu.remark = ca.get("remark")
+      newSysMenu.create_date_time = now
+      newSysMenu.create_by = userID
+      newSysMenu.update_date_time = now
+      newSysMenu.update_by = userID
+
+      # 메뉴 클래스를 리스트에 추가      
+      bulkDataList.append(newSysMenu)
+     
+    # 대량 데이터 일괄 저장    
+    SysMenu.objects.bulk_create(bulkDataList)
+    print('===========================================================================')
+    print('정상적으로 데이터를 신규로 저장하였습니다.')
+    print('===========================================================================')
 
   except Exception as e:   
     commParam = {'cd' : 'E', 'msg' : e.args[0]}
@@ -276,9 +357,8 @@ def doUpdate(updateSet, now):
     dataSet.update_date_time   = now                                 # 수정일시
     dataSet.update_by          = -2                                  # 생성자ID
     
-    # 데이터 저장
-    with transaction.atomic():
-      dataSet.save()
+    
+    dataSet.save()
 
       print('===========================================================================')
       print('정상적으로 데이터를 수정하였습니다.')
