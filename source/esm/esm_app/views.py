@@ -100,14 +100,13 @@ def login(request):
 
           print("사용자 존재", queryset, type(queryset))
           for ca in queryset:            
-            # 세션에 사용자정보 추가 
-            request.session['user_id'] = ca.get('user_id')
-            request.session['user_name'] = ca.get('user_name')
-            request.session['user_account'] = ca.get('user_ccount')          
-
             # 사용자 비밀번호 저장을 makepassword 클래스 사용시 수정 필요
             #if check_password(srhPassword, vPassword):          
             if srhPassword == ca.get('password'):
+              # 세션에 사용자정보 추가 
+              request.session['user_id'] = ca.get('user_id')
+              request.session['user_name'] = ca.get('user_name')
+              request.session['user_account'] = ca.get('user_ccount')          
               # 홈으로 이동
               return redirect('/')
             else:
