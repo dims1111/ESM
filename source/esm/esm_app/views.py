@@ -46,7 +46,6 @@ def home(request):
   params = {}
   sqlParams = ()
   params['mainMenuList'] = stViews.searchExecute(request, sql.masterMenu, sqlParams)
-  params['session'] = request.session
 
   # 메인화면 렌더링
   return render(request, 'esm_app/home.html', params)

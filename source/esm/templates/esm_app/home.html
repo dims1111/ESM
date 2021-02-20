@@ -2,7 +2,7 @@
 <title>전자식 복무관리 시스템</title>
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}" />
-{% endblock %} {%block contents%} {% csrf_token %}
+{% endblock %} {%block contents%}
 <div class="wrap d-flex flex-column h-100 pb-1">
   <!-- Top -->
   <div class="top w-100 sticky-top navbar navbar-dark sticky-top flex-md-nowrap p-0">
@@ -19,7 +19,7 @@
           <span class="off">ENG</span>
         </label>
 
-        <span class="text-white mr-3">{{session.user_name}}</span>
+        <span class="text-white mr-3">{{request.session.user_name}}</span>
         <a href="/logout">
           <span class="text-white">logout</span>
         </a>
@@ -33,7 +33,7 @@
       <div class="sidebar-main mt-2 pt-3">
         <ul id="mainList">
           {% for item in mainMenuList %}
-          <li class="sidebar-main__item py-2 {{item.active}}" data-menu-id="{{item.menuCd}}">
+          <li class="sidebar-main__item py-2 {{item.active}}" data-menu-cd="{{item.menuCd}}">
             <span class="main__icon material-icons" mcd="{{item.mainCd}}">{{item.icons}}</span>
             <div class="mt-1">{{item.menuNameKo}}</div>
           </li>
@@ -171,7 +171,7 @@
       $(".tab-content").append('<div class="tab-pane w-100 h-100 active" id="tabs-' + menuCd + '">' + tabContent + "</div>");
 
       $("#navs").append(
-        '<li class="nav-item"><a class="nav-link" data-toggle="tab" data-menu-id="' +
+        '<li class="nav-item"><a class="nav-link" data-toggle="tab" data-menu-cd="' +
           menuCd +
           '"href="#tabs-' +
           menuCd +
@@ -190,7 +190,7 @@
       if (!$(this).hasClass("active")) {
         $(this).siblings().removeClass("active");
         $(this).addClass("active");
-        gutSubMenuList();
+        getSubMenuList();
       }
     });
 
@@ -244,15 +244,14 @@
     }
 
     // 서브메뉴 조회
-    function gutSubMenuList() {
+    function getSubMenuList() {
       var menuCd = $("#mainList > li.active").data("menuCd");
 
       $.ajax({
         type: "POST",
         url: "/menu/getSubMenuList",
         data: {
-          csrfmiddlewaretoken: $('*[name="csrfmiddlewaretoken"]').val(),
-          menuCd: menuCd,
+          parentMenuCd: menuCd,
         },
         dataType: "json",
         success: function (data) {
@@ -310,8 +309,8 @@
                 "data-toggle": "tooltip",
                 "data-placement": "right",
                 "data-url": item.url,
-                "data-parent-menu-id": item.parentMenuCd,
-                "data-menu-id": item.menuCd,
+                "data-parent-menu-cd": item.parentMenuCd,
+                "data-menu-cd": item.menuCd,
               });
               $ul.attr("id", "group" + item.parentMenuCd);
               $li.click(openMenu);
@@ -329,7 +328,7 @@
         },
       });
     }
-    gutSubMenuList();
+    getSubMenuList();
 
     // 언어 변경
     $("#changeLang").change(function () {
