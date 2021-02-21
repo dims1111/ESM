@@ -57,7 +57,7 @@ class JsonData:
   {
     "dataSet":
     {
-      "X":
+      "I":
         [
           { "menu_id": ""
             ,"menu_cd": "ML9300"
@@ -151,7 +151,7 @@ class JsonData:
             ,"update_by": -22
           }
         ],
-      "X":
+      "D":
         [
           { "menu_uid": "5dec39265c0e4bada59479cc7f61bc74" },
           { "menu_uid": "aaf7459621cd467580d2531a20ec7e2c" }

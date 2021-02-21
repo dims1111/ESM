@@ -103,7 +103,6 @@ def doSave(request):
           raise langMag.userException(commParam['msg'])
 
       # 수정 데이터가 존재하면 저장
-      print("JsonData.updateDataList")
       if JsonData.updateDataList is not None:
         commParam = doUpdate(JsonData.updateDataList, commParam, userID)
 
