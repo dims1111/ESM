@@ -38,7 +38,7 @@ def doSearch(request):
   srhUseYn = request.POST.get('useYn', None)
 
   # 여부(1/0 -> Y/N) 값 변환
-  srhUseYn = changeYn(srhUseYn)
+  srhUseYn = changeYn('YN', srhUseYn)
 
   # 화면별 코드 및 메시지 전달 변수
   commParams = {'cd': 'S', 'msg': '', 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
