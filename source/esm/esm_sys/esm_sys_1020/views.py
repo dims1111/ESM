@@ -2,7 +2,6 @@ from django.http.response import HttpResponseRedirect, JsonResponse
 from django.shortcuts import  render
 from django.core import serializers
 
-
 # 장고 모델에서 필터 처리를 위한 Q 클래스 임포트
 from django.db.models import Q
 

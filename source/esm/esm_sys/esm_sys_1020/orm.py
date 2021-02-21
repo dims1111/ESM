@@ -189,12 +189,12 @@ def doInsert(dataList, commParam, userID):
     i = 0
     bulkDataLists = []
 
-    # dataList 데이터 확인
+    # 신규 데이터 확인
     for ca in dataList:
-      # 신규 메뉴 클래스 생성
+      # 신규 클래스 생성
       newData = SysMenu()
 
-      # 신규 메뉴 클래스 항목별 값 할당
+      # 신규 클래스 항목별 값 할당
       newData.menu_uid          = None
       newData.menu_cd           = ca.get('menu_cd')
       newData.menu_name_ko      = ca.get('menu_name_ko')
@@ -218,7 +218,7 @@ def doInsert(dataList, commParam, userID):
       newData.update_date_time  = JsonData.now
       newData.update_by         = userID
 
-      # 메뉴 클래스를 리스트에 추가
+      # 리스트에 신규 클래스 값 추가
       bulkDataLists.append(newData)
       i += 1
 
@@ -241,11 +241,11 @@ def doUpdate(dataList, commParam, userID):
     i = 0
     bulkDataList = []
 
-    # dataList 데이터 확인
+    # 수정 데이터 확인
     for ca in dataList:
       getData = SysMenu.objects.filter(pk=ca.get('menu_uid'))
 
-      # 키를 기준으로 조회된 sqlDataSet 데이터(cb)를 기준으로 수정된 값(ca) 할당
+      # 키를 기준으로 조회된 데이터 셋(getData)에 수정된 값(dataList) 할당
       for updateData in getData:
         updateData.menu_cd          = ca.get('menu_cd')
         updateData.menu_name_ko     = ca.get('menu_name_ko')
@@ -268,7 +268,7 @@ def doUpdate(dataList, commParam, userID):
         updateData.update_by        = userID        
         i += 1
 
-      # 대량의 데이터 수정
+      # 대량의 데이터 일괄 수정
       SysMenu.objects.bulk_update(getData, ['menu_cd'
                                             ,'menu_name_ko'
                                             ,'menu_name_en'
@@ -303,10 +303,9 @@ def doUpdate(dataList, commParam, userID):
 def doDelete(dataList, commParam):
   try:
     i = 0
-
-    # dataList 데이터 확인
+    
+    # 삭제 데이터 확인
     for ca in dataList:
-      # 신규 메뉴 클래스 생성
       deleteData = SysMenu.objects.filter(pk=ca.get('menu_uid'))
 
       # 자료가 존재하면 삭제
