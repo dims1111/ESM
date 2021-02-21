@@ -19,7 +19,7 @@ class sql:
     # 대 메뉴에 따른 하위 메뉴 조회
     subMenu = \
         """
-            select lpad(' ', 2 * (level - 1)) || sm.menu_name_ko          as menu_name_ko_dis
+          select lpad(' ', 2 * (level - 1)) || sm.menu_name_ko          as menu_name_ko_dis
                 ,lpad(' ', 2 * (level - 1)) || sm.menu_name_en          as menu_name_en_dis
                 ,substr(sys_connect_by_path(sm.menu_name_ko, ' > '), 4) as path_ko
                 ,substr(sys_connect_by_path(sm.menu_name_en, ' > '), 4) as path_en
@@ -52,16 +52,4 @@ class sql:
             start with sm.parent_menu_cd = :p_parent_menu_cd
             connect by prior sm.menu_cd = sm.parent_menu_cd
             order siblings by sm.sort_order
-        """    
-        # """
-        #     select smv.tree_level
-        #           ,smv.menu_cd
-        #           ,smv.menu_name_ko
-        #           ,smv.menu_name_en
-        #           ,smv.url
-        #           ,smv.parent_menu_cd
-        #       from esm.sys_menu_v smv
-        #      where 1=1
-        #        and smv.use_yn = 'Y'
-        #        and smv.parent_menu_cd = :p_parent_menu_cd
-        # """    
+        """

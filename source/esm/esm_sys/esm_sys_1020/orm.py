@@ -5,16 +5,21 @@ from django.db import transaction
 # 시간, json 클래스 임포트
 import datetime, json
 
-# esm_com 예외처리 및 메시지 함수 임포트
-from esm_com.lang import langMag
+# resultMsg 클래스 임포트
+from esm_com.util import resultMsg
 
 # 로그인 모델 내 SysMenu 클래스 임포트
 from . models import SysMenu
 
 
-# #################################################################################################################################################
+
+# #################################################################################################
+# # Create your views here.
+# #################################################################################################
+
+# #################################################################################################
 # orm 사용할 조건 목록 및 예시
-# #################################################################################################################################################
+# #################################################################################################
 #
 # 조건 일치 데이터 menu_name_ko = 'esm_sys_1020'                : SysMenuv.objects.filter(menu_name_ko='esm_sys_1020')
 # 조건 외 데이터 menu_name_ko != 'esm_sys_1020'                 : SysMenuv.objects.exclude(menu_name_ko='esm_sys_1020')
@@ -32,7 +37,7 @@ from . models import SysMenu
 # 날짜 월   to_date(hire_date, 'mm') = '2000'                   : SysMenuv.objects.filter(hire_date__month=02)
 # 날짜 월   to_date(hire_date, 'dd') = '2000'                   : SysMenuv.objects.filter(hire_date__day=01)
 #
-# #################################################################################################################################################
+# #################################################################################################
 
 # 쿼리 문장 확인
 # print('query ->', queryset.query)
@@ -40,9 +45,10 @@ from . models import SysMenu
 # 데이터 확인 및 로직 처리
 # for ca in queryset:
 #   print('menu_cd =>', ca.menu_cd, 'menu_name_ko =>', ca.menu_name_ko, 'url =>', ca.url, 'user_yn =>', ca.use_yn)
-# #################################################################################################################################################
+# #################################################################################################
 
-# Create your views here.
+
+
 # 화면 그리드에서 넘겨준 json 데이터 형식
 # 레벨1 : dataSet으로 고정
 # 레벨2 : I, U, D로 구분
@@ -153,30 +159,20 @@ class JsonData:
         ],
       "D":
         [
-          { "menu_uid": "5dec39265c0e4bada59479cc7f61bc74" },
-          { "menu_uid": "aaf7459621cd467580d2531a20ec7e2c" }
+          { "menu_uid": "b66dc207a5e74070bd53d49beb6b57db" },
+          { "menu_uid": "4d2d112149fc419c95e9a9de55b67e33" }
         ]
     }
   }
   '''
 
-    # 화면 그리드에서 넘겨준 json 데이터 형식(json 매개변수 값 추출)
+  # 화면 그리드에서 넘겨준 json 데이터 형식(json 매개변수 값 추출)
   dataObject = json.loads(jsonObject)
 
   # json 데이터에서 신규/수정/삭제 데이터 추출
   insertDataList = dataObject.get("dataSet").get('I')
   updateDataList = dataObject.get("dataSet").get('U')
   deleteDataList = dataObject.get("dataSet").get('D')
-
-
-# 화면 처리 후 정상 및 오류 메시지 출력
-# 정상: cd='S', msg=''
-# 오류: cd='E', msg='관련된 오류 내용이 출력됩니다.' 
-def resultLog(commParam):
-  print('===========================================================================')
-  print('cd  =>', commParam['cd'])
-  print('msg =>', commParam['msg'])
-  print('===========================================================================')
 
 
 # 트랜잭션 관리 방법 - 1. 세이브 포인트 방식, 2.데코레이트 방식
@@ -226,11 +222,11 @@ def doInsert(dataList, commParam, userID):
     SysMenu.objects.bulk_create(bulkDataLists)
 
     # 데이터 처리 후 건수 표기
-    commParam['msg'] = str(i) + '건의 데이터를 저장하였습니다.'
-    resultLog(commParam)
+    commParam['processCnt']['I'] = i
+    resultMsg(commParam)
 
   except Exception as e:
-    commParam = {'cd' : 'E', 'msg' : e.args[0]}
+    commParam = {'cd' : 'E', 'msg' : e.args[0], 'processCnt': {'I': 0}}
   return commParam
 
 
@@ -288,13 +284,12 @@ def doUpdate(dataList, commParam, userID):
                                             ,'remark'
                                            ])
     # 데이터 처리 후 건수 표기
-    commParam['msg'] = str(i) + '건의 데이터를 수정하였습니다.'
-    resultLog(commParam)
+    commParam['processCnt']['U'] = i
+    resultMsg(commParam)
 
   except Exception as e:
     print("@@@@@ 수정 오류 @@@@@ ")
-    commParam = {'cd' : 'E', 'msg' : e.args[0]}
-    print("sssssssssss=>", e.args[0])
+    commParam = {'cd' : 'E', 'msg' : e.args[0], 'processCnt': {'U': 0}}
   return commParam
 
 
@@ -303,7 +298,7 @@ def doUpdate(dataList, commParam, userID):
 def doDelete(dataList, commParam):
   try:
     i = 0
-    
+
     # 삭제 데이터 확인
     for ca in dataList:
       deleteData = SysMenu.objects.filter(pk=ca.get('menu_uid'))
@@ -314,10 +309,10 @@ def doDelete(dataList, commParam):
         i += 1
 
     # 데이터 처리 후 건수 표기
-    commParam['msg'] = str(i) + '건의 데이터를 삭제하였습니다.'
-    resultLog(commParam)
+    commParam['processCnt']['D'] = i
+    resultMsg(commParam)
 
   except Exception as e:
     print("@@@@@ 삭제 오류 @@@@@ ")
-    commParam = {'cd' : 'E', 'msg' : e.args[0]}
+    commParam = {'cd' : 'E', 'msg' : e.args[0], 'processCnt': {'D': 0}}
   return commParam

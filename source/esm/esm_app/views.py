@@ -18,23 +18,24 @@ from django.contrib.auth import logout as auth_logout
 import os
 
 # query 문장 매핑을 위한 클래스 임포트
-from .query import sql
-
-# query 실행을 위한 클래스 임포트
-from esm_com import views as stViews
+from . query import sql
 
 # 로그인 모델 내 SysUser 클래스 임포트
 from . models import SysUser
 
-# esm_com 예외처리 및 메시지 함수 임포트
-from esm_com.lang import langMag
-
+# query 실행을 위한 클래스 임포트
+from esm_com import views as esmComViews
+from esm_com.lang import langMsg
 
 # Create your views here.
 # 한글 지원 방법
 os.putenv('NLS_LANG', '.UTF8')
 
 
+
+# #################################################################################################
+# # Create your views here.
+# #################################################################################################
 
 # 메인 메뉴 조회 및 홈 화면으로 이동
 def home(request):
@@ -45,7 +46,7 @@ def home(request):
   # 대 메뉴 조회
   params = {}
   sqlParams = ()
-  params['mainMenuList'] = stViews.searchExecute(request, sql.masterMenu, sqlParams)
+  params['mainMenuList'] = esmComViews.searchExecute(request, sql.masterMenu, sqlParams)
 
   # 메인화면 렌더링
   return render(request, 'esm_app/home.html', params)
@@ -57,7 +58,7 @@ def getSubMenuList(request):
 
   # 대 메뉴 조회
   params = {}
-  params['subMenuList'] = stViews.searchExecute2(request, sql.subMenu, parentMenuCd)
+  params['subMenuList'] = esmComViews.searchExecute2(request, sql.subMenu, parentMenuCd)
   return JsonResponse(params)
 
 
@@ -80,11 +81,13 @@ def login(request):
     # 필수 항목 체크
     # 사용자 계정이 존재하지 않을 경우 오류처리
     if not srhUserAccount:
-      commParam = {'cd' : 'E', 'msg' : '사용자 계정은 필수 항목입니다.'}
+      langMsg.msgParam['errNum'] = 'REQ-1000'
+      commParam = {'cd' : 'E', 'msg' : langMsg.msgParam}
 
     # 비밀번호가 존재하지 않을 경우 오류처리
     elif not srhPassword:
-      commParam = {'cd' : 'E', 'msg' : '비밀번호는 필수 항목입니다.'}
+      langMsg.msgParam['errNum'] = 'REQ-1010'
+      commParam = {'cd' : 'E', 'msg' : langMsg.msgParam}
 
     else:
       try:
@@ -93,9 +96,9 @@ def login(request):
 
         # [오류] 사용자 계정 또는 이메일 주소 미 존재
         if not queryset.exists():          
-          print("사용자 미존재", langMag.msgParam)
-          langMag.msgParam['errNum'] = 1000          
-          raise langMag.noDataFound(langMag.errMsg())
+          print("사용자 미존재", langMsg.msgParam)
+          langMsg.msgParam['errNum'] = 'ERR-1000'
+          raise langMsg.noDataFound(langMsg.errMsg())
         else:
 
           print("사용자 존재", queryset, type(queryset))
@@ -111,10 +114,10 @@ def login(request):
               return redirect('/')
             else:
               print("비밀번호 불일치")
-              langMag.msgParam['errNum'] = 1010
-              raise langMag.noDataMatch(langMag.errMsg())
+              langMsg.msgParam['errNum'] = "ERR-1010"
+              raise langMsg.noDataMatch(langMsg.errMsg())
 
-      except (langMag.noDataFound, langMag.noDataMatch) as e:
+      except (langMsg.noDataFound, langMsg.noDataMatch) as e:
         commParam = {'cd' : 'E', 'msg' : e}
       except Exception as e:
         commParam = {'cd' : 'E', 'msg' : e.args[0]}
@@ -134,7 +137,6 @@ def logout(request):
 
   # 세션이 삭제되면 로그인 화면으로 전환
   return redirect('/login')
-
 
 
 # 404 오류 발생
