@@ -59,9 +59,9 @@ def doSearch(request):
       raise langMsg.noDataFound(langMsg.errMsg())
 
   except langMsg.noDataFound as e:
-    commParams = {'cd' : 'S', 'msg' : e}
+    commParams = {'cd' : 'S', 'msg' : e, 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
   except Exception as e:
-    commParams = {'cd' : 'E', 'msg' : e.args[0]}
+    commParams = {'cd' : 'E', 'msg' : e.args[0], 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
 
   # 화면 처리 후 정상 및 오류 메시지 출력
   resultMsg(commParams)
