@@ -1,47 +1,8 @@
 {% extends "esm_com/bizform.html" %} {% load static %} {% block header %}
 <script>
-  var gridView; // GridView객체를 저장할 gridView변수를 정의 합니다.
-  var dataProvider; // LocalDataProvider객체를 저장할 dataProvider변수를 정의 합니다.
+  var grid1;
   $(function () {
-    // LocalDataProvider와 GridView객체를 생성하고 GridView의 DataSource를 생성된 LocalDataProvider로 지정하는 코드를 추가 합니다.
-    dataProvider = new RealGridJS.LocalDataProvider();
-    gridView = new RealGridJS.GridView("realgrid");
-    gridView.setDataSource(dataProvider);
-
-    //새로운 DataField 배열 객체 생성
-    var fields = [
-      { fieldName: "batch_yn" },
-      { fieldName: "create_by" },
-      { fieldName: "create_date_time" },
-      { fieldName: "delete_yn" },
-      { fieldName: "excel_down_yn" },
-      { fieldName: "excel_up_yn" },
-      { fieldName: "icons" },
-      { fieldName: "insert_yn" },
-      { fieldName: "menu_cd" },
-      { fieldName: "menu_name_en" },
-      { fieldName: "menu_name_en_dis" },
-      { fieldName: "menu_name_ko" },
-      { fieldName: "menu_name_ko_dis" },
-      { fieldName: "menu_uid" },
-      { fieldName: "parent_menu_cd" },
-      { fieldName: "path_en" },
-      { fieldName: "path_ko" },
-      { fieldName: "print_yn" },
-      { fieldName: "remark" },
-      { fieldName: "search_yn" },
-      { fieldName: "sort_order" },
-      { fieldName: "update_by" },
-      { fieldName: "update_date_time" },
-      { fieldName: "update_yn" },
-      { fieldName: "url" },
-      { fieldName: "use_yn" },
-    ];
-    //setColumns()함수로 그리드에 반영
-    dataProvider.setFields(fields);
-
-    //새로운 DataColumn array 객체 생성
-    var columns = [
+    grid1 = $("#grid1").gfn_gridInit([
       { name: "batch_yn", fieldName: "batch_yn", header: { text: "batch_yn" }, width: 80 },
       { name: "create_by", fieldName: "create_by", header: { text: "create_by" }, width: 80 },
       { name: "create_date_time", fieldName: "create_date_time", header: { text: "create_date_time" }, width: 80 },
@@ -68,10 +29,7 @@
       { name: "update_yn", fieldName: "update_yn", header: { text: "update_yn" }, width: 80 },
       { name: "url", fieldName: "url", header: { text: "url" }, width: 80 },
       { name: "use_yn", fieldName: "use_yn", header: { text: "use_yn" }, width: 80 },
-    ];
-
-    //setColumns()함수로 그리드에 반영
-    gridView.setColumns(columns);
+    ]);
   });
 
   /* action1에대한 기능 */
@@ -106,7 +64,7 @@
               return item.fields;
             });
             console.log(result);
-            dataProvider.setRows(result);
+            grid1.provider.setRows(result);
           },
         });
         break;
@@ -200,7 +158,7 @@
         </div>
       </div>
       <div class="search-content flex-grow-1">
-        <div id="realgrid" style="width: 100%; height: 100%"></div>
+        <div id="grid1"></div>
       </div>
     </div>
   </div>
