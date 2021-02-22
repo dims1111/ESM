@@ -10,16 +10,18 @@ from django.db import transaction
 
 # esm_com 예외처리 및 메시지 함수 임포트
 from esm_com.lang import langMsg
-from esm_com.util import resultMsg, changeYn
+
+# 사용자 함수 클래스 임포트
+from esm_com import util
 
 # 로그인 모델 내 SysMenu 클래스 임포트
 from . models import SysMenuV
 
-# 임포트 UUID 클래스
+# orm 파일 내 클래스 임포트
 from . orm import JsonData, doInsert, doUpdate, doDelete
 
-from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models.query import QuerySet
+# 데코레이트 클래스 임포트
+from django.utils.decorators import method_decorator
 
 
 
@@ -27,14 +29,15 @@ from django.db.models.query import QuerySet
 # # Create your views here.
 # #################################################################################################
 # 메뉴 클릭 후 첫 화면 오픈
+@util.sessionDecorator
 def home(request):
-  print("aaaaaaaaaaa => ", request.session['user_id'])
   return render(request, 'esm_sys/esm_sys_1020.html')
 
 
 # #################################################################################################
 # 조회 버튼
 # #################################################################################################
+@util.sessionDecorator
 def doSearch(request):
   # 화면에서 검색조건의 값
   srhMenuName = request.POST.get('menuName', None)
@@ -42,14 +45,12 @@ def doSearch(request):
   srhUseYn = request.POST.get('useYn', None)
 
   # 여부(1/0 -> Y/N) 값 변환
-  srhUseYn = changeYn('YN', srhUseYn)
+  srhUseYn = util.changeYn('YN', srhUseYn)
 
   # 화면별 코드 및 메시지 전달 변수
   commParams = {'cd': 'S', 'msg': '', 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
 
   try:
-    
-
     querySet = SysMenuV.objects.filter(
          Q(menu_name_ko__icontains=srhMenuName) | Q(menu_name_ko__icontains=srhMenuName)
         ,Q(url__icontains=srhUrl)
@@ -64,15 +65,13 @@ def doSearch(request):
       langMsg.msgParam['errNum'] = 'ERR-1020'
       raise langMsg.noDataFound(langMsg.errMsg())
 
-    
-
   except langMsg.noDataFound as e:
     commParams = {'cd' : 'S', 'msg' : e, 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
   except Exception as e:
     commParams = {'cd' : 'E', 'msg' : e.args[0], 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
 
   # 화면 처리 후 정상 및 오류 메시지 출력
-  resultMsg(commParams)
+  util.resultMsg(commParams)
  
   serialized_queryset = serializers.serialize('json', querySet)
   return JsonResponse(serialized_queryset, safe=False)
@@ -82,13 +81,13 @@ def doSearch(request):
 # #################################################################################################
 # 저장 버튼
 # #################################################################################################
+@util.sessionDecorator
 def doSave(request):
   # 화면별 코드 및 메시지 전달 변수
   commParams = {'cd': 'S', 'msg': '', 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
 
   # 세션 데이터 조회, 현재 안되고 있음
-  #userId = request.get['user_id']
-  userID = -1000
+  userId = request.session['user_id']  
 
   # one 트랜잭션 설정을 위한 세이브포인트 할당
   with transaction.atomic():
@@ -127,7 +126,7 @@ def doSave(request):
   # 화면 처리 후 정상 및 오류 메시지 출력
   if commParams['cd'] == 'S':
     commParams['msg'] = ''
-  resultMsg(commParams)
+  util.resultMsg(commParams)
 
   return HttpResponseRedirect('esm_sys_1010.html')
   # 여기는 어케 처리해야 되는지 도움말좀 달아 주세요.
@@ -141,6 +140,7 @@ def doSave(request):
 # #################################################################################################
 # 출력 버튼
 # #################################################################################################
+@util.sessionDecorator
 def doPrint(request):
   return render(request, 'esm_sys/esm_sys_1020.html')
 
@@ -148,6 +148,7 @@ def doPrint(request):
 # #################################################################################################
 # 엑셀업로드 버튼
 # #################################################################################################
+@util.sessionDecorator
 def doExcelDown(request):
   return render(request, 'esm_sys/esm_sys_1020.html')
 
@@ -155,5 +156,6 @@ def doExcelDown(request):
 # #################################################################################################
 # 엑셀다운로드 버튼
 # #################################################################################################
+@util.sessionDecorator
 def doExcelUp(request):
   return render(request, 'esm_sys/esm_sys_1020.html')

@@ -1,3 +1,5 @@
+from django.shortcuts import redirect
+
 # #################################################################################################
 # 일반적인 함수 및 클래스 선언
 # #################################################################################################
@@ -40,8 +42,22 @@ def rowsToDictList(cursor):
 	return [dict(zip(columns, row)) for row in cursor]
 
 
-
 # 문자 카멜케이스로 변경
 def camelCase(strValue):
     output = ''.join(x for x in strValue.title() if x.isalnum())
     return output[0].lower() + output[1:]
+
+
+# 검색 데코레이트
+def sessionDecorator(orginalFunction):
+    def wrapperFunction(request, *args, **kwargs):
+        # 사용자 세션 정보 오류일 경우 로그인 화면으로 이동
+        if request.session.get('user_id') is None:
+            # 테스트 : http://127.0.0.1:8000/esm_sys_1020
+            print('사용자 세션이 존재하지 않습니다. 로그인 화면으로 이동합니다.')
+            return redirect('/')
+        else:
+            pass
+       
+        return orginalFunction(request, *args, **kwargs)
+    return wrapperFunction
