@@ -14,50 +14,52 @@
  * 8 : textAlignment L:left C: center R: right
  * 9 : editable Y: 수정가능 N: 수정 불가능  default: Y
  */
-$.fn.gfn_gridInit = function (fieldInfo) {
-  var _grid = new RealGridJS.GridView(this.attr('id'));
-  var _provider = new RealGridJS.LocalDataProvider();
+$.fn.gfn_gridInit = function (columns, width, height) {
+  width = width || '100%';
+  height = height || '100%';
 
-  this.grid = _grid;
-  this.provider = _provider;
-  this.grid.setDataSource(this.provider);
+  this.gridView = new RealGridJS.GridView(this.attr('id')); // GridView 객체
+  this.provider = new RealGridJS.LocalDataProvider(); // LocalDataProvider 객체
+  this.gridView.setDataSource(this.provider); // Grid와 Provider 연결
 
+  // columns에 선언된 fieldName을 Provider의 fielid로 정의
+  // 추가적인 Provider의 field정보는 나중에 정의하기로
+  var fields = columns.map(function(item) {
+    return item.fieldName;
+  })
+  this.provider.setFields(fields);
 
-  //fieldInfo에 따른 초기화
-  var obj = initGridField(this, fieldInfo, this.attr("id"));
-  this.grid = obj.grid
-  this.provider = obj.provider
-
+  this.gridView.setColumns(columns);
+ 
   //스타일 초기화
-  this.grid = initGridStyle(this.grid, this.attr("id"))
+  initGridStyle(this);
 
   //옵션 초기화
-  this.grid = initGridOption(this.grid)
+  initGridOption(this.gridView)
 
-  var srch_bar = '<span id="frowinfo_' + $(this).attr('id') + '"></span>';
-  // this.before(srch_bar);
-  $("." + this.attr("id")).append(srch_bar);
+  // 무슨 내용인지 몰라서 주석처리
+  // var srch_bar = '<span id="frowinfo_' + $(this).attr('id') + '"></span>';
+  // $("." + this.attr("id")).append(srch_bar);
 
-  this.grid.onKeyDown = function (grid, key, ctrl, shift, alt) {
+  // 엔터키 입력 시 다음 줄 첫번째 컬럼으로 커서 옮기기
+  this.gridView.onKeyDown = function (gridView, key, ctrl, shift, alt) {
     if (key === 13 || key == 9) {
-      var currentCell = grid.getCurrent();
-      var column = grid.columnByField(currentCell.fieldName);
-      var columns = grid.getColumns();
-      //console.log(column);
-      var firstFieldName;
-      var a;
-      var endcolidx = -1;
-      for (var a in columns) {
-        if (!columns[a]['displayIndex'] < 0) continue;
-        if (columns[a]['displayIndex'] == 0) firstFieldName = columns[a]['name']
-        if (endcolidx < columns[a]['displayIndex']) endcolidx = columns[a]['displayIndex'];
-      }
-      if (column.displayIndex != endcolidx) return;
-      var next = {};
-      next.dataRow = currentCell.dataRow + 1;
-      next.fieldName = firstFieldName;
-      grid.setCurrent(next);
-      grid.setFocus();
+      var currentCell = gridView.getCurrent();
+      var columns = gridView.getColumns();
+
+      // dataIndex 순으로 정렬
+      columns.sort(function(a, b) {
+        return a.dataIndex - b.dataIndex;
+      });
+
+      // 첫번째 컬럼
+      var firstFieldName = columns[0].fieldName;
+
+      gridView.setCurrent({
+        fieldName: firstFieldName,
+        dataRow: currentCell.dataRow + 1
+      });
+      gridView.setFocus();
       return false;
     }
   };
@@ -466,9 +468,11 @@ function initGridField(grdObj, fieldInfo, id) {
 * @param {*} grdId 그리드의 html id
 * @returns 그리드 객체 
 */
-function initGridStyle(grid, grdId) {
-  //  그리드 스타일 설정
+function initGridStyle(obj) {
+  var grid = obj.gridView;
+  var grdId = obj.attr("id");
 
+  //  그리드 스타일 설정
   grid.setStyles({
     "grid": {
 
@@ -603,8 +607,6 @@ function initGridStyle(grid, grdId) {
     "background": "#cc880000",
     "foreground": "#ffffff"
   }, true);
-
-  return grid
 }
 
 
@@ -626,12 +628,14 @@ function initGridOption(grid) {
     headText: "No"
   });
 
-  grid.setStateBar({
-    visible: false
-  })
+  // grid.setStateBar({
+  //   visible: false
+  // });
+
   grid.setCheckBar({
     visible: false
   });
+
   grid.setCopyOptions({
     singleMode: true,
     lookupDisplay: true,
@@ -663,7 +667,6 @@ function initGridOption(grid) {
     fitStyle: "even",
     drawBorderRight: false,
   });
-  return grid
 }
 
 /**
