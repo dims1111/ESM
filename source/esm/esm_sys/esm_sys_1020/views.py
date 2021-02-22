@@ -44,11 +44,14 @@ def doSearch(request):
   commParams = {'cd': 'S', 'msg': '', 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
 
   try:
+    
+
     querySet = SysMenuV.objects.filter(
          Q(menu_name_ko__icontains=srhMenuName) | Q(menu_name_ko__icontains=srhMenuName)
         ,Q(url__icontains=srhUrl)
         ,Q(use_yn=srhUseYn)
     ).order_by('menu_name_ko')
+
 
     # 그리드 조회된 데이터 건수 표기
     commParams['processCnt']['S'] = querySet.count()
@@ -57,6 +60,8 @@ def doSearch(request):
     if not querySet.exists():
       langMsg.msgParam['errNum'] = 'ERR-1020'
       raise langMsg.noDataFound(langMsg.errMsg())
+
+    
 
   except langMsg.noDataFound as e:
     commParams = {'cd' : 'S', 'msg' : e}
