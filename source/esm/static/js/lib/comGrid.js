@@ -17,6 +17,7 @@
 $.fn.gfn_gridInit = function (columns, width, height) {
   width = width || '100%';
   height = height || '100%';
+  this.css({ width : width, height : height }); // 그리드 width, height 지정
 
   this.gridView = new RealGridJS.GridView(this.attr('id')); // GridView 객체
   this.provider = new RealGridJS.LocalDataProvider(); // LocalDataProvider 객체
