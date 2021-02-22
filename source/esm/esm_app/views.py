@@ -130,6 +130,9 @@ def logout(request):
   # 세션에 user_id가 존재하는지 확인
   if not (request.session.is_empty()):
     # 브라우저 세션 삭제
+    request.session.pop('userid', None)
+    request.session.pop('user_name', None)
+    request.session.pop('user_ccount', None)
     request.session.clear()
 
     # 장고 세션 삭제

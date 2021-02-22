@@ -18,6 +18,8 @@ from . models import SysMenuV
 # 임포트 UUID 클래스
 from . orm import JsonData, doInsert, doUpdate, doDelete
 
+from tkinter import *
+from tkinter import messagebox
 
 
 # #################################################################################################
