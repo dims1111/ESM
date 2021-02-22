@@ -73,6 +73,7 @@ def doSearch(request):
   # 화면 처리 후 정상 및 오류 메시지 출력
   resultMsg(commParams)
 
+
   serialized_queryset = serializers.serialize('json', querySet)
   return JsonResponse(serialized_queryset, safe=False)
 

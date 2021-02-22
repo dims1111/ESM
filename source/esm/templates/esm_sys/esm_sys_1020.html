@@ -49,6 +49,9 @@
   </div>
 </div>
 
+
+
+
 <script>
   $(function () {
     var gridView; // GridView객체를 저장할 gridView변수를 정의 합니다.
@@ -177,6 +180,7 @@
           dataType: "json",
           success: function (data) {
             var result = JSON.parse(data);
+
             console.log(result);
           },
         });
