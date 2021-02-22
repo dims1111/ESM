@@ -48,7 +48,7 @@ def camelCase(strValue):
     return output[0].lower() + output[1:]
 
 
-# 검색 데코레이트
+# 세션 데코레이트
 def sessionDecorator(orginalFunction):
     def wrapperFunction(request, *args, **kwargs):
         # 사용자 세션 정보 오류일 경우 로그인 화면으로 이동
