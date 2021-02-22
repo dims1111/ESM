@@ -1,62 +1,8 @@
-{% extends "esm_com/bizform.html" %} {% load static %} 
-{% block header %} 
-
-{% endblock %} 
-
-{% block contents %}
-<div class="container-fluid d-flex flex-column p-0 h-100">
-  <!-- 검색 조건 영역 -->
-  <div class="row no-gutters mb-2">
-    <div class="col-12">
-      <div class="search-header">
-        <div class="search-title">
-          <i class="xi-bars"> 조회조건</i>
-        </div>
-        <div class="search-buttons">
-          <button class="btn_sub active" onclick="doAction1('print');"><i class="xi-print"> 출력</i></button>
-          <button class="btn_sub active" onclick="doAction1('reset');"><i class="xi-refresh"> 초기화</i></button>
-          <button class="btn_main active" onclick="doAction1('search');"><i class="xi-search"> 조회</i></button>
-          <button class="btn_main active" onclick="doAction1('save');"><i class="xi-save"> 저장</i></button>
-        </div>
-      </div>
-      <form id="srchForm" class="search-content">
-        <label for="menuName">메뉴명</label>
-        <input type="text" name="menuName" id="menuName" />
-        <label for="url">URL</label>
-        <input type="text" name="url" id="url" />
-        <label for="useYn">사용여부</label>
-        <input type="checkbox" name="useYn" id="useYn" />
-      </form>
-    </div>
-  </div>
-  <div class="row no-gutters flex-grow-1">
-    <div class="col-12 d-flex flex-column">
-      <div class="search-header">
-        <div class="search-title">
-          <i class="xi-sort-desc"> 메뉴목록 (47건)</i>
-        </div>
-        <div class="search-buttons">
-          <button class="btn_sub active" onclick="doAction1('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button>
-          <button class="btn_sub active" onclick="doAction1('excelDownload');"><i class="xi-download"> 엑셀다운로드</i></button>
-          <button class="btn_sub active" onclick="doAction1('delRow');"><i class="xi-minus-min"> 행삭제</i></button>
-          <button class="btn_sub active" onclick="doAction1('addRow');"><i class="xi-plus-min"> 행추가</i></button>          
-        </div>
-      </div>
-      <div class="search-content flex-grow-1">
-        <div id="realgrid" style="width: 100%; height: 100%"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
+{% extends "esm_com/bizform.html" %} {% load static %} {% block header %}
 <script>
+  var gridView; // GridView객체를 저장할 gridView변수를 정의 합니다.
+  var dataProvider; // LocalDataProvider객체를 저장할 dataProvider변수를 정의 합니다.
   $(function () {
-    var gridView; // GridView객체를 저장할 gridView변수를 정의 합니다.
-    var dataProvider; // LocalDataProvider객체를 저장할 dataProvider변수를 정의 합니다.
-
     // LocalDataProvider와 GridView객체를 생성하고 GridView의 DataSource를 생성된 LocalDataProvider로 지정하는 코드를 추가 합니다.
     dataProvider = new RealGridJS.LocalDataProvider();
     gridView = new RealGridJS.GridView("realgrid");
@@ -64,58 +10,68 @@
 
     //새로운 DataField 배열 객체 생성
     var fields = [
-      {
-        fieldName: "field1",
-      },
-      {
-        fieldName: "field2",
-      },
+      { fieldName: "batch_yn" },
+      { fieldName: "create_by" },
+      { fieldName: "create_date_time" },
+      { fieldName: "delete_yn" },
+      { fieldName: "excel_down_yn" },
+      { fieldName: "excel_up_yn" },
+      { fieldName: "icons" },
+      { fieldName: "insert_yn" },
+      { fieldName: "menu_cd" },
+      { fieldName: "menu_name_en" },
+      { fieldName: "menu_name_en_dis" },
+      { fieldName: "menu_name_ko" },
+      { fieldName: "menu_name_ko_dis" },
+      { fieldName: "menu_uid" },
+      { fieldName: "parent_menu_cd" },
+      { fieldName: "path_en" },
+      { fieldName: "path_ko" },
+      { fieldName: "print_yn" },
+      { fieldName: "remark" },
+      { fieldName: "search_yn" },
+      { fieldName: "sort_order" },
+      { fieldName: "update_by" },
+      { fieldName: "update_date_time" },
+      { fieldName: "update_yn" },
+      { fieldName: "url" },
+      { fieldName: "use_yn" },
     ];
-
     //setColumns()함수로 그리드에 반영
     dataProvider.setFields(fields);
 
     //새로운 DataColumn array 객체 생성
     var columns = [
-      {
-        name: "col1",
-        fieldName: "field1",
-        header: {
-          text: "컬럼1",
-        },
-        width: 300,
-      },
-      {
-        name: "col2",
-        fieldName: "field2",
-        header: {
-          text: "컬럼2",
-        },
-        width: 300,
-      },
+      { name: "batch_yn", fieldName: "batch_yn", header: { text: "batch_yn" }, width: 80 },
+      { name: "create_by", fieldName: "create_by", header: { text: "create_by" }, width: 80 },
+      { name: "create_date_time", fieldName: "create_date_time", header: { text: "create_date_time" }, width: 80 },
+      { name: "delete_yn", fieldName: "delete_yn", header: { text: "delete_yn" }, width: 80 },
+      { name: "excel_down_yn", fieldName: "excel_down_yn", header: { text: "excel_down_yn" }, width: 80 },
+      { name: "excel_up_yn", fieldName: "excel_up_yn", header: { text: "excel_up_yn" }, width: 80 },
+      { name: "icons", fieldName: "icons", header: { text: "icons" }, width: 80 },
+      { name: "insert_yn", fieldName: "insert_yn", header: { text: "insert_yn" }, width: 80 },
+      { name: "menu_cd", fieldName: "menu_cd", header: { text: "menu_cd" }, width: 80 },
+      { name: "menu_name_en", fieldName: "menu_name_en", header: { text: "menu_name_en" }, width: 80 },
+      { name: "menu_name_en_dis", fieldName: "menu_name_en_dis", header: { text: "menu_name_en_dis" }, width: 80 },
+      { name: "menu_name_ko", fieldName: "menu_name_ko", header: { text: "menu_name_ko" }, width: 80 },
+      { name: "menu_name_ko_dis", fieldName: "menu_name_ko_dis", header: { text: "menu_name_ko_dis" }, width: 80 },
+      { name: "menu_uid", fieldName: "menu_uid", header: { text: "menu_uid" }, width: 80 },
+      { name: "parent_menu_cd", fieldName: "parent_menu_cd", header: { text: "parent_menu_cd" }, width: 80 },
+      { name: "path_en", fieldName: "path_en", header: { text: "path_en" }, width: 80 },
+      { name: "path_ko", fieldName: "path_ko", header: { text: "path_ko" }, width: 80 },
+      { name: "print_yn", fieldName: "print_yn", header: { text: "print_yn" }, width: 80 },
+      { name: "remark", fieldName: "remark", header: { text: "remark" }, width: 80 },
+      { name: "search_yn", fieldName: "search_yn", header: { text: "search_yn" }, width: 80 },
+      { name: "sort_order", fieldName: "sort_order", header: { text: "sort_order" }, width: 80 },
+      { name: "update_by", fieldName: "update_by", header: { text: "update_by" }, width: 80 },
+      { name: "update_date_time", fieldName: "update_date_time", header: { text: "update_date_time" }, width: 80 },
+      { name: "update_yn", fieldName: "update_yn", header: { text: "update_yn" }, width: 80 },
+      { name: "url", fieldName: "url", header: { text: "url" }, width: 80 },
+      { name: "use_yn", fieldName: "use_yn", header: { text: "use_yn" }, width: 80 },
     ];
 
     //setColumns()함수로 그리드에 반영
     gridView.setColumns(columns);
-
-    //컬럼 이름이 "col1"인 컬럼의 heder객체를 가져온다.
-    var header = gridView.getColumnProperty("col1", "header");
-
-    //컬럼 헤더를 "컬럼1"로 바꾼다.
-    header.text = "컬럼1";
-
-    //헤더 객체를 GridView에 다시 넣는다.
-    gridView.setColumnProperty("col1", "header", header);
-
-    // 생성되어 있는 필드의 순서에 따라 앞에서 부터 입력되고, 남는 데이터는 버리게 됩니다.
-    var data = [["data1", "data2", "data3"]];
-    /* 객체표현도가능
-    var data = [
-        {field1:"value1", field2:"value2"}
-    ];
-    */
-    // DataProvider가 가지고 있는 모든 데이터를 삭제하고 입력된 데이터로 교체합니다.
-    dataProvider.setRows(data);
   });
 
   /* action1에대한 기능 */
@@ -146,7 +102,28 @@
           dataType: "json",
           success: function (data) {
             var result = JSON.parse(data);
+
+            // 데이터가져오기
+            result = result.map(function (item) {
+              return item.fields;
+            });
+
             console.log(result);
+
+            // modal test================
+            // var resultTest = {cd : 'S', msg: '성공' }
+            var resultTest = {cd : 'E', msg: '조회 실패' }
+
+            // 에러가 발생할 경우 모달 출력
+            if (resultTest && resultTest.cd === 'E') {
+              var message = resultTest.msg;
+              $('#myModal #contents').html(message);
+              $('#myModal').modal('show');
+            }
+            // ==========================
+            
+            dataProvider.setRows(result);
+
           },
         });
         break;
@@ -182,6 +159,7 @@
             var result = JSON.parse(data);
 
             console.log(result);
+            dataProvider.setRows(result);
           },
         });
         break;
@@ -200,5 +178,50 @@
     }
   }
 </script>
+{% endblock %} {% block contents %}
+<div class="container-fluid d-flex flex-column p-0 h-100">
+  <!-- 검색 조건 영역 -->
+  <div class="row no-gutters mb-2">
+    <div class="col-12">
+      <div class="search-header">
+        <div class="search-title">
+          <i class="xi-bars"> 조회조건</i>
+        </div>
+        <div class="search-buttons">
+          <button class="btn_sub active" onclick="doAction1('print');"><i class="xi-print"> 출력</i></button>
+          <button class="btn_sub active" onclick="doAction1('reset');"><i class="xi-refresh"> 초기화</i></button>
+          <button class="btn_main active" onclick="doAction1('search');"><i class="xi-search"> 조회</i></button>
+          <button class="btn_main active" onclick="doAction1('save');"><i class="xi-save"> 저장</i></button>
+        </div>
+      </div>
+      <form id="srchForm" class="search-content">
+        <label for="menuName">메뉴명</label>
+        <input type="text" name="menuName" id="menuName" />
+        <label for="url">URL</label>
+        <input type="text" name="url" id="url" />
+        <label for="useYn">사용여부</label>
+        <input type="checkbox" name="useYn" id="useYn" />
+      </form>
+    </div>
+  </div>
+  <div class="row no-gutters flex-grow-1">
+    <div class="col-12 d-flex flex-column">
+      <div class="search-header">
+        <div class="search-title">
+          <i class="xi-sort-desc"> 메뉴목록 (47건)</i>
+        </div>
+        <div class="search-buttons">
+          <button class="btn_sub active" onclick="doAction1('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button>
+          <button class="btn_sub active" onclick="doAction1('excelDownload');"><i class="xi-download"> 엑셀다운로드</i></button>
+          <button class="btn_sub active" onclick="doAction1('delRow');"><i class="xi-minus-min"> 행삭제</i></button>
+          <button class="btn_sub active" onclick="doAction1('addRow');"><i class="xi-plus-min"> 행추가</i></button>
+        </div>
+      </div>
+      <div class="search-content flex-grow-1">
+        <div id="realgrid" style="width: 100%; height: 100%"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
