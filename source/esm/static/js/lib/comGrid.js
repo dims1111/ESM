@@ -1,580 +1,391 @@
 /**
  * 그리드 초기화
- * 
- * 그리드 변수명은 반드시 grd로 시작할것!!!!!!!!!!!!!!!!!!!!!!
- * @param {string} fieldInfo : 컬럼은 | 로 구분된다.
- * , 콤마 구분으로 설정처리
- * 1 : headname
- * 2 : fieldname !반드시 소문자만 사용한다.
- * 3 : width
+ *
  * 4 : edi bind ( char1 : 컴포넌트 구분, char2 : 표현구분, char3 : common 데이터 구분값)
- * 5 : is hidden 숨김표시
- * 6 : grouping 그룹명
  * 7 : must coloumn 인지 * 표기 Y
  * 8 : textAlignment L:left C: center R: right
  * 9 : editable Y: 수정가능 N: 수정 불가능  default: Y
- */
-$.fn.gfn_gridInit = function (fieldInfo) {
-  var _grid = new RealGridJS.GridView(this.attr('id'));
-  var _provider = new RealGridJS.LocalDataProvider();
+ **/
+$.fn.gfn_gridInit = function (columns, width, height) {
+  width = width || "100%";
+  height = height || "100%";
+  this.css({ width: width, height: height }); // 그리드 width, height 지정
 
-  this.grid = _grid;
-  this.provider = _provider;
-  this.grid.setDataSource(this.provider);
+  this.gridView = new RealGridJS.GridView(this.attr("id")); // GridView 객체
+  this.provider = new RealGridJS.LocalDataProvider(); // LocalDataProvider 객체
+  this.gridView.setDataSource(this.provider); // Grid와 Provider 연결
 
+  // columns에 선언된 fieldName을 Provider의 fielid로 정의
+  var fields = columns.map(function (item) {
+    return item.fieldName;
+  });
+  this.provider.setFields(fields);
 
-  //fieldInfo에 따른 초기화
-  var obj = initGridField(this, fieldInfo, this.attr("id"));
-  this.grid = obj.grid
-  this.provider = obj.provider
+  // softDeleting: true이면 RowState만 deleted or createAndDeleted로 바꾼다. (바로 삭제하지 않음)
+  this.provider.setOptions({
+    softDeleting: true,
+  });
+
+  initGridField(this, columns);
+  this.gridView.setColumns(columns);
 
   //스타일 초기화
-  this.grid = initGridStyle(this.grid, this.attr("id"))
+  initGridStyle(this);
 
   //옵션 초기화
-  this.grid = initGridOption(this.grid)
+  initGridOption(this.gridView);
 
-  var srch_bar = '<span id="frowinfo_' + $(this).attr('id') + '"></span>';
-  // this.before(srch_bar);
-  $("." + this.attr("id")).append(srch_bar);
+  // 무슨 내용인지 몰라서 주석처리
+  // var srch_bar = '<span id="frowinfo_' + $(this).attr('id') + '"></span>';
+  // $("." + this.attr("id")).append(srch_bar);
 
-  this.grid.onKeyDown = function (grid, key, ctrl, shift, alt) {
+  // 엔터키 입력 시 다음 줄 첫번째 컬럼으로 커서 옮기기
+  this.gridView.onKeyDown = function (gridView, key, ctrl, shift, alt) {
     if (key === 13 || key == 9) {
-      var currentCell = grid.getCurrent();
-      var column = grid.columnByField(currentCell.fieldName);
-      var columns = grid.getColumns();
-      //console.log(column);
-      var firstFieldName;
-      var a;
-      var endcolidx = -1;
-      for (var a in columns) {
-        if (!columns[a]['displayIndex'] < 0) continue;
-        if (columns[a]['displayIndex'] == 0) firstFieldName = columns[a]['name']
-        if (endcolidx < columns[a]['displayIndex']) endcolidx = columns[a]['displayIndex'];
-      }
-      if (column.displayIndex != endcolidx) return;
-      var next = {};
-      next.dataRow = currentCell.dataRow + 1;
-      next.fieldName = firstFieldName;
-      grid.setCurrent(next);
-      grid.setFocus();
+      var currentCell = gridView.getCurrent();
+      var columns = gridView.getColumns();
+
+      // dataIndex 순으로 정렬
+      columns.sort(function (a, b) {
+        return a.dataIndex - b.dataIndex;
+      });
+
+      // 첫번째 컬럼
+      var firstFieldName = columns[0].fieldName;
+
+      gridView.setCurrent({
+        fieldName: firstFieldName,
+        dataRow: currentCell.dataRow + 1,
+      });
+      gridView.setFocus();
       return false;
     }
   };
   return this;
 };
 
+function initGridField(grdObj, columns) {
+  // fieldInfo 안씀
 
+  for (var columnInfo of columns) {
+    // header객체 초기화
+    columnInfo.header = columnInfo.header || {};
 
-/**
- *
- *
- * @param {*} grdObj 그리드 오브젝트
- * @param {*} fieldInfo 필드 정보
- * @param {*} id id
- * @returns
- */
-function initGridField(grdObj, fieldInfo, id) {
-  var cvalArr = new Array();
-  var fvalArr = new Array();
-  var wvalArr = new Array();
-  var ediArr = new Array();
-  var hiddenArr = new Array();
-  var groupArr = new Array();
-
-  var mustArr = new Array();
-  var alignArr = new Array();
-  var editableArr = new Array();
-  var fields = fieldInfo.split('|');
-
-  for (var i = 0; i < fields.length; i++) {
-    var itemArr = fields[i].split(',');
-    for (var j = 0; j < itemArr.length; j++) {
-      itemArr[j] = jQuery.trim(itemArr[j]);
-    }
-    cvalArr.push(itemArr[0]);
-    fvalArr.push(itemArr[1]);
-    wvalArr.push(itemArr[2]);
-    ediArr.push(itemArr[3]);
-    hiddenArr.push(itemArr[4]);
-    groupArr.push(itemArr[5]);
-    mustArr.push(itemArr[6]);
-    alignArr.push(itemArr[7]);
-    editableArr.push(itemArr[8]);
-  }
-
-  grdObj.provider.setFields(fvalArr);
-
-  grdObj.provider.setOptions({
-    softDeleting: true
-  });
-
-  var columns = new Array();
-
-  var gNames = new Array();
-  for (var i = 0; i < cvalArr.length; i++) {
-    var jobj = new Object();
-    jobj.name = fvalArr[i];
-    jobj.fieldName = fvalArr[i];
-    var jobj2 = new Object();
-
-    jobj2.text = cvalArr[i];
-    jobj.header = jobj2;
-    jobj.width = wvalArr[i];
-
-    if (hiddenArr[i] == 'h') {
-      jobj.visible = false;
+    // header.text 객체에 text값 넣기
+    if (columnInfo.text) {
+      columnInfo.header.text = columnInfo.text;
     }
 
-    if (mustArr[i] === 'Y') {
-      jobj.header.subText = "*";
-      jobj.header.subTextGap = 5;
-      jobj.header.subTextLocation = "left";
-      // jobj.header.subStyles = {
-      //   foreground: "#e74c3c",
-      //   fontSize: 18
-      // }
-
-      jobj.header.subStyles = {
-        "foreground": "#e74c3c",
-        "fontSize": 18,
-        "selectedForeground": "#e74c3c"
-      }
+    // 필수 컬럼일 경우 *표시 및 css 조정
+    if (columnInfo.required === true) {
+      columnInfo.header.subText = "*";
+      columnInfo.header.subTextGap = 5;
+      columnInfo.header.subTextLocation = "left";
+      columnInfo.header.subStyles = {
+        foreground: "#e74c3c",
+        fontSize: 18,
+        selectedForeground: "#e74c3d",
+      };
     }
 
-    if (ediArr[i] != '' && ediArr[i] != null && ediArr[i] != undefined) {
-      gubun1 = ediArr[i].substring(0, 1);
-      gubun2 = ediArr[i].substring(1, 2);
-      ediname = ediArr[i].substring(2);
-      if (gubun1 == 'C') {
-        var str = gubun2 + ediname;
-        if (gubun2 == 'O') {
-          gridOptionCombo(ediname, grdObj, jobj.fieldName);
-        }
-        else if (str.indexOf('&') == -1) {
-          gridCombo(gubun2 + ediname, grdObj, jobj.fieldName);
-        }
-        else {
-          var arr = str.split('&');
-          gridCombo(arr[0], grdObj, jobj.fieldName, arr[1]);
-        }
-      }
-      else if (gubun1 == 'P') {
-        // 검색 아이콘
-        jobj.buttonVisibility = "always";
-        jobj.button = "image";
-        jobj.imageButtons = {
-          width: 20,
-          images: [
-            {
-              cursor: "pointer",
-              up: '/comm/faimg/002/16'//'<i class="fas fa-search"></i>'
-            }
-          ]
-        }
-      }
-      else if (gubun1 == 'K') {
-        // 이메일 아이콘
-        jobj.buttonVisibility = "always";
-        jobj.button = "image";
-        jobj.imageButtons = {
-          width: 20,
-          images: [
-            {
-              cursor: "pointer",
-              up: '/comm/faimg/003/16',//'<i class="fas fa-search"></i>'
-            }
-          ]
-        };
-      }
-      else if (gubun1 == 'I') {
-        jobj.styles = {
-          contentFit: "auto"
-        };
-        jobj.renderer = {
-          type: "image",
-          smoothing: true
-        }
-      }
-      else if (gubun1 == "B") {
-        var arr = ediname.split('.');
-        jobj.editable = false;
-        jobj.renderer = {
-          type: "imageButton",
-          //text: gubun2 + ediname,
-          text: arr[0],
-          hoveredUnderline: false,
-          imageUrl: "/comm/faimg/068/90/64,133,238",
-          // imageUrl: "/comm/faimg/068/80/123,232,0",
-          cursor: "pointer"
-        };
-        jobj.styles = {
-          textAlignment: "center",
-          lineAlignment: "center",
-          foreground: "#fff"
-        };
-        if (gubun2 == "D") {
-          var data = parse(arr[1]);
-          _grid.addCellRenderers([{
-            "id": data.id,
-            "type": "imageButton",
-            'imageUrl': "/comm/faimg/068/80/123,232,0",
-            'text': arr[0],
-            'cursor': "pointer",
-            'hoveredUnderline': false,
-          }]);
-          jobj.renderer = null;
-          jobj.dynamicStyles = [{
-            'criteria': data.criteria,
-            'styles': data.styles
-          }];
-        }
-      }
-
-      else if (gubun1 == "D") {
-        jobj.editButtonVisibility = "always";
-
-        jobj.editor = {
-          type: "btdate",
-          btOptions: {
-            language: "" + ld.datepickerlang + "",
-            // startDate: new Date(),
-            // endDate: new Date(),
-          },
-          datetimeFormat: "yyyyMMdd",
-          commitOnSelect: true,
-          mask: {
-            editMask: "9999-99-99"
-            // includedFormat: false
+    if (columnInfo.type) {
+      switch (columnInfo.type) {
+        case "combo": // 콤보박스
+          var str = gubun2 + ediname;
+          if (gubun2 == "O") {
+            gridOptionCombo(ediname, grdObj, jobj.fieldName);
+          } else if (str.indexOf("&") == -1) {
+            gridCombo(gubun2 + ediname, grdObj, jobj.fieldName);
+          } else {
+            var arr = str.split("&");
+            gridCombo(arr[0], grdObj, jobj.fieldName, arr[1]);
           }
-        }
-
-        jobj.styles = {
-          datetimeFormat: "yyyy-MM-dd"
-        }
-
-
-        jobj.displayRegExp = /(\d{4})(\d{2})(\d{2})/;
-        jobj.displayReplace = "$1-$2-$3";
-
-        if (gubun2 == "M") {
-          jobj.editor.btOptions.minViewMode = 1;
-          jobj.editor.datetimeFormat = "yyyyMM";
-          jobj.editor.mask = {
-            editMask: "9999-99",
-            includedFormat: false
-          }
-          jobj.displayRegExp = /(\d{4})(\d{2})/;
-          jobj.displayReplace = "$1-$2";
-        }
-        else if (gubun2 == 'Y') {
-          jobj.editor.btOptions.minViewMode = 2;
-          jobj.editor.datetimeFormat = "yyyy";
-          jobj.editor.mask = {
-            editMask: "9999",
-            includedFormat: false
-          }
-          jobj.displayRegExp = /(\d{4})/;
-          jobj.displayReplace = "$1";
-        }
-        else if (gubun2 == 'T') {
-          jobj.editor.btOptions.minViewMode = 2;
-          jobj.editor.datetimeFormat = "yyyyMMddhhmmss";
-          jobj.editor.mask = {
-            editMask: "9999-99-99 99:99:99",
-            includedFormat: false
-          }
-          jobj.displayRegExp = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
-          jobj.displayReplace = "$1-$2-$3 $4:$5:$6";
-        }
-      }
-
-      else if (gubun1 == "L") {
-        jobj.renderer = {
-          type: "link",
-          url: gubun2 + ediname,
-          showUrl: false,
-          cursor: "pointer"
-        }
-        jobj.styles = {
-          foreground: '#0984e3'
-        }
-        // grdObj.grid.onLinkableCellClicked = function(){
-        //     alert("?")
-        // };
-      }
-      else if (gubun1 == "M") {
-
-        jobj.displayRegExp = /(\d)(?=(?:\d{3})+(?!\d))/g;
-        jobj.displayReplace = '$1,';
-        // alert(fvalArr[i]);
-        gfn_setDataType(grdObj, fvalArr[i], 'number');
-      }
-      else if (gubun1 == 'F') {
-        jobj.buttonVisibility = "always";
-        jobj.button = "image";
-        jobj.imageButtons = {
-          width: 20,
-          images: [
-            {
-              cursor: "pointer",
-              //name: "account-officer-search-button",
-              //up: "/static/img/tmp/small-search.png"
-              up: '/comm/faimg/56d/16'//'<i class="fas fa-search"></i>'
-            }
-          ]
-        }
-      }
-      //시간
-      else if (gubun1 == 'T') {
-        jobj.editor = {};
-        jobj.editor.type = 'text';
-        jobj.editor.mask = '00:00';
-        jobj.displayRegExp = "([0-9]{2})([0-9]{2})";
-        jobj.displayReplace = "$1:$2";
-      }
-
-      //평점
-      else if (gubun1 == 'G') {
-        var fieldsArr = grdObj.provider.getFields();
-        fieldsArr[i].dataType = 'number';
-        grdObj.provider.setFields(fieldsArr);
-        jobj.editor = {};
-        jobj.editor.type = 'number';
-        jobj.editor.editFormat = '0.00';
-        // jobj.editor.mask = '0.00';
-        jobj.styles = {};
-        jobj.styles.numberFormat = "0.00";
-        // jobj.displayRegExp = "([0-9])([0-9]{2})";
-        // jobj.displayReplace = "$1.$2";
-      }
-      else if (gubun1 == 'Y') {
-        jobj.renderer = {
-          type: 'check',
-          shape: 'box',
-          falseValues: "N",
-          trueValues: "Y",
-          editable: true,
-          startEditOnClick: true
-        }
-        jobj.styles = {
-          figureSize: '160%'
-          // figureBackground: "#12c58b"
-          // figureInactiveBackground: "#33ff0000"
-        }
-      }
-      // 핸드폰번호
-      else if (gubun1 == 'N') {
-        jobj.editor = {};
-        jobj.editor.type = 'text';
-        // jobj.editor.mask = {
-        //   editMask: '000-0000-000000000'
-        //   , allowEmpty: true
-        //   , showInvalidFormatMessage: false
-        // };
-        jobj.displayRegExp = "([0-9]{3})([0-9]{4})([0-9]{4,})";
-        jobj.displayReplace = "$1-$2-$3";
-      }
-    }
-
-    if (alignArr[i]) {
-      if (!jobj.styles) {
-        jobj.styles = {};
-      }
-
-      if (alignArr[i].length > 1) {
-
-        if (alignArr[i].charAt(1) == 'B') {
-          jobj.styles['fontBold'] = true;
-        }
-
-        alignArr[i] = alignArr[i].charAt(0);
-      }
-
-      switch (alignArr[i]) {
-
-        case 'L':
-          jobj.styles['textAlignment'] = "near";
           break;
-        case 'C':
-          jobj.styles["textAlignment"] = "center";
+        case "search": // 조회버튼
+          columnInfo.buttonVisibility = "always";
+          columnInfo.button = "image";
+          columnInfo.imageButtons = {
+            width: 20,
+            images: [
+              {
+                cursor: "pointer",
+                up: "/comm/faimg/002/16", //'<i class="fas fa-search"></i>'
+              },
+            ],
+          };
           break;
-        case 'R':
-          jobj.styles['textAlignment'] = "far";
+        case "email": // 이메일버튼
+          columnInfo.buttonVisibility = "always";
+          columnInfo.button = "image";
+          columnInfo.imageButtons = {
+            width: 20,
+            images: [
+              {
+                cursor: "pointer",
+                up: "/comm/faimg/003/16", //'<i class="fas fa-search"></i>'
+              },
+            ],
+          };
           break;
-      }
-    }
-
-    if (editableArr[i]) {
-      switch (editableArr[i]) {
-        case 'Y':
-          jobj.editable = true;
+        case "button": // 버튼
+          columnInfo.editable = false;
+          columnInfo.renderer = {
+            type: "imageButton",
+            text: arr[0],
+            hoveredUnderline: false,
+            imageUrl: "/comm/faimg/068/90/64,133,238",
+            cursor: "pointer",
+          };
+          columnInfo.styles = {
+            textAlignment: "center",
+            lineAlignment: "center",
+            foreground: "#fff",
+          };
           break;
-        case 'N':
-          jobj.editable = false;
-          break;
-      }
-    }
-    if (jobj.renderer == null || jobj.renderer == undefined) {
-      jobj.renderer = {
-        type: "text",
-        showTooltip: true,
-        tooltipEllipseTextOnly: true
-      }
-    }
-    else {
-      jobj.renderer.showTooltip = true;
-      jobj.renderer.tooltipEllipseTextOnly = true;
-    }
-    if (groupArr[i]) {
-      var gName = groupArr[i];
-      if (gNames.indexOf(gName) < 0) {
-        columns.push({
-          type: "group",
-          name: gName,
-          width: 0,
-          header: {
-            styles: {
-              //그룹 헤더의 스타일은 여기에~
+        case "date": // 날짜
+          columnInfo.editButtonVisibility = "always";
+          columnInfo.editor = {
+            type: "btdate",
+            btOptions: {
+              language: "" + ld.datepickerlang + "",
             },
-          },
-          columns: []
-        });
-        gNames.push(gName);
-      }
-      for (var t = 0; t < columns.length; t++) {
-        if (columns[t].name === gName) {
-          columns[t].columns.push(jobj);
-          columns[t].width = parseInt(columns[t].width) + parseInt(wvalArr[i]);
-        }
-      }
-    }
-    else {
-      columns.push(jobj);
-    }
-  }
-  grdObj.grid.setColumns(columns);
+            datetimeFormat: "yyyyMMdd",
+            commitOnSelect: true,
+            mask: {
+              editMask: "9999-99-99",
+            },
+          };
 
-  return grdObj
+          columnInfo.styles = {
+            datetimeFormat: "yyyy-MM-dd",
+          };
+
+          columnInfo.displayRegExp = /(\d{4})(\d{2})(\d{2})/;
+          columnInfo.displayReplace = "$1-$2-$3";
+
+          if (gubun2 == "M") {
+            columnInfo.editor.btOptions.minViewMode = 1;
+            columnInfo.editor.datetimeFormat = "yyyyMM";
+            columnInfo.editor.mask = {
+              editMask: "9999-99",
+              includedFormat: false,
+            };
+            columnInfo.displayRegExp = /(\d{4})(\d{2})/;
+            columnInfo.displayReplace = "$1-$2";
+          } else if (gubun2 == "Y") {
+            columnInfo.editor.btOptions.minViewMode = 2;
+            columnInfo.editor.datetimeFormat = "yyyy";
+            columnInfo.editor.mask = {
+              editMask: "9999",
+              includedFormat: false,
+            };
+            columnInfo.displayRegExp = /(\d{4})/;
+            columnInfo.displayReplace = "$1";
+          } else if (gubun2 == "T") {
+            columnInfo.editor.btOptions.minViewMode = 2;
+            columnInfo.editor.datetimeFormat = "yyyyMMddhhmmss";
+            columnInfo.editor.mask = {
+              editMask: "9999-99-99 99:99:99",
+              includedFormat: false,
+            };
+            columnInfo.displayRegExp = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+            columnInfo.displayReplace = "$1-$2-$3 $4:$5:$6";
+          }
+          break;
+        case "link": // 링크
+          columnInfo.renderer = {
+            type: "link",
+            url: gubun2 + ediname,
+            showUrl: false,
+            cursor: "pointer",
+          };
+          columnInfo.styles = {
+            foreground: "#0984e3",
+          };
+          break;
+        case "M": // M
+          columnInfo.displayRegExp = /(\d)(?=(?:\d{3})+(?!\d))/g;
+          columnInfo.displayReplace = "$1,";
+          gfn_setDataType(grdObj, fvalArr[i], "number");
+          break;
+        case "F": // F
+          columnInfo.buttonVisibility = "always";
+          columnInfo.button = "image";
+          columnInfo.imageButtons = {
+            width: 20,
+            images: [
+              {
+                cursor: "pointer",
+                up: "/comm/faimg/56d/16", //'<i class="fas fa-search"></i>'
+              },
+            ],
+          };
+          break;
+        case "time": // 시간
+          columnInfo.editor = {};
+          columnInfo.editor.type = "text";
+          columnInfo.editor.mask = "00:00";
+          columnInfo.displayRegExp = "([0-9]{2})([0-9]{2})";
+          columnInfo.displayReplace = "$1:$2";
+          break;
+        case "grade": // 평점
+          var fieldsArr = grdObj.provider.getFields();
+          fieldsArr[i].dataType = "number";
+          grdObj.provider.setFields(fieldsArr);
+          columnInfo.editor = {};
+          columnInfo.editor.type = "number";
+          columnInfo.editor.editFormat = "0.00";
+          columnInfo.styles = {};
+          columnInfo.styles.numberFormat = "0.00";
+          break;
+        case "y": // y
+          columnInfo.renderer = {
+            type: "check",
+            shape: "box",
+            falseValues: "N",
+            trueValues: "Y",
+            editable: true,
+            startEditOnClick: true,
+          };
+          columnInfo.styles = {
+            figureSize: "160%",
+          };
+          break;
+        case "HP": // 핸드폰번호
+          columnInfo.editor = {};
+          columnInfo.editor.type = "text";
+          columnInfo.displayRegExp = "([0-9]{3})([0-9]{4})([0-9]{4,})";
+          columnInfo.displayReplace = "$1-$2-$3";
+          break;
+      }
+    }
+    /*
+    C: 콤보박스
+    I: contentFit: auto,
+    P: 검색팝업 돋보기 우측
+    K: 이메일 아이콘 우측
+    B: 
+    */
+  }
 }
 
-
 /**
-*
-*
-* @param {*} grid 그리드객체
-* @param {*} grdId 그리드의 html id
-* @returns 그리드 객체 
-*/
-function initGridStyle(grid, grdId) {
+ *
+ *
+ * @param {*} grid 그리드객체
+ * @param {*} grdId 그리드의 html id
+ * @returns 그리드 객체
+ */
+function initGridStyle(obj) {
+  var grid = obj.gridView;
+  var grdId = obj.attr("id");
+
   //  그리드 스타일 설정
-
   grid.setStyles({
-    "grid": {
+    grid: {
+      fontSize: "12",
+      paddingTop: "15",
+      paddingBottom: "15",
 
-      "fontSize": "12",
-      "paddingTop": "15",
-      "paddingBottom": "15",
-
-      "border": "#00ffffff, 1"
+      border: "#00ffffff, 1",
       // "borderRight": "#ffffff, 1"
       // "borderLeft": "#ffffff, 1",
       // "borderTop": "#ffffffff, 1",
       // "borderBottom": "#ffffffff, 1"
     },
 
-    "body": {
+    body: {
       // "border": "#00ffffff, 1",
-      "paddingTop": "15",
-      "paddingBottom": "15",
-      "foreground": "#ff4b5a61",
+      paddingTop: "15",
+      paddingBottom: "15",
+      foreground: "#ff4b5a61",
       // "fontBold": true,
       // "borderLeft": "#ffffff, 1",
       // "borderRight": "#ffffff, 1",
       // "borderTop": "#ffffffff, 1",
       // "borderBottom": "#ffffffff, 1",
 
-      "empty": {
+      empty: {
         // "borderTop": "d5d5d5, 1"
-      }
+      },
     },
 
-    "header": {
+    header: {
       // "border": "#00ffffff, 1",
       // "borderTop": "#1F8ECD, 2",
-      "borderRight": "#d5d5d5, 1",
-      "borderBottom": "#d5d5d5, 1",
+      borderRight: "#d5d5d5, 1",
+      borderBottom: "#d5d5d5, 1",
 
-      "background": "#fffcfa",
-      "paddingTop": "5",
-      "paddingBottom": "5",
+      background: "#fffcfa",
+      paddingTop: "5",
+      paddingBottom: "5",
       // "fontBold": true,
       // "foreground": "#4b5a61",
 
-      "selectedBackground": "#fffcfa",
-      "selectedForeground": "#000000",
+      selectedBackground: "#fffcfa",
+      selectedForeground: "#000000",
       "subStyles ": {
-        "foreground": "#e74c3c",
-        "fontSize": 18,
-        "selectedForeground": "#e74c3c"
+        foreground: "#e74c3c",
+        fontSize: 18,
+        selectedForeground: "#e74c3c",
       },
 
-      "group": {
-        "background": "#fffcfa",
-        "paddingTop": "12",
-        "paddingBottom": "12",
+      group: {
+        background: "#fffcfa",
+        paddingTop: "12",
+        paddingBottom: "12",
         // "fontBold": true,
 
-        "borderRight": "#d5d5d5, 1",
-        "borderBottom": "#d5d5d5, 1",
+        borderRight: "#d5d5d5, 1",
+        borderBottom: "#d5d5d5, 1",
         // "borderTop": "#1f8ecd, 2"
-      }
+      },
     },
 
-    "footer": {
-      "background": "#fafad2",
-      "paddingTop": "5",
-      "paddingBottom": "5",
-      "textAlignment": "center",
+    footer: {
+      background: "#fafad2",
+      paddingTop: "5",
+      paddingBottom: "5",
+      textAlignment: "center",
 
-      "borderRight": "#00ffffff, 1",
-      "borderBottom": "#d5d5d5, 1",
-      "borderTop": "#d5d5d5, 1",
-      "borderLeft": "#d5d5d5, 1"
+      borderRight: "#00ffffff, 1",
+      borderBottom: "#d5d5d5, 1",
+      borderTop: "#d5d5d5, 1",
+      borderLeft: "#d5d5d5, 1",
     },
 
-    "indicator": {
+    indicator: {
       // "border": "#d5d5d5, 1",
-      "background": "#ffffff",
-      "fontBold": true,
+      background: "#ffffff",
+      fontBold: true,
 
-      "borderRight": "#d5d5d5, 1",
+      borderRight: "#d5d5d5, 1",
       // "borderLeft": "#ffffff, 3",
       // "borderTop": "#d5d5d5, 1",
-      "borderBottom": "#d5d5d5, 1",
+      borderBottom: "#d5d5d5, 1",
 
-      "foot": {
-        "borderLeft": "#00ffffff, 1"
-      }
+      foot: {
+        borderLeft: "#00ffffff, 1",
+      },
     },
 
-    "checkBar": {
-      "borderRight": "#d5d5d5, 1",
+    checkBar: {
+      borderRight: "#d5d5d5, 1",
       // "borderLeft": "#d5d5d5, 1",
       // "borderTop": "#ffffff, 1",
-      "borderBottom": "#d5d5d5, 1"
+      borderBottom: "#d5d5d5, 1",
     },
 
-    "statusBar": {
-      "borderRight": "#d5d5d5, 1"
+    statusBar: {
+      borderRight: "#d5d5d5, 1",
     },
 
-    "fixed": {
-      "background": "#ffffff",
-      "foreground": "#ff4b5a61",
-      "borderRight": "#d5d5d5, 1",
-      "borderBottom": "#d5d5d5, 1"
-    }
+    fixed: {
+      background: "#ffffff",
+      foreground: "#ff4b5a61",
+      borderRight: "#d5d5d5, 1",
+      borderBottom: "#d5d5d5, 1",
+    },
   });
 
   $("#" + grdId).each(function () {
@@ -596,62 +407,64 @@ function initGridStyle(grid, grdId) {
   // 필터에 CSS 스타일 적용 여부 설정
   grid.setFilteringOptions({ selector: { useCssStyle: true } });
 
-  grid.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 28, drawBorderRight: false }
+  grid.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 28, drawBorderRight: false });
+
+  grid.addCellStyle(
+    "found",
+    {
+      background: "#cc880000",
+      foreground: "#ffffff",
+    },
+    true
   );
-
-  grid.addCellStyle("found", {
-    "background": "#cc880000",
-    "foreground": "#ffffff"
-  }, true);
-
-  return grid
 }
 
-
 /**
-*
-*
-* @param {*} grid 그리드 객체
-* @returns {*} 그리드 반환
-*/
+ *
+ *
+ * @param {*} grid 그리드 객체
+ * @returns {*} 그리드 반환
+ */
 function initGridOption(grid) {
   // 그리드 옵션 설정
-  grid.setSelectOptions({ "style": "singleRow" }); //rows, columns, singleRow, singleColumn, none, block
+  grid.setSelectOptions({ style: "singleRow" }); //rows, columns, singleRow, singleColumn, none, block
 
   grid.setPanel({
-    visible: false
+    visible: false,
   });
 
   grid.setIndicator({
-    headText: "No"
+    headText: "No",
   });
 
-  grid.setStateBar({
-    visible: false
-  })
+  // grid.setStateBar({
+  //   visible: false
+  // });
+
   grid.setCheckBar({
-    visible: false
+    visible: false,
   });
+
   grid.setCopyOptions({
     singleMode: true,
     lookupDisplay: true,
     copyDisplayText: true,
-    checkReadOnly: true
+    checkReadOnly: true,
   });
 
   grid.setEditorOptions({
-    useCssStyle: true,  //모든 에디터에 CSS를 적용할 경우 사용  
+    useCssStyle: true, //모든 에디터에 CSS를 적용할 경우 사용
     useCssStyleDropDownList: true, //dropDown
-    useCssStyleDatePicker: true,   //달력
-    useCssStylePopupMenu: true,    //popupMenu
-    useCssStyleMultiCheck: true,    //multiCheck
+    useCssStyleDatePicker: true, //달력
+    useCssStylePopupMenu: true, //popupMenu
+    useCssStyleMultiCheck: true, //multiCheck
   });
 
   grid.setEditOptions({
     insertable: false,
     appendable: false,
     editWhenFocused: true,
-    enterToTab: true
+    enterToTab: true,
   });
 
   grid.setOptions({
@@ -663,19 +476,18 @@ function initGridOption(grid) {
     fitStyle: "even",
     drawBorderRight: false,
   });
-  return grid
 }
 
 /**
-*
-*
-* @param {*} grd 그리드 객체
-* @param {*} fName 데이터 타입을 변경 하려는 필드 이름
-* @param {*} type  변경하려는 데이터 타입
-*/
+ *
+ *
+ * @param {*} grd 그리드 객체
+ * @param {*} fName 데이터 타입을 변경 하려는 필드 이름
+ * @param {*} type  변경하려는 데이터 타입
+ */
 function gfn_setDataType(grd, fName, type) {
-  var fields = grd.provider.getFields();//대문자 
-  var f_arr = fName.split(',');
+  var fields = grd.provider.getFields(); //대문자
+  var f_arr = fName.split(",");
 
   for (var i = 0; i < f_arr.length; i++) {
     var field = f_arr[i];
@@ -691,94 +503,90 @@ function gfn_setDataType(grd, fName, type) {
 }
 
 /**
-*
-*
-* @param {*} grd grid 변수 전달
-* @param {*} sumTextColoumn  text,ColoumnName => 스트링으로 전달
-* @param {*} sumNumberColoumns 합계로 표시할 컬럼 필드명들  
-*/
+ *
+ *
+ * @param {*} grd grid 변수 전달
+ * @param {*} sumTextColoumn  text,ColoumnName => 스트링으로 전달
+ * @param {*} sumNumberColoumns 합계로 표시할 컬럼 필드명들
+ */
 this.gtn_setGridSumFooter = function (grd, sumTextColoumn, sumNumberColoumns) {
   grd.grid.setIndicator({ footText: " " });
   grd.grid.setOptions({
-    footer: { visible: true }
+    footer: { visible: true },
   });
-  grd.grid.setOptions({ "summaryMode": "aggregate" });
+  grd.grid.setOptions({ summaryMode: "aggregate" });
   if (!gfn_isNull(sumTextColoumn)) {
-
-    var t = sumTextColoumn.split(',');
+    var t = sumTextColoumn.split(",");
     var col = grd.grid.columnByName(t[1]);
     col.footer = {};
     col.footer.text = t[0];
     grd.grid.setColumn(col);
   }
 
-  var cArr = sumNumberColoumns.split(',');
+  var cArr = sumNumberColoumns.split(",");
   for (var index = 0; index < cArr.length; index++) {
-    gfn_setDataType(grd, cArr[index], 'number');
+    gfn_setDataType(grd, cArr[index], "number");
     var c = grd.grid.columnByName(cArr[index]);
-    c.type = 'data';
-    c.footer = { 'expression': 'sum' }
+    c.type = "data";
+    c.footer = { expression: "sum" };
     c.footer.styles = {
-      'textAlignment': 'far',
-      'numberFormat': "#,###"
+      textAlignment: "far",
+      numberFormat: "#,###",
     };
     grd.grid.setColumn(c);
   }
-}
+};
 
 this.gfn_setGridMultiFooter = function (grd, footerCount, footerHeight, sumTextColoumnArr, sumNumberColoumnsArr) {
-
   grd.grid.setOptions({
-    footer: { visible: true }
+    footer: { visible: true },
   });
   grd.grid.setFooter({
     count: footerCount,
-    height: footerHeight
+    height: footerHeight,
   });
-  grd.grid.setOptions({ "summaryMode": "aggregate" });
+  grd.grid.setOptions({ summaryMode: "aggregate" });
   for (var index = 0; index < sumTextColoumnArr.length; index++) {
     var sumTextColoumn = sumTextColoumnArr[index];
     if (!gfn_isNull(sumTextColoumn)) {
-      var t = sumTextColoumn.split(',');
+      var t = sumTextColoumn.split(",");
       var col = grd.grid.columnByName(t[1]);
       if (gfn_isNull(col.footer.text)) {
         col.footer = {};
         col.footer.text = [t[0]];
-      }
-      else {
+      } else {
         col.footer.text.push(t[0]);
       }
       grd.grid.setColumn(col);
     }
   }
   for (var index = 0; index < sumNumberColoumnsArr.length; index++) {
-    var cArr = sumNumberColoumnsArr[index].split(',');
+    var cArr = sumNumberColoumnsArr[index].split(",");
     for (var index = 0; index < cArr.length; index++) {
-      gfn_setDataType(grd, cArr[index], 'number');
+      gfn_setDataType(grd, cArr[index], "number");
       var c = grd.grid.columnByName(cArr[index]);
-      c.type = 'data';
-      c.footer = { 'expression': 'sum' }
+      c.type = "data";
+      c.footer = { expression: "sum" };
       c.footer.styles = {
-        'textAlignment': 'far',
-        'numberFormat': "#,###"
+        textAlignment: "far",
+        numberFormat: "#,###",
       };
       grd.grid.setColumn(c);
     }
   }
-}
+};
 
 /**
  * 더하고자 하는 컬럼명을 넘겨 total값을 return 해준다.
-* @param {*} _grd grid 변수
-* @param {*} sumColumns 더하고자 하는 컬럼 필드명 | string
-* @param {*} itemIndex realgrid onCellEdited 함수의 인자를 그대로 넘긴다.
-* @param {*} field realgrid onCellEdited 함수의 인자를 그대로 넘긴다.
-*/
+ * @param {*} _grd grid 변수
+ * @param {*} sumColumns 더하고자 하는 컬럼 필드명 | string
+ * @param {*} itemIndex realgrid onCellEdited 함수의 인자를 그대로 넘긴다.
+ * @param {*} field realgrid onCellEdited 함수의 인자를 그대로 넘긴다.
+ */
 function gfn_setGridSum(_grd, sumColumns, itemIndex, field) {
-  var sumArr = sumColumns.replace(/[\t\s]/g, '').split(',');
+  var sumArr = sumColumns.replace(/[\t\s]/g, "").split(",");
   var toLowerArr = sumArr;
   var getField = _grd.provider.getFields();
-
 
   var total = 0;
   for (var i = 0; i < sumArr.length; i++) {
@@ -821,10 +629,10 @@ function gfn_getColumnNonNullCount(grd, columnName) {
 
 /**
  * footer 병합하는 함수
-* @param {*} _grd grid 변수
-* @param {*} count 맨 앞 컬럼부터 합칠 컬럼의 수
-* @param {*} start 병합을 시작할 컬럼의 인덱스
-*/
+ * @param {*} _grd grid 변수
+ * @param {*} count 맨 앞 컬럼부터 합칠 컬럼의 수
+ * @param {*} start 병합을 시작할 컬럼의 인덱스
+ */
 function gfn_mergeFooter(_grd, count, start) {
   if (gfn_isNull(start)) start = 0;
   var fields = _grd.provider.getFields();
@@ -836,10 +644,9 @@ function gfn_mergeFooter(_grd, count, start) {
   }
 
   _grd.grid.setFooter({
-    mergeCells: mergeArr
+    mergeCells: mergeArr,
   });
 }
-
 
 // 그리드 세로크기 세팅
 // function gridsizeload() {
@@ -876,7 +683,6 @@ function gfn_mergeFooter(_grd, count, start) {
 //     }, null);
 //   }
 
-
 //   var colByName = grd.grid.columnByName(to);
 
 //   if (colByName.labelField == null) {
@@ -889,7 +695,6 @@ function gfn_mergeFooter(_grd, count, start) {
 //     col.editor = {};
 //     col.editor.type = "dropDown";
 //     col.editor.domainOnly = true;
-
 
 //     col.lookupDisplay = true;
 //     col.alwaysShowEditButton = true;
@@ -937,7 +742,6 @@ function gfn_mergeFooter(_grd, count, start) {
 //   }
 
 //   grd.grid.onCurrentRowChanged = function (grid, oldRow, newRow) {
-
 
 //     var focusCell = grd.grid.getCurrent();
 //     var colto = grd.grid.columnByName(to);
@@ -993,9 +797,9 @@ function gfn_mergeFooter(_grd, count, start) {
 
 // /**
 //  *
-//  * 
-//  * @param {*} grd  
-//  * @param {*} row 
+//  *
+//  * @param {*} grd
+//  * @param {*} row
 //  */
 // this.gfn_setRowPosition = function (grd, row) {
 //   var next = {};
@@ -1006,7 +810,7 @@ function gfn_mergeFooter(_grd, count, start) {
 /**
  *
  *
- * @param {*} _grd 그리드 오브젝트 
+ * @param {*} _grd 그리드 오브젝트
  * @returns 편집된 row 데이터
  */
 function gfn_getJsonChangedRows(_grd) {
@@ -1022,19 +826,19 @@ function gfn_getJsonChangedRows(_grd) {
   for (var i = 0; i < rows.deleted.length; i++) {
     //var jsonObj = new Object();
     var jsonObj = _grd.provider.getJsonRow(rows.deleted[i]);
-    jsonObj.t = 'd';
-    jsonObj.wrk_tp = 'D';
+    jsonObj.t = "d";
+    jsonObj.wrk_tp = "D";
     jsonObj.row = rows.deleted[i];
 
     var keys = _grd.provider.getOrgFieldNames();
 
-    if (keys.indexOf('err_msg') > -1 && !gfn_isNull(jsonObj.err_msg)) {
+    if (keys.indexOf("err_msg") > -1 && !gfn_isNull(jsonObj.err_msg)) {
       continue;
     }
 
     for (var idx = 0; idx < keys.length; idx++) {
       if (jsonObj[keys[idx]] == undefined) {
-        jsonObj[keys[idx]] = ''
+        jsonObj[keys[idx]] = "";
       }
     }
 
@@ -1044,14 +848,14 @@ function gfn_getJsonChangedRows(_grd) {
   for (var i = 0; i < rows.updated.length; i++) {
     //var jsonObj = new Object();
     var jsonObj = _grd.provider.getJsonRow(rows.updated[i]);
-    jsonObj.t = 'u';
-    jsonObj.wrk_tp = 'U';
+    jsonObj.t = "u";
+    jsonObj.wrk_tp = "U";
     jsonObj.row = rows.updated[i];
 
     var keys = _grd.provider.getOrgFieldNames();
     for (var idx = 0; idx < keys.length; idx++) {
       if (jsonObj[keys[idx]] == undefined) {
-        jsonObj[keys[idx]] = '';
+        jsonObj[keys[idx]] = "";
       }
     }
 
@@ -1061,14 +865,14 @@ function gfn_getJsonChangedRows(_grd) {
   for (var i = 0; i < rows.created.length; i++) {
     //var jsonObj = new Object();
     var jsonObj = _grd.provider.getJsonRow(rows.created[i]);
-    jsonObj.t = 'i';
-    jsonObj.wrk_tp = 'I';
+    jsonObj.t = "i";
+    jsonObj.wrk_tp = "I";
     jsonObj.row = rows.created[i];
 
     var keys = _grd.provider.getOrgFieldNames();
     for (var idx = 0; idx < keys.length; idx++) {
       if (jsonObj[keys[idx]] == undefined) {
-        jsonObj[keys[idx]] = '';
+        jsonObj[keys[idx]] = "";
       }
     }
 
@@ -1092,14 +896,14 @@ function gfn_getTreeJsonChangedRows(_grd) {
   for (var i = 0; i < rows.deleted.length; i++) {
     //var jsonObj = new Object();
     var jsonObj = treeProvider.getJsonRow(rows.deleted[i]);
-    jsonObj.t = 'd';
-    jsonObj.wrk_tp = 'D';
+    jsonObj.t = "d";
+    jsonObj.wrk_tp = "D";
     jsonObj.row = rows.deleted[i];
 
     var keys = treeProvider.getOrgFieldNames();
     for (var idx = 0; idx < keys.length; idx++) {
       if (jsonObj[keys[idx]] == undefined) {
-        jsonObj[keys[idx]] = ''
+        jsonObj[keys[idx]] = "";
       }
     }
 
@@ -1108,14 +912,14 @@ function gfn_getTreeJsonChangedRows(_grd) {
   for (var i = 0; i < rows.updated.length; i++) {
     //var jsonObj = new Object();
     var jsonObj = treeProvider.getJsonRow(rows.updated[i]);
-    jsonObj.t = 'u';
-    jsonObj.wrk_tp = 'U';
+    jsonObj.t = "u";
+    jsonObj.wrk_tp = "U";
     jsonObj.row = rows.updated[i];
 
     var keys = treeProvider.getOrgFieldNames();
     for (var idx = 0; idx < keys.length; idx++) {
       if (jsonObj[keys[idx]] == undefined) {
-        jsonObj[keys[idx]] = '';
+        jsonObj[keys[idx]] = "";
       }
     }
     //jsonObj.json = jsonRow;
@@ -1124,14 +928,14 @@ function gfn_getTreeJsonChangedRows(_grd) {
   for (var i = 0; i < rows.created.length; i++) {
     //var jsonObj = new Object();
     var jsonObj = treeProvider.getJsonRow(rows.created[i]);
-    jsonObj.t = 'i';
-    jsonObj.wrk_tp = 'I';
+    jsonObj.t = "i";
+    jsonObj.wrk_tp = "I";
     jsonObj.row = rows.created[i];
 
     var keys = treeProvider.getOrgFieldNames();
     for (var idx = 0; idx < keys.length; idx++) {
       if (jsonObj[keys[idx]] == undefined) {
-        jsonObj[keys[idx]] = '';
+        jsonObj[keys[idx]] = "";
       }
     }
 
@@ -1139,7 +943,6 @@ function gfn_getTreeJsonChangedRows(_grd) {
   }
   return jsonArray;
 }
-
 
 /**
  *
@@ -1154,8 +957,8 @@ function gfn_getJsonCheckedRows(_grd) {
   rows = _grd.grid.getCheckedRows();
   for (var i = 0; i < rows.length; i++) {
     var jsonObj = _grd.provider.getJsonRow(rows[i]);
-    jsonObj.t = 'c';
-    jsonObj.wrk_tp = 'C';
+    jsonObj.t = "c";
+    jsonObj.wrk_tp = "C";
     jsonObj.row = rows[i];
 
     // var keys = _grd.provider.getOrgFieldNames();
@@ -1170,88 +973,82 @@ function gfn_getJsonCheckedRows(_grd) {
   return jsonArray;
 }
 
-
-
-
 /**
  *
  *
  * @param {*} grd  grd obj
  * @param {*} btnId btn id
  * @param {*} data array, json, string 구조 string일 경우 ,로 구분해서 컬럼순서대로 삽입
- *                  만약에 html 태그를 넘기고 싶다면 id앞에 #붙여서 넘길 것 
+ *                  만약에 html 태그를 넘기고 싶다면 id앞에 #붙여서 넘길 것
  */
 this.gfn_grdAddBtnDefault = function (grd, btnId, data) {
-  var dataType = typeof (data);
-  var btnId = '#' + btnId;
+  var dataType = typeof data;
+  var btnId = "#" + btnId;
 
   // 배열의 경우
   if (Array.isArray(data)) {
-    $(btnId).on('click', function () {
+    $(btnId).on("click", function () {
       if (!gfn_gridCommit(grd)) return;
-      var appendData = []
+      var appendData = [];
       for (var i = 0; i < data.length; i++) {
         var single_data = data[i];
-        if (typeof (data[i]) == 'string' && data[i].indexOf('#') == 0) {
+        if (typeof data[i] == "string" && data[i].indexOf("#") == 0) {
           single_data = $(data[i]).val();
         }
         appendData.push(single_data);
       }
       grd.provider.insertRow(0, appendData);
       grd.grid.resetCurrent();
-      grd.grid.setEditValue('');
+      grd.grid.setEditValue("");
     });
   }
   //json의 경우
-  else if (dataType == 'object') {
-    $(btnId).on('click', function () {
+  else if (dataType == "object") {
+    $(btnId).on("click", function () {
       if (!gfn_gridCommit(grd)) return;
       var keys = Object.keys(data);
-      var appendData = {}
+      var appendData = {};
       for (var i = 0; i < keys.length; i++) {
         appendData[keys[i]] = data[keys[i]];
-        if (typeof (data[keys[i]]) == 'string' && data[keys[i]].substr(0, 1) === '#') {
+        if (typeof data[keys[i]] == "string" && data[keys[i]].substr(0, 1) === "#") {
           appendData[keys[i]] = $(data[keys[i]]).val();
         }
       }
       grd.provider.insertRow(0, appendData);
       grd.grid.resetCurrent();
-      grd.grid.setEditValue('');
-
+      grd.grid.setEditValue("");
     });
   }
   // 문자열의 경우
-  else if (dataType == 'string') {
-    var array = data.split(',')
-    $(btnId).on('click', function () {
+  else if (dataType == "string") {
+    var array = data.split(",");
+    $(btnId).on("click", function () {
       if (!gfn_gridCommit(grd)) return;
-      var appendData = []
+      var appendData = [];
       for (var i = 0; i < array.length; i++) {
         var single_data = array[i];
-        if (typeof (single_data) == 'string' && single_data.substr(0, 1) === '#') {
+        if (typeof single_data == "string" && single_data.substr(0, 1) === "#") {
           single_data = $(single_data).val();
         }
         appendData.push(single_data);
       }
       grd.provider.insertRow(0, appendData);
       grd.grid.resetCurrent();
-      grd.grid.setEditValue('');
-
+      grd.grid.setEditValue("");
     });
   }
-}
-
+};
 
 /**
  *
  *
- * @param {*} grd 그리드 
+ * @param {*} grd 그리드
  * @param {*} btnId 버튼태그의 아이디
  * @returns
  */
 this.gfn_grdDelBtnDefault = function (grd, btnId) {
-  var btnId = '#' + btnId;
-  $(btnId).on('click', function () {
+  var btnId = "#" + btnId;
+  $(btnId).on("click", function () {
     // grd.grid.commit(false);
 
     var items = grd.grid.getCheckedItems(true);
@@ -1259,19 +1056,17 @@ this.gfn_grdDelBtnDefault = function (grd, btnId) {
     if (chkStatus.visible) {
       if (items.length > 0) {
         if (!confirm(ld.delConfirm)) return;
-        var rows = []
+        var rows = [];
         for (var i = 0; i < items.length; i++) {
           rows.push(grd.grid.getDataRow(items[i]));
         }
         grd.grid.cancel();
         grd.provider.hideRows(rows);
         grd.provider.removeRows(rows);
-      }
-      else {
+      } else {
         gfn_noticeshow(ld.notice_modal, ld.delConfirmRow);
       }
-    }
-    else {
+    } else {
       if (!confirm(ld.delConfirm)) return;
       var curr = grd.grid.getCurrent();
       grd.grid.cancel();
@@ -1280,8 +1075,7 @@ this.gfn_grdDelBtnDefault = function (grd, btnId) {
     }
   });
   if (!gfn_gridCommit(grd)) return;
-}
-
+};
 
 /**
  *
@@ -1294,61 +1088,63 @@ this.gfn_grdDelBtnDefault = function (grd, btnId) {
 this.gfn_setSizeContentZone = function (f_w, f_h, gridStr, grdArr, otherHeight) {
   // alert();
   if (gfn_isNull(otherHeight)) otherHeight = 0;
-  $(window).on('resize', function () {
-    var grdIds = gridStr.split(',')
-    if (grdIds[0] === "") grdIds = [];
-    var w = $('#maindiv').width();
-    var h = $(window).height() - 25 - otherHeight;
-    var fix_height = f_h;
-    var fix_width = f_w;
-    $('#maindiv').children().each(function () {
-      if ($(this).attr('id') != 'contentZone') {
-        h = h - $(this).height();
-      }
-    });
+  $(window)
+    .on("resize", function () {
+      var grdIds = gridStr.split(",");
+      if (grdIds[0] === "") grdIds = [];
+      var w = $("#maindiv").width();
+      var h = $(window).height() - 25 - otherHeight;
+      var fix_height = f_h;
+      var fix_width = f_w;
+      $("#maindiv")
+        .children()
+        .each(function () {
+          if ($(this).attr("id") != "contentZone") {
+            h = h - $(this).height();
+          }
+        });
 
-    $('#contentZone').width(w);
-    $('#contentZone').height(h);
-    $('#contentZone .full_height').each(function () {
-      $(this).css('height', h);
-    });
-    $('#contentZone .full_width').each(function () {
-      $(this).css('width', w);
-    });
-    $('#contentZone .span_width').each(function () {
-      $(this).width(w - fix_width);
-    });
-    $('#contentZone .span_height').each(function () {
-      $(this).height(h - fix_height);
-    });
-    $('#contentZone .fix_width').each(function () {
-      $(this).width(fix_width);
-    });
-    $('#contentZone .fix_height').each(function () {
-      $(this).height(fix_height);
-    });
-    for (var index = 0; index < grdIds.length; index++) {
-      var c_h = $('.' + grdIds[index] + '_container').height();
-      // var w_h = $('.'+grdIds[index]+'_wrapper').height()-$('.'+grdIds[index]+'_wrapper .cont_header').height();
-      var w_h = $('.' + grdIds[index] + '_wrapper .cont_header').height();
-      $('#' + grdIds[index]).height(c_h - w_h - 10);
-      if (grdIds[index].toLowerCase().indexOf('tree') >= 0) {
-        grdArr[index].resetSize();
-      } else {
+      $("#contentZone").width(w);
+      $("#contentZone").height(h);
+      $("#contentZone .full_height").each(function () {
+        $(this).css("height", h);
+      });
+      $("#contentZone .full_width").each(function () {
+        $(this).css("width", w);
+      });
+      $("#contentZone .span_width").each(function () {
+        $(this).width(w - fix_width);
+      });
+      $("#contentZone .span_height").each(function () {
+        $(this).height(h - fix_height);
+      });
+      $("#contentZone .fix_width").each(function () {
+        $(this).width(fix_width);
+      });
+      $("#contentZone .fix_height").each(function () {
+        $(this).height(fix_height);
+      });
+      for (var index = 0; index < grdIds.length; index++) {
+        var c_h = $("." + grdIds[index] + "_container").height();
+        // var w_h = $('.'+grdIds[index]+'_wrapper').height()-$('.'+grdIds[index]+'_wrapper .cont_header').height();
+        var w_h = $("." + grdIds[index] + "_wrapper .cont_header").height();
+        $("#" + grdIds[index]).height(c_h - w_h - 10);
+        if (grdIds[index].toLowerCase().indexOf("tree") >= 0) {
+          grdArr[index].resetSize();
+        } else {
+          grdArr[index].grid.resetSize();
+        }
+      }
+      for (var index = 0; index < grdArr.length; index++) {
         grdArr[index].grid.resetSize();
       }
-    }
-    for (var index = 0; index < grdArr.length; index++) {
-      grdArr[index].grid.resetSize();
-    }
-  }).trigger('resize');
-}
+    })
+    .trigger("resize");
+};
 
 this.resizeGrdHeight = function (grd) {
-  grd.height()
-
-}
-
+  grd.height();
+};
 
 /**
  *
@@ -1357,7 +1153,7 @@ this.resizeGrdHeight = function (grd) {
  * @param {string} groupNames 그룹의 이름들 ,를 구분자로 사용한다.
  */
 this.gfn_hideChildHeader = function (grd, groupNames) {
-  gNames = groupNames.split(',');
+  gNames = groupNames.split(",");
   for (var index = 0; index < gNames.length; index++) {
     var gName = gNames[index];
     var group = grd.grid.columnByName(gName);
@@ -1366,7 +1162,7 @@ this.gfn_hideChildHeader = function (grd, groupNames) {
       grd.grid.setColumnProperty(group, "hideChildHeaders", hide);
     }
   }
-}
+};
 
 /**
  *
@@ -1374,24 +1170,24 @@ this.gfn_hideChildHeader = function (grd, groupNames) {
  * @param {*} grid grd object
  * @param {string} columns validation 할 컬럼들 ,로 구분
  * @param {string} options validataion option
- * 
- * 
+ *
+ *
  * 참고 url
  * http://help.realgrid.com/api/features/Expression/
  * http://help.realgrid.com/api/GridBase/setValidations/
  * http://demo.realgrid.com/Validation/ColumnValidation/
  */
 this.gfn_setGridVaildate = function (grd, columns, option, args) {
-  var colArr = columns.split(',');
+  var colArr = columns.split(",");
   // for (let i = 0; i < colArr.length; i++) {
   //   colArr[i] = colArr[i].trim();
   // }
 
-  if (option == 'notEmpty') {
+  if (option == "notEmpty") {
     for (var i = 0; i < colArr.length; i++) {
       var col = grd.grid.columnByName(colArr[i]);
       if (grd[colArr[i]] == null || grd[colArr[i]] == undefined) {
-        grd[colArr[i]] = {}
+        grd[colArr[i]] = {};
         grd[colArr[i]].myValidation = [];
       }
       if (grd[colArr[i]].myValidation == null || grd[colArr[i]].myValidation == undefined) {
@@ -1402,20 +1198,18 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
         criteria: "value is not empty",
         message: col.header.text + ld.necessary_input,
         mode: "always",
-        level: "error"
-      }
+        level: "error",
+      };
       validation.push(v);
       col.validations = validation;
       grd[colArr[i]].myValidation = validation;
       grd.grid.setColumn(col);
     }
-  }
-
-  else if (option == 'timeNull') {
+  } else if (option == "timeNull") {
     for (var i = 0; i < colArr.length; i++) {
       var col = grd.grid.columnByName(colArr[i]);
       if (grd[colArr[i]] == null || grd[colArr[i]] == undefined) {
-        grd[colArr[i]] = {}
+        grd[colArr[i]] = {};
         grd[colArr[i]].myValidation = [];
       }
       if (grd[colArr[i]].myValidation == null || grd[colArr[i]].myValidation == undefined) {
@@ -1426,29 +1220,27 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
         criteria: "(value < 2400) or (value is empty) or (value is null) or (value is not defined) or (value is nan)",
         message: col.header.text + ld.hourBig,
         mode: "always",
-        level: "error"
-      }
+        level: "error",
+      };
       validation.push(v);
 
       v = {
         criteria: "((value mod 100) < 60) or (value is empty) or (value is null) or (value is not defined) or (value is nan)",
         message: col.header.text + ld.timeBig,
         mode: "always",
-        level: "error"
-      }
+        level: "error",
+      };
       validation.push(v);
 
       col.validations = validation;
       grd[colArr[i]].myValidation = validation;
       grd.grid.setColumn(col);
     }
-  }
-
-  else if (option == 'timeNotNull') {
+  } else if (option == "timeNotNull") {
     for (var i = 0; i < colArr.length; i++) {
       var col = grd.grid.columnByName(colArr[i]);
       if (grd[colArr[i]] == null || grd[colArr[i]] == undefined) {
-        grd[colArr[i]] = {}
+        grd[colArr[i]] = {};
         grd[colArr[i]].myValidation = [];
       }
 
@@ -1460,16 +1252,16 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
         criteria: "(value < 2400)",
         message: col.header.text + ld.hourBig,
         mode: "always",
-        level: "error"
-      }
+        level: "error",
+      };
       validation.push(v);
 
       v = {
         criteria: "((value mod 100) < 60)",
         message: col.header.text + ld.timeBig,
         mode: "always",
-        level: "error"
-      }
+        level: "error",
+      };
       validation.push(v);
       col.validations = validation;
       grd[colArr[i]].myValidation = validation;
@@ -1478,10 +1270,10 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
   }
 
   // range Date  validation시에는 컬럼에 start 일자 컬럼 end 일자 컬럼을 두개주세요
-  else if (option == 'rangeDate') {
+  else if (option == "rangeDate") {
     var start_col = grd.grid.columnByName(colArr[0]);
     if (grd[colArr[0]] == null || grd[colArr[0]] == undefined) {
-      grd[colArr[0]] = {}
+      grd[colArr[0]] = {};
       grd[colArr[0]].myValidation = [];
     }
     if (grd[colArr[0]].myValidation == null || grd[colArr[0]].myValidation == undefined) {
@@ -1492,8 +1284,8 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
       criteria: "(values['" + colArr[1] + "'] is empty) or ((value <= values['" + colArr[1] + "']) and (value is not empty) )",
       message: ld.start_not_big_end,
       mode: "always",
-      level: "error"
-    }
+      level: "error",
+    };
     validation.push(v);
     start_col.validations = validation;
     grd[colArr[0]].myValidations = validation;
@@ -1501,11 +1293,10 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
   }
 
   // range Date Time  validation시에는 컬럼에 start 일자, start 시각 ,end 일자 ,end 시각 4개를 주세요. ,로 구분
-  else if (option == 'rangeDateTime') {
-
+  else if (option == "rangeDateTime") {
     var start_time_col = grd.grid.columnByName(colArr[1]);
     if (grd[colArr[1]] == null || grd[colArr[1]] == undefined) {
-      grd[colArr[1]] = {}
+      grd[colArr[1]] = {};
       grd[colArr[1]].myValidation = [];
     }
     if (grd[colArr[1]].myValidation == null || grd[colArr[1]].myValidation == undefined) {
@@ -1513,25 +1304,38 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     }
     var validation = grd[colArr[1]].myValidation;
     var v = {
-      criteria: "((values['" + colArr[0] + "'] = values['" + colArr[2] + "'] )  and  (values['" + colArr[1] + "'] < values['" + colArr[3] + "']))"
-        + "or" +
-        "(values['" + colArr[0] + "'] <> values['" + colArr[2] + "'])",
+      criteria:
+        "((values['" +
+        colArr[0] +
+        "'] = values['" +
+        colArr[2] +
+        "'] )  and  (values['" +
+        colArr[1] +
+        "'] < values['" +
+        colArr[3] +
+        "']))" +
+        "or" +
+        "(values['" +
+        colArr[0] +
+        "'] <> values['" +
+        colArr[2] +
+        "'])",
       // message:ld.start_not_big_end,
       message: ld.start_time_big_end_time,
       mode: "always",
-      level: "error"
-    }
+      level: "error",
+    };
     validation.push(v);
     start_time_col.validations = validation;
     grd[colArr[0]].myValidations = validation;
     grd.grid.setColumn(start_time_col);
   }
   // 평점 시작과 종료 컬럼항목에 시작컬럼,종료컬럼 순으로 넘겨주세요
-  else if (option == 'avgGradeStartEnd') {
+  else if (option == "avgGradeStartEnd") {
     for (var i = 0; i < colArr.length; i++) {
       var col = grd.grid.columnByName(colArr[i]);
       if (grd[colArr[i]] == null || grd[colArr[i]] == undefined) {
-        grd[colArr[i]] = {}
+        grd[colArr[i]] = {};
         grd[colArr[i]].myValidation = [];
       }
       if (grd[colArr[i]].myValidation == null || grd[colArr[i]].myValidation == undefined) {
@@ -1539,15 +1343,28 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
       }
       var validation = grd[colArr[i]].myValidation;
       var v = {
-        criteria: "(num(values['" + colArr[0] + "']) <= num(9.99))" +
-          "and (num(values['" + colArr[0] + "']) >= num(0.00))" +
-          "and (num(values['" + colArr[1] + "']) <= num(9.99)) " +
-          "and (num(values['" + colArr[1] + "']) >= num(0.00))" +
-          "and (num(values['" + colArr[0] + "']) <= num(values['" + colArr[1] + "']))",
+        criteria:
+          "(num(values['" +
+          colArr[0] +
+          "']) <= num(9.99))" +
+          "and (num(values['" +
+          colArr[0] +
+          "']) >= num(0.00))" +
+          "and (num(values['" +
+          colArr[1] +
+          "']) <= num(9.99)) " +
+          "and (num(values['" +
+          colArr[1] +
+          "']) >= num(0.00))" +
+          "and (num(values['" +
+          colArr[0] +
+          "']) <= num(values['" +
+          colArr[1] +
+          "']))",
         message: ld.avg_validation,
         mode: "always",
-        level: "error"
-      }
+        level: "error",
+      };
       validation.push(v);
       col.validations = validation;
       grd[colArr[i]].myValidation = validation;
@@ -1555,11 +1372,11 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     }
   }
   //0에서 100 사이의 크기를 가져야하는 백분율에 대한 발리데이션
-  else if (option == 'percentage') {
+  else if (option == "percentage") {
     for (var i = 0; i < colArr.length; i++) {
       var col = grd.grid.columnByName(colArr[i]);
       if (grd[colArr[i]] == null || grd[colArr[i]] == undefined) {
-        grd[colArr[i]] = {}
+        grd[colArr[i]] = {};
         grd[colArr[i]].myValidation = [];
       }
       if (grd[colArr[i]].myValidation == null || grd[colArr[i]].myValidation == undefined) {
@@ -1568,12 +1385,11 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
 
       var validation = grd[colArr[i]].myValidation;
       var v = {
-        criteria: "(values['" + colArr[i] + "'] <= 100)" +
-          "and (values['" + colArr[i] + "'] >= 0)",
-        message: col.header.text + ' ' + ld.percentage_validation,
+        criteria: "(values['" + colArr[i] + "'] <= 100)" + "and (values['" + colArr[i] + "'] >= 0)",
+        message: col.header.text + " " + ld.percentage_validation,
         mode: "always",
-        level: "error"
-      }
+        level: "error",
+      };
       validation.push(v);
       col.validations = validation;
       grd[colArr[i]].myValidation = validation;
@@ -1582,11 +1398,10 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
   }
 
   //같은날에 시간만 범위 형식일 경우 컬럼을 시작시간,종료시간으로 전달
-  else if (option == 'rangeTime') {
-
+  else if (option == "rangeTime") {
     var start_time_col = grd.grid.columnByName(colArr[0]);
     if (grd[colArr[0]] == null || grd[colArr[0]] == undefined) {
-      grd[colArr[0]] = {}
+      grd[colArr[0]] = {};
       grd[colArr[0]].myValidation = [];
     }
     if (grd[colArr[0]].myValidation == null || grd[colArr[1]].myValidation == undefined) {
@@ -1598,19 +1413,19 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
       // message:ld.start_not_big_end,
       message: ld.startTimeValidation,
       mode: "always",
-      level: "error"
-    }
+      level: "error",
+    };
     validation.push(v);
     start_time_col.validations = validation;
     grd[colArr[0]].myValidations = validation;
     grd.grid.setColumn(start_time_col);
   }
   //학점 최소 최대
-  else if (option == 'avgPoint') {
+  else if (option == "avgPoint") {
     for (var i = 0; i < colArr.length; i++) {
       var col = grd.grid.columnByName(colArr[i]);
       if (grd[colArr[i]] == null || grd[colArr[i]] == undefined) {
-        grd[colArr[i]] = {}
+        grd[colArr[i]] = {};
         grd[colArr[i]].myValidation = [];
       }
       if (grd[colArr[i]].myValidation == null || grd[colArr[i]].myValidation == undefined) {
@@ -1618,12 +1433,11 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
       }
       var validation = grd[colArr[i]].myValidation;
       var v = {
-        criteria: "(num(values['" + colArr[i] + "']) <= num(4.30))" +
-          "and (num(values['" + colArr[i] + "']) >= num(0.00))",
+        criteria: "(num(values['" + colArr[i] + "']) <= num(4.30))" + "and (num(values['" + colArr[i] + "']) >= num(0.00))",
         message: col.header.text + ld.avg_min_max_validation,
         mode: "always",
-        level: "error"
-      }
+        level: "error",
+      };
       validation.push(v);
       col.validations = validation;
       grd[colArr[i]].myValidation = validation;
@@ -1631,11 +1445,11 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     }
   }
   //학점 start,end
-  else if (option == 'avgRangePoint') {
+  else if (option == "avgRangePoint") {
     for (var i = 0; i < colArr.length; i++) {
       var col = grd.grid.columnByName(colArr[i]);
       if (grd[colArr[i]] == null || grd[colArr[i]] == undefined) {
-        grd[colArr[i]] = {}
+        grd[colArr[i]] = {};
         grd[colArr[i]].myValidation = [];
       }
       if (grd[colArr[i]].myValidation == null || grd[colArr[i]].myValidation == undefined) {
@@ -1643,12 +1457,21 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
       }
       var validation = grd[colArr[i]].myValidation;
       var v = {
-        criteria: "(num(values['" + colArr[0] + "']) <= num(values['" + colArr[1] + "']))" +
-          "or ((values['" + colArr[0] + "']) is empty) or ((values['" + colArr[1] + "'] )is empty) ",
+        criteria:
+          "(num(values['" +
+          colArr[0] +
+          "']) <= num(values['" +
+          colArr[1] +
+          "']))" +
+          "or ((values['" +
+          colArr[0] +
+          "']) is empty) or ((values['" +
+          colArr[1] +
+          "'] )is empty) ",
         message: ld.avg_range_validation,
         mode: "always",
-        level: "error"
-      }
+        level: "error",
+      };
       validation.push(v);
       col.validations = validation;
       grd[colArr[i]].myValidation = validation;
@@ -1656,12 +1479,12 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     }
   }
 
-  //소득구간 0부터 8이하 
-  else if (option == 'incomeLower8') {
+  //소득구간 0부터 8이하
+  else if (option == "incomeLower8") {
     for (var i = 0; i < colArr.length; i++) {
       var col = grd.grid.columnByName(colArr[i]);
       if (grd[colArr[i]] == null || grd[colArr[i]] == undefined) {
-        grd[colArr[i]] = {}
+        grd[colArr[i]] = {};
         grd[colArr[i]].myValidation = [];
       }
       if (grd[colArr[i]].myValidation == null || grd[colArr[i]].myValidation == undefined) {
@@ -1669,13 +1492,11 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
       }
       var validation = grd[colArr[i]].myValidation;
       var v = {
-        criteria: "(num(values['" + colArr[i] + "']) <= 8)" +
-          "and" +
-          "(num(values['" + colArr[i] + "']) >= 0) ",
+        criteria: "(num(values['" + colArr[i] + "']) <= 8)" + "and" + "(num(values['" + colArr[i] + "']) >= 0) ",
         message: ld.incomeLower8,
         mode: "always",
-        level: "error"
-      }
+        level: "error",
+      };
       validation.push(v);
       col.validations = validation;
       grd[colArr[i]].myValidation = validation;
@@ -1684,10 +1505,10 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
   }
 
   // 과정구분에 따른 학기 제한 colarr= [과정구분,학기]
-  else if (option == 'semesterLimitByProcGubun') {
+  else if (option == "semesterLimitByProcGubun") {
     var col = grd.grid.columnByName(colArr[1]);
     if (grd[colArr[1]] == null || grd[colArr[1]] == undefined) {
-      grd[colArr[1]] = {}
+      grd[colArr[1]] = {};
       grd[colArr[1]].myValidation = [];
     }
     if (grd[colArr[1]].myValidation == null || grd[colArr[1]].myValidation == undefined) {
@@ -1696,25 +1517,56 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     var validation = grd[colArr[1]].myValidation;
     var v = {
       criteria:
-        "(values['" + colArr[0] + "'] = empty) or" +
-        "(((str(values['" + colArr[0] + "']) = '" + args["[학사과정]"] + "') or (str(values['" + colArr[0] + "']) = '" + args['[박사과정]'] + "')) and (num(values['" + colArr[1] + "']) >= 1) and (num(values['" + colArr[1] + "']) <= 8)) or" +
-        "(((str(values['" + colArr[0] + "']) = '" + args["[석사과정]"] + "') or (str(values['" + colArr[0] + "']) = '" + args['[석박사통합과정]'] + "')) and (num(values['" + colArr[1] + "']) >= 1) and (num(values['" + colArr[1] + "']) <= 4)) or" +
-        "((str(values['" + colArr[0] + "']) = '" + args["[석박사통합과정(박)]"] + "') and (num(values['" + colArr[1] + "']) >= 1) and (num(values['" + colArr[1] + "']) <= 10))"
-      ,
+        "(values['" +
+        colArr[0] +
+        "'] = empty) or" +
+        "(((str(values['" +
+        colArr[0] +
+        "']) = '" +
+        args["[학사과정]"] +
+        "') or (str(values['" +
+        colArr[0] +
+        "']) = '" +
+        args["[박사과정]"] +
+        "')) and (num(values['" +
+        colArr[1] +
+        "']) >= 1) and (num(values['" +
+        colArr[1] +
+        "']) <= 8)) or" +
+        "(((str(values['" +
+        colArr[0] +
+        "']) = '" +
+        args["[석사과정]"] +
+        "') or (str(values['" +
+        colArr[0] +
+        "']) = '" +
+        args["[석박사통합과정]"] +
+        "')) and (num(values['" +
+        colArr[1] +
+        "']) >= 1) and (num(values['" +
+        colArr[1] +
+        "']) <= 4)) or" +
+        "((str(values['" +
+        colArr[0] +
+        "']) = '" +
+        args["[석박사통합과정(박)]"] +
+        "') and (num(values['" +
+        colArr[1] +
+        "']) >= 1) and (num(values['" +
+        colArr[1] +
+        "']) <= 10))",
       message: ld.semester_by_proc_validation_msg,
       mode: "always",
-      level: "error"
-    }
+      level: "error",
+    };
     validation.push(v);
     col.validations = validation;
     grd[colArr[1]].myValidation = validation;
     grd.grid.setColumn(col);
-  }
-
-  else if (option == 'semesterLessThanEqual') {
+  } else if (option == "semesterLessThanEqual") {
     var col = grd.grid.columnByName(colArr[1]);
     if (grd[colArr[1]] == null || grd[colArr[1]] == undefined) {
-      grd[colArr[1]] = {}
+      grd[colArr[1]] = {};
       grd[colArr[1]].myValidation = [];
     }
     if (grd[colArr[1]].myValidation == null || grd[colArr[1]].myValidation == undefined) {
@@ -1722,12 +1574,11 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     }
     var validation = grd[colArr[1]].myValidation;
     var v = {
-      criteria:
-        "num(values['" + colArr[0] + "']) <= num(values['" + colArr[1] + "'])",
+      criteria: "num(values['" + colArr[0] + "']) <= num(values['" + colArr[1] + "'])",
       message: ld.less_than_equal_message,
       mode: "always",
-      level: "error"
-    }
+      level: "error",
+    };
     validation.push(v);
     col.validations = validation;
     grd[colArr[1]].myValidation = validation;
@@ -1736,10 +1587,10 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
 
   //otherColumn,targetColumn => otherColumn 의 값에 따라서 targetColumn의 필수여부 정해짐
   // arg로 target의 null이 가능한 값
-  else if (option == 'notEmptyByOtherColumn') {
+  else if (option == "notEmptyByOtherColumn") {
     var col = grd.grid.columnByName(colArr[1]);
     if (grd[colArr[1]] == null || grd[colArr[1]] == undefined) {
-      grd[colArr[1]] = {}
+      grd[colArr[1]] = {};
       grd[colArr[1]].myValidation = [];
     }
     if (grd[colArr[1]].myValidation == null || grd[colArr[1]].myValidation == undefined) {
@@ -1747,24 +1598,33 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     }
     var validation = grd[colArr[1]].myValidation;
     var v = {
-      criteria: "((str(values['" + colArr[0] + "']) = '" + args + "') and (values['" + colArr[1] + "'] is not empty)) or" +
-        "(str(values['" + colArr[0] + "']) <> '" + args + "')",
+      criteria:
+        "((str(values['" +
+        colArr[0] +
+        "']) = '" +
+        args +
+        "') and (values['" +
+        colArr[1] +
+        "'] is not empty)) or" +
+        "(str(values['" +
+        colArr[0] +
+        "']) <> '" +
+        args +
+        "')",
       //   "(str(values['" + colArr[0] + "']) <> '" + args + "')",
       // criteria: "(str(values['" + colArr[0] + "']) = '" + args + "')",
       message: col.header.text + ld.necessary_input,
       mode: "always",
-      level: "error"
-    }
+      level: "error",
+    };
     validation.push(v);
     col.validations = validation;
     grd[colArr[1]].myValidation = validation;
     grd.grid.setColumn(col);
-  }
-
-  else if (option == 'len50') {
+  } else if (option == "len50") {
     var col = grd.grid.columnByName(colArr[0]);
     if (grd[colArr[0]] == null || grd[colArr[0]] == undefined) {
-      grd[colArr[0]] = {}
+      grd[colArr[0]] = {};
       grd[colArr[0]].myValidation = [];
     }
     if (grd[colArr[0]].myValidation == null || grd[colArr[0]].myValidation == undefined) {
@@ -1773,20 +1633,18 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     var validation = grd[colArr[0]].myValidation;
     var v = {
       criteria: "(len( values['" + colArr[0] + "']) ) <= 50)",
-      message: col.header.text + ' ' + ld.len_50,
+      message: col.header.text + " " + ld.len_50,
       mode: "always",
-      level: "error"
-    }
+      level: "error",
+    };
     validation.push(v);
     col.validations = validation;
     grd[colArr[0]].myValidation = validation;
     grd.grid.setColumn(col);
-  }
-
-  else if (option == 'returmAmtlessThanEqual') {
+  } else if (option == "returmAmtlessThanEqual") {
     var col = grd.grid.columnByName(colArr[0]);
     if (grd[colArr[0]] == null || grd[colArr[0]] == undefined) {
-      grd[colArr[0]] = {}
+      grd[colArr[0]] = {};
       grd[colArr[0]].myValidation = [];
     }
     if (grd[colArr[0]].myValidation == null || grd[colArr[0]].myValidation == undefined) {
@@ -1794,23 +1652,19 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     }
     var validation = grd[colArr[0]].myValidation;
     var v = {
-      criteria:
-        "num(values['" + colArr[0] + "']) <= num(values['" + colArr[1] + "'])",
+      criteria: "num(values['" + colArr[0] + "']) <= num(values['" + colArr[1] + "'])",
       message: ld.return_lte_message,
       mode: "always",
-      level: "error"
-    }
+      level: "error",
+    };
     validation.push(v);
     col.validations = validation;
     grd[colArr[0]].myValidation = validation;
     grd.grid.setColumn(col);
-  }
-
-
-  else if (option == 'returmAmtBiggerThanEqualToPayment') {
+  } else if (option == "returmAmtBiggerThanEqualToPayment") {
     var col = grd.grid.columnByName(colArr[0]);
     if (grd[colArr[0]] == null || grd[colArr[0]] == undefined) {
-      grd[colArr[0]] = {}
+      grd[colArr[0]] = {};
       grd[colArr[0]].myValidation = [];
     }
     if (grd[colArr[0]].myValidation == null || grd[colArr[0]].myValidation == undefined) {
@@ -1818,12 +1672,11 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     }
     var validation = grd[colArr[0]].myValidation;
     var v = {
-      criteria:
-        "num(values['" + colArr[0] + "']) >= num(values['" + colArr[1] + "'])",
+      criteria: "num(values['" + colArr[0] + "']) >= num(values['" + colArr[1] + "'])",
       message: ld.returnAmtBTEpayment,
       mode: "always",
-      level: "error"
-    }
+      level: "error",
+    };
     validation.push(v);
     col.validations = validation;
     grd[colArr[0]].myValidation = validation;
@@ -1857,21 +1710,19 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
   // }
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-
   // 기본 alert에서 noticeshow로 변경
   grd.grid.onValidationFail = function (grid, itemIndex, column, err) {
     // console.log(err);
-    var message = (itemIndex + 1).toString() + ' ' + ld.row + ' ' + err.message;
+    var message = (itemIndex + 1).toString() + " " + ld.row + " " + err.message;
     if (column.renderer == null || column.renderer == undefined) {
       column.renderer = {};
     }
     column.renderer.showTooltip = true;
     grid.setColumn(column);
-    gfn_noticeshow('error', message);
+    gfn_noticeshow("error", message);
     return false;
-  }
-}
-
+  };
+};
 
 /**
  * 저장하기전 validation 하기
@@ -1884,19 +1735,18 @@ this.gfn_saveValidate = function (grd) {
   var log = grd.grid.checkValidateCells();
   if (log == null) {
     return true;
-  }
-  else {
-    var message = ''
+  } else {
+    var message = "";
     // console.log(log);
     for (var i = log.length - 1; i > -1; i--) {
       var itemIndex = grd.grid.getItemIndex(log[i].dataRow);
-      message += (itemIndex + 1).toString() + ' ' + ld.row + ' ' + log[i].message + '\n';
+      message += (itemIndex + 1).toString() + " " + ld.row + " " + log[i].message + "\n";
     }
 
-    gfn_noticeshow('error', message);
+    gfn_noticeshow("error", message);
     return false;
   }
-}
+};
 
 /**
  *
@@ -1907,40 +1757,58 @@ this.gfn_saveValidate = function (grd) {
  * @param {*} typeCode db상에서 분기할 type code 명
  */
 this.gridCombo = function (ediname, grd, fieldName, typeCode) {
-  if (gfn_isNull(typeCode)) typeCode = 'code_detail';
+  if (gfn_isNull(typeCode)) typeCode = "code_detail";
   var jsonData = {
-    'p_type_code': typeCode
-    , 'p_magic_const': ediname
-  }
+    p_type_code: typeCode,
+    p_magic_const: ediname,
+  };
   var dataName = ediname.replace("[", "").replace("]", "");
 
-  gfn_ajaxTransaction('gridCombo' + dataName, '/comm/get_grid_combo_data', '', dataName + '=output', jsonData, 'gridComboCallBack', { grd: grd, fName: fieldName }, false);
-}
+  gfn_ajaxTransaction(
+    "gridCombo" + dataName,
+    "/comm/get_grid_combo_data",
+    "",
+    dataName + "=output",
+    jsonData,
+    "gridComboCallBack",
+    { grd: grd, fName: fieldName },
+    false
+  );
+};
 
 /**
  *
  *
  * @param {*} grd 그리드 오브젝트
  * @param {*} fieldName 그리드의 컬럼 필드명
- * @param {*} typeCode db상에서의 분기 
+ * @param {*} typeCode db상에서의 분기
  * @param {*} masterConst code master 매직콘스트
- * @param {*} detailConst code detail 매직콘스트 
+ * @param {*} detailConst code detail 매직콘스트
  * @param {*} codeName 코드명
  * @param {*} codeValue 코드값
  */
 this.gridOptionCombo = function (grd, fieldName, typeCode, masterConst, detailConst, codeName, codeValue) {
-  if (gfn_isNull(typeCode)) typeCode = 'code_detail_option_scholarship_code';
+  if (gfn_isNull(typeCode)) typeCode = "code_detail_option_scholarship_code";
   var jsonData = {
-    'p_type_code': typeCode
-    , 'p_code_master_magic_const': masterConst
-    , 'p_code_detail_magic_const': detailConst
-    , 'p_code_detail_option_code_name': codeName
-    , 'p_code_detail_option_code_val': codeValue
-  }
+    p_type_code: typeCode,
+    p_code_master_magic_const: masterConst,
+    p_code_detail_magic_const: detailConst,
+    p_code_detail_option_code_name: codeName,
+    p_code_detail_option_code_val: codeValue,
+  };
   var dataName = masterConst.replace("[", "").replace("]", "");
 
-  gfn_ajaxTransaction('gridCombo' + dataName, '/comm/get_code_detail_option', '', dataName + '=output', jsonData, 'gridComboCallBack', { grd: grd, fName: fieldName }, false);
-}
+  gfn_ajaxTransaction(
+    "gridCombo" + dataName,
+    "/comm/get_code_detail_option",
+    "",
+    dataName + "=output",
+    jsonData,
+    "gridComboCallBack",
+    { grd: grd, fName: fieldName },
+    false
+  );
+};
 
 /**
  *
@@ -1952,38 +1820,54 @@ this.gridOptionCombo = function (grd, fieldName, typeCode, masterConst, detailCo
  */
 this.gfn_gridOtherCombo = function (grd, fieldName, comboName, jsonData) {
   jsonData.comboName = comboName;
-  if (comboName == 'harmful_factor_num') {
-    gfn_ajaxTransaction('gridCombo' + comboName, '/comm/get_other_combo', '', comboName + '=output', jsonData, 'gridComboCallBack', { grd: grd, fName: fieldName }, false);
+  if (comboName == "harmful_factor_num") {
+    gfn_ajaxTransaction(
+      "gridCombo" + comboName,
+      "/comm/get_other_combo",
+      "",
+      comboName + "=output",
+      jsonData,
+      "gridComboCallBack",
+      { grd: grd, fName: fieldName },
+      false
+    );
+  } else if (comboName == "harmful_factor") {
+    gfn_ajaxTransaction(
+      "gridCombo" + comboName,
+      "/comm/get_other_combo",
+      "",
+      comboName + "=output",
+      jsonData,
+      "gridComboCallBack",
+      { grd: grd, fName: fieldName },
+      false
+    );
+  } else {
+    this.alert("잘못된 호출");
   }
-  else if (comboName == 'harmful_factor') {
-    gfn_ajaxTransaction('gridCombo' + comboName, '/comm/get_other_combo', '', comboName + '=output', jsonData, 'gridComboCallBack', { grd: grd, fName: fieldName }, false);
-  }
-  else {
-    this.alert('잘못된 호출');
-  }
-}
+};
 
 /**
  *
  *
  * @param {*} id 요청 id
- * @param {*} errcode 
+ * @param {*} errcode
  * @param {*} errMsg
  */
 this.gridComboCallBack = function (id, errcode, errMsg) {
   var svcId = id.substring(0, 9);
-  var dataName = id.replace('gridCombo', '');
+  var dataName = id.replace("gridCombo", "");
   switch (svcId) {
-    case 'gridCombo':
+    case "gridCombo":
       var grd = dataset.addParam.grd;
       var fName = dataset.addParam.fName;
       var result = eval("dataset." + dataName);
       var col = grd.grid.columnByName(fName);
       if (gfn_isNull(col.editor) == true) {
-        col.editor = {}
+        col.editor = {};
       }
-      col.editor.type = "dropDown"
-      col.editor.domainOnly = "true"
+      col.editor.type = "dropDown";
+      col.editor.domainOnly = "true";
       col.lookupDisplay = true;
       col.editButtonVisibility = "always";
       col.values = [];
@@ -1994,7 +1878,7 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
       }
       grd.grid.setColumn(col);
       break;
-    case 'accntUnit':
+    case "accntUnit":
       var grd = dataset.addParam.grd;
       var fName = dataset.addParam.fName;
       var position = dataset.addParam.position;
@@ -2002,10 +1886,10 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
 
       var col = grd.grid.columnByName(fName);
       if (gfn_isNull(col.editor) == true) {
-        col.editor = {}
+        col.editor = {};
       }
-      col.editor.type = "dropDown"
-      col.editor.domainOnly = "true"
+      col.editor.type = "dropDown";
+      col.editor.domainOnly = "true";
       col.lookupDisplay = true;
       col.editButtonVisibility = "always";
       col.values = [];
@@ -2018,33 +1902,33 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
 
       grd.grid.setColumn(col);
 
-      t_arr = []
+      t_arr = [];
       for (var idx = 0; idx < position; idx++) {
-        t_arr.push('');
+        t_arr.push("");
       }
-      t_arr.push('11');
+      t_arr.push("11");
       grd.provider.insertRow(0, t_arr);
 
       grd.grid.onCellEdited = function (grid, itemIndex, dataRow, field) {
         if (field == position) {
-          if (grid.getValue(0, 'account_manager_name') != '') {
-            grid.setValue(0, 'account_manager_name', '');
-            grid.setValue(0, 'account_name', '');
-            grid.setValue(0, 'account_code', '');
+          if (grid.getValue(0, "account_manager_name") != "") {
+            grid.setValue(0, "account_manager_name", "");
+            grid.setValue(0, "account_name", "");
+            grid.setValue(0, "account_code", "");
           }
         }
-      }
+      };
       break;
-    case 'schDet':
+    case "schDet":
       var grd = dataset.addParam.grd;
       var fName = dataset.addParam.fName;
       var result = dataset.sch_detail_data;
       var col = grd.grid.columnByName(fName);
       if (gfn_isNull(col.editor) == true) {
-        col.editor = {}
+        col.editor = {};
       }
-      col.editor.type = "dropDown"
-      col.editor.domainOnly = "true"
+      col.editor.type = "dropDown";
+      col.editor.domainOnly = "true";
       col.lookupDisplay = true;
       col.editButtonVisibility = "always";
       col.values = [];
@@ -2058,9 +1942,7 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
     default:
       break;
   }
-
-}
-
+};
 
 /**
  *
@@ -2073,21 +1955,19 @@ this.gfn_gridCommit = function (grd) {
     grd.grid.commit(false);
     return true;
   } catch (e) {
-    gfn_noticeshow('error', e.message);
+    gfn_noticeshow("error", e.message);
     return false;
   }
-}
-
+};
 
 // //길어질시 툴팁 표시하기 위한 속성 구현은 아직 x
 // this.gfn_longText = function (grd, field) {
 //   //   renderer:{
-//   //     type:"text", 
-//   //     showTooltip:true, 
+//   //     type:"text",
+//   //     showTooltip:true,
 //   //     tooltipEllipseTextOnly:true
 //   //  }
 // }
-
 
 /**
  *
@@ -2102,8 +1982,8 @@ this.gfn_checkSaveData = function (grd) {
     gfn_noticeshow(ld.notice_modal, ld.nothingSave);
     return false;
   }
-  return true
-}
+  return true;
+};
 
 /**
  *
@@ -2116,8 +1996,8 @@ this.gfn_isGridChanged = function (grd) {
   if (jsonData.length == 0) {
     return false;
   }
-  return true
-}
+  return true;
+};
 
 /**
  *
@@ -2127,8 +2007,7 @@ this.gfn_isGridChanged = function (grd) {
  */
 this.gfn_setFixedOptions = function (grd, cnt) {
   grd.grid.setFixedOptions({ colCount: cnt });
-}
-
+};
 
 /**
  * 그리드에 숫자 콤보 박스 생성하기 (1부터 maxNum 이하)
@@ -2139,23 +2018,21 @@ this.gfn_setFixedOptions = function (grd, cnt) {
  */
 this.gfn_setNumCombo = function (grd, colName, maxNum) {
   var col = grd.grid.columnByName(colName);
-  col.labels = []
-  col.values = []
+  col.labels = [];
+  col.values = [];
   for (var idx = 1; idx <= maxNum; idx++) {
     col.labels.push(idx);
     col.values.push(idx);
   }
   if (gfn_isNull(col.editor) == true) {
-    col.editor = {}
+    col.editor = {};
   }
-  col.editor.type = "dropDown"
-  col.editor.domainOnly = "true"
+  col.editor.type = "dropDown";
+  col.editor.domainOnly = "true";
   col.lookupDisplay = true;
   col.editButtonVisibility = "always";
   grd.grid.setColumn(col);
-}
-
-
+};
 
 /**
  * 진행상태에 따라 realgrid checkbar 체크 안되게 하기
@@ -2166,36 +2043,31 @@ this.gfn_setNumCombo = function (grd, colName, maxNum) {
  * @param {*} disabled true로 넘기면 배열에 담긴 uid들을 체크 불가로
  */
 this.gfn_isProcessCheckFalse = function (_grd, process_col, process_uid_arr, disabled) {
-
   var returnExp = function () {
     var expression;
     var expressionStringArr = [];
     for (var i = 0; i < process_uid_arr.length; i++) {
       if (disabled) {
-        expressionStringArr.push("(value['" + process_col + "'] <> '" + process_uid_arr[i] + "')")
-      }
-
-      else {
-        expressionStringArr.push("(value['" + process_col + "'] = '" + process_uid_arr[i] + "')")
+        expressionStringArr.push("(value['" + process_col + "'] <> '" + process_uid_arr[i] + "')");
+      } else {
+        expressionStringArr.push("(value['" + process_col + "'] = '" + process_uid_arr[i] + "')");
       }
     }
 
     if (disabled) {
-      expression = expressionStringArr.join('and');
-    }
-
-    else {
-      expression = expressionStringArr.join('or');
+      expression = expressionStringArr.join("and");
+    } else {
+      expression = expressionStringArr.join("or");
     }
 
     return expression;
-  }
+  };
 
   _grd.grid.setCheckBar({
     visible: true,
     checkableOnly: true,
-    checkableExpression: returnExp()
-  })
+    checkableExpression: returnExp(),
+  });
   // _grd.grid.onItemChecked = function (grid, itemIndex, checked) {
   //   var process_val = grid.getValue(itemIndex, process_col);
   //   var checkable;
@@ -2223,8 +2095,7 @@ this.gfn_isProcessCheckFalse = function (_grd, process_col, process_uid_arr, dis
   //     // grid.setCheckable(itemIndex, false);
   //   }
   // }
-}
-
+};
 
 /**
  * 진행상태에 따라 row 수정가능 여부
@@ -2251,14 +2122,11 @@ this.gfn_isProcessEditFalse = function (_grd, process_col, process_uid_arr, disa
             ret.updatable = false;
           }
         }
-      }
-
-      else {
+      } else {
         for (var j = 0; j < grid.process_uid_arr.length; j++) {
           if (process_val == grid.process_uid_arr[j] || gfn_isNull(process_val)) {
             ret.editable = true;
-          }
-          else {
+          } else {
             ret.editable = false;
             ret.updatable = false;
           }
@@ -2268,7 +2136,7 @@ this.gfn_isProcessEditFalse = function (_grd, process_col, process_uid_arr, disa
       return ret;
     });
   }
-}
+};
 
 /**
  *
@@ -2281,16 +2149,26 @@ this.gfn_isProcessEditFalse = function (_grd, process_col, process_uid_arr, disa
  */
 this.gfn_setAccntCombo = function (grd, fieldName, position, isSync, callBack) {
   if (gfn_isNull(callBack)) {
-    callBack = 'gridComboCallBack';
+    callBack = "gridComboCallBack";
   }
-  gfn_ajaxTransaction("accntUnit", "/comm/get_account_unit", "", "accntUnitData=output", null, callBack, { grd: grd, fName: fieldName, position: position }, null, isSync);
-}
+  gfn_ajaxTransaction(
+    "accntUnit",
+    "/comm/get_account_unit",
+    "",
+    "accntUnitData=output",
+    null,
+    callBack,
+    { grd: grd, fName: fieldName, position: position },
+    null,
+    isSync
+  );
+};
 
 // 생활비지원장학 화면별 장학상세 grid dropdown 만들기
 /**
  *
  *
- * @param {*} grd 그리드 
+ * @param {*} grd 그리드
  * @param {*} fieldName 필드명
  * @param {*} sch_code 장학코드
  * @param {*} isSync 동기 비동기 여부
@@ -2301,11 +2179,20 @@ this.gfn_setSchDetailCombo = function (grd, fieldName, sch_code, isSync) {
     p_code_master_magic_const: "[장학상세]",
     p_code_detail_magic_const: "",
     p_code_detail_option_code_name: "CD1",
-    p_code_detail_option_code_val: sch_code
-  }
-  gfn_ajaxTransaction("schDet", "/comm/get_code_detail_option", "", "sch_detail_data=output", arg, "gridComboCallBack", { grd: grd, fName: fieldName }, null, isSync);
-}
-
+    p_code_detail_option_code_val: sch_code,
+  };
+  gfn_ajaxTransaction(
+    "schDet",
+    "/comm/get_code_detail_option",
+    "",
+    "sch_detail_data=output",
+    arg,
+    "gridComboCallBack",
+    { grd: grd, fName: fieldName },
+    null,
+    isSync
+  );
+};
 
 // 승인요청 팝업 띄우기 전 계좌정보, 공급자ID validation
 /**
@@ -2323,29 +2210,39 @@ this.gfn_request_check = function (grd, p_student_number, p_bank_account_number,
     gfn_noticeshow(ld.notice_modal, ld.request_check_msg);
     return false;
   }
-  
-    for (var idx = 0; idx < rowCount; idx++) {
-      var student_number = grd.grid.getValue(idx, p_student_number);
-      var bank_account_number = grd.grid.getValue(idx, p_bank_account_number);
-      var vendor_site_id = grd.grid.getValue(idx, p_vendor_site_id);
-      var process_status = grd.grid.getValue(idx, 'process_status_code_uid');
+
+  for (var idx = 0; idx < rowCount; idx++) {
+    var student_number = grd.grid.getValue(idx, p_student_number);
+    var bank_account_number = grd.grid.getValue(idx, p_bank_account_number);
+    var vendor_site_id = grd.grid.getValue(idx, p_vendor_site_id);
+    var process_status = grd.grid.getValue(idx, "process_status_code_uid");
 
     // sch_fos_1100 의 process_status_code_uid 가 id 가 달라서 예외처리
     // TODO: sch_fos_1100 에서 id 를 맞춰주거나, 여기 하드코드 된 것을 제거해야 함.
     //if (gfn_isNull(process_status)) {
-      //process_status = grd.grid.getValue(idx, 'process_status_uid');
+    //process_status = grd.grid.getValue(idx, 'process_status_uid');
     //}
 
-      console.log("idx= " + idx + ", student_number= " + student_number + ", ban= " + bank_account_number + ", vsi= " + vendor_site_id + ", ps= " + process_status + "\n");
-    
+    console.log(
+      "idx= " +
+        idx +
+        ", student_number= " +
+        student_number +
+        ", ban= " +
+        bank_account_number +
+        ", vsi= " +
+        vendor_site_id +
+        ", ps= " +
+        process_status +
+        "\n"
+    );
+
     if (gfn_isNull(bank_account_number) || gfn_isNull(vendor_site_id) || vendor_site_id == 0 || vendor_site_id == -1) {
-      if(gfn_isNull(process_status)){
+      if (gfn_isNull(process_status)) {
         gfn_noticeshow(ld.notice_modal, student_number + ld.request_check_msg2);
         return false;
       }
     }
   }
   return true;
-}
-
-
+};

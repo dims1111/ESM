@@ -41,15 +41,50 @@
     <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs_eval.1.1.36.min.js'%}"></script>
     <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs-api.1.1.36.js'%}"></script>
 
+    <!-- 부트스트랩 DatePicker -->
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.min.css' %}"/>
+    <script type="text/javascript" src="{% static 'plugins/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static '/js/lib/comConstants.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comDate.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comExcel.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comForm.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comGrid.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comReport.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comTrans.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comUtil.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comModal.js'%}"></script>
+
     {% block header %} {% endblock %}
   </head>
 
   <body>
     {% block contents %} {% endblock %}
-
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Modal 제목</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div id="contents" class="modal-body">
+            Modal 내용
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div></div>
+    
     <script>
       cssVars(); // css var 포니필 적용
       RealGridJS.setRootContext("{% static '/plugins/realgridjs' %}");
     </script>
+
+
+
+
+
+
   </body>
 </html>

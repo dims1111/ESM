@@ -48,6 +48,8 @@ def doSearch(request):
   commParams = {'cd': 'S', 'msg': '', 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
 
   try:
+    
+
     querySet = SysMenuV.objects.filter(
          Q(menu_name_ko__icontains=srhMenuName) | Q(menu_name_ko__icontains=srhMenuName)
         ,Q(url__icontains=srhUrl)
@@ -61,6 +63,8 @@ def doSearch(request):
     if not querySet.exists():
       langMsg.msgParam['errNum'] = 'ERR-1020'
       raise langMsg.noDataFound(langMsg.errMsg())
+
+    
 
   except langMsg.noDataFound as e:
     commParams = {'cd' : 'S', 'msg' : e, 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
@@ -115,6 +119,8 @@ def doSave(request):
 
     except langMsg.userException as e:
       commParams = {'cd' : 'E', 'msg' : e.args[0], 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
+
+
     except Exception as e:
       commParams = {'cd' : 'E', 'msg' : e.args[0], 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
 
