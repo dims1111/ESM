@@ -1,5 +1,5 @@
 from django.http.response import HttpResponseRedirect, JsonResponse
-from django.shortcuts import  render
+from django.shortcuts import render, HttpResponse
 from django.core import serializers
 
 # 장고 모델에서 필터 처리를 위한 Q 클래스 임포트
@@ -18,8 +18,9 @@ from . models import SysMenuV
 # 임포트 UUID 클래스
 from . orm import JsonData, doInsert, doUpdate, doDelete
 
-from tkinter import *
-from tkinter import messagebox
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models.query import QuerySet
+
 
 
 # #################################################################################################
@@ -27,6 +28,7 @@ from tkinter import messagebox
 # #################################################################################################
 # 메뉴 클릭 후 첫 화면 오픈
 def home(request):
+  print("aaaaaaaaaaa => ", request.session['user_id'])
   return render(request, 'esm_sys/esm_sys_1020.html')
 
 
@@ -52,7 +54,7 @@ def doSearch(request):
         ,Q(use_yn=srhUseYn)
     ).order_by('menu_name_ko')
 
-    # 그리드 조회된 데이터 건수 표기
+    # 조회된 데이터 건수 표기
     commParams['processCnt']['S'] = querySet.count()
 
     # [정상] 데이터가 존재하지 않음
@@ -67,9 +69,10 @@ def doSearch(request):
 
   # 화면 처리 후 정상 및 오류 메시지 출력
   resultMsg(commParams)
-
+ 
   serialized_queryset = serializers.serialize('json', querySet)
   return JsonResponse(serialized_queryset, safe=False)
+  
 
 
 # #################################################################################################
