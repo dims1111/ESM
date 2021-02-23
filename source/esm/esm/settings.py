@@ -54,6 +54,9 @@ INSTALLED_APPS = [
     'esm_sys.esm_sys_1000',     # 사용자등록
     'esm_sys.esm_sys_1010',     # 언어코드등록
     'esm_sys.esm_sys_1020',     # 메뉴등록
+
+    # 개발
+    'esm_dev.esm_dev_1000',     # 테스트1
 ]
 
 MIDDLEWARE = [
