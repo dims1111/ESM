@@ -52,8 +52,8 @@ INSTALLED_APPS = [
 
     # 시스템관리
     'esm_sys.esm_sys_1000',     # 사용자등록
-    'esm_sys.esm_sys_1010',     # 메뉴등록
-    'esm_sys.esm_sys_1020',     # 언어코드등록
+    'esm_sys.esm_sys_1010',     # 언어코드등록
+    'esm_sys.esm_sys_1020',     # 메뉴등록
 ]
 
 MIDDLEWARE = [

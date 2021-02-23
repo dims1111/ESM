@@ -3,32 +3,28 @@
   var grid1;
   $(function () {
     grid1 = $("#grid1").gfn_gridInit([
-      { name: "batch_yn", fieldName: "batch_yn", header: { text: "batch_yn" }, width: 80 },
-      { name: "create_by", fieldName: "create_by", header: { text: "create_by" }, width: 80 },
-      { name: "create_date_time", fieldName: "create_date_time", header: { text: "create_date_time" }, width: 80 },
-      { name: "delete_yn", fieldName: "delete_yn", header: { text: "delete_yn" }, width: 80 },
-      { name: "excel_down_yn", fieldName: "excel_down_yn", header: { text: "excel_down_yn" }, width: 80 },
-      { name: "excel_up_yn", fieldName: "excel_up_yn", header: { text: "excel_up_yn" }, width: 80 },
-      { name: "icons", fieldName: "icons", header: { text: "icons" }, width: 80 },
-      { name: "insert_yn", fieldName: "insert_yn", header: { text: "insert_yn" }, width: 80 },
-      { name: "menu_cd", fieldName: "menu_cd", header: { text: "menu_cd" }, width: 80 },
-      { name: "menu_name_en", fieldName: "menu_name_en", header: { text: "menu_name_en" }, width: 80 },
-      { name: "menu_name_en_dis", fieldName: "menu_name_en_dis", header: { text: "menu_name_en_dis" }, width: 80 },
-      { name: "menu_name_ko", fieldName: "menu_name_ko", header: { text: "menu_name_ko" }, width: 80 },
-      { name: "menu_name_ko_dis", fieldName: "menu_name_ko_dis", header: { text: "menu_name_ko_dis" }, width: 80 },
-      { name: "menu_uid", fieldName: "menu_uid", header: { text: "menu_uid" }, width: 80 },
-      { name: "parent_menu_cd", fieldName: "parent_menu_cd", header: { text: "parent_menu_cd" }, width: 80 },
-      { name: "path_en", fieldName: "path_en", header: { text: "path_en" }, width: 80 },
-      { name: "path_ko", fieldName: "path_ko", header: { text: "path_ko" }, width: 80 },
-      { name: "print_yn", fieldName: "print_yn", header: { text: "print_yn" }, width: 80 },
-      { name: "remark", fieldName: "remark", header: { text: "remark" }, width: 80 },
-      { name: "search_yn", fieldName: "search_yn", header: { text: "search_yn" }, width: 80 },
-      { name: "sort_order", fieldName: "sort_order", header: { text: "sort_order" }, width: 80 },
-      { name: "update_by", fieldName: "update_by", header: { text: "update_by" }, width: 80 },
-      { name: "update_date_time", fieldName: "update_date_time", header: { text: "update_date_time" }, width: 80 },
-      { name: "update_yn", fieldName: "update_yn", header: { text: "update_yn" }, width: 80 },
-      { name: "url", fieldName: "url", header: { text: "url" }, width: 80 },
-      { name: "use_yn", fieldName: "use_yn", header: { text: "use_yn" }, width: 80 },
+      { name: "menu_uid", fieldName: "menu_uid", header: { text: "메뉴UID" }, width: 250 },
+      { name: "parent_menu_cd", fieldName: "parent_menu_cd", header: { text: "상위메뉴코드" }, width: 80 },
+      { name: "menu_cd", fieldName: "menu_cd", header: { text: "메뉴코드" }, width: 80 },      
+      { name: "menu_name_ko", fieldName: "menu_name_ko", header: { text: "메뉴명(한글)" }, width: 120 },
+      { name: "menu_name_en", fieldName: "menu_name_en", header: { text: "메뉴명(영문)" }, width: 180 },
+      { name: "url", fieldName: "url", header: { text: "url" }, width: 120 },
+      { name: "icons", fieldName: "icons", header: { text: "아이콘" }, width: 80 },
+      { name: "sort_order", fieldName: "sort_order", header: { text: "정렬순서" }, width: 60 },
+      { name: "use_yn", fieldName: "use_yn", header: { text: "사용" }, width: 40 },      
+      { name: "search_yn", fieldName: "search_yn", header: { text: "조회" }, width: 40 },
+      { name: "insert_yn", fieldName: "insert_yn", header: { text: "신규" }, width: 40 },
+      { name: "update_yn", fieldName: "update_yn", header: { text: "수정" }, width: 40 },
+      { name: "delete_yn", fieldName: "delete_yn", header: { text: "삭제" }, width: 40 },      
+      { name: "excel_down_yn", fieldName: "excel_down_yn", header: { text: "엑셀다운" }, width: 80 },
+      { name: "excel_up_yn", fieldName: "excel_up_yn", header: { text: "엑셀업로드" }, width: 80 },
+      { name: "print_yn", fieldName: "print_yn", header: { text: "출력" }, width: 40 },
+      { name: "batch_yn", fieldName: "batch_yn", header: { text: "생성" }, width: 40 },
+      { name: "remark", fieldName: "remark", header: { text: "비고" }, width: 300 },
+      { name: "create_by", fieldName: "create_by", header: { text: "생성자UID" }, width: 80 },
+      { name: "create_date_time", fieldName: "create_date_time", header: { text: "생성일시" }, width: 150 },
+      { name: "update_by", fieldName: "update_by", header: { text: "수정자ID" }, width: 80 },
+      { name: "update_date_time", fieldName: "update_date_time", header: { text: "수정자ID" }, width: 150 },
     ]);
   });
 
@@ -159,7 +155,7 @@
         <label for="url">URL</label>
         <input type="text" name="url" id="url" />
         <label for="useYn">사용여부</label>
-        <input type="checkbox" name="useYn" id="useYn" />
+        <input type="checkbox" name="useYn" id="useYn" checked />
       </form>
     </div>
   </div>
