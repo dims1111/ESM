@@ -102,7 +102,7 @@ def doSave(request):
 
       # 신규 데이터가 존재하면 저장
       if JsonData.insertDataList is not None:
-        commParams = doInsert(JsonData.insertDataList, commParams, userID)
+        commParams = doInsert(JsonData.insertDataList, commParams, userId)
 
         # 오류가 발생하면 롤백처리
         if commParams['cd'] == 'E':
@@ -110,7 +110,7 @@ def doSave(request):
 
       # 수정 데이터가 존재하면 저장
       if JsonData.updateDataList is not None:
-        commParams = doUpdate(JsonData.updateDataList, commParams, userID)
+        commParams = doUpdate(JsonData.updateDataList, commParams, userId)
 
         # 오류가 발생하면 롤백처리
         if commParams['cd'] == 'E':
