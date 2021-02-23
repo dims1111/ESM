@@ -61,7 +61,6 @@
               // 에러가 발생할 경우 모달 출력
               if (res.msg) {
                 $('#myModal #contents').html(res.msg);
-                document.querySelector('#myModal #contents').innerHTML = res.msg;
                 $('#myModal').modal('show');
                 if (res.cd === 'E') {
                   return;
