@@ -28,7 +28,6 @@ $.fn.gfn_gridInit = function (columns, width, height) {
 
   initGridField(this, columns);
   this.gridView.setColumns(columns);
-
   //스타일 초기화
   initGridStyle(this);
 
@@ -400,10 +399,10 @@ function initGridStyle($grid) {
   });
 
   // 필터에 CSS 스타일 적용 여부 설정
-  grid.setFilteringOptions({ selector: { useCssStyle: true } });
+  gridView.setFilteringOptions({ selector: { useCssStyle: true } });
 
   // rowHeight(default) = 28
-  grid.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 35, drawBorderRight: false });
+  gridView.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 35, drawBorderRight: false });
 
   // 패딩추가
   // gridView.setStyles({body:{paddingLeft:10}});
