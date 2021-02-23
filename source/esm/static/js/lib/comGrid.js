@@ -391,17 +391,22 @@ function initGridStyle($grid) {
 
   $grid.find('div').each(function () {
     $(this).css({
-      "border-top": "solid #1F8ECD 0.2rem",
+      "border-top": "solid #2a9d8f 0.2rem",
       // "border-right": "solid #ffffff 3px"
       // "border-left": "solid #ffffff 5px"
-      "border-bottom": "solid #d5d5d5 0.2rem",
+      "border-bottom": "solid #2a9d8f 0.2rem",
     });
     // $(this).css("border-bottom", "solid #d5d5d5 2px");
   });
 
   // 필터에 CSS 스타일 적용 여부 설정
-  gridView.setFilteringOptions({ selector: { useCssStyle: true } });
-  gridView.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 28, drawBorderRight: false });
+  grid.setFilteringOptions({ selector: { useCssStyle: true } });
+
+  // rowHeight(default) = 28
+  grid.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 35, drawBorderRight: false });
+
+  // 패딩추가
+  // gridView.setStyles({body:{paddingLeft:10}});
 
   gridView.addCellStyle(
     "found",

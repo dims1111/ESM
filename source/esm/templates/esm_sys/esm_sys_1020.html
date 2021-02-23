@@ -6,9 +6,9 @@
       { name: "menu_uid", fieldName: "menu_uid", header: { text: "메뉴UID" }, width: 250 },
       { name: "parent_menu_cd", fieldName: "parent_menu_cd", header: { text: "상위메뉴코드" }, width: 80 },
       { name: "menu_cd", fieldName: "menu_cd", header: { text: "메뉴코드" }, width: 80 },      
-      { name: "menu_name_ko", fieldName: "menu_name_ko", header: { text: "메뉴명(한글)" }, width: 120 },
-      { name: "menu_name_en", fieldName: "menu_name_en", header: { text: "메뉴명(영문)" }, width: 180 },
-      { name: "url", fieldName: "url", header: { text: "url" }, width: 120 },
+      { name: "menu_name_ko", fieldName: "menu_name_ko", header: { text: "메뉴명(한글)" }, width: 180 },
+      { name: "menu_name_en", fieldName: "menu_name_en", header: { text: "메뉴명(영문)" }, width: 220 },
+      { name: "url", fieldName: "url", header: { text: "url" }, width: 190 },
       { name: "icons", fieldName: "icons", header: { text: "아이콘" }, width: 80 },
       { name: "sort_order", fieldName: "sort_order", header: { text: "정렬순서" }, width: 60 },
       { name: "use_yn", fieldName: "use_yn", header: { text: "사용" }, width: 40 },      
@@ -28,6 +28,7 @@
     ]);
   });
 
+
   /* action1에대한 기능 */
   function doAction1(gubun) {
     switch (gubun) {
@@ -36,6 +37,20 @@
         console.log("gubun ->", gubun);
 
         var menuName = $("#menuName").val();
+
+        // 조회조건 필수 입력사항(메뉴명) 유효성 검사
+        if (menuName === '') {
+
+          $(function(){
+
+            alert("메뉴명은 필수 입력사항 입니다.");
+
+          })
+
+          // 유효성 검사 통과 못할 시 다음 로직을 진행하지 않는다.
+          break;
+        }
+
         var url = $("#url").val();
         var useYn = $("#useYn").is(":checked") ? "1" : "0";
 
@@ -47,6 +62,7 @@
         };
         console.log("params ->", params);
 
+
         // ajax POST 통신, 후에 공통으로 뺄거임
         $.ajax({
           type: "POST",
@@ -57,6 +73,7 @@
           success: function (data) {
             var result = JSON.parse(data);
 
+
             // 데이터가져오기
             result = result.map(function (item) {
               return item.fields;
@@ -66,12 +83,17 @@
 
             // modal test================
             // var resultTest = {cd : 'S', msg: '성공' }
-            var resultTest = {cd : 'E', msg: '조회 실패' }
+            var resultTest = {cd : 'E', msg: '조회를 실패 했습니다. 조회를 .조회를 실패 했습니다.조회를 조회를 실패 했습니다.조회를 조회를 실패 했습니다.조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. ' }
+            
+
 
             // 에러가 발생할 경우 모달 출력
             if (resultTest && resultTest.cd === 'E') {
+
+              // 에러메시지를 선언
               var message = resultTest.msg;
-              $('#myModal #contents').html(message);
+
+              $('#myModal #contents').text(message);
               $('#myModal').modal('show');
             }
             // ==========================
@@ -118,6 +140,19 @@
         });
         break;
       case "addRow":
+
+
+        
+        
+        $(function(){
+
+          var rows = ["가수","여자"];
+          dataProvider.insertRows(0,rows, 0, -1);
+          console.log("test");
+        });
+
+
+
         console.log("gubun ->", gubun);
         break;
       case "delRow":
@@ -149,11 +184,11 @@
         </div>
       </div>
       <form id="srchForm" class="search-content">
-        <label for="menuName">메뉴명</label>
+        <label for="menuName"><i class="xi-star"></i>메뉴명</label>
         <input type="text" name="menuName" id="menuName" />
-        <label for="url">URL</label>
+        <label for="url" style="margin-left: 15px;">URL</label>
         <input type="text" name="url" id="url" />
-        <label for="useYn">사용여부</label>
+        <label for="useYn" style="margin-left: 15px;">사용여부</label>
         <input type="checkbox" name="useYn" id="useYn" checked />
       </form>
     </div>
