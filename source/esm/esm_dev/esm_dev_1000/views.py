@@ -65,7 +65,7 @@ def doSearch(request):
             raise langMsg.noDataFound(langMsg.errMsg())
 
     except langMsg.noDataFound as e:
-        commParams = {'cd': 'S', 'msg': e, 'processCnt': {
+        commParams = {'cd': 'S', 'msg': e.args[0], 'processCnt': {
             'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
     except Exception as e:
         commParams = {'cd': 'E', 'msg': e.args[0], 'processCnt': {
@@ -74,8 +74,10 @@ def doSearch(request):
     # 화면 처리 후 정상 및 오류 메시지 출력
     util.resultMsg(commParams)
 
-    serialized_queryset = serializers.serialize('json', querySet)
-    return JsonResponse(serialized_queryset, safe=False)
+    commParams['data'] = list(querySet.values())
+
+    print(commParams)
+    return JsonResponse(commParams)
 
 
 # #################################################################################################

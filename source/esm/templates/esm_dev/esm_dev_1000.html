@@ -55,34 +55,25 @@
           type: "POST",
           url: "/esm_dev_1000/search",
           data: params,
-          // data: $('#srchForm').serialize(),
           dataType: "json",
-          success: function (data) {
-            var result = JSON.parse(data);
+          success: function (res) {
+            if (res) {
+              // 에러가 발생할 경우 모달 출력
+              if (res.msg) {
+                $('#myModal #contents').html(res.msg);
+                document.querySelector('#myModal #contents').innerHTML = res.msg;
+                $('#myModal').modal('show');
+                if (res.cd === 'E') {
+                  return;
+                }
+              }
 
-            // 데이터가져오기
-            result = result.map(function (item) {
-              return item.fields;
-            });
+              // 데이터가져오기
+              result = res.data;
 
-            console.log(result);
-
-            // modal test================
-            // var resultTest = {cd : 'S', msg: '성공' }
-            /*
-            var resultTest = {cd : 'E', msg: '조회 실패' }
-
-            // 에러가 발생할 경우 모달 출력
-            if (resultTest && resultTest.cd === 'E') {
-              var message = resultTest.msg;
-              $('#myModal #contents').html(message);
-              $('#myModal').modal('show');
+              console.log(result); 
+              grid1.provider.setRows(result);
             }
-            */
-            // ==========================
-            
-            grid1.provider.setRows(result);
-
           },
         });
         break;

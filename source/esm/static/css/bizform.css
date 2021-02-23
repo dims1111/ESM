@@ -432,3 +432,6 @@ label {
 form {
   margin: 0;
 }
+.modal-backdrop {
+  background-color: #d7e8da;
+}
