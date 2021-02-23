@@ -432,3 +432,59 @@ label {
 form {
   margin: 0;
 }
+
+.modal-backdrop {
+  z-index: 2500;
+}
+
+
+.modal {
+
+  position: fixed;
+  left: auto;
+  top: 200px;
+  z-index: 3000;
+  
+}
+.modal-header{
+  cursor: move;
+  background-color: #259e90;
+  color: #eaf5ec;
+  font-size: 14px;
+  
+}
+
+
+.modal-content{
+  height: 300px;
+  background-color: #eaf5ec;
+  font-size: 10pt;
+}
+
+.modal-footer{
+
+  border-top: 1px solid #1d7268;
+  
+
+}
+
+.modal-header > button{
+  color: #eefcfa
+}
+
+.modal-footer > button{
+
+  border: 2px solid #1d7268;
+  margin: 0px auto;
+  font-size: 12px;
+
+}
+
+
+.xi-error-o {
+  color: rgb(204, 44, 16);
+}
+
+.xi-star {
+  color: rgb(204, 44, 16);
+}

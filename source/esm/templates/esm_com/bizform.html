@@ -12,6 +12,7 @@
     {% load static %}
     <!-- Jquery -->
     <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
 
     <!-- 구글 웹폰트 적용('Noto Sans KR') -->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -55,32 +56,51 @@
     <script type="text/javascript" src="{% static '/js/lib/comUtil.js'%}"></script>
     <script type="text/javascript" src="{% static '/js/lib/comModal.js'%}"></script>
 
+    <style>
+    </style>
+
+
     {% block header %} {% endblock %}
   </head>
 
   <body>
-    {% block contents %} {% endblock %}
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Modal 제목</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
-          <div id="contents" class="modal-body">
-            Modal 내용
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+    
+      {% block contents %} {% endblock %}
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content ">
+            <div class="modal-header" >
+              <i class="xi-error-o xi-2x"></i>
+              <h5 class="modal-title" id="myModalLabel">&nbsp;오류 발생</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div id="contents" class="modal-body">
+              
+            </div>
+            <div class="modal-footer" >
+              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+            </div>
           </div>
         </div>
-      </div></div>
+      </div>
     
     <script>
       cssVars(); // css var 포니필 적용
       RealGridJS.setRootContext("{% static '/plugins/realgridjs' %}");
-    </script>
 
+
+      $(function () {
+
+        // Modal 이동
+        $("#myModal").draggable({
+          handle: ".modal-header",
+          // containment: ".modal-open",
+          // scroll: false
+          
+        });
+
+      });
+    </script>
 
 
 

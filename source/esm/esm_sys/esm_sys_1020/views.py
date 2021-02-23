@@ -57,6 +57,7 @@ def doSearch(request):
         ,Q(use_yn=srhUseYn)
     ).order_by('menu_name_ko')
 
+
     # 조회된 데이터 건수 표기
     commParams['processCnt']['S'] = querySet.count()
 
