@@ -435,6 +435,7 @@ form {
 
 .modal-backdrop {
   z-index: 2500;
+  background-color: #d7e8da;
 }
 
 

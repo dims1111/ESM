@@ -11,6 +11,7 @@ html, body {
   .nav-tabs {
     border-bottom: 2px solid var(--p1);
     background: rgba(var(--p1-rgb), 0.3);
+    box-shadow: 0px 5px 13px -11px;
   }
   
   .nav-tabs>li {
@@ -40,13 +41,14 @@ html, body {
     font-size: 13px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    color: white !important;
+    color: #777 !important;
   }
 
   .nav-tabs .nav-link.active {
     background: var(--p1);
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
+    color: white !important;
   }
 
   .tab-content {
@@ -172,4 +174,24 @@ html, body {
 
   .sidebar-sub__title {
     color: var(--p1);
+  }
+
+  .nav-link {
+    position: relative;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+ 
+  .nav-link:hover { 
+    box-shadow: 0px -40px 0 0 var(--p1) inset;
+    color: white !important;
+    transition: color 0.1s ease-in-out;
+  }
+
+  .nav > li {
+    margin-right: 1px;
+    min-width: 100px;
+    text-align: center;
+  }
+  .nav > li:last-child() {
+    margin-right: 0;
   }
