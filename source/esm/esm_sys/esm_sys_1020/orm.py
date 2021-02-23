@@ -236,11 +236,12 @@ def doUpdate(dataList, commParam, userID):
   try:
     i = 0
     bulkDataList = []
-
     # 수정 데이터 확인
     for ca in dataList:
+      print('t1')
       getData = SysMenu.objects.filter(pk=ca.get('menu_uid'))
-
+      print("ca.get('menu_uid')", ca.get('menu_uid'))
+      print('getData.exists()', getData.exists())
       # 키를 기준으로 조회된 데이터 셋(getData)에 수정된 값(dataList) 할당
       for updateData in getData:
         updateData.menu_cd          = ca.get('menu_cd')
@@ -263,7 +264,8 @@ def doUpdate(dataList, commParam, userID):
         updateData.update_date_time = JsonData.now
         updateData.update_by        = userID        
         i += 1
-
+      for ca in getData:
+        print('>>>>>>>>>', ca.menu_cd)
       # 대량의 데이터 일괄 수정
       SysMenu.objects.bulk_update(getData, ['menu_cd'
                                             ,'menu_name_ko'

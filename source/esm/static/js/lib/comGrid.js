@@ -65,9 +65,12 @@ $.fn.gfn_gridInit = function (columns, width, height) {
 };
 
 function initGridField(grdObj, columns) {
-  // fieldInfo 안씀
-
   for (var columnInfo of columns) {
+    // GridView의 name이 없을 경우 fieldName의 값을 넣음
+    if (!columnInfo.name) {
+      columnInfo.name = columnInfo.fieldName;
+    }
+
     // header객체 초기화
     columnInfo.header = columnInfo.header || {};
 
@@ -269,19 +272,11 @@ function initGridField(grdObj, columns) {
   }
 }
 
-/**
- *
- *
- * @param {*} grid 그리드객체
- * @param {*} grdId 그리드의 html id
- * @returns 그리드 객체
- */
-function initGridStyle(obj) {
-  var grid = obj.gridView;
-  var grdId = obj.attr("id");
+function initGridStyle($grid) {
+  var gridView = $grid.gridView;
 
   //  그리드 스타일 설정
-  grid.setStyles({
+  gridView.setStyles({
     grid: {
       fontSize: "12",
       paddingTop: "15",
@@ -388,13 +383,13 @@ function initGridStyle(obj) {
     },
   });
 
-  $("#" + grdId).each(function () {
+  $grid.each(function () {
     $(this).css({
       // "border-right": "solid #ffffff 3px"
     });
   });
 
-  $("#" + grdId + " div").each(function () {
+  $grid.find('div').each(function () {
     $(this).css({
       "border-top": "solid #1F8ECD 0.2rem",
       // "border-right": "solid #ffffff 3px"
@@ -405,11 +400,10 @@ function initGridStyle(obj) {
   });
 
   // 필터에 CSS 스타일 적용 여부 설정
-  grid.setFilteringOptions({ selector: { useCssStyle: true } });
+  gridView.setFilteringOptions({ selector: { useCssStyle: true } });
+  gridView.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 28, drawBorderRight: false });
 
-  grid.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 28, drawBorderRight: false });
-
-  grid.addCellStyle(
+  gridView.addCellStyle(
     "found",
     {
       background: "#cc880000",
@@ -419,40 +413,34 @@ function initGridStyle(obj) {
   );
 }
 
-/**
- *
- *
- * @param {*} grid 그리드 객체
- * @returns {*} 그리드 반환
- */
-function initGridOption(grid) {
+function initGridOption(gridView) {
   // 그리드 옵션 설정
-  grid.setSelectOptions({ style: "singleRow" }); //rows, columns, singleRow, singleColumn, none, block
+  gridView.setSelectOptions({ style: "singleRow" }); //rows, columns, singleRow, singleColumn, none, block
 
-  grid.setPanel({
+  gridView.setPanel({
     visible: false,
   });
 
-  grid.setIndicator({
+  gridView.setIndicator({
     headText: "No",
   });
 
-  // grid.setStateBar({
+  // gridView.setStateBar({
   //   visible: false
   // });
 
-  grid.setCheckBar({
+  gridView.setCheckBar({
     visible: false,
   });
 
-  grid.setCopyOptions({
+  gridView.setCopyOptions({
     singleMode: true,
     lookupDisplay: true,
     copyDisplayText: true,
     checkReadOnly: true,
   });
 
-  grid.setEditorOptions({
+  gridView.setEditorOptions({
     useCssStyle: true, //모든 에디터에 CSS를 적용할 경우 사용
     useCssStyleDropDownList: true, //dropDown
     useCssStyleDatePicker: true, //달력
@@ -460,19 +448,19 @@ function initGridOption(grid) {
     useCssStyleMultiCheck: true, //multiCheck
   });
 
-  grid.setEditOptions({
+  gridView.setEditOptions({
     insertable: false,
     appendable: false,
     editWhenFocused: true,
     enterToTab: true,
   });
 
-  grid.setOptions({
+  gridView.setOptions({
     edit: { insertable: false, appendable: false, deletable: false },
     footer: { visible: false },
   });
 
-  grid.setDisplayOptions({
+  gridView.setDisplayOptions({
     fitStyle: "even",
     drawBorderRight: false,
   });
@@ -646,239 +634,6 @@ function gfn_mergeFooter(_grd, count, start) {
   _grd.grid.setFooter({
     mergeCells: mergeArr,
   });
-}
-
-// 그리드 세로크기 세팅
-// function gridsizeload() {
-//   var pheight = $(window).height();
-//   var gheight = pheight - gridsizeload_otherheight;
-//   if (gridIDArr != null) {
-//     for (var i = 0; i < gridIDArr.length; i++) {
-//       gridIDArr[i].height(gheight);
-//       gridIDArr[i].grid.resetSize();
-//     }
-//   }
-// }
-
-// function depOfCollege(grd, from, to, fromKey) {
-//   grd.grid.setEditOptions({
-//     insertable: false,
-//     appendable: false,
-//     editWhenFocused: false
-//   });
-//   var self = $(this);
-//   //처음 조회시 데이터 로딩
-//   if (!self.c_data) {
-//     self.c_data = {
-//       from_labels: [],
-//       from_values: []
-//     }
-//     quriExcute('/comm/' + fromKey, null, null, null, null, function (a, b, return_data) {
-//       var rArr = xmlToJsonArr(return_data.r_data);
-//       // console.log(rArr);
-//       for (var index = 0; index < rArr.length; index++) {
-//         self.c_data.from_labels.push(rArr[index].val);
-//         self.c_data.from_values.push(rArr[index].cd);
-//       }
-//     }, null);
-//   }
-
-//   var colByName = grd.grid.columnByName(to);
-
-//   if (colByName.labelField == null) {
-
-//     var fff = { fieldName: "labelField", dataType: "text" };
-//     grd.provider.addField(fff, false);
-
-//     var col = grd.grid.columnByName(to);
-
-//     col.editor = {};
-//     col.editor.type = "dropDown";
-//     col.editor.domainOnly = true;
-
-//     col.lookupDisplay = true;
-//     col.alwaysShowEditButton = true;
-//     col.sortByLabel = true;
-
-//     // col.trimLabelText = false;
-
-//     col.labelField = "labelField";
-//     grd.grid.setColumn(col);
-
-//   }
-
-//   // 셀 편집이 완료 되었을 때
-//   grd.grid.onGetEditValue = function (grid, index, editResult) {
-
-//     var col = grd.grid.columnByName(to);
-//     col.width = 150;
-//     col.labelField = "labelField";
-//     col.editor.domainOnly = true;
-//     // col.lookupDisplay = true;
-//     col.alwaysShowEditButton = true;
-
-//     if (index.fieldName == from) {
-//       var param_str = 'qParams=' + editResult.value + '&qParams=CUR';
-//       quriExcute("/comm/department_of_college1", '', param_str, null, null, function (a, b, return_data) {
-//         var arr = xmlToJsonArr(return_data.r_data);
-//         col.values = [];
-//         col.labels = [];
-//         for (var index = 0; index < arr.length; index++) {
-//           col.values.push(arr[index]['organization_uid']);
-//           col.labels.push(arr[index]['organization_name']);
-//         }
-//         grid.setColumn(col);
-//         grid.setValue(index.itemIndex, to, ''); // 단과대학 값 수정시 학과 값 초기화
-//         grid.setValue(index.itemIndex, "labelField", ''); // 단과대학 값 수정시 학과 값 초기화
-
-//       }, null);
-//     }
-
-//     else if (index.fieldName == to) {
-//       grid.setValue(index.itemIndex, to, col.values[col.labels.indexOf(editResult.text)]);
-//       grid.setValue(index.itemIndex, "labelField", editResult.text);
-//     };
-
-//   }
-
-//   grd.grid.onCurrentRowChanged = function (grid, oldRow, newRow) {
-
-//     var focusCell = grd.grid.getCurrent();
-//     var colto = grd.grid.columnByName(to);
-//     // var valuefrom = grid.getValue(newRow, from);
-//     var valuefrom = grid.getValue(focusCell.itemIndex, from);
-//     var colfrom = grd.grid.columnByName(from).values;
-//     colto.labelField = "labelField";
-//     colto.editor.domainOnly = true;
-//     // colto.lookupDisplay = true;
-//     colto.alwaysShowEditButton = true;
-
-//     if (newRow >= 0) {
-//       var param_str = 'qParams=' + valuefrom + '&qParams=CUR';
-//       quriExcute("/comm/department_of_college1", '', param_str, null, null, function (a, b, return_data) {
-//         var arr = xmlToJsonArr(return_data.r_data);
-//         colto.values = [];
-//         colto.labels = [];
-//         for (var index = 0; index < arr.length; index++) {
-//           colto.values.push(arr[index]['organization_uid']);
-//           colto.labels.push(arr[index]['organization_name']);
-//         }
-//         grid.setColumn(colto);
-//       }, null);
-//     }
-//     // grd.grid.showEditor();
-//   };
-
-//   grd.grid.onDataCellClicked = function (grid, index) {
-//     // grid.setFocus();
-//     if (!gfn_gridCommit(grd)) return;
-//     // grd.grid.commit(true);
-//     grd.grid.showEditor();
-//   }
-
-//   function loadData() {
-//     var depExcu = quriExcute("/comm/department1");
-//     var dep = xmlToJsonArr(depExcu.r_data);
-//     var data = grd.provider.getJsonRows(0, -1);
-//     for (var i = 0; i < data.length; i++) {
-//       for (var j = 0; j < dep.length; j++) {
-//         var duid = data[i].department_code_uid;
-//         var dcd = dep[j].cd;
-//         var dName = dep[j].val;
-//         if (duid === dcd) {
-//           grd.grid.setValue(grd.grid.getItemIndex(i), "labelField", dName);
-//           grd.provider.setRowState(grd.grid.getItemIndex(i), "none", false);
-//         }
-//       }
-//     }
-//   }
-//   return loadData;
-// };
-
-// /**
-//  *
-//  *
-//  * @param {*} grd
-//  * @param {*} row
-//  */
-// this.gfn_setRowPosition = function (grd, row) {
-//   var next = {};
-//   next.dataRow = row;
-//   grd.grid.setCurrent(next);
-// }
-
-/**
- *
- *
- * @param {*} _grd 그리드 오브젝트
- * @returns 편집된 row 데이터
- */
-function gfn_getJsonChangedRows(_grd) {
-  _grd.grid.commit(false);
-  var jsonArray = new Array();
-  var rows = null;
-  var state = $(':radio[name="rbRowStateArray"]:checked').val();
-  if (!state || state == "all") {
-    rows = _grd.provider.getAllStateRows(); // RowState.NONE은 포함되지 않는다.
-  } else {
-    rows = _grd.provider.getStateRows(state);
-  }
-  for (var i = 0; i < rows.deleted.length; i++) {
-    //var jsonObj = new Object();
-    var jsonObj = _grd.provider.getJsonRow(rows.deleted[i]);
-    jsonObj.t = "d";
-    jsonObj.wrk_tp = "D";
-    jsonObj.row = rows.deleted[i];
-
-    var keys = _grd.provider.getOrgFieldNames();
-
-    if (keys.indexOf("err_msg") > -1 && !gfn_isNull(jsonObj.err_msg)) {
-      continue;
-    }
-
-    for (var idx = 0; idx < keys.length; idx++) {
-      if (jsonObj[keys[idx]] == undefined) {
-        jsonObj[keys[idx]] = "";
-      }
-    }
-
-    jsonArray.push(jsonObj);
-  }
-
-  for (var i = 0; i < rows.updated.length; i++) {
-    //var jsonObj = new Object();
-    var jsonObj = _grd.provider.getJsonRow(rows.updated[i]);
-    jsonObj.t = "u";
-    jsonObj.wrk_tp = "U";
-    jsonObj.row = rows.updated[i];
-
-    var keys = _grd.provider.getOrgFieldNames();
-    for (var idx = 0; idx < keys.length; idx++) {
-      if (jsonObj[keys[idx]] == undefined) {
-        jsonObj[keys[idx]] = "";
-      }
-    }
-
-    //jsonObj.json = jsonRow;
-    jsonArray.push(jsonObj);
-  }
-  for (var i = 0; i < rows.created.length; i++) {
-    //var jsonObj = new Object();
-    var jsonObj = _grd.provider.getJsonRow(rows.created[i]);
-    jsonObj.t = "i";
-    jsonObj.wrk_tp = "I";
-    jsonObj.row = rows.created[i];
-
-    var keys = _grd.provider.getOrgFieldNames();
-    for (var idx = 0; idx < keys.length; idx++) {
-      if (jsonObj[keys[idx]] == undefined) {
-        jsonObj[keys[idx]] = "";
-      }
-    }
-
-    jsonArray.push(jsonObj);
-  }
-  return jsonArray;
 }
 
 function gfn_getTreeJsonChangedRows(_grd) {
@@ -1724,29 +1479,6 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
   };
 };
 
-/**
- * 저장하기전 validation 하기
- *
- * @param {*} grd grid object
- * @returns true = 성공 false = 실패
- */
-this.gfn_saveValidate = function (grd) {
-  gfn_gridCommit(grd);
-  var log = grd.grid.checkValidateCells();
-  if (log == null) {
-    return true;
-  } else {
-    var message = "";
-    // console.log(log);
-    for (var i = log.length - 1; i > -1; i--) {
-      var itemIndex = grd.grid.getItemIndex(log[i].dataRow);
-      message += (itemIndex + 1).toString() + " " + ld.row + " " + log[i].message + "\n";
-    }
-
-    gfn_noticeshow("error", message);
-    return false;
-  }
-};
 
 /**
  *
@@ -1944,21 +1676,6 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
   }
 };
 
-/**
- *
- *
- * @param {*} grd 그리드
- * @returns true: 성공 false: 실패
- */
-this.gfn_gridCommit = function (grd) {
-  try {
-    grd.grid.commit(false);
-    return true;
-  } catch (e) {
-    gfn_noticeshow("error", e.message);
-    return false;
-  }
-};
 
 // //길어질시 툴팁 표시하기 위한 속성 구현은 아직 x
 // this.gfn_longText = function (grd, field) {
@@ -1969,21 +1686,6 @@ this.gfn_gridCommit = function (grd) {
 //   //  }
 // }
 
-/**
- *
- *
- * @param {*} grd
- * @returns true => 저장할 데이터 있음 false=> 저장하면 안됨
- */
-this.gfn_checkSaveData = function (grd) {
-  if (!confirm(ld.saveConfirm) || !gfn_saveValidate(grd)) return false;
-  var jsonData = gfn_getJsonChangedRows(grd);
-  if (jsonData.length == 0) {
-    gfn_noticeshow(ld.notice_modal, ld.nothingSave);
-    return false;
-  }
-  return true;
-};
 
 /**
  *
@@ -2246,3 +1948,156 @@ this.gfn_request_check = function (grd, p_student_number, p_bank_account_number,
   }
   return true;
 };
+
+
+
+
+
+//////////////////
+/**
+ * 그리드 데이터 JSON으로 변환
+ * @param {String, Array} gridId 
+ */
+function setGridDataToJson(gridId) {
+  var gridIds = [];
+  if (typeof gridId === 'string') {
+      gridIds.push(gridId);
+  } else {
+      gridIds = gridId
+  }
+  
+  return gridIds.reduce(function(acc, gridId) {
+      var grid = window[gridId];
+      grid.gridView.commit(false); // Edit 중인 데이터 반영
+
+      var allStateRows = grid.provider.getAllStateRows();
+
+      var data = Object
+          .keys(allStateRows)
+          .reduce(function(acc, key) {
+              acc[key] = allStateRows[key].map(function(row) {
+                  return grid.provider.getJsonRow(row);
+              });
+              
+              return acc;
+          }, {});
+      
+      acc[gridId] = data;
+      return acc;
+  }, {});
+}
+
+ /**
+  * 
+  * @param {Object} grid 
+  */
+function gfn_checkSaveData(grid) {
+  // if (!confirm(ld.saveConfirm) || !gfn_saveValidate(grid)) return false;
+  if (!gfn_saveValidate(grid) || !confirm('저장하시겠습니까?')) return false;
+
+  /*
+  var jsonData = gfn_getJsonChangedRows(grid);
+  if (jsonData.length == 0) {
+    gfn_noticeshow(ld.notice_modal, ld.nothingSave);
+    return false;
+  }
+  */
+  return true;
+};
+
+function gfn_saveValidate(grid) {
+  gfn_gridCommit(grid);
+  var log = grid.gridView.checkValidateCells();
+  if (log == null) {
+    return true;
+  } else {
+    var message = "";
+    for (var i = log.length - 1; i > -1; i--) {
+      var itemIndex = grid.gridView.getItemIndex(log[i].dataRow);
+      message += (itemIndex + 1).toString() + " " + ld.row + " " + log[i].message + "\n";
+    }
+
+    // gfn_noticeshow("error", message);
+    alert(message);
+    return false;
+  }
+};
+
+function gfn_gridCommit(grid) {
+  try {
+    grid.gridView.commit(false);
+    return true;
+  } catch (e) {
+    // gfn_noticeshow("error", e.message);
+    alert('gridView 커밋 도중 에러 발생');
+    return false;
+  }
+};
+
+function gfn_getJsonChangedRows(_grd) {
+  _grd.grid.commit(false);
+  var jsonArray = new Array();
+  var rows = null;
+  var state = $(':radio[name="rbRowStateArray"]:checked').val();
+  if (!state || state == "all") {
+    rows = _grd.provider.getAllStateRows(); // RowState.NONE은 포함되지 않는다.
+  } else {
+    rows = _grd.provider.getStateRows(state);
+  }
+  for (var i = 0; i < rows.deleted.length; i++) {
+    //var jsonObj = new Object();
+    var jsonObj = _grd.provider.getJsonRow(rows.deleted[i]);
+    jsonObj.t = "d";
+    jsonObj.wrk_tp = "D";
+    jsonObj.row = rows.deleted[i];
+
+    var keys = _grd.provider.getOrgFieldNames();
+
+    if (keys.indexOf("err_msg") > -1 && !gfn_isNull(jsonObj.err_msg)) {
+      continue;
+    }
+
+    for (var idx = 0; idx < keys.length; idx++) {
+      if (jsonObj[keys[idx]] == undefined) {
+        jsonObj[keys[idx]] = "";
+      }
+    }
+
+    jsonArray.push(jsonObj);
+  }
+
+  for (var i = 0; i < rows.updated.length; i++) {
+    //var jsonObj = new Object();
+    var jsonObj = _grd.provider.getJsonRow(rows.updated[i]);
+    jsonObj.t = "u";
+    jsonObj.wrk_tp = "U";
+    jsonObj.row = rows.updated[i];
+
+    var keys = _grd.provider.getOrgFieldNames();
+    for (var idx = 0; idx < keys.length; idx++) {
+      if (jsonObj[keys[idx]] == undefined) {
+        jsonObj[keys[idx]] = "";
+      }
+    }
+
+    //jsonObj.json = jsonRow;
+    jsonArray.push(jsonObj);
+  }
+  for (var i = 0; i < rows.created.length; i++) {
+    //var jsonObj = new Object();
+    var jsonObj = _grd.provider.getJsonRow(rows.created[i]);
+    jsonObj.t = "i";
+    jsonObj.wrk_tp = "I";
+    jsonObj.row = rows.created[i];
+
+    var keys = _grd.provider.getOrgFieldNames();
+    for (var idx = 0; idx < keys.length; idx++) {
+      if (jsonObj[keys[idx]] == undefined) {
+        jsonObj[keys[idx]] = "";
+      }
+    }
+
+    jsonArray.push(jsonObj);
+  }
+  return jsonArray;
+}

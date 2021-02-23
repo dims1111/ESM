@@ -1,0 +1,172 @@
+{% extends "esm_com/bizform.html" %} {% load static %} {% block header %}
+<script>
+  var grid1;
+  $(function () {
+    grid1 = $("#grid1").gfn_gridInit([
+      { fieldName: "menu_uid",          text: "menu_uid",         width: 80, required: true },
+      { fieldName: "menu_cd",           text: "menu_cd",          width: 80 },
+      { fieldName: "path_ko",           text: "path_ko",          width: 80 },
+      { fieldName: "path_en",           text: "path_en",          width: 80 },
+      { fieldName: "menu_name_ko_dis",  text: "menu_name_ko_dis", width: 80 },
+      { fieldName: "menu_name_en_dis",  text: "menu_name_en_dis", width: 80 },
+      { fieldName: "menu_name_ko",      text: "menu_name_ko",     width: 80 },
+      { fieldName: "menu_name_en",      text: "menu_name_en",     width: 80 },
+      { fieldName: "url",               text: "url",              width: 80 },
+      { fieldName: "parent_menu_cd",    text: "parent_menu_cd",   width: 80 },
+      { fieldName: "icons",             text: "icons",            width: 80 },
+      { fieldName: "sort_order",        text: "sort_order",       width: 80 },
+      { fieldName: "use_yn",            text: "use_yn",           width: 80 },
+      { fieldName: "search_yn",         text: "search_yn",        width: 80 },
+      { fieldName: "insert_yn",         text: "insert_yn",        width: 80 },
+      { fieldName: "update_yn",         text: "update_yn",        width: 80 },
+      { fieldName: "delete_yn",         text: "delete_yn",        width: 80 },
+      { fieldName: "print_yn",          text: "print_yn",         width: 80 },
+      { fieldName: "batch_yn",          text: "batch_yn",         width: 80 },
+      { fieldName: "excel_down_yn",     text: "excel_down_yn",    width: 80 },
+      { fieldName: "excel_up_yn",       text: "excel_up_yn",      width: 80 },
+      { fieldName: "remark",            text: "remark",           width: 80 },
+
+      { fieldName: "create_date_time",  text: "create_date_time", width: 80 },
+      { fieldName: "create_by",         text: "create_by",        width: 80 },
+      { fieldName: "update_date_time",  text: "update_date_time", width: 80 },
+      { fieldName: "update_by",         text: "update_by",        width: 80 },
+    ]);
+  });
+
+  /* action1에대한 기능 */
+  function doAction1(gubun) {
+    switch (gubun) {
+      /* 조회 */
+      case "search":
+        var menuName = $("#menuName").val();
+        var url = $("#url").val();
+        var useYn = $("#useYn").is(":checked") ? "1" : "0";
+
+        // 보낼 파라미터
+        var params = {
+          menuName: menuName,
+          url: url,
+          useYn: useYn,
+        };
+        console.log("params ->", params);
+
+        // ajax POST 통신, 후에 공통으로 뺄거임
+        $.ajax({
+          type: "POST",
+          url: "/esm_dev_1000/search",
+          data: params,
+          // data: $('#srchForm').serialize(),
+          dataType: "json",
+          success: function (data) {
+            var result = JSON.parse(data);
+
+            // 데이터가져오기
+            result = result.map(function (item) {
+              return item.fields;
+            });
+
+            console.log(result);
+
+            // modal test================
+            // var resultTest = {cd : 'S', msg: '성공' }
+            /*
+            var resultTest = {cd : 'E', msg: '조회 실패' }
+
+            // 에러가 발생할 경우 모달 출력
+            if (resultTest && resultTest.cd === 'E') {
+              var message = resultTest.msg;
+              $('#myModal #contents').html(message);
+              $('#myModal').modal('show');
+            }
+            */
+            // ==========================
+            
+            grid1.provider.setRows(result);
+
+          },
+        });
+        break;
+      case "save": 
+        // 공통으로 뺄거임
+        if(!gfn_checkSaveData(grid1)) return;
+        var params = setGridDataToJson('grid1');
+
+        $.ajax({
+          type: "POST",
+          // contentType: 'application/json; charset=utf-8',
+          url: "/esm_dev_1000/save",
+          data: JSON.stringify(params),
+          dataType: "json",
+          success: function (data) {
+            console.log(data);
+          },
+        });
+        break;
+      case "reset":
+        console.log("gubun ->", gubun);
+        break;
+      case "print":
+        console.log("gubun ->", gubun);
+        break;
+      case "addRow":
+        console.log("gubun ->", gubun);
+        break;
+      case "delRow":
+        console.log("gubun ->", gubun);
+        break;
+      case "excelDownload":
+        console.log("gubun ->", gubun);
+        break;
+      case "excelUpload":
+        alert(gubun);
+        break;
+    }
+  }
+</script>
+{% endblock %} {% block contents %}
+<div class="container-fluid d-flex flex-column p-0 h-100">
+  <!-- 검색 조건 영역 -->
+  <div class="row no-gutters mb-2">
+    <div class="col-12">
+      <div class="search-header">
+        <div class="search-title">
+          <i class="xi-bars"> 조회조건</i>
+        </div>
+        <div class="search-buttons">
+          <button class="btn_sub active" onclick="doAction1('print');"><i class="xi-print"> 출력</i></button>
+          <button class="btn_sub active" onclick="doAction1('reset');"><i class="xi-refresh"> 초기화</i></button>
+          <button class="btn_main active" onclick="doAction1('search');"><i class="xi-search"> 조회</i></button>
+          <button class="btn_main active" onclick="doAction1('save');"><i class="xi-save"> 저장</i></button>
+        </div>
+      </div>
+      <form id="srchForm" class="search-content">
+        <label for="menuName">메뉴명</label>
+        <input type="text" name="menuName" id="menuName" />
+        <label for="url">URL</label>
+        <input type="text" name="url" id="url" />
+        <label for="useYn">사용여부</label>
+        <input type="checkbox" name="useYn" id="useYn" checked />
+      </form>
+    </div>
+  </div>
+  <div class="row no-gutters flex-grow-1">
+    <div class="col-12 d-flex flex-column">
+      <div class="search-header">
+        <div class="search-title">
+          <i class="xi-sort-desc"> 메뉴목록 (47건)</i>
+        </div>
+        <div class="search-buttons">
+          <button class="btn_sub active" onclick="doAction1('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button>
+          <button class="btn_sub active" onclick="doAction1('excelDownload');"><i class="xi-download"> 엑셀다운로드</i></button>
+          <button class="btn_sub active" onclick="doAction1('delRow');"><i class="xi-minus-min"> 행삭제</i></button>
+          <button class="btn_sub active" onclick="doAction1('addRow');"><i class="xi-plus-min"> 행추가</i></button>
+        </div>
+      </div>
+      <div class="search-content flex-grow-1">
+        <div id="grid1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
