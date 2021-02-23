@@ -75,11 +75,12 @@ class JsonData:
             ,"sort_order": 9300
             ,"use_yn": "Y"
             ,"search_yn": "Y"
-            ,"insert_yn": "Y"
-            ,"update_yn": "Y"
-            ,"delete_yn": "Y"
-            ,"print_yn": "Y"
+            ,"add_row_yn": "Y"
+            ,"delete_row_yn": "Y"
+            ,"save_yn": "Y"
+            ,"copy_yn": "Y"
             ,"batch_yn": "Y"
+            ,"print_yn": "Y"            
             ,"excel_down_yn": "Y"
             ,"excel_up_yn": "Y"
             ,"remark": "테스트 메뉴 입력-ML9300"
@@ -98,11 +99,12 @@ class JsonData:
             ,"sort_order": 9300
             ,"use_yn": "Y"
             ,"search_yn": "Y"
-            ,"insert_yn": "N"
-            ,"update_yn": "N"
-            ,"delete_yn": "Y"
-            ,"print_yn": "N"
+            ,"add_row_yn": "N"
+            ,"delete_row_yn": "N"
+            ,"save_yn": "Y"
+            ,"copy_yn": "Y"
             ,"batch_yn": "Y"
+            ,"print_yn": "N"
             ,"excel_down_yn": "Y"
             ,"excel_up_yn": "N"
             ,"remark": "테스트 메뉴 입력-ML9400"
@@ -124,11 +126,12 @@ class JsonData:
             ,"sort_order": 9101
             ,"use_yn": "Y"
             ,"search_yn": "N"
-            ,"insert_yn": "N"
-            ,"update_yn": "Y"
-            ,"delete_yn": "N"
-            ,"print_yn": "N"
+            ,"add_row_yn": "N"
+            ,"delete_row_yn": "Y"
+            ,"save_yn": "N"
+            ,"copy_yn": "Y"
             ,"batch_yn": "N"
+            ,"print_yn": "N"            
             ,"excel_down_yn": "Y"
             ,"excel_up_yn": "N"
             ,"remark": "테스트 메뉴 입력-ML9100-update"
@@ -145,11 +148,12 @@ class JsonData:
             ,"sort_order": 9102
             ,"use_yn": "Y"
             ,"search_yn": "Y"
-            ,"insert_yn": "Y"
-            ,"update_yn": "N"
+            ,"add_row_yn": "Y"
+            ,"delete_row_yn": "N"
             ,"delete_yn": "N"
-            ,"print_yn": "N"
+            ,"copy_yn": "Y"
             ,"batch_yn": "N"
+            ,"print_yn": "N"            
             ,"excel_down_yn": "Y"
             ,"excel_up_yn": "N"
             ,"remark": "테스트 메뉴 입력-ML9200-update"
@@ -238,10 +242,8 @@ def doUpdate(dataList, commParam, userID):
     bulkDataList = []
     # 수정 데이터 확인
     for ca in dataList:
-      print('t1')
       getData = SysMenu.objects.filter(pk=ca.get('menu_uid'))
-      print("ca.get('menu_uid')", ca.get('menu_uid'))
-      print('getData.exists()', getData.exists())
+      
       # 키를 기준으로 조회된 데이터 셋(getData)에 수정된 값(dataList) 할당
       for updateData in getData:
         updateData.menu_cd          = ca.get('menu_cd')

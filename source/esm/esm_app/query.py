@@ -35,11 +35,12 @@ class sql:
                 ,sm.sort_order
                 ,sm.use_yn
                 ,sm.search_yn
-                ,sm.insert_yn
-                ,sm.update_yn
-                ,sm.delete_yn
-                ,sm.print_yn
+                ,sm.add_row_yn
+                ,sm.delete_row_yn
+                ,sm.save_yn
+                ,sm.copy_yn
                 ,sm.batch_yn
+                ,sm.print_yn                
                 ,sm.excel_down_yn
                 ,sm.excel_up_yn
                 ,sm.remark
