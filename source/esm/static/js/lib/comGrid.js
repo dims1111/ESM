@@ -2119,9 +2119,8 @@ function gfn_excelDownload(grid, fileName, sheetName) {
   }
 
   if (!sheetName) {
-    sheetName = 'Sheet1';
+    sheetName = fileName;
   }
-
 
   RealGridJS.exportGrid({
     type:"excel",
@@ -2129,7 +2128,7 @@ function gfn_excelDownload(grid, fileName, sheetName) {
     fileName: fileName +".xlsx",
     compatibility: '2010',
     done:function() {
-      alert("done excel export")
+      // alert("done excel export")
     },
     exportGrids:[
       { 

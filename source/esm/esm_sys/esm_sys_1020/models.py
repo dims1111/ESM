@@ -1,3 +1,12 @@
+# #################################################################################################
+# 프로젝트      : 전자식 복무관리 시스템
+# 프로그램 ID   : esm_sys_1020
+# 프로그램 Name : 메뉴등록
+# -------------------------------------------------------------------------------------------------
+# 버전          변경일자         생성자       변경내용
+# -------------------------------------------------------------------------------------------------
+# v1.0          2020-02-01       강정기       최초작성
+# #################################################################################################
 # UUID 클래스 임포트
 import uuid
 
@@ -33,7 +42,6 @@ from django.db.models.indexes import Index
 # #################################################################################################
 
 
-# Create your models here.
 # 메뉴 클래스 (UUID 사용 : To-Be 모델로 사용)
 class SysMenu(models.Model):
     menu_uid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name="메뉴UID")
@@ -47,7 +55,7 @@ class SysMenu(models.Model):
     use_yn = models.CharField(max_length=1, verbose_name="사용(Y/N)", default="Y")    
     search_yn = models.CharField(max_length=1, verbose_name="조회(Y/N)", default="Y")    
     add_row_yn = models.CharField(max_length=1, verbose_name="행추가(Y/N)", default="Y")
-    delete_row_yn = models.CharField(max_length=1, verbose_name="행삭제(Y/N)", default="Y")    
+    del_row_yn = models.CharField(max_length=1, verbose_name="행삭제(Y/N)", default="Y")    
     save_yn = models.CharField(max_length=1, verbose_name="저장(Y/N)", default="Y")
     copy_yn = models.CharField(max_length=1, verbose_name="자료복사(Y/N)", default="N")
     batch_yn = models.CharField(max_length=1, verbose_name="자료생성(Y/N)", default="N")
@@ -91,7 +99,7 @@ class SysMenuV(models.Model):
     use_yn = models.CharField(max_length=1)
     search_yn = models.CharField(max_length=1)
     add_row_yn = models.CharField(max_length=1)
-    delete_row_yn = models.CharField(max_length=1)
+    del_row_yn = models.CharField(max_length=1)
     save_yn = models.CharField(max_length=1)
     copy_yn = models.CharField(max_length=1)
     batch_yn = models.CharField(max_length=1)

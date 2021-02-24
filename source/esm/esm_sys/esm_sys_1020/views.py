@@ -1,6 +1,14 @@
+# #################################################################################################
+# 프로젝트      : 전자식 복무관리 시스템
+# 프로그램 ID   : esm_sys_1020
+# 프로그램 Name : 메뉴등록
+# -------------------------------------------------------------------------------------------------
+# 버전          변경일자         생성자       변경내용
+# -------------------------------------------------------------------------------------------------
+# v1.0          2020-02-01       강정기       최초작성
+# #################################################################################################
 from django.http.response import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, HttpResponse
-from django.core import serializers
+from django.shortcuts import render
 
 # 장고 모델에서 필터 처리를 위한 Q 클래스 임포트
 from django.db.models import Q
@@ -20,14 +28,7 @@ from . models import SysMenuV
 # orm 파일 내 클래스 임포트
 from . orm import JsonData, doInsert, doUpdate, doDelete
 
-# 데코레이트 클래스 임포트
-from django.utils.decorators import method_decorator
 
-
-
-# #################################################################################################
-# # Create your views here.
-# #################################################################################################
 # 메뉴 클릭 후 첫 화면 오픈
 @util.sessionDecorator
 def home(request, *args, **kwargs):  
@@ -82,13 +83,11 @@ def doSearch(request):
  
   # 화면 처리 후 정상 및 오류 메시지 출력
   util.resultMsg(commParams)
-
   commParams['data'] = list(querySet.values())
+  # print(commParams)
 
-  print(commParams)
   return JsonResponse(commParams)
   
-
 
 # #################################################################################################
 # 저장 버튼

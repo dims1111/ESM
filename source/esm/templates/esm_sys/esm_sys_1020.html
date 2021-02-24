@@ -3,28 +3,29 @@
   var grid1;
   $(function () {
     grid1 = $("#grid1").gfn_gridInit([
-      { name: "menu_uid", fieldName: "menu_uid", header: { text: "메뉴UID" }, width: 250, required: true },
-      { name: "parent_menu_cd", fieldName: "parent_menu_cd", header: { text: "상위메뉴코드" }, width: 80 },
-      { name: "menu_cd", fieldName: "menu_cd", header: { text: "메뉴코드" }, width: 80 },
-      { name: "menu_name_ko", fieldName: "menu_name_ko", header: { text: "메뉴명(한글)" }, width: 180 },
-      { name: "menu_name_en", fieldName: "menu_name_en", header: { text: "메뉴명(영문)" }, width: 220 },
-      { name: "url", fieldName: "url", header: { text: "url" }, width: 190 },
-      { name: "icons", fieldName: "icons", header: { text: "아이콘" }, width: 80 },
-      { name: "sort_order", fieldName: "sort_order", header: { text: "정렬순서" }, width: 60 },
-      { name: "use_yn", fieldName: "use_yn", header: { text: "사용" }, width: 40 },
-      { name: "search_yn", fieldName: "search_yn", header: { text: "조회" }, width: 40 },
-      { name: "insert_yn", fieldName: "insert_yn", header: { text: "신규" }, width: 40 },
-      { name: "update_yn", fieldName: "update_yn", header: { text: "수정" }, width: 40 },
-      { name: "delete_yn", fieldName: "delete_yn", header: { text: "삭제" }, width: 40 },
-      { name: "excel_down_yn", fieldName: "excel_down_yn", header: { text: "엑셀다운" }, width: 80 },
-      { name: "excel_up_yn", fieldName: "excel_up_yn", header: { text: "엑셀업로드" }, width: 80 },
-      { name: "print_yn", fieldName: "print_yn", header: { text: "출력" }, width: 40 },
-      { name: "batch_yn", fieldName: "batch_yn", header: { text: "생성" }, width: 40 },
-      { name: "remark", fieldName: "remark", header: { text: "비고" }, width: 300 },
-      { name: "create_by", fieldName: "create_by", header: { text: "생성자UID" }, width: 80 },
-      { name: "create_date_time", fieldName: "create_date_time", header: { text: "생성일시" }, width: 150 },
-      { name: "update_by", fieldName: "update_by", header: { text: "수정자ID" }, width: 80 },
-      { name: "update_date_time", fieldName: "update_date_time", header: { text: "수정자ID" }, width: 150 },
+      { name: "menu_uid",         fieldName: "menu_uid",         header: { text: "메뉴UID" },      width: 250, required: true },
+      { name: "parent_menu_cd",   fieldName: "parent_menu_cd",   header: { text: "상위메뉴코드" }, width: 80 , required: true },
+      { name: "menu_cd",          fieldName: "menu_cd",          header: { text: "메뉴코드" },     width: 80 , required: true },
+      { name: "menu_name_ko",     fieldName: "menu_name_ko",     header: { text: "메뉴명(한글)" }, width: 180, required: true },
+      { name: "menu_name_en",     fieldName: "menu_name_en",     header: { text: "메뉴명(영문)" }, width: 220, required: true },
+      { name: "url",              fieldName: "url",              header: { text: "url" },          width: 190, required: true },
+      { name: "icons",            fieldName: "icons",            header: { text: "아이콘" },       width: 80  },
+      { name: "sort_order",       fieldName: "sort_order",       header: { text: "정렬순서" },     width: 60 , required: true },
+      { name: "use_yn",           fieldName: "use_yn",           header: { text: "사용" },         width: 60 , required: true },
+      { name: "search_yn",        fieldName: "search_yn",        header: { text: "조회" },         width: 60  },
+      { name: "add_row_yn",       fieldName: "add_row_yn",       header: { text: "행추가" },       width: 60  },
+      { name: "del_row_yn",       fieldName: "del_row_yn",       header: { text: "행삭제" },       width: 60  },
+      { name: "save_yn",          fieldName: "save_yn",          header: { text: "저장" },         width: 60  },
+      { name: "copy_yn",          fieldName: "copy_yn",          header: { text: "복사" },         width: 40  },
+      { name: "batch_yn",         fieldName: "batch_yn",         header: { text: "생성" },         width: 40  },
+      { name: "print_yn",         fieldName: "print_yn",         header: { text: "출력" },         width: 40  },
+      { name: "excel_down_yn",    fieldName: "excel_down_yn",    header: { text: "엑셀다운" },     width: 80  },
+      { name: "excel_up_yn",      fieldName: "excel_up_yn",      header: { text: "엑셀업로드" },   width: 80  },
+      { name: "remark",           fieldName: "remark",           header: { text: "비고" },         width: 300 },
+      { name: "create_by",        fieldName: "create_by",        header: { text: "생성자UID" },    width: 80  },
+      { name: "create_date_time", fieldName: "create_date_time", header: { text: "생성일시" },     width: 150 },
+      { name: "update_by",        fieldName: "update_by",        header: { text: "수정자ID" },     width: 80  },
+      { name: "update_date_time", fieldName: "update_date_time", header: { text: "수정자ID" },     width: 150 },
     ]);
   });
 
@@ -37,7 +38,7 @@
         var url = $("#url").val();
         var useYn = $("#useYn").is(":checked") ? "1" : "0";
 
-        // 보낼 파라미터
+        // 화면 조회조건 항목별 값 
         var mainParam = {
           menuName: menuName,
           url: url,
@@ -45,6 +46,7 @@
         };
         console.log("mainParam ->", mainParam);
 
+        // 조회조건, url, grid
         var params = {
           url: "/esm_sys_1020/search",
           grid: "grid1", // or ['grid1', 'grid2', ...]
@@ -52,15 +54,27 @@
         };
 
         // 그리드 조회
+        // 라이브러리 경로 : \static\js\lib\comTrans.js
         gfnGetGrdData(params);
         break;
-      case "reset": // 초기화
-        
+
+      // 초기화
+      case "reset": 
         break;
+
+      // 출력
       case "print":
         break;
+
+      // 복사
+      case "copy":
+        break;
+
+      // 생성
       case "batch":
         break;
+
+      // 저장
       case "save":
         var params = {
           url: "/esm_sys_1020/save",
@@ -71,9 +85,13 @@
         gfnSetGrdData(params, function () {
           doAction1("search");
         });
+
+      // 행추가
       case "addRow":
         grid1.provider.insertRow(0, {});
         break;
+
+      // 행삭제  
       case "delRow":
         var curr = grid1.gridView.getCurrent();
         if (curr.dataRow === -1) {
@@ -81,31 +99,15 @@
         }
         grid1.provider.removeRow(curr.dataRow);
         break;
-      case "excelDownload":
-        // grid1.gridView.exportGrid({
-        //   type: "excel",
-        //   target: "local",
-        //   fileName: "gridExportSample.xlsx",
-        //   showProgress: false,
-        //   applyDynamicStyles: false,
-        //   progressMessage: "엑셀 Export중입니다.",
-        //   indicator: 'default',
-        //   header: 'default',
-        //   footer: 'default',
-        //   compatibility: '2010',
-        //   done: function () {  //내보내기 완료 후 실행되는 함수
-        //     alert("done excel export")
-        //   }
-        // });
 
-        // 엑셀 다운로드 함수 호출
+      // 엑셀다운로드
+      case "excelDownload":        
         gfn_excelDownload(grid1);
-
         break;
 
+      // 엑셀업로드
       case "excelUpload":
         alert(gubun);
-
         break;
     }
   }
@@ -120,13 +122,6 @@
           <i class="xi-bars"> 조회조건</i>
         </div>
         <div class="search-buttons">
-          {% comment %} <button class="btn_sub active" onclick="doAction1('print');"><i class="material-icons small">print</i>출력</button>
-          <button class="btn_sub active" onclick="doAction1('batch');"><i class="material-icons small">create</i>자료생성</button>
-          <button class="btn_sub active" onclick="doAction1('copy');"><i class="material-icons small">content_copy</i>자료복사</button>
-          <button class="btn_sub active" onclick="doAction1('reset');"><i class="material-icons small">refresh</i>초기화</button>
-          <button class="btn_main active" onclick="doAction1('search');"><i class="material-icons small">search</i>조회</button>
-          <button class="btn_main active" onclick="doAction1('save');"><i class="material-icons small">save</i>저장</button> {% endcomment %}
-
           <button class="btn_sub active" onclick="doAction1('print');"><i class="xi-print"> 출력</i></button>
           <button class="btn_sub active" onclick="doAction1('batch');"><i class="xi-flash"> 자료생성</i></button>
           <button class="btn_sub active" onclick="doAction1('copy');"><i class="xi-folder-add-o"> 자료복사</i></button>

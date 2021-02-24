@@ -1,4 +1,12 @@
-
+# #################################################################################################
+# 프로젝트      : 전자식 복무관리 시스템
+# 프로그램 ID   : esm_sys_1020
+# 프로그램 Name : 메뉴등록
+# -------------------------------------------------------------------------------------------------
+# 버전          변경일자         생성자       변경내용
+# -------------------------------------------------------------------------------------------------
+# v1.0          2020-02-01       강정기       최초작성
+# #################################################################################################
 # 데이터베이스 트랜잭션 관리 임포트
 from django.db import transaction
 
@@ -11,11 +19,6 @@ from esm_com.util import resultMsg
 # 로그인 모델 내 SysMenu 클래스 임포트
 from . models import SysMenu
 
-
-
-# #################################################################################################
-# # Create your views here.
-# #################################################################################################
 
 # #################################################################################################
 # orm 사용할 조건 목록 및 예시
@@ -76,7 +79,7 @@ class JsonData:
             ,"use_yn": "Y"
             ,"search_yn": "Y"
             ,"add_row_yn": "Y"
-            ,"delete_row_yn": "Y"
+            ,"del_row_yn": "Y"
             ,"save_yn": "Y"
             ,"copy_yn": "Y"
             ,"batch_yn": "Y"
@@ -100,7 +103,7 @@ class JsonData:
             ,"use_yn": "Y"
             ,"search_yn": "Y"
             ,"add_row_yn": "N"
-            ,"delete_row_yn": "N"
+            ,"del_row_yn": "N"
             ,"save_yn": "Y"
             ,"copy_yn": "Y"
             ,"batch_yn": "Y"
@@ -127,7 +130,7 @@ class JsonData:
             ,"use_yn": "Y"
             ,"search_yn": "N"
             ,"add_row_yn": "N"
-            ,"delete_row_yn": "Y"
+            ,"del_row_yn": "Y"
             ,"save_yn": "N"
             ,"copy_yn": "Y"
             ,"batch_yn": "N"
@@ -149,7 +152,7 @@ class JsonData:
             ,"use_yn": "Y"
             ,"search_yn": "Y"
             ,"add_row_yn": "Y"
-            ,"delete_row_yn": "N"
+            ,"del_row_yn": "N"
             ,"delete_yn": "N"
             ,"copy_yn": "Y"
             ,"batch_yn": "N"
@@ -205,11 +208,12 @@ def doInsert(dataList, commParam, userID):
       newData.sort_order        = ca.get('sort_order')
       newData.use_yn            = ca.get('use_yn')
       newData.search_yn         = ca.get('search_yn')
-      newData.insert_yn         = ca.get('insert_yn')
-      newData.update_yn         = ca.get('update_yn')
-      newData.delete_yn         = ca.get('delete_yn')
-      newData.print_yn          = ca.get('print_yn')
+      newData.add_row_yn        = ca.get('add_row_yn')
+      newData.del_row_yn        = ca.get('del_row_yn')
+      newData.save_yn           = ca.get('save_yn')
+      newData.copy_yn           = ca.get('copy_yn')
       newData.batch_yn          = ca.get('batch_yn')
+      newData.print_yn          = ca.get('print_yn')      
       newData.excel_down_yn     = ca.get('excel_down_yn')
       newData.excel_up_yn       = ca.get('excel_down_yn')
       newData.remark            = ca.get('remark')
@@ -255,38 +259,40 @@ def doUpdate(dataList, commParam, userID):
         updateData.sort_order       = ca.get('sort_order')
         updateData.use_yn           = ca.get('use_yn')
         updateData.search_yn        = ca.get('search_yn')
-        updateData.insert_yn        = ca.get('insert_yn')
-        updateData.update_yn        = ca.get('update_yn')
-        updateData.delete_yn        = ca.get('delete_yn')
-        updateData.print_yn         = ca.get('print_yn')
+        updateData.add_row_yn       = ca.get('add_row_yn')
+        updateData.del_row_yn       = ca.get('del_row_yn')
+        updateData.save_yn          = ca.get('save_yn')
+        updateData.copy_yn          = ca.get('copy_yn')
         updateData.batch_yn         = ca.get('batch_yn')
+        updateData.print_yn         = ca.get('print_yn')        
         updateData.excel_down_yn    = ca.get('excel_down_yn')
         updateData.excel_up_yn      = ca.get('excel_up_yn')
         updateData.remark           = ca.get('remark')
         updateData.update_date_time = JsonData.now
         updateData.update_by        = userID        
         i += 1
+      
       for ca in getData:
-        print('>>>>>>>>>', ca.menu_cd)
-      # 대량의 데이터 일괄 수정
-      SysMenu.objects.bulk_update(getData, ['menu_cd'
-                                            ,'menu_name_ko'
-                                            ,'menu_name_en'
-                                            ,'url'
-                                            ,'parent_menu_cd'
-                                            ,'icons'
-                                            ,'sort_order'
-                                            ,'use_yn'
-                                            ,'search_yn'
-                                            ,'insert_yn'
-                                            ,'update_yn'
-                                            ,'delete_yn'
-                                            ,'print_yn'
-                                            ,'batch_yn'
-                                            ,'excel_down_yn'
-                                            ,'excel_up_yn'
-                                            ,'remark'
-                                           ])
+        # 대량의 데이터 일괄 수정
+        SysMenu.objects.bulk_update(getData, ['menu_cd'
+                                              ,'menu_name_ko'
+                                              ,'menu_name_en'
+                                              ,'url'
+                                              ,'parent_menu_cd'
+                                              ,'icons'
+                                              ,'sort_order'
+                                              ,'use_yn'
+                                              ,'search_yn'
+                                              ,'add_row_yn'
+                                              ,'del_row_yn'
+                                              ,'save_yn'
+                                              ,'copy_yn'
+                                              ,'batch_yn'
+                                              ,'print_yn'
+                                              ,'excel_down_yn'
+                                              ,'excel_up_yn'
+                                              ,'remark'
+                                            ])
     # 데이터 처리 후 건수 표기
     commParam['processCnt']['U'] = i
     resultMsg(commParam)
