@@ -350,8 +350,6 @@ body {
   background-color: #badcd8;
   text-align: center;
   cursor: pointer;
-  /* color:var(--p1); */
-  color: #006e62;
   transition: box-shadow 0.9s, color 0.3s;
   padding: 6px 12px;
   border: 0;
@@ -458,13 +456,14 @@ form {
 
 .modal-content{
   height: 300px;
-  background-color: #eaf5ec;
+  background-color: #fafafa;
   font-size: 10pt;
 }
 
 .modal-footer{
 
   border-top: 1px solid #1d7268;
+  background-color: #fafafa;
   
 
 }
@@ -481,15 +480,11 @@ form {
 .modal-footer > button{
 
   margin: 0px auto;
-  background-color: #259e90;
-  color: #eaf5ec;
-  font-size: 15px;
 
 }
 
-.modal-footer > button:hover {
-    transition: all 0.7s;
-    background-color: #2a9d8f;
+.xi-close-min {
+  color: black;
 }
 
 
