@@ -48,7 +48,7 @@
         // ajax POST 통신, 후에 공통으로 뺄거임
         $.ajax({
           type: "POST",
-          url: "/esm_dev_1000/search",
+          url: "/esm_sys_1020/search",
           data: params,
           dataType: "json",
           success: function (res) {
@@ -88,7 +88,7 @@
         $.ajax({
           type: "POST",
           // contentType: 'application/json; charset=utf-8',
-          url: "/esm_dev_1000/save",
+          url: "/esm_sys_1020/save",
           data: JSON.stringify(params),
           dataType: "json",
           success: function (data) {

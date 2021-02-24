@@ -31,9 +31,6 @@ from django.utils.decorators import method_decorator
 # 메뉴 클릭 후 첫 화면 오픈
 @util.sessionDecorator
 def home(request, *args, **kwargs):  
-  # 화면 url 세션으로 넘기기
-  request.session['url'] = '/esm_sys_1020'
-  
   # sessionDecorator 데코레이터를 통한 매개변수 버튼명칭을 확인 : 튜풀
   # for ca in args:
   #   print("args==========>", ca)
