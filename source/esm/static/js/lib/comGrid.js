@@ -313,7 +313,10 @@ function initGridStyle($grid) {
       background: "#fffcfa",
       paddingTop: "5",
       paddingBottom: "5",
+
+      // 그리드 헤더 글자 굵게
       // "fontBold": true,
+      // "height": 200,
       // "foreground": "#4b5a61",
 
       selectedBackground: "#fffcfa",
@@ -390,10 +393,11 @@ function initGridStyle($grid) {
 
   $grid.find('div').each(function () {
     $(this).css({
+      // 그리드 상단 및 하단 라인 색성 지정
       "border-top": "solid #2a9d8f 0.2rem",
+      "border-bottom": "solid #2a9d8f 0.2rem",      
       // "border-right": "solid #ffffff 3px"
       // "border-left": "solid #ffffff 5px"
-      "border-bottom": "solid #2a9d8f 0.2rem",
     });
     // $(this).css("border-bottom", "solid #d5d5d5 2px");
   });
@@ -401,8 +405,9 @@ function initGridStyle($grid) {
   // 필터에 CSS 스타일 적용 여부 설정
   gridView.setFilteringOptions({ selector: { useCssStyle: true } });
 
-  // rowHeight(default) = 28
-  gridView.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 35, drawBorderRight: false });
+  // 그리드 라인 간격 조정
+  // rowHeight(default) = 28  
+  gridView.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 30, drawBorderRight: false });
 
   // 패딩추가
   // gridView.setStyles({body:{paddingLeft:10}});

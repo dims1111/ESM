@@ -3,28 +3,28 @@
   var grid1;
   $(function () {
     grid1 = $("#grid1").gfn_gridInit([
-      { name: "menu_uid",         fieldName: "menu_uid",          header: { text: "메뉴UID" },        width: 250, required: true },
-      { name: "parent_menu_cd",   fieldName: "parent_menu_cd",    header: { text: "상위메뉴코드" },   width: 80 },
-      { name: "menu_cd",          fieldName: "menu_cd",           header: { text: "메뉴코드" },       width: 80 },      
-      { name: "menu_name_ko",     fieldName: "menu_name_ko",      header: { text: "메뉴명(한글)" },   width: 180 },
-      { name: "menu_name_en",     fieldName: "menu_name_en",      header: { text: "메뉴명(영문)" },   width: 220 },
-      { name: "url",              fieldName: "url",               header: { text: "url" },            width: 190 },
-      { name: "icons",            fieldName: "icons",             header: { text: "아이콘" },         width: 80 },
-      { name: "sort_order",       fieldName: "sort_order",        header: { text: "정렬순서" },       width: 60 },
-      { name: "use_yn",           fieldName: "use_yn",            header: { text: "사용" },           width: 40 },      
-      { name: "search_yn",        fieldName: "search_yn",         header: { text: "조회" },           width: 40 },
-      { name: "insert_yn",        fieldName: "insert_yn",         header: { text: "신규" },           width: 40 },
-      { name: "update_yn",        fieldName: "update_yn",         header: { text: "수정" },           width: 40 },
-      { name: "delete_yn",        fieldName: "delete_yn",         header: { text: "삭제" },           width: 40 },      
-      { name: "excel_down_yn",    fieldName: "excel_down_yn",     header: { text: "엑셀다운" },       width: 80 },
-      { name: "excel_up_yn",      fieldName: "excel_up_yn",       header: { text: "엑셀업로드" },     width: 80 },
-      { name: "print_yn",         fieldName: "print_yn",          header: { text: "출력" },           width: 40 },
-      { name: "batch_yn",         fieldName: "batch_yn",          header: { text: "생성" },           width: 40 },
-      { name: "remark",           fieldName: "remark",            header: { text: "비고" },           width: 300 },
-      { name: "create_by",        fieldName: "create_by",         header: { text: "생성자UID" },      width: 80 },
-      { name: "create_date_time", fieldName: "create_date_time",  header: { text: "생성일시" },       width: 150 },
-      { name: "update_by",        fieldName: "update_by",         header: { text: "수정자ID" },       width: 80 },
-      { name: "update_date_time", fieldName: "update_date_time",  header: { text: "수정자ID" },       width: 150 },
+      { name: "menu_uid", fieldName: "menu_uid", header: { text: "메뉴UID" }, width: 250, required: true },
+      { name: "parent_menu_cd", fieldName: "parent_menu_cd", header: { text: "상위메뉴코드" }, width: 80 },
+      { name: "menu_cd", fieldName: "menu_cd", header: { text: "메뉴코드" }, width: 80 },
+      { name: "menu_name_ko", fieldName: "menu_name_ko", header: { text: "메뉴명(한글)" }, width: 180 },
+      { name: "menu_name_en", fieldName: "menu_name_en", header: { text: "메뉴명(영문)" }, width: 220 },
+      { name: "url", fieldName: "url", header: { text: "url" }, width: 190 },
+      { name: "icons", fieldName: "icons", header: { text: "아이콘" }, width: 80 },
+      { name: "sort_order", fieldName: "sort_order", header: { text: "정렬순서" }, width: 60 },
+      { name: "use_yn", fieldName: "use_yn", header: { text: "사용" }, width: 40 },
+      { name: "search_yn", fieldName: "search_yn", header: { text: "조회" }, width: 40 },
+      { name: "insert_yn", fieldName: "insert_yn", header: { text: "신규" }, width: 40 },
+      { name: "update_yn", fieldName: "update_yn", header: { text: "수정" }, width: 40 },
+      { name: "delete_yn", fieldName: "delete_yn", header: { text: "삭제" }, width: 40 },
+      { name: "excel_down_yn", fieldName: "excel_down_yn", header: { text: "엑셀다운" }, width: 80 },
+      { name: "excel_up_yn", fieldName: "excel_up_yn", header: { text: "엑셀업로드" }, width: 80 },
+      { name: "print_yn", fieldName: "print_yn", header: { text: "출력" }, width: 40 },
+      { name: "batch_yn", fieldName: "batch_yn", header: { text: "생성" }, width: 40 },
+      { name: "remark", fieldName: "remark", header: { text: "비고" }, width: 300 },
+      { name: "create_by", fieldName: "create_by", header: { text: "생성자UID" }, width: 80 },
+      { name: "create_date_time", fieldName: "create_date_time", header: { text: "생성일시" }, width: 150 },
+      { name: "update_by", fieldName: "update_by", header: { text: "수정자ID" }, width: 80 },
+      { name: "update_date_time", fieldName: "update_date_time", header: { text: "수정자ID" }, width: 150 },
     ]);
   });
 
@@ -55,9 +55,9 @@
             if (res) {
               // 에러가 발생할 경우 모달 출력
               if (res.msg) {
-                $('#myModal #contents').html(res.msg);
-                $('#myModal').modal('show');
-                if (res.cd === 'E') {
+                $("#myModal #contents").html(res.msg);
+                $("#myModal").modal("show");
+                if (res.cd === "E") {
                   return;
                 }
               }
@@ -65,7 +65,7 @@
               // 데이터가져오기
               result = res.data;
 
-              console.log(result); 
+              console.log(result);
               grid1.provider.setRows(result);
             }
           },
@@ -82,8 +82,8 @@
         break;
       case "save":
         // 공통으로 뺄거임
-        if(!gfn_checkSaveData(grid1)) return;
-        var params = setGridDataToJson('grid1');
+        if (!gfn_checkSaveData(grid1)) return;
+        var params = setGridDataToJson("grid1");
 
         $.ajax({
           type: "POST",
@@ -96,10 +96,6 @@
           },
         });
       case "addRow":
-
-
-        
-        
         // $(function(){
 
         //   var rows = ["가수","여자"];
@@ -131,7 +127,13 @@
           <i class="xi-bars"> 조회조건</i>
         </div>
         <div class="search-buttons">
-          <button class="btn_sub active" onclick="doAction1('print');"><i class="material-icons">face</i>출력</button>
+          {% comment %} <button class="btn_sub active" onclick="doAction1('print');"><i class="material-icons small">print</i>출력</button>
+          <button class="btn_sub active" onclick="doAction1('batch');"><i class="material-icons small">create</i>자료생성</button>
+          <button class="btn_sub active" onclick="doAction1('copy');"><i class="material-icons small">content_copy</i>자료복사</button>
+          <button class="btn_sub active" onclick="doAction1('reset');"><i class="material-icons small">refresh</i>초기화</button>
+          <button class="btn_main active" onclick="doAction1('search');"><i class="material-icons small">search</i>조회</button>
+          <button class="btn_main active" onclick="doAction1('save');"><i class="material-icons small">save</i>저장</button> {% endcomment %}
+
           <button class="btn_sub active" onclick="doAction1('print');"><i class="xi-print"> 출력</i></button>
           <button class="btn_sub active" onclick="doAction1('batch');"><i class="xi-refresh"> 자료생성</i></button>
           <button class="btn_sub active" onclick="doAction1('copy');"><i class="xi-refresh"> 자료복사</i></button>
