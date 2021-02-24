@@ -334,6 +334,7 @@ body {
   transition: box-shadow 0.9s, color 0.3s;
   padding: 6px 12px;
   border: 0;
+  width: 90px;
 }
 .btn_main:hover {
   color: #fff;
@@ -353,6 +354,7 @@ body {
   transition: box-shadow 0.9s, color 0.3s;
   padding: 6px 12px;
   border: 0;
+  width: 100px;
 }
 .btn_sub:hover {
   color: #fff;
@@ -365,17 +367,14 @@ body {
 
 /* [버튼] 엑셀다운로드, 엑셀업로드 버튼 */
 .btn_excel {
-  display: block;
-  width: 100%;
-  height: 100%;
-  /* line-height:40px;  */
-  border: 1px #badccb;
-  margin: 15px auto;
+  display: inline-block;
   background-color: #badccb;
   text-align: center;
   cursor: pointer;
-  color: #006e62;
-  transition: all 0.9s, color 0.3;
+  transition: box-shadow 0.9s, color 0.3s;
+  padding: 6px 12px;  
+  border: 0;  
+  width: 122px;
 }
 .btn_excel:hover {
   color: #fff;
