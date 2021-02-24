@@ -279,7 +279,9 @@ function gfnGetData(params, callback) {
     dataType: "json",
     success: function (res) {
       if (res) {
-        callback(res); // 콜백함수 호출
+        if (callback) {
+          callback(res); // 콜백함수 호출
+        }
       }
     },
     error: function (req, status, err) {
@@ -337,7 +339,9 @@ function gfnGetGrdData(params, callback) {
       },
     });
 
-    callback(); // 콜백함수 호출
+    if (callback) {
+      callback(); // 콜백함수 호출
+    }
   }
 }
 
@@ -396,6 +400,8 @@ function gfnSetGrdData(params, callback) {
 
     alert('기본 Alert는 comTrans.gfnSetGrdData 안에서');
 
-    callback(); // 콜백함수 호출
+    if (callback) {
+      callback(); // 콜백함수 호출
+    }
   }
 }
