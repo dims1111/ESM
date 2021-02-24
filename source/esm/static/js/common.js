@@ -14,3 +14,17 @@ function getCookie(name) {
   }
   return cookieValue;
 }
+
+// 로그인 페이지로 호출
+function moveToLoginPage() {
+  if (~top.location.pathname.indexOf('login')) {
+    return;
+  }
+
+  if (top.opener) {
+    top.opener.moveInfoPage(code);
+    top.close();
+  } else {
+    top.location.replace("/login");
+  }
+}
