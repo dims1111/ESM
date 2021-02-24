@@ -269,3 +269,121 @@ this.err_check_json = function (_data) {
 
   return result;
 };
+
+function gfnGetData(params, callback) {
+  $.ajax({
+    type: "POST",
+    url: params.url,
+    data: params.data,
+    async: params.aync || true,
+    dataType: "json",
+    success: function (res) {
+      if (res) {
+        callback(res); // 콜백함수 호출
+      }
+    },
+    error: function (req, status, err) {
+      if (req.status == "403") {
+        // 로그인 페이지로 호출
+        moveToLoginPage();
+      }
+    },
+  });
+}
+
+function gfnSetData(params, callback) {}
+
+function gfnGetGrdData(params, callback) {
+  // params.grid 내용을 배열로 다건을 받을 경우, 배열 순서대로 콜할 예정
+  var defaultAsync = false;
+  var gridArr = [];
+  if (typeof params.grid === "string") {
+    gridArr.push(params.grid);
+    defaultAsync = true; // 그리드 단건은 기본 비동기처리하도록 함
+  } else {
+    gridArr = params.grid;
+  }
+
+  for (grid of gridArr) {
+    $.ajax({
+      type: "POST",
+      url: params.url,
+      data: params.data,
+      async: params.aync || defaultAsync,
+      dataType: "json",
+      success: function (res) {
+        if (res) {
+          // 에러가 발생할 경우 모달 출력
+          if (res.cd === "E") {
+            $("#myModal #contents").html(res.msg);
+            $("#myModal").modal("show");
+            return;
+          }
+
+          // 데이터가져오기
+          var result = res.data;
+          // console.log(result);
+          window[grid].provider.setRows(result);
+        }
+      },
+      error: function (req, status, err) {
+        if (req.status == "403") {
+          // 로그인 페이지로 호출
+          moveToLoginPage();
+        }
+
+        // 에러체킹 후 return할 예정
+        return;
+      },
+    });
+
+    callback(); // 콜백함수 호출
+  }
+}
+
+function gfnSetGrdData(params, callback) {
+  // params.grid 내용을 배열로 다건을 받을 경우, 배열 순서대로 콜할 예정
+  var defaultAsync = false;
+  var gridArr = [];
+  if (typeof params.grid === "string") {
+    gridArr.push(params.grid);
+    defaultAsync = true; // 그리드 단건은 기본 비동기처리하도록 함
+  } else {
+    gridArr = params.grid;
+  }
+
+  for (grid of gridArr) {
+    $.ajax({
+      type: "POST",
+      url: params.url,
+      data: params.data,
+      async: params.aync || defaultAsync,
+      dataType: "json",
+      success: function (res) {
+        if (res) {
+          // 에러가 발생할 경우 모달 출력
+          if (res.cd === "E") {
+            $("#myModal #contents").html(res.msg);
+            $("#myModal").modal("show");
+            return;
+          }
+
+          // 블라블라
+        }
+      },
+      error: function (req, status, err) {
+        if (req.status == "403") {
+          // 로그인 페이지로 호출
+          moveToLoginPage();
+        }
+
+        // 에러체킹 후 return할 예정
+        return;
+      },
+    });
+
+    alert('기본 Alert는 comTrans.gfnSetGrdData 안에서');
+
+    callback(); // 콜백함수 호출
+  }
+}
