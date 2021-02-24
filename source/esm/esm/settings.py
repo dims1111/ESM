@@ -30,6 +30,15 @@ DEBUG = True
 # 도메인 접속 권한 IP
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
+# 브라우저 닫을 시 세션 삭제
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# 세션 타임아웃 시간 1분
+SESSION_COOKIE_AGE = 600
+
+# 사용자의 요청이 존재하면 타임아웃 시간을 갱신
+SESSION_SAVE_EVERY_REQUEST = True
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -56,7 +65,6 @@ INSTALLED_APPS = [
     'esm_dev.esm_dev_1000',     # 테스트1
 ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -65,31 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    # 세션 타임아웃 설정    
-    'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
-
-
-# #################################################################################################
-# 세션 타임아웃 위한 패키지 인스톨
-# pip install django-session-timeout
-
-# 브라우저 닫을 시 세션 삭제
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
-# 세션 타임아웃 시간 30초
-SESSION_COOKIE_AGE = 600
-SESSION_EXPIRE_SECONDS = 600
-
-# 사용자의 요청이 존재하면 타임아웃 시간을 갱신
-SESSION_SAVE_EVERY_REQUEST = True
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
-
-# 리다이렉트 페이지 기입 잘 안되네
-SESSION_TIMEOUT_REDIRECT = '/login'
-# #################################################################################################
-
 
 ROOT_URLCONF = 'esm.urls'
 
