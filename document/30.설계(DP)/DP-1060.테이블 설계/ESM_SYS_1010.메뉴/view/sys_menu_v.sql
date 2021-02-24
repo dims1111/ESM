@@ -3,7 +3,7 @@ select lpad(' ', 2 * (level - 1)) || sm.menu_name_ko          as menu_name_ko_di
 	  ,lpad(' ', 2 * (level - 1)) || sm.menu_name_en          as menu_name_en_dis
 	  ,substr(sys_connect_by_path(sm.menu_name_ko, ' > '), 4) as path_ko
 	  ,substr(sys_connect_by_path(sm.menu_name_en, ' > '), 4) as path_en
-	  ,level                                                  as tree_level	  
+	  ,level                                                  as tree_level
 	  ,sm.menu_uid as id
 	  ,sm.menu_uid
 	  ,sm.menu_cd
@@ -15,11 +15,12 @@ select lpad(' ', 2 * (level - 1)) || sm.menu_name_ko          as menu_name_ko_di
 	  ,sm.sort_order
 	  ,sm.use_yn
 	  ,sm.search_yn
-	  ,sm.insert_yn
-	  ,sm.update_yn
-	  ,sm.delete_yn
-	  ,sm.print_yn
+	  ,sm.add_row_yn
+	  ,sm.delete_row_yn
+	  ,sm.save_yn
+	  ,sm.copy_yn
 	  ,sm.batch_yn
+	  ,sm.print_yn
 	  ,sm.excel_down_yn
 	  ,sm.excel_up_yn
 	  ,sm.remark

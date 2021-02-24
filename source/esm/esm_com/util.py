@@ -63,10 +63,15 @@ def camelCase(strValue):
 # 세션 데코레이트
 def sessionDecorator(orginalFunction):
   def wrapperFunction(request, *args, **kwargs):
-    # 사용자 세션 정보 오류일 경우 로그인 화면으로 이동        
+    # 사용자 세션 정보 오류일 경우 로그인 화면으로 이동
     if request.session.get('user_id') is None:
       # 테스트 : http://127.0.0.1:8000/esm_sys_1020
       print('사용자 세션이 존재하지 않습니다. 로그인 화면으로 이동합니다.')
+
+      absouluteRoot = request.build_absolute_uri("/")[:-1].strip("/")
+      absouluteRoot = absouluteRoot + '/login'
+      print("absouluteRoot =>", absouluteRoot)
+      
 
       # 세션이 삭제되면 로그인 화면으로 전환
       if 'application/json' in request.headers['Accept']:
@@ -76,10 +81,10 @@ def sessionDecorator(orginalFunction):
         return HttpResponseRedirect('/')
       
     else:
-      # 화면 로딩시 url 확인 
-      url = request.session.get('url')
-      # print('orginalFunction.__name__ =>', orginalFunction.__name__)      
-      # print('url =>', url)
+      # 화면 로딩시 화면에 대한 URI를 값을 받아 뒷자리 '/' 제거 후 URL만 추출
+      absoluteURI = (request.build_absolute_uri())[:-1].strip("/")
+      url = absoluteURI[absoluteURI.rfind('/'):]
+      print ("url =>", url)
 
       # 함수 및 변수 값 초기화
       orginalFucntionCall = None

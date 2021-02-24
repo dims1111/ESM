@@ -48,7 +48,7 @@
         // ajax POST 통신, 후에 공통으로 뺄거임
         $.ajax({
           type: "POST",
-          url: "/esm_dev_1000/search",
+          url: "/esm_sys_1020/search",
           data: params,
           dataType: "json",
           success: function (res) {
@@ -88,7 +88,7 @@
         $.ajax({
           type: "POST",
           // contentType: 'application/json; charset=utf-8',
-          url: "/esm_dev_1000/save",
+          url: "/esm_sys_1020/save",
           data: JSON.stringify(params),
           dataType: "json",
           success: function (data) {
@@ -126,38 +126,17 @@
         //     alert("done excel export")
         //   }
         // });
-        
-        var menuname = $("#masterMenu").text();
-        
-        console.log(menuname);
-      
-        RealGridJS.exportGrid({
-          type:"excel",
-          target:"local",
-          fileName: menuname +".xlsx",
-          compatibility: '2010',
-          done:function() {
-            alert("done excel export")
-          },
-          exportGrids:[
-            { 
-                grid: grid1.gridView, //그리드 변수명
-                sheetName: menuname // 다른 그리드와 중복되어서는 안된다.
-            }
-            // , {
-            //     grid:gridView2,
-            //     sheetName:"sheetName2"
-            // }
-          ]
-        });
- 
+
+        // 엑셀 다운로드 함수 호출
+        gfn_excelDownload(grid1);
 
 
         break;
+
       case "excelUpload":
         alert(gubun);
 
-        
+
 
 
 
