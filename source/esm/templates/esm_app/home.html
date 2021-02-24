@@ -35,7 +35,7 @@
         <ul id="mainList">
           {% for item in mainMenuList %}
           <li class="sidebar-main__item py-2 {{item.active}}" data-menu-cd="{{item.menuCd}}">
-            <span class="main__icon material-icons" mcd="{{item.mainCd}}">{{item.icons}}</span>
+            <span class="main__icon material-icons">{{item.icons}}</span>
             <div class="mt-1">{{item.menuNameKo}}</div>
           </li>
           {% endfor %}
@@ -69,7 +69,7 @@
           <!-- Tab panes -->
           <div class="mt-2 tab-content ml-3">
             <div id="home" class="tab-pane w-100 h-100 active">
-              <div id="cont_head_wrapper" class="mt-1 mb-2" style="display: none;">
+              <div id="cont_head_wrapper" class="mt-1 mb-2" style="display: none">
                 <div id="cont_nav_wrap">
                   <nav id="cont_nav" aria-label="breadcrumb" class="text-right" style="font-size: 13px">
                     <div style="display: inline-block">
@@ -98,7 +98,7 @@
 
 <!-- New Tab Template -->
 <div id="newtab" class="container tab-pane active" style="display: none">
-  <div id="cont_head_wrapper" class="mt-1 mb-2" style="display: none;">
+  <div id="cont_head_wrapper" class="mt-1 mb-2" style="display: none">
     <div id="cont_nav_wrap">
       <nav id="cont_nav" aria-label="breadcrumb" class="mt-1 mb-2 text-right" style="font-size: 13px">
         <div style="display: inline-block">
@@ -250,86 +250,87 @@
       var menuNm = $("#mainList > li.active div").html().trim();
 
       // 대메뉴 명칭표기
-      $('.sidebar-sub__title').html(menuNm);
+      $(".sidebar-sub__title").html(menuNm);
 
-      $.ajax({
-        type: "POST",
+      var mainParam = {
+        parentMenuCd: menuCd,
+      };
+
+      var params = {
         url: "/menu/getSubMenuList",
-        data: {
-          parentMenuCd: menuCd,
-        },
-        dataType: "json",
-        success: function (data) {
-          $("#menu-content").empty();
+        mainParam: mainParam,
+      };
 
-          var subMenuList = data.subMenuList;
-          var isgroup = false;
-          var $ul = $("<ul />", {
-            class: "sub-menu collapse show active",
-          });
+      gfnGetData(params, function (data) {
+        $("#menu-content").empty();
 
-          $ul.on("show.bs.collapse", function () {
-            $(this).prev().find("span.expand").removeClass("rotate");
-          });
+        var subMenuList = data.subMenuList;
+        var isgroup = false;
+        var $ul = $("<ul />", {
+          class: "sub-menu collapse show active",
+        });
 
-          $ul.on("hide.bs.collapse", function () {
-            $(this).prev().find("span.expand").addClass("rotate");
-          });
+        $ul.on("show.bs.collapse", function () {
+          $(this).prev().find("span.expand").removeClass("rotate");
+        });
 
-          subMenuList.forEach(function (item, index) {
-            if (item.treeLevel === 1) {
-              if (isgroup) {
-                isgroup = false;
-                $("#menu-content").append($ul);
-                $ul = $("<ul />", {
-                  class: "sub-menu collapse show active",
-                });
-                $ul.on("show.bs.collapse", function () {
-                  $(this).prev().find("span.expand").removeClass("rotate");
-                });
+        $ul.on("hide.bs.collapse", function () {
+          $(this).prev().find("span.expand").addClass("rotate");
+        });
 
-                $ul.on("hide.bs.collapse", function () {
-                  $(this).prev().find("span.expand").addClass("rotate");
-                });
-              }
-
-              // 중분류
-              var $li = $("<li />", {
-                class: "menu",
-                "data-toggle": "collapse",
-                "data-target": "#group" + item.menuCd,
+        subMenuList.forEach(function (item, index) {
+          if (item.treeLevel === 1) {
+            if (isgroup) {
+              isgroup = false;
+              $("#menu-content").append($ul);
+              $ul = $("<ul />", {
+                class: "sub-menu collapse show active",
               });
-              var $div = $("<div />", { text: item.menuNameKo, class: "menu__name font-weight-bold" });
-              var $span = $("<span />", { text: "expand_less", class: "expand material-icons" });
-
-              $li.append($div);
-              $li.append($span);
-              $("#menu-content").append($li);
-            } else if (item.treeLevel === 2) {
-              var $li = $("<li />", {
-                text: item.menuNameKo,
-                class: "pl-2",
-                "data-menu-nm": item.menuNameKo,
-                "data-toggle": "tooltip",
-                "data-placement": "right",
-                "data-url": item.url,
-                "data-parent-menu-cd": item.parentMenuCd,
-                "data-menu-cd": item.menuCd,
+              $ul.on("show.bs.collapse", function () {
+                $(this).prev().find("span.expand").removeClass("rotate");
               });
-              $ul.attr("id", "group" + item.parentMenuCd);
-              $li.click(openMenu);
-              $ul.append($li);
-              isgroup = true;
 
-              if (subMenuList.length - 1 === index) {
-                $("#menu-content").append($ul);
-                $ul = $("<ul />", {
-                  class: "sub-menu collapse show active",
-                });
-              }
+              $ul.on("hide.bs.collapse", function () {
+                $(this).prev().find("span.expand").addClass("rotate");
+              });
             }
-          });
-        },
+
+            // 중분류
+            var $li = $("<li />", {
+              class: "menu",
+              "data-toggle": "collapse",
+              "data-target": "#group" + item.menuCd,
+            });
+            var $div = $("<div />", { text: item.menuNameKo, class: "menu__name font-weight-bold" });
+            var $span = $("<span />", { text: "expand_less", class: "expand material-icons" });
+
+            $li.append($div);
+            $li.append($span);
+            $("#menu-content").append($li);
+          } else if (item.treeLevel === 2) {
+            var $li = $("<li />", {
+              text: item.menuNameKo,
+              class: "pl-2",
+              "data-menu-nm": item.menuNameKo,
+              "data-toggle": "tooltip",
+              "data-placement": "right",
+              "data-url": item.url,
+              "data-parent-menu-cd": item.parentMenuCd,
+              "data-menu-cd": item.menuCd,
+            });
+            $ul.attr("id", "group" + item.parentMenuCd);
+            $li.click(openMenu);
+            $ul.append($li);
+            isgroup = true;
+
+            if (subMenuList.length - 1 === index) {
+              $("#menu-content").append($ul);
+              $ul = $("<ul />", {
+                class: "sub-menu collapse show active",
+              });
+            }
+          }
+        });
       });
     }
     getSubMenuList();

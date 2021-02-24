@@ -38,38 +38,21 @@
         var useYn = $("#useYn").is(":checked") ? "1" : "0";
 
         // 보낼 파라미터
-        var params = {
+        var mainParam = {
           menuName: menuName,
           url: url,
           useYn: useYn,
         };
-        console.log("params ->", params);
+        console.log("mainParam ->", mainParam);
 
-        // ajax POST 통신, 후에 공통으로 뺄거임
-        $.ajax({
-          type: "POST",
+        var params = {
           url: "/esm_sys_1020/search",
-          data: params,
-          dataType: "json",
-          success: function (res) {
-            if (res) {
-              // 에러가 발생할 경우 모달 출력
-              if (res.msg) {
-                $("#myModal #contents").html(res.msg);
-                $("#myModal").modal("show");
-                if (res.cd === "E") {
-                  return;
-                }
-              }
+          grid: 'grid1', // or ['grid1', 'grid2', ...]
+          mainParam: mainParam,
+        };
 
-              // 데이터가져오기
-              result = res.data;
-
-              console.log(result);
-              grid1.provider.setRows(result);
-            }
-          },
-        });
+        // 그리드 조회
+        gfnGetGrdData(params);
         break;
       case "reset":
         console.log("gubun ->", gubun);
@@ -81,19 +64,14 @@
         console.log("gubun ->", gubun);
         break;
       case "save":
-        // 공통으로 뺄거임
-        if (!gfn_checkSaveData(grid1)) return;
-        var params = setGridDataToJson("grid1");
-
-        $.ajax({
-          type: "POST",
-          // contentType: 'application/json; charset=utf-8',
+        var params = {
           url: "/esm_sys_1020/save",
-          data: JSON.stringify(params),
-          dataType: "json",
-          success: function (data) {
-            console.log(data);
-          },
+          grid: 'grid1', // or ['grid1']
+          // subParam: {},
+        };
+
+        gfnSetGrdData(params, function() {
+          doAction1('search');
         });
       case "addRow":
         // $(function(){

@@ -274,7 +274,7 @@ function gfnGetData(params, callback) {
   $.ajax({
     type: "POST",
     url: params.url,
-    data: params.data,
+    data: params.mainParam,
     async: params.aync || true,
     dataType: "json",
     success: function (res) {
@@ -308,7 +308,7 @@ function gfnGetGrdData(params, callback) {
     $.ajax({
       type: "POST",
       url: params.url,
-      data: params.data,
+      data: params.mainParam,
       async: params.aync || defaultAsync,
       dataType: "json",
       success: function (res) {
@@ -352,11 +352,23 @@ function gfnSetGrdData(params, callback) {
     gridArr = params.grid;
   }
 
+  // 그리드 검증
   for (grid of gridArr) {
+    if (!gfn_checkSaveData(window[grid])) return;
+  }
+
+  for (grid of gridArr) {
+    var data = gfnSetGridDataToJson(grid);
+
+    // 추가적인 파라미터 있으면 어떻게할건지
+    if (params.subParam) {
+
+    }
+
     $.ajax({
       type: "POST",
       url: params.url,
-      data: params.data,
+      data: data,
       async: params.aync || defaultAsync,
       dataType: "json",
       success: function (res) {

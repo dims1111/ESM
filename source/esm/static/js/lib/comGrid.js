@@ -1967,7 +1967,7 @@ this.gfn_request_check = function (grd, p_student_number, p_bank_account_number,
  * 그리드 데이터 JSON으로 변환
  * @param {String, Array} gridId 
  */
-function setGridDataToJson(gridId) {
+function gfnSetGridDataToJson(gridId) {
   var gridIds = [];
   if (typeof gridId === 'string') {
       gridIds.push(gridId);
