@@ -30,8 +30,20 @@ from django.utils.decorators import method_decorator
 # #################################################################################################
 # 메뉴 클릭 후 첫 화면 오픈
 @util.sessionDecorator
-def home(request):
-  return render(request, 'esm_sys/esm_sys_1020.html')
+def home(request, *args, **kwargs):  
+  # 화면 url 세션으로 넘기기
+  request.session['url'] = '/esm_sys_1020'
+  
+  # sessionDecorator 데코레이터를 통한 매개변수 버튼명칭을 확인 : 튜풀
+  # for ca in args:
+  #   print("args==========>", ca)
+
+  # sessionDecorator 데코레이터를 통한 버튼의 명칭 및 값을 확인(사용여부) : 딕셔너리
+  for k, v in kwargs.items():
+    print("kwargs - 버튼명칭 ==>", k, "kwargs - 사용여부 ==>", v)
+
+  # kwargs 리턴 값을 받아 화면에서 버튼 show, hide 처리
+  return render(request, 'esm_sys/esm_sys_1020.html', kwargs)
 
 
 # #################################################################################################

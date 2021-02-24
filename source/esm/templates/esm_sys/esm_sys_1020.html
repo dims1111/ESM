@@ -3,6 +3,7 @@
   var grid1;
   $(function () {
     grid1 = $("#grid1").gfn_gridInit([
+<<<<<<< HEAD
       { name: "menu_uid",         fieldName: "menu_uid",          header: { text: "메뉴UID" },        width: 250, required: true },
       { name: "parent_menu_cd",   fieldName: "parent_menu_cd",    header: { text: "상위메뉴코드" },   width: 80 },
       { name: "menu_cd",          fieldName: "menu_cd",           header: { text: "메뉴코드" },       width: 80 },      
@@ -25,32 +26,40 @@
       { name: "create_date_time", fieldName: "create_date_time",  header: { text: "생성일시" },       width: 150 },
       { name: "update_by",        fieldName: "update_by",         header: { text: "수정자ID" },       width: 80 },
       { name: "update_date_time", fieldName: "update_date_time",  header: { text: "수정자ID" },       width: 150 },
+=======
+      { name: "menu_uid", fieldName: "menu_uid", header: { text: "메뉴UID" }, width: 250 },
+      { name: "parent_menu_cd", fieldName: "parent_menu_cd", header: { text: "상위메뉴코드" }, width: 80 },
+      { name: "menu_cd", fieldName: "menu_cd", header: { text: "메뉴코드" }, width: 80 },
+      { name: "menu_name_ko", fieldName: "menu_name_ko", header: { text: "메뉴명(한글)" }, width: 180 },
+      { name: "menu_name_en", fieldName: "menu_name_en", header: { text: "메뉴명(영문)" }, width: 220 },
+      { name: "url", fieldName: "url", header: { text: "url" }, width: 190 },
+      { name: "icons", fieldName: "icons", header: { text: "아이콘" }, width: 80 },
+      { name: "sort_order", fieldName: "sort_order", header: { text: "정렬순서" }, width: 60 },
+      { name: "use_yn", fieldName: "use_yn", header: { text: "사용" }, width: 60 },
+      { name: "search_yn", fieldName: "search_yn", header: { text: "조회" }, width: 60 },
+      { name: "add_row_yn", fieldName: "add_row_yn", header: { text: "행추가" }, width: 60 },
+      { name: "delete_row_yn", fieldName: "delete_row_yn", header: { text: "행삭제" }, width: 60 },
+      { name: "save_yn", fieldName: "save_yn", header: { text: "저장" }, width: 60 },
+      { name: "copy_yn", fieldName: "copy_yn", header: { text: "자료복사" }, width: 60 },
+      { name: "batch_yn", fieldName: "batch_yn", header: { text: "자료생성" }, width: 60 },
+      { name: "print_yn", fieldName: "print_yn", header: { text: "출력" }, width: 60 },
+      { name: "excel_down_yn", fieldName: "excel_down_yn", header: { text: "엑셀다운" }, width: 80 },
+      { name: "excel_up_yn", fieldName: "excel_up_yn", header: { text: "엑셀업로드" }, width: 80 },
+      { name: "remark", fieldName: "remark", header: { text: "비고" }, width: 300 },
+      { name: "create_by", fieldName: "create_by", header: { text: "생성자UID" }, width: 80 },
+      { name: "create_date_time", fieldName: "create_date_time", header: { text: "생성일시" }, width: 150 },
+      { name: "update_by", fieldName: "update_by", header: { text: "수정자ID" }, width: 80 },
+      { name: "update_date_time", fieldName: "update_date_time", header: { text: "수정자ID" }, width: 150 },
+>>>>>>> 38ac9831725cb74a17ca555d65b2135a10ec9cec
     ]);
   });
-
 
   /* action1에대한 기능 */
   function doAction1(gubun) {
     switch (gubun) {
       /* 조회 */
       case "search":
-        console.log("gubun ->", gubun);
-
         var menuName = $("#menuName").val();
-
-        // 조회조건 필수 입력사항(메뉴명) 유효성 검사
-        if (menuName === '') {
-
-          $(function(){
-
-            alert("메뉴명은 필수 입력사항 입니다.");
-
-          })
-
-          // 유효성 검사 통과 못할 시 다음 로직을 진행하지 않는다.
-          break;
-        }
-
         var url = $("#url").val();
         var useYn = $("#useYn").is(":checked") ? "1" : "0";
 
@@ -62,44 +71,29 @@
         };
         console.log("params ->", params);
 
-
         // ajax POST 통신, 후에 공통으로 뺄거임
         $.ajax({
           type: "POST",
-          url: "/esm_sys_1020/search",
+          url: "/esm_dev_1000/search",
           data: params,
-          // data: $('#srchForm').serialize(),
           dataType: "json",
-          success: function (data) {
-            var result = JSON.parse(data);
+          success: function (res) {
+            if (res) {
+              // 에러가 발생할 경우 모달 출력
+              if (res.msg) {
+                $('#myModal #contents').html(res.msg);
+                $('#myModal').modal('show');
+                if (res.cd === 'E') {
+                  return;
+                }
+              }
 
+              // 데이터가져오기
+              result = res.data;
 
-            // 데이터가져오기
-            result = result.map(function (item) {
-              return item.fields;
-            });
-
-            console.log(result);
-
-            // modal test================
-            // var resultTest = {cd : 'S', msg: '성공' }
-            var resultTest = {cd : 'E', msg: '조회를 실패 했습니다. 조회를 .조회를 실패 했습니다.조회를 조회를 실패 했습니다.조회를 조회를 실패 했습니다.조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. 조회를 실패 했습니다. ' }
-            
-
-
-            // 에러가 발생할 경우 모달 출력
-            if (resultTest && resultTest.cd === 'E') {
-
-              // 에러메시지를 선언
-              var message = resultTest.msg;
-
-              $('#myModal #contents').text(message);
-              $('#myModal').modal('show');
+              console.log(result); 
+              grid1.provider.setRows(result);
             }
-            // ==========================
-            
-            grid1.provider.setRows(result);
-
           },
         });
         break;
@@ -109,37 +103,26 @@
       case "print":
         console.log("gubun ->", gubun);
         break;
-      case "save":
+      case "batch":
         console.log("gubun ->", gubun);
+        break;
+      case "save":
+        // 공통으로 뺄거임
+        if(!gfn_checkSaveData(grid1)) return;
+        var params = setGridDataToJson('grid1');
 
-        var menuName = $("#menuName").val();
-        var url = $("#url").val();
-        var useYn = $("#useYn").is(":checked") ? "1" : "0";
-
-        // 보낼 파라미터
-        var params = {
-          menuName: menuName,
-          url: url,
-          useYn: useYn,
-        };
-        console.log("params ->", params);
-
-        // ajax POST 통신, 후에 공통으로 뺄거임
         $.ajax({
           type: "POST",
-          url: "/esm_sys_1020/save",
-          data: params,
-          // data: $('#srchForm').serialize(),
+          // contentType: 'application/json; charset=utf-8',
+          url: "/esm_dev_1000/save",
+          data: JSON.stringify(params),
           dataType: "json",
           success: function (data) {
-            var result = JSON.parse(data);
-
-            console.log(result);
-            grid1.provider.setRows(result);
+            console.log(data);
           },
         });
-        break;
       case "addRow":
+<<<<<<< HEAD
 
 
         
@@ -150,8 +133,13 @@
         //   dataProvider.insertRows(0,rows, 0, -1);
         //   console.log("test");
         // });
-
-
+=======
+        $(function () {
+          var rows = ["가수", "여자"];
+          dataProvider.insertRows(0, rows, 0, -1);
+          console.log("test");
+        });
+>>>>>>> 38ac9831725cb74a17ca555d65b2135a10ec9cec
 
         console.log("gubun ->", gubun);
         break;
@@ -178,6 +166,8 @@
         </div>
         <div class="search-buttons">
           <button class="btn_sub active" onclick="doAction1('print');"><i class="xi-print"> 출력</i></button>
+          <button class="btn_sub active" onclick="doAction1('batch');"><i class="xi-refresh"> 자료생성</i></button>
+          <button class="btn_sub active" onclick="doAction1('copy');"><i class="xi-refresh"> 자료복사</i></button>
           <button class="btn_sub active" onclick="doAction1('reset');"><i class="xi-refresh"> 초기화</i></button>
           <button class="btn_main active" onclick="doAction1('search');"><i class="xi-search"> 조회</i></button>
           <button class="btn_main active" onclick="doAction1('save');"><i class="xi-save"> 저장</i></button>
@@ -186,9 +176,9 @@
       <form id="srchForm" class="search-content">
         <label for="menuName"><i class="xi-star"></i>메뉴명</label>
         <input type="text" name="menuName" id="menuName" />
-        <label for="url" style="margin-left: 15px;">URL</label>
+        <label for="url" style="margin-left: 15px">URL</label>
         <input type="text" name="url" id="url" />
-        <label for="useYn" style="margin-left: 15px;">사용여부</label>
+        <label for="useYn" style="margin-left: 15px">사용여부</label>
         <input type="checkbox" name="useYn" id="useYn" checked />
       </form>
     </div>
