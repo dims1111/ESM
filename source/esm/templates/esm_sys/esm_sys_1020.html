@@ -3,7 +3,6 @@
   var grid1;
   $(function () {
     grid1 = $("#grid1").gfn_gridInit([
-<<<<<<< HEAD
       { name: "menu_uid",         fieldName: "menu_uid",          header: { text: "메뉴UID" },        width: 250, required: true },
       { name: "parent_menu_cd",   fieldName: "parent_menu_cd",    header: { text: "상위메뉴코드" },   width: 80 },
       { name: "menu_cd",          fieldName: "menu_cd",           header: { text: "메뉴코드" },       width: 80 },      
@@ -26,31 +25,6 @@
       { name: "create_date_time", fieldName: "create_date_time",  header: { text: "생성일시" },       width: 150 },
       { name: "update_by",        fieldName: "update_by",         header: { text: "수정자ID" },       width: 80 },
       { name: "update_date_time", fieldName: "update_date_time",  header: { text: "수정자ID" },       width: 150 },
-=======
-      { name: "menu_uid", fieldName: "menu_uid", header: { text: "메뉴UID" }, width: 250 },
-      { name: "parent_menu_cd", fieldName: "parent_menu_cd", header: { text: "상위메뉴코드" }, width: 80 },
-      { name: "menu_cd", fieldName: "menu_cd", header: { text: "메뉴코드" }, width: 80 },
-      { name: "menu_name_ko", fieldName: "menu_name_ko", header: { text: "메뉴명(한글)" }, width: 180 },
-      { name: "menu_name_en", fieldName: "menu_name_en", header: { text: "메뉴명(영문)" }, width: 220 },
-      { name: "url", fieldName: "url", header: { text: "url" }, width: 190 },
-      { name: "icons", fieldName: "icons", header: { text: "아이콘" }, width: 80 },
-      { name: "sort_order", fieldName: "sort_order", header: { text: "정렬순서" }, width: 60 },
-      { name: "use_yn", fieldName: "use_yn", header: { text: "사용" }, width: 60 },
-      { name: "search_yn", fieldName: "search_yn", header: { text: "조회" }, width: 60 },
-      { name: "add_row_yn", fieldName: "add_row_yn", header: { text: "행추가" }, width: 60 },
-      { name: "delete_row_yn", fieldName: "delete_row_yn", header: { text: "행삭제" }, width: 60 },
-      { name: "save_yn", fieldName: "save_yn", header: { text: "저장" }, width: 60 },
-      { name: "copy_yn", fieldName: "copy_yn", header: { text: "자료복사" }, width: 60 },
-      { name: "batch_yn", fieldName: "batch_yn", header: { text: "자료생성" }, width: 60 },
-      { name: "print_yn", fieldName: "print_yn", header: { text: "출력" }, width: 60 },
-      { name: "excel_down_yn", fieldName: "excel_down_yn", header: { text: "엑셀다운" }, width: 80 },
-      { name: "excel_up_yn", fieldName: "excel_up_yn", header: { text: "엑셀업로드" }, width: 80 },
-      { name: "remark", fieldName: "remark", header: { text: "비고" }, width: 300 },
-      { name: "create_by", fieldName: "create_by", header: { text: "생성자UID" }, width: 80 },
-      { name: "create_date_time", fieldName: "create_date_time", header: { text: "생성일시" }, width: 150 },
-      { name: "update_by", fieldName: "update_by", header: { text: "수정자ID" }, width: 80 },
-      { name: "update_date_time", fieldName: "update_date_time", header: { text: "수정자ID" }, width: 150 },
->>>>>>> 38ac9831725cb74a17ca555d65b2135a10ec9cec
     ]);
   });
 
@@ -122,7 +96,6 @@
           },
         });
       case "addRow":
-<<<<<<< HEAD
 
 
         
@@ -133,13 +106,6 @@
         //   dataProvider.insertRows(0,rows, 0, -1);
         //   console.log("test");
         // });
-=======
-        $(function () {
-          var rows = ["가수", "여자"];
-          dataProvider.insertRows(0, rows, 0, -1);
-          console.log("test");
-        });
->>>>>>> 38ac9831725cb74a17ca555d65b2135a10ec9cec
 
         console.log("gubun ->", gubun);
         break;
