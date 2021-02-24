@@ -30,6 +30,18 @@ DEBUG = True
 # 도메인 접속 권한 IP
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
+<<<<<<< HEAD
+=======
+# 브라우저 닫을 시 세션 삭제
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# 세션 타임아웃 시간 1분
+SESSION_COOKIE_AGE = 600
+
+# 사용자의 요청이 존재하면 타임아웃 시간을 갱신
+SESSION_SAVE_EVERY_REQUEST = True
+
+>>>>>>> 752a829fdaa517c28fafe512f445d1df2697de83
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',

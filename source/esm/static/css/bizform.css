@@ -333,8 +333,10 @@ body {
   color: var(--p1);
   transition: box-shadow 0.9s, color 0.3s;
   padding: 6px 12px;
+  height: 24px;
+  margin-left: 3px;
   border: 0;
-  width: 90px;
+  min-width: 90px;
 }
 .btn_main:hover {
   color: #fff;
@@ -353,8 +355,10 @@ body {
   cursor: pointer;
   transition: box-shadow 0.9s, color 0.3s;
   padding: 6px 12px;
+  height: 24px;
+  margin-left: 3px;
   border: 0;
-  width: 100px;
+  min-width: 90px;min-width: 95px;
 }
 .btn_sub:hover {
   color: #fff;
@@ -372,9 +376,11 @@ body {
   text-align: center;
   cursor: pointer;
   transition: box-shadow 0.9s, color 0.3s;
-  padding: 6px 12px;  
+  padding: 6px 12px;
+  height: 24px;
+  margin-left: 3px;
   border: 0;  
-  width: 122px;
+  min-width: 90px;
 }
 .btn_excel:hover {
   color: #fff;
@@ -413,6 +419,8 @@ body {
 
 .search-buttons {
   margin-left: auto;
+  display: flex;
+  align-items: center;
 }
 
 .search-content {
