@@ -1,4 +1,7 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, HttpResponseRedirect
+
+# 장고 로그아웃 처리를 위한 클래스 임포트
+from django.contrib.auth import logout as auth_logout
 
 # 로그인 모델 내 SysMenu 클래스 임포트
 from esm_sys.esm_sys_1020.models import SysMenuV
@@ -63,7 +66,11 @@ def sessionDecorator(orginalFunction):
     if request.session.get('user_id') is None:
       # 테스트 : http://127.0.0.1:8000/esm_sys_1020
       print('사용자 세션이 존재하지 않습니다. 로그인 화면으로 이동합니다.')
-      return redirect('/')
+
+      # 세션이 삭제되면 로그인 화면으로 전환
+      # return redirect('/login')
+      return HttpResponseRedirect('/')
+      
     else:
       # 화면 로딩시 url 확인 
       url = request.session.get('url')
