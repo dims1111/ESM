@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # 세션 타임아웃 시간 1분
-SESSION_COOKIE_AGE = 60
+SESSION_COOKIE_AGE = 600
 
 # 사용자의 요청이 존재하면 타임아웃 시간을 갱신
 SESSION_SAVE_EVERY_REQUEST = True

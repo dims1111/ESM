@@ -332,7 +332,9 @@ body {
   cursor: pointer;
   color: var(--p1);
   transition: box-shadow 0.9s, color 0.3s;
-  padding: 6px 12px;
+  /* padding: 6px 12px; */
+  height: 24px;
+
   border: 0;
   width: 90px;
 }
@@ -352,7 +354,10 @@ body {
   text-align: center;
   cursor: pointer;
   transition: box-shadow 0.9s, color 0.3s;
-  padding: 6px 12px;
+  /* padding: 6px 2px 6px 6px; */
+  height: 24px;
+  margin-bottom: 3px;
+
   border: 0;
   width: 100px;
 }
@@ -372,7 +377,9 @@ body {
   text-align: center;
   cursor: pointer;
   transition: box-shadow 0.9s, color 0.3s;
-  padding: 6px 12px;  
+  /* padding: 5px 2px 6px 6px;   */
+  height: 24px;
+  
   border: 0;  
   width: 122px;
 }
