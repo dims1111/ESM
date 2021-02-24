@@ -324,6 +324,11 @@ function gfnGetGrdData(params, callback) {
 
           // 데이터가져오기
           var result = res.data;
+
+          // 임시로 여기서 메뉴 건수 추가함
+          var titleCnt = makeComma(result.length) + '건';
+          window[grid].closest('.grid').find('.grid-title__cnt').text(titleCnt);
+
           // console.log(result);
           window[grid].provider.setRows(result);
         }

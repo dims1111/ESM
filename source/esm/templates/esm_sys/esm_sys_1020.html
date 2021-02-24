@@ -54,7 +54,8 @@
         // 그리드 조회
         gfnGetGrdData(params);
         break;
-      case "reset":
+      case "reset": // 초기화
+        
         break;
       case "print":
         break;
@@ -144,20 +145,22 @@
       </form>
     </div>
   </div>
+
+  <!-- 그리드 영역 -->
   <div class="row no-gutters flex-grow-1">
-    <div class="col-12 d-flex flex-column">
-      <div class="search-header">
-        <div class="search-title">
-          <i class="xi-sort-desc" id="masterMenu"> 메뉴목록 (47건)</i>
+    <div class="grid col-12 d-flex flex-column">
+      <div class="grid-header">
+        <div class="grid-title">
+          <i class="xi-sort-desc"> 메뉴목록 (<span class="grid-title__cnt">0건</span>)</i>
         </div>
-        <div class="search-buttons">
+        <div class="grid-buttons">
           <button class="btn_excel active" onclick="doAction1('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button>
           <button class="btn_excel active" onclick="doAction1('excelDownload');"><i class="xi-download"> 엑셀다운로드</i></button>
           <button class="btn_sub active" onclick="doAction1('delRow');"><i class="xi-minus-min"> 행삭제</i></button>
           <button class="btn_sub active" onclick="doAction1('addRow');"><i class="xi-plus-min"> 행추가</i></button>
         </div>
       </div>
-      <div class="search-content flex-grow-1">
+      <div class="grid-content flex-grow-1">
         <div id="grid1"></div>
       </div>
     </div>

@@ -28,3 +28,9 @@ function moveToLoginPage() {
     top.location.replace("/login");
   }
 }
+
+// 숫자 마스킹
+function makeComma(str) {
+	var num = Number(str);
+	return isNaN(num) ? str : num.toLocaleString();
+}
