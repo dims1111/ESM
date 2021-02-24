@@ -396,6 +396,7 @@ body {
 /*  */
 /*  */
 
+/* 검색조건 관련 css */
 .search-header {
   display: flex;
   align-items: center;
@@ -424,6 +425,44 @@ body {
 }
 
 .search-content {
+  border-top: 1px solid #1d7268;
+  border-bottom: 1px solid #1d7268;
+  padding: 8px 4px;
+  background: #f3f7f6;
+}
+
+/* 그리드 관련 css */
+.grid-header {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 26px;
+}
+
+.grid {
+  /* 아직 내용 없음 */
+}
+.grid-title {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  margin-left: 1rem;
+  background: #2a9d8f;
+  padding: 4px 12px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top: 1px solid #1d7268;;
+  border-left: 1px solid #1d7268;;
+  border-right: 1px solid #1d7268;;
+}
+
+.grid-buttons {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.grid-content {
   border-top: 1px solid #1d7268;
   border-bottom: 1px solid #1d7268;
   padding: 8px 4px;

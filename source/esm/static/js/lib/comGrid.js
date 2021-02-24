@@ -2115,7 +2115,7 @@ function gfn_getJsonChangedRows(_grd) {
 // Excel download 함수
 function gfn_excelDownload(grid, fileName, sheetName) {
   if (!fileName) {
-    fileName = grid.parent().prev().find('.search-title').text().trim();
+    fileName = grid.closest('.grid').find('.grid-title').text().trim();
   }
 
   if (!sheetName) {
