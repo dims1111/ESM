@@ -139,7 +139,7 @@ def doSave(request):
     commParams['msg'] = ''
   util.resultMsg(commParams)
 
-  return HttpResponseRedirect('esm_sys_1010.html')
+  return HttpResponseRedirect('esm_sys_1020.html')
   # 여기는 어케 처리해야 되는지 도움말좀 달아 주세요.
   # 저장 후 콜백 처리되어서 데이터를 다시 조회 필요
   # 수정 건의 경우 해당 그리드 라인으로 포커싱 되도록 로직 추가 필요

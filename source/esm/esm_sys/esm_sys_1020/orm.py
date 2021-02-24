@@ -153,7 +153,7 @@ class JsonData:
             ,"search_yn": "Y"
             ,"add_row_yn": "Y"
             ,"del_row_yn": "N"
-            ,"delete_yn": "N"
+            ,"save_yn": "N"
             ,"copy_yn": "Y"
             ,"batch_yn": "N"
             ,"print_yn": "N"            

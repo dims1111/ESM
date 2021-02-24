@@ -383,13 +383,14 @@ function gfnSetGrdData(params, callback) {
       success: function (res) {
         if (res) {
           // 에러가 발생할 경우 모달 출력
-          if (res.cd === "E") {
+          console.log("res =>", res)
+          if (res.msg) {               
             $("#myModal #contents").html(res.msg);
             $("#myModal").modal("show");
-            return;
+            if (res.cd === "E") {
+              return;
+            }
           }
-
-          // 블라블라
         }
       },
       error: function (req, status, err) {
@@ -402,8 +403,6 @@ function gfnSetGrdData(params, callback) {
         return;
       },
     });
-
-    alert('기본 Alert는 comTrans.gfnSetGrdData 안에서');
 
     if (callback) {
       callback(); // 콜백함수 호출

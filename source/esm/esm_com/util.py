@@ -106,7 +106,7 @@ def sessionDecorator(orginalFunction):
             kwargs = {
               'searchBtn'    : ca.search_yn,
               'addRowBtn'    : ca.add_row_yn,
-              'deleteRowBtn' : ca.delete_row_yn,
+              'delRowBtn'    : ca.del_row_yn,
               'saveBtn'      : ca.save_yn,
               'copyBtn'      : ca.copy_yn,
               'batchBtn'     : ca.batch_yn,              
@@ -119,7 +119,7 @@ def sessionDecorator(orginalFunction):
           kwargs = {
             'searchBtn'    : 'N',
             'addRowBtn'    : 'N',
-            'deleteRowBtn' : 'N',
+            'delRowBtn'    : 'N',
             'saveBtn'      : 'N',
             'copyBtn'      : 'N',
             'batchBtn'     : 'N',
