@@ -260,7 +260,7 @@
             }
           },
         },
-        colseOthers: {
+        closeOthers: {
           name: "다른 탭 닫기",
           callback: function (itemKey, opt, e) {
             opt.$trigger.siblings().each(function () {
@@ -301,6 +301,25 @@
             if (opt.$trigger.next().length === 0) {
               return true;
             }
+          },
+        },
+        closeAll: {
+          name: "모두 닫기",
+          callback: function (itemKey, opt, e) {
+            opt.$trigger.parent().children().each(function () {
+              var $a = $(this).find("a");
+
+              var isActive = $a.hasClass("active");
+              var tabId = $a.attr("href");
+              var tabWin = $(tabId).find("#content_frm").get(0).contentWindow;
+
+              $(tabId).remove();
+              $(this).remove();
+            });
+
+            opt.$trigger.find("a").click();
+          },
+          disabled: function (key, opt) {
           },
         },
       },
