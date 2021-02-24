@@ -473,12 +473,23 @@ form {
   color: #eefcfa
 }
 
+.modal-header > button:hover {
+  transition: all 0.7s;
+  color: black;
+}
+
 .modal-footer > button{
 
-  border: 2px solid #1d7268;
   margin: 0px auto;
-  font-size: 12px;
+  background-color: #259e90;
+  color: #eaf5ec;
+  font-size: 15px;
 
+}
+
+.modal-footer > button:hover {
+    transition: all 0.7s;
+    background-color: #2a9d8f;
 }
 
 
@@ -488,4 +499,5 @@ form {
 
 .xi-star {
   color: rgb(204, 44, 16);
+  font-size: 7px;
 }
