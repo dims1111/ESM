@@ -1,4 +1,5 @@
-from django.shortcuts import redirect, HttpResponseRedirect
+# from django.shortcuts import  redirect, HttpResponseRedirect,
+from django.http.response import HttpResponseRedirect, HttpResponse
 
 # 장고 로그아웃 처리를 위한 클래스 임포트
 from django.contrib.auth import logout as auth_logout
@@ -68,8 +69,11 @@ def sessionDecorator(orginalFunction):
       print('사용자 세션이 존재하지 않습니다. 로그인 화면으로 이동합니다.')
 
       # 세션이 삭제되면 로그인 화면으로 전환
-      # return redirect('/login')
-      return HttpResponseRedirect('/')
+      if 'application/json' in request.headers['Accept']:
+        return HttpResponse(status=403)
+        # HttpResponse({'cd': '905', 'msg': '세션 끊김'})
+      else:
+        return HttpResponseRedirect('/')
       
     else:
       # 화면 로딩시 url 확인 
