@@ -2110,3 +2110,36 @@ function gfn_getJsonChangedRows(_grd) {
   }
   return jsonArray;
 }
+
+
+// Excel download 함수
+function gfn_excelDownload(grid, fileName, sheetName) {
+  if (!fileName) {
+    fileName = grid.parent().prev().find('.search-title').text().trim();
+  }
+
+  if (!sheetName) {
+    sheetName = 'Sheet1';
+  }
+
+
+  RealGridJS.exportGrid({
+    type:"excel",
+    target:"local",
+    fileName: fileName +".xlsx",
+    compatibility: '2010',
+    done:function() {
+      alert("done excel export")
+    },
+    exportGrids:[
+      { 
+          grid: grid.gridView, //그리드 변수명
+          sheetName: sheetName // 다른 그리드와 중복되어서는 안된다.
+      }
+      // , {
+      //     grid:gridView2,
+      //     sheetName:"sheetName2"
+      // }
+    ]
+  });
+}
