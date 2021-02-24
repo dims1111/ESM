@@ -3,6 +3,12 @@
 {% block header %}
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'css/login.css' %}" />
+	<script>
+		$(function() {
+			// 최상단 window인지 체크
+			moveToLoginPage();
+		});
+	</script>
 {% endblock %}
 
 {% block contents %}
