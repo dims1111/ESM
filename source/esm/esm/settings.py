@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 from esm.module_settings.logger import * # logger
 import os
+import re
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,23 @@ SESSION_COOKIE_AGE = 600
 # 사용자의 요청이 존재하면 타임아웃 시간을 갱신
 SESSION_SAVE_EVERY_REQUEST = True
 
+
+# esm 자동 로딩
+def get_esm_app_list():
+    esm_app_list = []
+    path = os.path
+
+    for file in os.listdir(BASE_DIR):
+        file_path = path.join(BASE_DIR, file)
+        if path.isdir(file_path) and re.match('^esm_', file):
+            if (path.exists(path.join(file_path, 'apps.py'))):
+                esm_app_list.append(file)
+            else:
+                filtered_obj = filter(lambda x: path.isdir(path.join(file_path, x)) and path.exists(path.join(file_path, x, 'apps.py')), os.listdir(file_path))
+                mapped_obj = map(lambda x: file + '.' + x, filtered_obj)
+                esm_app_list += list(mapped_obj)
+    # print('추가된 apps List :', esm_app_list)
+    return esm_app_list
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -49,21 +67,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     ##### 전자식 복무관리 시스템 #####
-
-    # 로그인 / 로그아웃 / 홈
-    'esm_app',
-
-    # 공통 템플릿, 함수
-    'esm_com',
-
-    # 시스템관리
-    'esm_sys.esm_sys_1000',     # 사용자등록
-    'esm_sys.esm_sys_1010',     # 언어코드등록
-    'esm_sys.esm_sys_1020',     # 메뉴등록
-
-    # 개발
-    'esm_dev.esm_dev_1000',     # 테스트1
-]
+    # # 로그인 / 로그아웃 / 홈
+    # 'esm_app',
+    # # 공통 템플릿, 함수
+    # 'esm_com',
+    # # 시스템관리
+    # 'esm_sys.esm_sys_1000',     # 사용자등록
+    # 'esm_sys.esm_sys_1010',     # 언어코드등록
+    # 'esm_sys.esm_sys_1020',     # 메뉴등록
+    # # 개발
+    # 'esm_dev.esm_dev_1000',     # 테스트1
+] + get_esm_app_list()
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
