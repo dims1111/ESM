@@ -47,7 +47,7 @@
 
         var params = {
           url: "/esm_sys_1020/search",
-          grid: 'grid1', // or ['grid1', 'grid2', ...]
+          grid: "grid1", // or ['grid1', 'grid2', ...]
           mainParam: mainParam,
         };
 
@@ -55,46 +55,38 @@
         gfnGetGrdData(params);
         break;
       case "reset":
-        console.log("gubun ->", gubun);
         break;
       case "print":
-        console.log("gubun ->", gubun);
         break;
       case "batch":
-        console.log("gubun ->", gubun);
         break;
       case "save":
         var params = {
           url: "/esm_sys_1020/save",
-          grid: 'grid1', // or ['grid1']
+          grid: "grid1", // or ['grid1']
           // subParam: {},
         };
 
-        gfnSetGrdData(params, function() {
-          doAction1('search');
+        gfnSetGrdData(params, function () {
+          doAction1("search");
         });
       case "addRow":
-        // $(function(){
-
-        //   var rows = ["가수","여자"];
-        //   dataProvider.insertRows(0,rows, 0, -1);
-        //   console.log("test");
-        // });
-
-        console.log("gubun ->", gubun);
+        grid1.provider.insertRow(0, {});
         break;
       case "delRow":
-        console.log("gubun ->", gubun);
+        var curr = grid1.gridView.getCurrent();
+        if (curr.dataRow === -1) {
+          return alert("선택된 데이터가 없습니다.");
+        }
+        grid1.provider.removeRow(curr.dataRow);
         break;
       case "excelDownload":
-        console.log("gubun ->", gubun);
- 
         // grid1.gridView.exportGrid({
         //   type: "excel",
         //   target: "local",
         //   fileName: "gridExportSample.xlsx",
         //   showProgress: false,
-        //   applyDynamicStyles: false, 
+        //   applyDynamicStyles: false,
         //   progressMessage: "엑셀 Export중입니다.",
         //   indicator: 'default',
         //   header: 'default',
@@ -108,15 +100,10 @@
         // 엑셀 다운로드 함수 호출
         gfn_excelDownload(grid1);
 
-
         break;
 
       case "excelUpload":
         alert(gubun);
-
-
-
-
 
         break;
     }

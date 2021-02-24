@@ -21,9 +21,9 @@ $.fn.gfn_gridInit = function (columns, width, height) {
   });
   this.provider.setFields(fields);
 
-  // softDeleting: true이면 RowState만 deleted or createAndDeleted로 바꾼다. (바로 삭제하지 않음)
   this.provider.setOptions({
-    softDeleting: true,
+    softDeleting: true, // true이면 삭제 시 RowState만 deleted or createAndDeleted로 변경되고 행이 삭제되지 않음
+    deleteCreated: true, // 상태가 createAndDeleted인 데이터는 화면에서 바로 지움
   });
 
   initGridField(this, columns);
