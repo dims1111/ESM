@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------------------------
 # v1.0          2020-02-01       강정기       최초작성
 # #################################################################################################
+import json
 from django.http.response import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
@@ -27,6 +28,9 @@ from . models import SysMenuV
 
 # orm 파일 내 클래스 임포트
 from . orm import JsonData, doInsert, doUpdate, doDelete
+
+# json 및 날짜시간 클래스 임포트
+import json, datetime
 
 
 # 메뉴 클릭 후 첫 화면 오픈
@@ -81,35 +85,46 @@ def doSearch(request):
   except Exception as e:
     commParams = {'cd' : 'E', 'msg' : e.args[0], 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}}
  
-  # 화면 처리 후 정상 및 오류 메시지 출력
+  # 서버에서 처리한 결과 출력
   util.resultMsg(commParams)
-  commParams['data'] = list(querySet.values(
-    'menu_uid',
-    'menu_cd',
-    'menu_name_ko',
-    'menu_name_en',
-    'url',
-    'parent_menu_cd',
-    'icons',
-    'sort_order',
-    'use_yn',
-    'search_yn',
-    'add_row_yn',
-    'del_row_yn',
-    'save_yn',
-    'copy_yn',
-    'batch_yn',
-    'print_yn',
-    'excel_down_yn',
-    'excel_up_yn',
-    'remark',
-    'update_date_time',
-    'update_by'
-  ))
-  print(commParams)
+  
+  # 화면 처리 후 정상 및 오류 메시지 출력
+  if querySet.exists():  
+    commParams['data'] = list(querySet.values(
+      'menu_uid',
+      'menu_cd',
+      'menu_name_ko',
+      'menu_name_en',
+      'url',
+      'parent_menu_cd',
+      'icons',
+      'sort_order',
+      'use_yn',
+      'search_yn',
+      'add_row_yn',
+      'del_row_yn',
+      'save_yn',
+      'copy_yn',
+      'batch_yn',
+      'print_yn',
+      'excel_down_yn',
+      'excel_up_yn',
+      'remark',
+      'update_date_time',
+      'update_by'
+    ))
+
+  # 처리결과 공통 메시지 및 조회 데이터 리턴  
+  # jsonParams = json.dumps(commParams)
+  # print(jsonParams)
+  print(json.dumps(commParams, default = myconverter))
 
   return JsonResponse(commParams)
-  
+
+def myconverter(o):
+    if isinstance(o, datetime.datetime):
+        return o.__str__()
+
 
 # #################################################################################################
 # 저장 버튼
