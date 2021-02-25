@@ -512,7 +512,7 @@ this.gtn_setGridSumFooter = function (grd, sumTextColoumn, sumNumberColoumns) {
     footer: { visible: true },
   });
   grd.grid.setOptions({ summaryMode: "aggregate" });
-  if (!gfn_isNull(sumTextColoumn)) {
+  if (!gfnIsNull(sumTextColoumn)) {
     var t = sumTextColoumn.split(",");
     var col = grd.grid.columnByName(t[1]);
     col.footer = {};
@@ -545,10 +545,10 @@ this.gfn_setGridMultiFooter = function (grd, footerCount, footerHeight, sumTextC
   grd.grid.setOptions({ summaryMode: "aggregate" });
   for (var index = 0; index < sumTextColoumnArr.length; index++) {
     var sumTextColoumn = sumTextColoumnArr[index];
-    if (!gfn_isNull(sumTextColoumn)) {
+    if (!gfnIsNull(sumTextColoumn)) {
       var t = sumTextColoumn.split(",");
       var col = grd.grid.columnByName(t[1]);
-      if (gfn_isNull(col.footer.text)) {
+      if (gfnIsNull(col.footer.text)) {
         col.footer = {};
         col.footer.text = [t[0]];
       } else {
@@ -616,7 +616,7 @@ function gfn_getColumnNonNullCount(grd, columnName) {
   }
 
   for (var idx = 0; idx < rowCount; idx++) {
-    if (gfn_isNull(grd.grid.getValue(idx, columnName)) == false) {
+    if (gfnIsNull(grd.grid.getValue(idx, columnName)) == false) {
       count += 1;
     }
   }
@@ -631,7 +631,7 @@ function gfn_getColumnNonNullCount(grd, columnName) {
  * @param {*} start 병합을 시작할 컬럼의 인덱스
  */
 function gfn_mergeFooter(_grd, count, start) {
-  if (gfn_isNull(start)) start = 0;
+  if (gfnIsNull(start)) start = 0;
   var fields = _grd.provider.getFields();
   var mergeArr = [];
   // console.log(fields);
@@ -828,7 +828,7 @@ this.gfn_grdDelBtnDefault = function (grd, btnId) {
         grd.provider.hideRows(rows);
         grd.provider.removeRows(rows);
       } else {
-        gfn_noticeshow(ld.notice_modal, ld.delConfirmRow);
+        gfnNoticeModalShow(ld.notice_modal, ld.delConfirmRow);
       }
     } else {
       if (!confirm(ld.delConfirm)) return;
@@ -851,7 +851,7 @@ this.gfn_grdDelBtnDefault = function (grd, btnId) {
  */
 this.gfn_setSizeContentZone = function (f_w, f_h, gridStr, grdArr, otherHeight) {
   // alert();
-  if (gfn_isNull(otherHeight)) otherHeight = 0;
+  if (gfnIsNull(otherHeight)) otherHeight = 0;
   $(window)
     .on("resize", function () {
       var grdIds = gridStr.split(",");
@@ -1483,7 +1483,7 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     }
     column.renderer.showTooltip = true;
     grid.setColumn(column);
-    gfn_noticeshow("error", message);
+    gfnNoticeModalShow("error", message);
     return false;
   };
 };
@@ -1498,7 +1498,7 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
  * @param {*} typeCode db상에서 분기할 type code 명
  */
 this.gridCombo = function (ediname, grd, fieldName, typeCode) {
-  if (gfn_isNull(typeCode)) typeCode = "code_detail";
+  if (gfnIsNull(typeCode)) typeCode = "code_detail";
   var jsonData = {
     p_type_code: typeCode,
     p_magic_const: ediname,
@@ -1529,7 +1529,7 @@ this.gridCombo = function (ediname, grd, fieldName, typeCode) {
  * @param {*} codeValue 코드값
  */
 this.gridOptionCombo = function (grd, fieldName, typeCode, masterConst, detailConst, codeName, codeValue) {
-  if (gfn_isNull(typeCode)) typeCode = "code_detail_option_scholarship_code";
+  if (gfnIsNull(typeCode)) typeCode = "code_detail_option_scholarship_code";
   var jsonData = {
     p_type_code: typeCode,
     p_code_master_magic_const: masterConst,
@@ -1604,7 +1604,7 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
       var fName = dataset.addParam.fName;
       var result = eval("dataset." + dataName);
       var col = grd.grid.columnByName(fName);
-      if (gfn_isNull(col.editor) == true) {
+      if (gfnIsNull(col.editor) == true) {
         col.editor = {};
       }
       col.editor.type = "dropDown";
@@ -1626,7 +1626,7 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
       var data = dataset.accntUnitData;
 
       var col = grd.grid.columnByName(fName);
-      if (gfn_isNull(col.editor) == true) {
+      if (gfnIsNull(col.editor) == true) {
         col.editor = {};
       }
       col.editor.type = "dropDown";
@@ -1665,7 +1665,7 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
       var fName = dataset.addParam.fName;
       var result = dataset.sch_detail_data;
       var col = grd.grid.columnByName(fName);
-      if (gfn_isNull(col.editor) == true) {
+      if (gfnIsNull(col.editor) == true) {
         col.editor = {};
       }
       col.editor.type = "dropDown";
@@ -1735,7 +1735,7 @@ this.gfn_setNumCombo = function (grd, colName, maxNum) {
     col.labels.push(idx);
     col.values.push(idx);
   }
-  if (gfn_isNull(col.editor) == true) {
+  if (gfnIsNull(col.editor) == true) {
     col.editor = {};
   }
   col.editor.type = "dropDown";
@@ -1794,14 +1794,14 @@ this.gfn_isProcessCheckFalse = function (_grd, process_col, process_uid_arr, dis
   //   else {
   //     checkable = false;
   //     for (var i = 0; i < process_uid_arr.length; i++) {
-  //       if (process_uid_arr[i] == process_val || gfn_isNull(process_val)) {
+  //       if (process_uid_arr[i] == process_val || gfnIsNull(process_val)) {
   //         checkable = true;
   //       }
   //     }
   //   }
 
   //   if (!checkable) {
-  //     gfn_noticeshow(ld.notice_modal, ld.notDelete_selectedRow);
+  //     gfnNoticeModalShow(ld.notice_modal, ld.notDelete_selectedRow);
   //     grid.checkItem(itemIndex, false, false, false);
   //     // grid.setCheckable(itemIndex, false);
   //   }
@@ -1835,7 +1835,7 @@ this.gfn_isProcessEditFalse = function (_grd, process_col, process_uid_arr, disa
         }
       } else {
         for (var j = 0; j < grid.process_uid_arr.length; j++) {
-          if (process_val == grid.process_uid_arr[j] || gfn_isNull(process_val)) {
+          if (process_val == grid.process_uid_arr[j] || gfnIsNull(process_val)) {
             ret.editable = true;
           } else {
             ret.editable = false;
@@ -1859,7 +1859,7 @@ this.gfn_isProcessEditFalse = function (_grd, process_col, process_uid_arr, disa
  * @param {*} callBack
  */
 this.gfn_setAccntCombo = function (grd, fieldName, position, isSync, callBack) {
-  if (gfn_isNull(callBack)) {
+  if (gfnIsNull(callBack)) {
     callBack = "gridComboCallBack";
   }
   gfn_ajaxTransaction(
@@ -1918,7 +1918,7 @@ this.gfn_request_check = function (grd, p_student_number, p_bank_account_number,
   var rowCount = grd.grid.getItemCount();
 
   if (rowCount <= 0) {
-    gfn_noticeshow(ld.notice_modal, ld.request_check_msg);
+    gfnNoticeModalShow(ld.notice_modal, ld.request_check_msg);
     return false;
   }
 
@@ -1930,7 +1930,7 @@ this.gfn_request_check = function (grd, p_student_number, p_bank_account_number,
 
     // sch_fos_1100 의 process_status_code_uid 가 id 가 달라서 예외처리
     // TODO: sch_fos_1100 에서 id 를 맞춰주거나, 여기 하드코드 된 것을 제거해야 함.
-    //if (gfn_isNull(process_status)) {
+    //if (gfnIsNull(process_status)) {
     //process_status = grd.grid.getValue(idx, 'process_status_uid');
     //}
 
@@ -1948,9 +1948,9 @@ this.gfn_request_check = function (grd, p_student_number, p_bank_account_number,
         "\n"
     );
 
-    if (gfn_isNull(bank_account_number) || gfn_isNull(vendor_site_id) || vendor_site_id == 0 || vendor_site_id == -1) {
-      if (gfn_isNull(process_status)) {
-        gfn_noticeshow(ld.notice_modal, student_number + ld.request_check_msg2);
+    if (gfnIsNull(bank_account_number) || gfnIsNull(vendor_site_id) || vendor_site_id == 0 || vendor_site_id == -1) {
+      if (gfnIsNull(process_status)) {
+        gfnNoticeModalShow(ld.notice_modal, student_number + ld.request_check_msg2);
         return false;
       }
     }
@@ -2007,7 +2007,7 @@ function gfn_checkSaveData(grid) {
   /*
   var jsonData = gfn_getJsonChangedRows(grid);
   if (jsonData.length == 0) {
-    gfn_noticeshow(ld.notice_modal, ld.nothingSave);
+    gfnNoticeModalShow(ld.notice_modal, ld.nothingSave);
     return false;
   }
   */
@@ -2026,7 +2026,7 @@ function gfn_saveValidate(grid) {
       message += (itemIndex + 1).toString() + " " + ld.row + " " + log[i].message + "\n";
     }
 
-    // gfn_noticeshow("error", message);
+    // gfnNoticeModalShow("error", message);
     alert(message);
     return false;
   }
@@ -2037,7 +2037,7 @@ function gfn_gridCommit(grid) {
     grid.gridView.commit(false);
     return true;
   } catch (e) {
-    // gfn_noticeshow("error", e.message);
+    // gfnNoticeModalShow("error", e.message);
     alert('gridView 커밋 도중 에러 발생');
     return false;
   }
@@ -2062,7 +2062,7 @@ function gfn_getJsonChangedRows(_grd) {
 
     var keys = _grd.provider.getOrgFieldNames();
 
-    if (keys.indexOf("err_msg") > -1 && !gfn_isNull(jsonObj.err_msg)) {
+    if (keys.indexOf("err_msg") > -1 && !gfnIsNull(jsonObj.err_msg)) {
       continue;
     }
 

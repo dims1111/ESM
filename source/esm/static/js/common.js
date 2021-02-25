@@ -30,7 +30,7 @@ function moveToLoginPage() {
 }
 
 // 숫자 마스킹
-function makeComma(str) {
+function gfnMakeComma(str) {
 	var num = Number(str);
 	return isNaN(num) ? str : num.toLocaleString();
 }
