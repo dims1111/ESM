@@ -314,23 +314,32 @@ function gfnGetGrdData(params, callback) {
       async: params.aync || defaultAsync,
       dataType: "json",
       success: function (res) {
-        if (res) {
-          // 에러가 발생할 경우 모달 출력
-          if (res.cd === "E") {
+        console.log("res =>", res)
+        if (res) {          
+          // 오류가 존재하지 않을 경우 데이터 출력 및 건수 표기
+          if (res.msg == '' || res.msg == null || res.msg == undefined) {
+            // 데이터가져오기
+            var result = res.data;
+
+            // 임시로 여기서 메뉴 건수 추가함
+            var titleCnt = makeComma(result.length) + '건';
+            window[grid].closest('.grid').find('.grid-title__cnt').text(titleCnt);
+
+            // console.log(result);
+            window[grid].provider.setRows(result);
+          
+            // 콜백함수 호출  
+            if (callback) {
+              callback(); 
+            }
+          } else {
+            // 오류 또는 정상이지만 메시지가 존재하면 파업 메시지 출력
             $("#myModal #contents").html(res.msg);
             $("#myModal").modal("show");
-            return;
+            if (res.cd === "E") {
+              return;
+            }
           }
-
-          // 데이터가져오기
-          var result = res.data;
-
-          // 임시로 여기서 메뉴 건수 추가함
-          var titleCnt = makeComma(result.length) + '건';
-          window[grid].closest('.grid').find('.grid-title__cnt').text(titleCnt);
-
-          // console.log(result);
-          window[grid].provider.setRows(result);
         }
       },
       error: function (req, status, err) {
@@ -342,11 +351,7 @@ function gfnGetGrdData(params, callback) {
         // 에러체킹 후 return할 예정
         return;
       },
-    });
-
-    if (callback) {
-      callback(); // 콜백함수 호출
-    }
+    });    
   }
 }
 

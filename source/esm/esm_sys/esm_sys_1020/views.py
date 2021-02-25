@@ -83,8 +83,30 @@ def doSearch(request):
  
   # 화면 처리 후 정상 및 오류 메시지 출력
   util.resultMsg(commParams)
-  commParams['data'] = list(querySet.values())
-  # print(commParams)
+  commParams['data'] = list(querySet.values(
+    'menu_uid',
+    'menu_cd',
+    'menu_name_ko',
+    'menu_name_en',
+    'url',
+    'parent_menu_cd',
+    'icons',
+    'sort_order',
+    'use_yn',
+    'search_yn',
+    'add_row_yn',
+    'del_row_yn',
+    'save_yn',
+    'copy_yn',
+    'batch_yn',
+    'print_yn',
+    'excel_down_yn',
+    'excel_up_yn',
+    'remark',
+    'update_date_time',
+    'update_by'
+  ))
+  print(commParams)
 
   return JsonResponse(commParams)
   
@@ -161,12 +183,4 @@ def doPrint(request):
 # #################################################################################################
 @util.sessionDecorator
 def doExcelDown(request):
-  return render(request, 'esm_sys/esm_sys_1020.html')
-
-
-# #################################################################################################
-# 엑셀다운로드 버튼
-# #################################################################################################
-@util.sessionDecorator
-def doExcelUp(request):
   return render(request, 'esm_sys/esm_sys_1020.html')

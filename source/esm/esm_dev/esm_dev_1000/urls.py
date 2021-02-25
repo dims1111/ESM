@@ -6,6 +6,4 @@ urlpatterns = [
     path('search', views.doSearch),
     path('print', views.doPrint),
     path('save', views.doSave),
-    path('excelDown', views.doExcelDown),
-    path('excelUp', views.doExcelUp),
 ]

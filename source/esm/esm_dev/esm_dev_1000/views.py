@@ -159,11 +159,3 @@ def doPrint(request):
 @util.sessionDecorator
 def doExcelDown(request):
     return render(request, 'esm_sys/esm_sys_1020.html')
-
-
-# #################################################################################################
-# 엑셀다운로드 버튼
-# #################################################################################################
-@util.sessionDecorator
-def doExcelUp(request):
-    return render(request, 'esm_sys/esm_sys_1020.html')

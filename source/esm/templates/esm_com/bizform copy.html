@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Learn more about this tag here: https://www.w3schools.com/css/css_rwd_viewport.asp -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Learn more about this tag here: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/jj676915(v=vs.85)?redirectedfrom=MSDN -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- Minified bootstrap css  -->
+
+    <title>전자식 복무관리 시스템</title>
+
+    {% load static %}
+    <!-- Jquery -->
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
+
+    <!-- 구글 웹폰트 적용('Noto Sans KR') -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+
+    <!-- xeicon -->
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" />
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    {% load random_numbers %}
+    <link rel="stylesheet" href="{% static 'css/bizform.css'%}?v={% random_number %}" />
+
+    <!-- Material 웹폰트 적용 -->
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined">
+
+    <!-- css var 관련 포니필 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+
+    <!-- 공통 자바스크립트 -->
+    <script src="{% static 'js/common.js' %}"></script>
+
+    <!-- jquery 커스터마이징 -->
+    <script src="{% static 'js/ajax.js' %}"></script>
+
+    <!-- 리얼그리드 -->
+    <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs-lic.js'%}"></script>
+    <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs_eval.1.1.36.min.js'%}"></script>
+    <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs-api.1.1.36.js'%}"></script>
+    <script type="text/javascript" src="{% static '/plugins/realgridjs/jszip.min.js'%}"></script>
+
+    <!-- 부트스트랩 DatePicker -->
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.min.css' %}"/>
+    <script type="text/javascript" src="{% static 'plugins/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static '/js/lib/comConstants.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comDate.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comExcel.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comForm.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comGrid.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comReport.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comTrans.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comUtil.js'%}"></script>
+    <script type="text/javascript" src="{% static '/js/lib/comModal.js'%}"></script>
+
+    <style>
+    </style>
+
+
+    {% block header %} {% endblock %}
+  </head>
+
+  <body>
+    
+      {% block contents %} {% endblock %}
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content ">
+            <div class="modal-header" >
+              <i class="xi-error-o xi-2x"></i>
+              <h5 class="modal-title" id="myModalLabel">&nbsp;오류 내용</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div id="contents" class="modal-body">
+              
+            </div>
+            <div class="modal-footer" >
+              <button type="button" class="btn_sub active" data-dismiss="modal"><i class="xi-close-min"> 닫기</i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    <script>
+      cssVars(); // css var 포니필 적용
+      RealGridJS.setRootContext("{% static '/plugins/realgridjs' %}");
+
+      $(function () {
+        // Modal 이동
+        $("#myModal").draggable({
+          handle: ".modal-header",
+          // containment: ".modal-open",
+          // scroll: false          
+        });
+      });
+    </script>
+  </body>
+</html>
