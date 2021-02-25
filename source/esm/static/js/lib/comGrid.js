@@ -40,7 +40,7 @@ $.fn.gfn_gridInit = function (columns, width, height) {
 
   // 엔터키 입력 시 다음 줄 첫번째 컬럼으로 커서 옮기기
   this.gridView.onKeyDown = function (gridView, key, ctrl, shift, alt) {
-    if (key === 13 || key == 9) {
+    if (key === 13) { //key==9 (Tab)키 제거 : Tab키 이벤트 발생 시 그리드 아래가 아닌 오른쪽으로 이동을 위해 제거.
       var currentCell = gridView.getCurrent();
       var columns = gridView.getColumns();
 
@@ -59,6 +59,7 @@ $.fn.gfn_gridInit = function (columns, width, height) {
       gridView.setFocus();
       return false;
     }
+
   };
   return this;
 };
@@ -311,8 +312,8 @@ function initGridStyle($grid) {
       borderBottom: "#d5d5d5, 1",
 
       background: "#fffcfa",
-      paddingTop: "5",
-      paddingBottom: "5",
+      paddingTop: "10",
+      paddingBottom: "10",
 
       // 그리드 헤더 글자 굵게
       // "fontBold": true,

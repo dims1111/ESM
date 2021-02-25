@@ -1,6 +1,105 @@
 {% extends "esm_com/bizform.html" %} 
 {% load static %} 
 {% block header %} 
+
+<script>
+	var grid1;
+	$(function () {
+	  grid1 = $("#grid1").gfn_gridInit([
+		{ name: "menu_uid",         fieldName: "menu_uid",         header: { text: "공통코드" },      		width: 250, required: true },
+		{ name: "parent_menu_cd",   fieldName: "parent_menu_cd",   header: { text: "코드명(한글)" }, 		width: 80 , required: true },
+		{ name: "menu_cd",          fieldName: "menu_cd",          header: { text: "코드명(영문)" },     	width: 80 , required: true },
+		{ name: "menu_name_ko",     fieldName: "menu_name_ko",     header: { text: "시작일자" }, 			width: 180, required: true },
+		{ name: "menu_name_en",     fieldName: "menu_name_en",     header: { text: "종료일자" }, 			width: 220 },
+		{ name: "url",              fieldName: "url",              header: { text: "비고" },          		width: 190 },
+	  ]);
+	});
+  
+	/* action1에대한 기능 */
+	function doAction1(gubun) {
+	  switch (gubun) {
+		/* 조회 */
+		case "search":
+		  var menuName = $("#menuName").val();
+		  var url = $("#url").val();
+		  var useYn = $("#useYn").is(":checked") ? "1" : "0";
+  
+		  // 화면 조회조건 항목별 값 
+		  var mainParam = {
+			menuName: menuName,
+			url: url,
+			useYn: useYn,
+		  };
+		  console.log("mainParam ->", mainParam);
+  
+		  // 조회조건, url, grid
+		  var params = {
+			url: "/esm_sys_1020/search",
+			grid: "grid1", // or ['grid1', 'grid2', ...]
+			mainParam: mainParam,
+		  };
+  
+		  // 그리드 조회
+		  // 라이브러리 경로 : \static\js\lib\comTrans.js
+		  gfnGetGrdData(params);
+		  break;
+  
+		// 초기화
+		case "reset": 
+		  break;
+  
+		// 출력
+		case "print":
+		  break;
+  
+		// 복사
+		case "copy":
+		  break;
+  
+		// 생성
+		case "batch":
+		  break;
+  
+		// 저장
+		case "save":
+		  var params = {
+			url: "/esm_sys_1020/save",
+			grid: "grid1", // or ['grid1']
+			// subParam: {},
+		  };
+  
+		  gfnSetGrdData(params, function () {
+			doAction1("search");
+		  });
+  
+		// 행추가
+		case "addRow":
+		  grid1.provider.insertRow(0, {});
+		  break;
+  
+		// 행삭제  
+		case "delRow":
+		  var curr = grid1.gridView.getCurrent();
+		  if (curr.dataRow === -1) {
+			return alert("선택된 데이터가 없습니다.");
+		  }
+		  grid1.provider.removeRow(curr.dataRow);
+		  break;
+  
+		// 엑셀다운로드
+		case "excelDownload":        
+		  gfn_excelDownload(grid1);
+		  break;
+  
+		// 엑셀업로드
+		case "excelUpload":
+		  alert(gubun);
+		  break;
+	  }
+	}
+  </script>
+
+
 {% endblock %}
 {% block contents %}
 <div class="container-fluid d-flex flex-column p-0 h-100">

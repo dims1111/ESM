@@ -440,7 +440,7 @@ body {
 }
 
 .grid {
-  /* 아직 내용 없음 */
+  display: flex;
 }
 .grid-title {
   display: inline-flex;
@@ -479,7 +479,7 @@ form {
 
 .modal-backdrop {
   z-index: 2500;
-  background-color: #d7e8da;
+  background-color: #000;
 }
 
 
@@ -495,8 +495,16 @@ form {
   cursor: move;
   background-color: #259e90;
   color: #eaf5ec;
-  font-size: 14px;
-  
+  font-size: 13px;
+  height: 34px;
+}
+
+.xi-error-o, .modal-title {
+  margin-top: -10px;
+}
+
+#cls {
+  margin-top: -20px;
 }
 
 
@@ -510,9 +518,11 @@ form {
 
   border-top: 1px solid #1d7268;
   background-color: #fafafa;
-  
+  width: 400px;
+  margin-left: 50px;
 
 }
+
 
 .modal-header > button{
   color: #eefcfa
