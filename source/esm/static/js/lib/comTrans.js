@@ -315,7 +315,7 @@ function gfnGetGrdData(params, callback) {
         console.log("res =>", res)
         if (res) {          
           // 오류가 존재하지 않을 경우 데이터 출력 및 건수 표기
-          if (res.msg == '' || res.msg == null || res.msg == undefined) {
+          if (!res.msg) {
             // 데이터가져오기
             var result = res.data;
 
@@ -377,7 +377,7 @@ function gfnSetGrdData(params, callback) {
     $.ajax({
       type: "POST",
       url: params.url,
-      data: data,
+      data: JSON.stringify(data),
       async: params.aync || defaultAsync,
       dataType: "json",
       success: function (res) {
