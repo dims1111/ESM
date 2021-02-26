@@ -15,7 +15,7 @@ create table esm.sys_menu
   ,use_yn                     varchar2(0001) default 'Y' not null
   ,search_yn                  varchar2(0001) default 'Y' not null
   ,add_row_yn                 varchar2(0001) default 'Y' not null
-  ,delete_row_yn              varchar2(0001) default 'Y' not null
+  ,del_row_yn              varchar2(0001) default 'Y' not null
   ,save_yn                    varchar2(0001) default 'Y' not null
   ,copy_yn                    varchar2(0001) default 'Y' not null
   ,batch_yn                   varchar2(0001) default 'Y' not null
@@ -78,7 +78,7 @@ comment on column esm.sys_menu.sort_order                  is '정렬순서';
 comment on column esm.sys_menu.use_yn                      is '사용여부(Y/N)';
 comment on column esm.sys_menu.search_yn                   is '조회여부(Y/N)';
 comment on column esm.sys_menu.add_row_yn                  is '행추가여부(Y/N)';
-comment on column esm.sys_menu.delete_row_yn               is '행삭제여부(Y/N)';
+comment on column esm.sys_menu.del_row_yn                  is '행삭제여부(Y/N)';
 comment on column esm.sys_menu.save_yn                     is '저장여부(Y/N)';
 comment on column esm.sys_menu.copy_yn                     is '자료복사여부(Y/N)';
 comment on column esm.sys_menu.batch_yn                    is '자료생성여부(Y/N)';

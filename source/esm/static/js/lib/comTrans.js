@@ -1,6 +1,4 @@
 /**
- *
- *
  * 그리드 변수명은 반드시 grd로 시작할것!!!!!!!!!!!!!!!!!!!!!!
  * @param {*} svcID callBack ID
  * @param {*} callUrl 호출할 url
@@ -19,12 +17,12 @@
  */
 function gfn_ajaxTransaction(svcID, callUrl, inDatasets, outDatasets, argument, callbackFunc, callbackParams, showProgress, async) {
   // this.console.log("gfn_ajaxTransaction..........")
-  if (this.gfn_isNull(argument)) argument = "";
-  if (this.gfn_isNull(callbackFunc)) callbackFunc = "fn_callBack";
-  if (this.gfn_isNull(showProgress)) showProgress = true;
-  if (this.gfn_isNull(async)) async = true;
-  if (this.gfn_isNull(callbackParams)) cbParams = null;
-  if (showProgress) loadshow();
+  if (this.gfnIsNull(argument)) argument = "";
+  if (this.gfnIsNull(callbackFunc)) callbackFunc = "fn_callBack";
+  if (this.gfnIsNull(showProgress)) showProgress = true;
+  if (this.gfnIsNull(async)) async = true;
+  if (this.gfnIsNull(callbackParams)) cbParams = null;
+  if (showProgress) gfnLoadshow();
   // console.log(callbackParams);
   var sendObj = new Object();
   var transinfo = new Object();
@@ -63,10 +61,10 @@ function gfn_ajaxTransaction(svcID, callUrl, inDatasets, outDatasets, argument, 
         location.href = "/login?next=/static/dev/codereview.html";
       }
       if (showProgress) {
-        loadhide();
+        gfnLoadhide();
         try {
           if (parent.window) {
-            parent.window.loadhide();
+            parent.window.gfnLoadhide();
           }
         } catch (error) {}
       }
@@ -76,10 +74,10 @@ function gfn_ajaxTransaction(svcID, callUrl, inDatasets, outDatasets, argument, 
       // console.log("status.." + status);
       // console.log("err.." + err);
       // alert('error')
-      loadhide();
+      gfnLoadhide();
       try {
         if (parent.window) {
-          parent.window.loadhide();
+          parent.window.gfnLoadhide();
         }
       } catch (error) {}
       if (req.status == "403") {
@@ -87,7 +85,7 @@ function gfn_ajaxTransaction(svcID, callUrl, inDatasets, outDatasets, argument, 
       } else if (req.status === 0 && req.statusText === "abort") {
         //abort
       } else {
-        waringshow(ld.notice_modal, "이메시지를 만나면 화면이름과 호출 명등을 알려 주세요" + err + req.responseText);
+        gfnErrorModalShow(ld.notice_modal, "이메시지를 만나면 화면이름과 호출 명등을 알려 주세요" + err + req.responseText);
       }
     },
   });
@@ -96,7 +94,7 @@ function gfn_ajaxTransaction(svcID, callUrl, inDatasets, outDatasets, argument, 
 
 this.gfn_makeProcdata = function (inDatasets) {
   var procdata = new Object();
-  if (!this.gfn_isNull(inDatasets)) {
+  if (!this.gfnIsNull(inDatasets)) {
     var arrDatasets = inDatasets.split(" ");
     // this.alert("?")
     for (var i = 0; i < arrDatasets.length; i++) {
@@ -135,7 +133,7 @@ this.gfn_makeProcdata = function (inDatasets) {
 };
 
 this.gfn_setInOutDatasets = function (outDatasets, inDatasets, data) {
-  if (!gfn_isNull(outDatasets)) {
+  if (!gfnIsNull(outDatasets)) {
     var arrOutDataset = outDatasets.split(" ");
     for (var i = 0; i < arrOutDataset.length; i++) {
       var arr = arrOutDataset[i].split("=");
@@ -145,7 +143,7 @@ this.gfn_setInOutDatasets = function (outDatasets, inDatasets, data) {
         treeProvider.fillJsonData(darr, { rows: "rows", icon: "icon" });
       } else if (arr[0].substring(0, 3) == "grd") {
         var cursor = 0;
-        if (!gfn_isNull(data.cursor)) {
+        if (!gfnIsNull(data.cursor)) {
           cursor = data.cursor;
         }
         _grd = window[arr[0]];
@@ -164,7 +162,7 @@ this.gfn_setInOutDatasets = function (outDatasets, inDatasets, data) {
       }
     }
   }
-  if (!gfn_isNull(inDatasets)) {
+  if (!gfnIsNull(inDatasets)) {
     var arrDatasets = inDatasets.split(" ");
     for (var i = 0; i < arrDatasets.length; i++) {
       var arrDataset = arrDatasets[i].split("=");
@@ -188,7 +186,7 @@ this.gfn_setInOutDatasets = function (outDatasets, inDatasets, data) {
  */
 this.gfn_transactionCallBack = function (svcID, errorCode, errorMsg, cbParams) {
   // console.log(svcID);
-  // loadhide();
+  // gfnLoadhide();
 
   var arrSvcID = svcID.split("|");
 
@@ -198,9 +196,9 @@ this.gfn_transactionCallBack = function (svcID, errorCode, errorMsg, cbParams) {
     alert(errorMsg);
   }
 
-  if (arrSvcID.length > 1 && !this.gfn_isNull(arrSvcID[1])) {
+  if (arrSvcID.length > 1 && !this.gfnIsNull(arrSvcID[1])) {
     var strExpr = "this." + arrSvcID[1] + "('" + arrSvcID[0] + "', " + errorCode + ", '" + errorMsg + "')";
-    if (!this.gfn_isNull(cbParams) == true) {
+    if (!this.gfnIsNull(cbParams) == true) {
       dataset.addParam = cbParams;
     } else {
       dataset.addParam = null;
@@ -253,14 +251,14 @@ this.err_check_json = function (_data) {
   r_desc = _data.resdesc;
   if (r_cd < 0) {
     // if (parent.window) {
-    //     parent.window.loadhide();
+    //     parent.window.gfnLoadhide();
     // }
 
     // else {
-    //     loadhide();
+    //     gfnLoadhide();
     // }
 
-    waringshow(ld.notice_modal, r_desc);
+    gfnErrorModalShow(ld.notice_modal, r_desc);
   }
 
   result["r_cd"] = r_cd;
@@ -322,7 +320,7 @@ function gfnGetGrdData(params, callback) {
             var result = res.data;
 
             // 임시로 여기서 메뉴 건수 추가함
-            var titleCnt = makeComma(result.length) + '건';
+            var titleCnt = gfnMakeComma(result.length) + '건';
             window[grid].closest('.grid').find('.grid-title__cnt').text(titleCnt);
 
             // console.log(result);

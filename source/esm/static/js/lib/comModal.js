@@ -26,7 +26,7 @@ function gfn_getiframeDocument(frmname, parents) {
 function setModalButton(obj) {
     var btn = '';
     for (var index = 0; index < obj.length; index++) {
-        if (gfn_isNull(obj[index].color)) {
+        if (gfnIsNull(obj[index].color)) {
             obj[index].color = 'red';
         }
 
@@ -62,7 +62,7 @@ function gfn_setModal(set) {
     var title = set.modal_title;
 
     var button = '';
-    if (gfn_isNull(set.modal_button) == false) {
+    if (gfnIsNull(set.modal_button) == false) {
         button = setModalButton(set.modal_button);
     }
 
@@ -126,7 +126,7 @@ function gfn_openModal(modalId, _url, innerFn, args, shownFn, shownArgs) {
         frame = $(this).attr("id");
     });
 
-    loadshow();
+    gfnLoadshow();
     $("#" + frame).attr("src", _url);
     $("#" + frame).on("load", function () {
         if (innerFn == '' || innerFn == null || innerFn == undefined) {
@@ -135,7 +135,7 @@ function gfn_openModal(modalId, _url, innerFn, args, shownFn, shownArgs) {
             innerFn(args);
         }
 
-        loadhide();
+        gfnLoadhide();
         $("#" + modalId).modal("show");
     });
 
@@ -167,7 +167,7 @@ function gfn_openModal(modalId, _url, innerFn, args, shownFn, shownArgs) {
 */
 function gfn_openInnerModal(modalId, _url, innerFn, args, shownFn, shownArgs, pNode) {
 
-    if (gfn_isNull(pNode)) {
+    if (gfnIsNull(pNode)) {
         pNode = 1;
     }
 

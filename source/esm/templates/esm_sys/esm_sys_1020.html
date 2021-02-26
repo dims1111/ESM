@@ -63,7 +63,9 @@
         break;
 
       // 초기화
-      case "reset": 
+      case "reset":
+        console.log(gubun)
+        document.getElementById("menuName").values='';
         break;
 
       // 출력
@@ -85,11 +87,11 @@
           grid: "grid1", // or ['grid1']
           // subParam: {},
         };
-
+        
         gfnSetGrdData(params, function () {
           doAction1("search");
         });
-
+        break;
       // 행추가
       case "addRow":
         grid1.provider.insertRow(0, {});

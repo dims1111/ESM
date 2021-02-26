@@ -16,7 +16,7 @@ select lpad(' ', 2 * (level - 1)) || sm.menu_name_ko          as menu_name_ko_di
 	  ,sm.use_yn
 	  ,sm.search_yn
 	  ,sm.add_row_yn
-	  ,sm.delete_row_yn
+	  ,sm.del_row_yn
 	  ,sm.save_yn
 	  ,sm.copy_yn
 	  ,sm.batch_yn

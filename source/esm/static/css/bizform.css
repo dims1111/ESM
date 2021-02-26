@@ -440,7 +440,7 @@ body {
 }
 
 .grid {
-  /* 아직 내용 없음 */
+  display: flex;
 }
 .grid-title {
   display: inline-flex;

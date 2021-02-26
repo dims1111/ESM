@@ -18,10 +18,9 @@ from esm_com import util
 from esm_sys.esm_sys_1020.models import SysMenuV
 
 # orm 파일 내 클래스 임포트
-from esm_sys.esm_sys_1020.orm import JsonData, doInsert, doUpdate, doDelete
+from esm_sys.esm_sys_1020.orm import doInsert, doUpdate, doDelete
 
 # 데코레이트 클래스 임포트
-from django.utils.decorators import method_decorator
 import json
 
 # #################################################################################################

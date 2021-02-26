@@ -74,21 +74,19 @@ def sessionDecorator(orginalFunction):
 
       absouluteRoot = request.build_absolute_uri("/")[:-1].strip("/")
       absouluteRoot = absouluteRoot + '/login'
-      print("absouluteRoot =>", absouluteRoot)
-      
+      # print("absouluteRoot =>", absouluteRoot)      
 
       # 세션이 삭제되면 로그인 화면으로 전환
       if 'application/json' in request.headers['Accept']:
         return HttpResponse(status=403)
         # HttpResponse({'cd': '905', 'msg': '세션 끊김'})
       else:
-        return HttpResponseRedirect('/')
-      
+        return HttpResponseRedirect('/')      
     else:
       # 화면 로딩시 화면에 대한 URI를 값을 받아 뒷자리 '/' 제거 후 URL만 추출
       absoluteURI = (request.build_absolute_uri())[:-1].strip("/")
       url = absoluteURI[absoluteURI.rfind('/'):]
-      print ("url =>", url)
+      # print ("url =>", url)
 
       # 함수 및 변수 값 초기화
       orginalFucntionCall = None
@@ -103,7 +101,7 @@ def sessionDecorator(orginalFunction):
           
           # 버튼에 대한 사용여부 확인
           for ca in querySet:
-            kwargs = {
+            kwargs['buttonShowHide'] = {
               'searchBtn'    : ca.search_yn,
               'addRowBtn'    : ca.add_row_yn,
               'delRowBtn'    : ca.del_row_yn,
@@ -116,7 +114,7 @@ def sessionDecorator(orginalFunction):
             }
 
         except Exception as e:
-          kwargs = {
+          kwargs['buttonShowHide'] = {
             'searchBtn'    : 'N',
             'addRowBtn'    : 'N',
             'delRowBtn'    : 'N',
@@ -128,6 +126,9 @@ def sessionDecorator(orginalFunction):
             'excelUpBtn'   : 'N',
           }
 
+      # 화면별 공통메시지 초기화 변수
+      kwargs['commParams'] = {'cd': 'S', 'msg': '', 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}} 
+      
       # wrapperFunction 정상적으로 처리되면 orginalFunction에 값 할당
       orginalFucntionCall = orginalFunction(request, *args, **kwargs)
 
