@@ -7,7 +7,8 @@
 # -------------------------------------------------------------------------------------------------
 # v1.0          2020-02-01       강정기       최초작성
 # #################################################################################################
-from django.http.response import HttpResponseRedirect, JsonResponse
+import json
+from django.http.response import JsonResponse
 from django.shortcuts import render
 
 # 장고 모델에서 필터 처리를 위한 Q 클래스 임포트
@@ -26,7 +27,7 @@ from esm_com import util
 from . models import SysMenuV
 
 # orm 파일 내 클래스 임포트
-from . orm import JsonData, doInsert, doUpdate, doDelete
+from . orm import doInsert, doUpdate, doDelete
 
 
 # 메뉴 클릭 후 첫 화면 오픈
@@ -121,38 +122,46 @@ def doSave(request, *args, **kwargs):
 
   # 사용자정보 할당
   commParams['userInfo'] = {'userId': request.session['user_id']}
+  
+  try:
+    print("=================사용자정보 할당================================")
+    json_data = json.loads(request.body)
+    print("json_data =>", json_data)
 
-  # one 트랜잭션 설정을 위한 세이브포인트 할당
-  with transaction.atomic():
-    try:
+    insertedData = json_data.get('grid1').get('inserted')
+    updatedData = json_data.get('grid1').get('updated')
+    deletedData = json_data.get('grid1').get('deleted')
+
+    # one 트랜잭션 설정을 위한 세이브포인트 할당
+    with transaction.atomic():
       # 삭제 데이터가 존재하면 저장
-      if JsonData.deleteDataList is not None:
-        commParams = doDelete(JsonData.deleteDataList, commParams)
+      if deletedData is not None:
+        commParams = doDelete(deletedData, commParams)
         # 오류가 발생하면 롤백처리
         if commParams['cd'] == 'E':
           raise langMsg.userException(commParams['msg'])
 
       # 신규 데이터가 존재하면 저장
-      if JsonData.insertDataList is not None:
-        commParams = doInsert(JsonData.insertDataList, commParams)
+      if insertedData is not None:
+        commParams = doInsert(insertedData, commParams)
         # 오류가 발생하면 롤백처리
         if commParams['cd'] == 'E':
           raise langMsg.userException(commParams['msg'])
 
       # 수정 데이터가 존재하면 저장
-      if JsonData.updateDataList is not None:
-        commParams = doUpdate(JsonData.updateDataList, commParams)
+      if updatedData is not None:
+        commParams = doUpdate(updatedData, commParams)
         # 오류가 발생하면 롤백처리
         if commParams['cd'] == 'E':
           raise langMsg.userException(commParams['msg'])
 
-    except (langMsg.userException, Exception) as e:
-      commParams['msg'] = e.args[0]
+    # 화면 처리 후 정상 및 오류 메시지 출력
+    if commParams['cd'] == 'S':
+      langMsg.msgParam['errNum'] = 'INF-1000'
+      commParams['msg'] = langMsg.errMsg()
 
-  # 화면 처리 후 정상 및 오류 메시지 출력
-  if commParams['cd'] == 'S':
-    langMsg.msgParam['errNum'] = 'INF-1000'
-    commParams['msg'] = langMsg.errMsg()
+  except (langMsg.userException, Exception) as e:
+    commParams['msg'] = e.args[0]
 
   # 서버에서 처리한 결과를 터미널에 출력
   util.resultMsg(commParams)
