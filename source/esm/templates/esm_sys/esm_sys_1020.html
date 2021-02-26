@@ -82,20 +82,16 @@
 
       // 저장
       case "save":
-        if(!gfn_checkSaveData(grid1)) return;
-        var params = setGridDataToJson('grid1');
-
-        $.ajax({
-          type: "POST",
-          // contentType: 'application/json; charset=utf-8',
+        var params = {
           url: "/esm_sys_1020/save",
-          data: JSON.stringify(params),
-          dataType: "json",
-          success: function (data) {
-            console.log(data);
-          },
+          grid: "grid1", // or ['grid1']
+          // subParam: {},
+        };
+        
+        gfnSetGrdData(params, function () {
+          doAction1("search");
         });
-
+        break;
       // 행추가
       case "addRow":
         grid1.provider.insertRow(0, {});
