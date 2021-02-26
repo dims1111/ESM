@@ -391,6 +391,10 @@ function gfnSetGrdData(params, callback) {
               return;
             }
           }
+
+          if (callback) {
+            callback();
+          }
         }
       },
       error: function (req, status, err) {
@@ -403,9 +407,5 @@ function gfnSetGrdData(params, callback) {
         return;
       },
     });
-
-    if (callback) {
-      callback(); // 콜백함수 호출
-    }
   }
 }
