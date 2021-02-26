@@ -369,6 +369,29 @@ body {
   box-shadow: 200px 0 0 0 #64cfbf inset;
 }
 
+
+/* [버튼] 팝업 */
+.btn_popup {
+  display: inline-block;
+  background-color: #badcd8;
+  text-align: center;
+  cursor: pointer;
+  transition: box-shadow 0.9s, color 0.3s;
+  padding: 6px 12px;
+  height: 30px;
+  margin-left: 3px;
+  border: 0;
+  min-width: 90px;min-width: 115px;
+}
+.btn_popup:hover {
+  color: #fff;
+}
+
+/* [활성] 팝업 */
+.btn_popup.active:hover {
+  box-shadow: 200px 0 0 0 #64cfbf inset;
+}
+
 /* [버튼] 엑셀다운로드, 엑셀업로드 버튼 */
 .btn_excel {
   display: inline-block;
@@ -477,80 +500,87 @@ form {
   margin: 0;
 }
 
+/* 모달팝업 백그라운드 컬럼 */
 .modal-backdrop {
   z-index: 2500;
-  background-color: #000;
+  background-color: rgb(68, 65, 65);
 }
 
-
+/* 모달팝업 위치 지정 */
 .modal {
-
   position: fixed;
   left: auto;
   top: 200px;
-  z-index: 3000;
-  
+  z-index: 3000;  
 }
+
+/* 모달팝업 헤더 색상, 폰트, 높이 지정 */
 .modal-header{
   cursor: move;
   background-color: #259e90;
   color: #eaf5ec;
-  font-size: 13px;
-  height: 34px;
+  font-size: 15px;
+  height: 48px;
+  padding: 12px;
 }
 
+/* 모달팝업 헤더 제목 위치 조정 */
 .xi-error-o, .modal-title {
+  margin-top: 0px;  
+}
+
+/* 모달팝업 헤더 닫기(x) 위치 조정 */
+#cls {
   margin-top: -10px;
 }
 
-#cls {
-  margin-top: -20px;
-}
-
-
+/* 모달파업 컨텐트 높이, 색상, 폰트 */
 .modal-content{
   height: 300px;
   background-color: #fafafa;
-  font-size: 10pt;
+  font-size: 12pt;
+  padding: 4px;
 }
 
+/* 모달파업 바디 마진 */
+.modal-body{
+  padding: 2rem;
+}
+
+/* 모달팝업 풋터 탑라인, 색상, 마진 */
 .modal-footer{
-
-  border-top: 1px solid #1d7268;
+  border-top: 2px solid #259e90;
   background-color: #fafafa;
-  width: 400px;
-  margin-left: 50px;
-
+  margin-left: 15px;  
+  margin-right: 15px;  
 }
-
 
 .modal-header > button{
   color: #eefcfa
 }
 
+/* 모달팝업 헤더 닫기(x) 마우스 오버 */
 .modal-header > button:hover {
   transition: all 0.7s;
   color: black;
 }
 
+/* 모달팝업 풋터 닫기 마진 */
 .modal-footer > button{
-
   margin: 0px auto;
-
 }
 
 .xi-close-min {
   color: black;
 }
 
-
 .xi-error-o {
-  color: rgb(204, 44, 16);
+  color: #ff3c00;
 }
 
 .xi-star {
-  color: rgb(204, 44, 16);
-  font-size: 7px;
+  color: #ff3c00;
+  font-size: 4px;
 }
 
 

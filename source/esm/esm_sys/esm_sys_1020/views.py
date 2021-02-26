@@ -101,6 +101,8 @@ def doSearch(request, *args, **kwargs):
       'excel_down_yn',
       'excel_up_yn',
       'remark',
+      'create_by',
+      'create_date_time',
       'update_date_time',
       'update_by'
     ))

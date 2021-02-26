@@ -332,8 +332,8 @@ function gfnGetGrdData(params, callback) {
             }
           } else {
             // 오류 또는 정상이지만 메시지가 존재하면 파업 메시지 출력
-            $("#myModal #contents").html(res.msg);
-            $("#myModal").modal("show");
+            $("#errorModal #errorModalContents").html(res.msg);
+            $("#errorModal").modal("show");
           }
         }
       },
