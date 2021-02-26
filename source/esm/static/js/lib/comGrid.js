@@ -17,7 +17,7 @@ $.fn.gfn_gridInit = function (columns, width, height) {
 
   // columns에 선언된 fieldName을 Provider의 fielid로 정의
   var fields = columns.map(function (item) {
-    return item.fieldName;
+    return {fieldName: item.fieldName};
   });
   this.provider.setFields(fields);
 
@@ -74,10 +74,31 @@ function initGridField(grdObj, columns) {
     // header객체 초기화
     columnInfo.header = columnInfo.header || {};
 
+    // styles객체 초기화
+    columnInfo.styles = columnInfo.styles || {};
+
+    // editor객체 초기화
+    // columnInfo.editor = columnInfo.editor || {};
+
     // header.text 객체에 text값 넣기
     if (columnInfo.text) {
       columnInfo.header.text = columnInfo.text;
     }
+
+    // 정렬
+    if (columnInfo.align) {
+    //  right -> far 
+    //  lett -> near
+      
+      // 오른쪽 정렬일 경우 far로 변경
+      if(columnInfo.align == 'right') {
+        columnInfo.align = 'far'
+      }
+
+      
+      columnInfo.styles.textAlignment = columnInfo.align;
+    }
+
 
     // 필수 컬럼일 경우 *표시 및 css 조정
     if (columnInfo.required === true) {
@@ -440,7 +461,7 @@ function initGridOption(gridView) {
   // });
 
   gridView.setCheckBar({
-    visible: false,
+    visible: true,
   });
 
   gridView.setCopyOptions({
