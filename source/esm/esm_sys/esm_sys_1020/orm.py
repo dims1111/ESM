@@ -187,10 +187,11 @@ class JsonData:
 # 2. 데코레이트 방식 : 해당 함수 내 오류가 없으면 자동 커밋, 오류가 존재하면 롤백 처리 (함수 위에 @transaction.atomic 작성)
 # 신규 데이터 처리
 @transaction.atomic
-def doInsert(dataList, commParam, userID):
+def doInsert(dataList, commParam):
   try:
     i = 0
     bulkDataLists = []
+    userId = commParam['userInfo']['userId']
 
     # 신규 데이터 확인
     for ca in dataList:
@@ -218,9 +219,9 @@ def doInsert(dataList, commParam, userID):
       newData.excel_up_yn       = ca.get('excel_down_yn')
       newData.remark            = ca.get('remark')
       newData.create_date_time  = JsonData.now
-      newData.create_by         = userID
+      newData.create_by         = userId
       newData.update_date_time  = JsonData.now
-      newData.update_by         = userID
+      newData.update_by         = userId
 
       # 리스트에 신규 클래스 값 추가
       bulkDataLists.append(newData)
@@ -231,7 +232,6 @@ def doInsert(dataList, commParam, userID):
 
     # 데이터 처리 후 건수 표기
     commParam['processCnt']['I'] = i
-    resultMsg(commParam)
 
   except Exception as e:
     commParam = {'cd' : 'E', 'msg' : e.args[0], 'processCnt': {'I': 0}}
@@ -240,12 +240,14 @@ def doInsert(dataList, commParam, userID):
 
 # 수정 처리
 @transaction.atomic
-def doUpdate(dataList, commParam, userID):
+def doUpdate(dataList, commParam):
   try:
-    i = 0
-    bulkDataList = []
+    i = 0    
+    userId = commParam['userInfo']['userId']
+
     # 수정 데이터 확인
     for ca in dataList:
+      print("menu_uid =>", ca.get('menu_uid'), "icons =>", ca.get('icons'))
       getData = SysMenu.objects.filter(pk=ca.get('menu_uid'))
       
       # 키를 기준으로 조회된 데이터 셋(getData)에 수정된 값(dataList) 할당
@@ -269,7 +271,7 @@ def doUpdate(dataList, commParam, userID):
         updateData.excel_up_yn      = ca.get('excel_up_yn')
         updateData.remark           = ca.get('remark')
         updateData.update_date_time = JsonData.now
-        updateData.update_by        = userID        
+        updateData.update_by        = userId        
         i += 1
       
       for ca in getData:
@@ -295,8 +297,7 @@ def doUpdate(dataList, commParam, userID):
                                             ])
     # 데이터 처리 후 건수 표기
     commParam['processCnt']['U'] = i
-    resultMsg(commParam)
-
+    
   except Exception as e:
     print("@@@@@ 수정 오류 @@@@@ ")
     commParam = {'cd' : 'E', 'msg' : e.args[0], 'processCnt': {'U': 0}}
@@ -320,7 +321,6 @@ def doDelete(dataList, commParam):
 
     # 데이터 처리 후 건수 표기
     commParam['processCnt']['D'] = i
-    resultMsg(commParam)
 
   except Exception as e:
     print("@@@@@ 삭제 오류 @@@@@ ")
