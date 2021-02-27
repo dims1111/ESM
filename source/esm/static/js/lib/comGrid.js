@@ -1,3 +1,13 @@
+/* ************************************************************************************************
+# 프로젝트      : 전자식 복무관리 시스템
+# 프로그램 ID   : comGrid.js
+# 프로그램 Name : 그리드 공통 함수
+# -------------------------------------------------------------------------------------------------
+# 버전          변경일자         생성자       변경내용
+# -------------------------------------------------------------------------------------------------
+# v1.0          2020-02-01       송영진       최초작성
+************************************************************************************************ */
+
 /**
  * 그리드 초기화
  *
@@ -6,7 +16,7 @@
  * 8 : textAlignment L:left C: center R: right
  * 9 : editable Y: 수정가능 N: 수정 불가능  default: Y
  **/
-$.fn.gfn_gridInit = function (columns, width, height) {
+$.fn.gfnGridInit = function (columns, width, height) {
   width = width || "100%";
   height = height || "100%";
   this.css({ width: width, height: height }); // 그리드 width, height 지정
@@ -38,9 +48,10 @@ $.fn.gfn_gridInit = function (columns, width, height) {
   // var srch_bar = '<span id="frowinfo_' + $(this).attr('id') + '"></span>';
   // $("." + this.attr("id")).append(srch_bar);
 
-  // 엔터키 입력 시 다음 줄 첫번째 컬럼으로 커서 옮기기
+  // 엔터키, 탭 입력 시 다음 줄 첫번째 컬럼으로 커서 옮기기
   this.gridView.onKeyDown = function (gridView, key, ctrl, shift, alt) {
-    if (key === 13) { //key==9 (Tab)키 제거 : Tab키 이벤트 발생 시 그리드 아래가 아닌 오른쪽으로 이동을 위해 제거.
+    // key === 13(엔터), key === 9(Tab)키     
+    if (key === 999) {
       var currentCell = gridView.getCurrent();
       var columns = gridView.getColumns();
 
@@ -59,7 +70,6 @@ $.fn.gfn_gridInit = function (columns, width, height) {
       gridView.setFocus();
       return false;
     }
-
   };
   return this;
 };
@@ -93,12 +103,9 @@ function initGridField(grdObj, columns) {
       // 오른쪽 정렬일 경우 far로 변경
       if(columnInfo.align == 'right') {
         columnInfo.align = 'far'
-      }
-
-      
+      }      
       columnInfo.styles.textAlignment = columnInfo.align;
     }
-
 
     // 필수 컬럼일 경우 *표시 및 css 조정
     if (columnInfo.required === true) {
@@ -774,7 +781,7 @@ this.gfn_grdAddBtnDefault = function (grd, btnId, data) {
   // 배열의 경우
   if (Array.isArray(data)) {
     $(btnId).on("click", function () {
-      if (!gfn_gridCommit(grd)) return;
+      if (!gfnGridCommit(grd)) return;
       var appendData = [];
       for (var i = 0; i < data.length; i++) {
         var single_data = data[i];
@@ -791,7 +798,7 @@ this.gfn_grdAddBtnDefault = function (grd, btnId, data) {
   //json의 경우
   else if (dataType == "object") {
     $(btnId).on("click", function () {
-      if (!gfn_gridCommit(grd)) return;
+      if (!gfnGridCommit(grd)) return;
       var keys = Object.keys(data);
       var appendData = {};
       for (var i = 0; i < keys.length; i++) {
@@ -809,7 +816,7 @@ this.gfn_grdAddBtnDefault = function (grd, btnId, data) {
   else if (dataType == "string") {
     var array = data.split(",");
     $(btnId).on("click", function () {
-      if (!gfn_gridCommit(grd)) return;
+      if (!gfnGridCommit(grd)) return;
       var appendData = [];
       for (var i = 0; i < array.length; i++) {
         var single_data = array[i];
@@ -860,7 +867,7 @@ this.gfn_grdDelBtnDefault = function (grd, btnId) {
       grd.provider.removeRow(curr.dataRow);
     }
   });
-  if (!gfn_gridCommit(grd)) return;
+  if (!gfnGridCommit(grd)) return;
 };
 
 /**
@@ -2023,8 +2030,8 @@ function gfnSetGridDataToJson(gridId) {
   * @param {Object} grid 
   */
 function gfn_checkSaveData(grid) {
-  // if (!confirm(ld.saveConfirm) || !gfn_saveValidate(grid)) return false;
-  if (!gfn_saveValidate(grid) || !confirm('저장하시겠습니까?')) return false;
+  // if (!confirm(ld.saveConfirm) || !gfnSaveValidate(grid)) return false;
+  if (!gfnSaveValidate(grid) || !confirm('저장하시겠습니까?')) return false;
 
   /*
   var jsonData = gfn_getJsonChangedRows(grid);
@@ -2036,9 +2043,21 @@ function gfn_checkSaveData(grid) {
   return true;
 };
 
-function gfn_saveValidate(grid) {
-  gfn_gridCommit(grid);
-  var log = grid.gridView.checkValidateCells();
+
+/** 
+ * 함 수 명 : gfnGridCommit
+ * 설    명 : 그리드 변경된 내용을 커밋
+ * 리턴형식 : true / false
+ * 매개변수 
+ * @param {*} grid 그리드 객체명(e.g. grid1, grid2 등)
+**/
+function gfnSaveValidate(grid) {
+  // 그리드 커밋 함수에서 오류면 리턴
+  if (!gfnGridCommit(grid)) return false;
+  
+  // 그리드 컬럼별 체크 널일 경우 정상
+  log = grid.gridView.checkValidateCells();
+
   if (log == null) {
     return true;
   } else {
@@ -2048,22 +2067,29 @@ function gfn_saveValidate(grid) {
       message += (itemIndex + 1).toString() + " " + ld.row + " " + log[i].message + "\n";
     }
 
-    // gfnNoticeModalShow("error", message);
-    alert(message);
+    gfnNoticeModalShow("필수항목을 입력하시기 바랍니다.");
     return false;
   }
 };
 
-function gfn_gridCommit(grid) {
+
+/** 
+ * 함 수 명 : gfnGridCommit
+ * 설    명 : 그리드 변경된 내용을 커밋
+ * 리턴형식 : true / false
+ * 매개변수 
+ * @param {*} grid 그리드 객체명(e.g. grid1, grid2 등)
+**/
+function gfnGridCommit(grid) {
   try {
     grid.gridView.commit(false);
     return true;
   } catch (e) {
-    // gfnNoticeModalShow("error", e.message);
-    alert('gridView 커밋 도중 에러 발생');
+    gfnNoticeModalShow("필수항목을 입력하시기 바랍니다.");
     return false;
   }
 };
+
 
 function gfn_getJsonChangedRows(_grd) {
   _grd.grid.commit(false);
@@ -2134,12 +2160,24 @@ function gfn_getJsonChangedRows(_grd) {
 }
 
 
-// Excel download 함수
-function gfn_excelDownload(grid, fileName, sheetName) {
+/** 
+ * 함 수 명 : gfnExcelDownload
+ * 설    명 : 엑셀 다운로드 함수
+ * 리턴형식 : N/A
+ * 매개변수 
+ * @param {*} grid 그리드 객체명(e.g. grid1, grid2 등)
+ * @param {*} fileName 엑셀파일명(e.g. 메뉴목록, 사용자목록 등)
+ * @param {*} sheetName 시트명(e.g. 메뉴자료, 사용자자료 등)
+**/
+function gfnExcelDownload(grid, fileName, sheetName) {
+  // 화면에 그리드가 1개일 경우 
+  // 화면의 그리드 타이틀을 출력
+  // 화면의 그리드가 1개 이상일 경우 파일명 및 시트명 필수
   if (!fileName) {
     fileName = grid.closest('.grid').find('.grid-title').text().trim();
   }
 
+  // 시트명은 파일명과 동일하게 처리
   if (!sheetName) {
     sheetName = fileName;
   }
@@ -2154,13 +2192,9 @@ function gfn_excelDownload(grid, fileName, sheetName) {
     },
     exportGrids:[
       { 
-          grid: grid.gridView, //그리드 변수명
-          sheetName: sheetName // 다른 그리드와 중복되어서는 안된다.
+          grid: grid.gridView,  // 그리드 객체
+          sheetName: sheetName // 시트명
       }
-      // , {
-      //     grid:gridView2,
-      //     sheetName:"sheetName2"
-      // }
     ]
   });
 }

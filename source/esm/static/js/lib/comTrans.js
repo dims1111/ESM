@@ -291,7 +291,6 @@ function gfnGetData(params, callback) {
   });
 }
 
-function gfnSetData(params, callback) {}
 
 function gfnGetGrdData(params, callback) {
   // params.grid 내용을 배열로 다건을 받을 경우, 배열 순서대로 콜할 예정
@@ -314,8 +313,12 @@ function gfnGetGrdData(params, callback) {
       success: function (res) {
         console.log("res =>", res)
         if (res) {          
-          // 오류가 존재하지 않을 경우 데이터 출력 및 건수 표기
-          if (!res.msg) {
+          // 메시지 출력
+          if (res.msg) {
+            // 오류 또는 정상이지만 메시지가 존재하면 파업 메시지 출력
+            $("#errorModal #errorModalContents").html(res.msg);
+            $("#errorModal").modal("show");
+          } else {
             // 데이터가져오기
             var result = res.data;
 
@@ -330,10 +333,6 @@ function gfnGetGrdData(params, callback) {
             if (callback) {
               callback(); 
             }
-          } else {
-            // 오류 또는 정상이지만 메시지가 존재하면 파업 메시지 출력
-            $("#errorModal #errorModalContents").html(res.msg);
-            $("#errorModal").modal("show");
           }
         }
       },

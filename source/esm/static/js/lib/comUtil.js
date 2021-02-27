@@ -292,23 +292,18 @@ function gfnLoadhide() {
  * 함 수 명 : gfnNoticeModalShow
  * 설    명 : 알림 모달 오픈
  * 리턴형식 : N/A
- * 매개변수 
- * @param {*} _tstr 모달 제목
- * @param {*} _msg  모달 컨텐츠 메세지
- * @param {*} arr 변수
+ * 매개변수  
+ * @param {*} _msg  모달 컨텐츠 메세지 
 **/
-this.gfnNoticeModalShow = function (_tstr, _msg, arr) {
-  if (!gfnIsNull(arr)) {
-    var j = 1;
-    for (var i = 0; i < arr.length; i++) {
-      _msg = _msg.replace("{" + j + "}", arr[i]);
-      j = j + 1;
-    }
-  }
-  gfnLoadhide();
-  $('#gl_notice .modal-title span').text(_tstr);
-  $('#gl_notice .modal-body pre').text(_msg);
-  $('#gl_notice').modal('show');
+this.gfnNoticeModalShow = function (errMessage) {  
+  // gfnLoadhide();
+  // 오류 또는 정상이지만 메시지가 존재하면 파업 메시지 출력
+  $("#errorModal #errorModalContents").html(errMessage);
+  $("#errorModal").modal("show");
+
+  // $('#gl_notice .modal-title span').text(_tstr);
+  // $('#gl_notice .modal-body pre').text(_msg);
+  // $('#gl_notice').modal('show');
 }
 
 

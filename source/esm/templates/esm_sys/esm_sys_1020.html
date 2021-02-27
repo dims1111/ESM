@@ -2,7 +2,7 @@
 <script>
   var grid1;
   $(function () {
-    grid1 = $("#grid1").gfn_gridInit([
+    grid1 = $("#grid1").gfnGridInit([
       { fieldName: "menu_uid",         text: "메뉴UID",           width: 250, required: true },
       { fieldName: "parent_menu_cd",   text: "상위메뉴코드",      width: 80 , required: true , align: 'center'},
       { fieldName: "menu_cd",          text: "메뉴코드",          width: 80 , required: true , align: 'center'},
@@ -104,7 +104,7 @@
 
       // 엑셀다운로드
       case "excelDownload":        
-        gfn_excelDownload(grid1);
+        gfnExcelDownload(grid1);
         break;
 
       // 엑셀업로드
