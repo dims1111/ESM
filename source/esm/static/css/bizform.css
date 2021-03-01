@@ -1,495 +1,29 @@
+:root {
+  --p1: #2196F3;
+  --p1-rgb: 42, 157, 143;
+  --p2: #FFA62B;
+  --p3: #EFEFEF;
+  --p4: #998FC7;
+  --p5: #EF6461;
+  --p6: #F8F8F8;
+  --p7: #FFFFFF;
+  --p8: #444444;
+  --p9: #304ffe;
+  --p10: #0C7CD5;
+  --p11: #000000;
+  --p12: #0bba82;
+  --p13: #dee2e6;
+}
+
 html,
 body {
   font-family: "Noto Sans KR", "Nanum Gothic";
   height: 100%;
-  background: #fafafa;
+  background: var(--p7);
   font-size: 13px;
-  color: #031b18;
+  color: var(--p8);
   margin: 0;
   padding: 0;
-}
-
-/* 검색출력 */
-.container_top {
-  display: flex;
-  height: 26px;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: 0px solid #badcd8;
-}
-
-.top1 {
-  display: flex;
-  height: 100%;
-  flex-basis: 12%;
-  align-items: center;
-  text-align: left;
-}
-.top1_group1 {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: left;
-  align-items: center;
-}
-
-.top1_item1 {
-  display: flex;
-  background: #2a9d8f;
-  color: #eefcfa;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  margin-left: 12px;
-  border-top: 1px solid #1d7268;
-  border-left: 1px solid #1d7268;
-  border-right: 1px solid #1d7268;
-}
-
-.top2 {
-  display: flex;
-  height: 100%;
-  flex-basis: 88%;
-  background: #fafafa;
-  flex-direction: row-reverse;
-  justify-content: flex-start;
-}
-
-.top2_group1 {
-  display: flex;
-  height: 100%;
-  width: 80px;
-  border-radius: 2px;
-  margin-inline-end: 2px;
-  align-content: center;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-}
-
-/* 저장 */
-.top2_item1 {
-  display: flex;
-  background: #2a9d8f;
-  color: #eefcfa;
-  font-weight: bold;
-}
-
-/* 초기화 */
-.top2_item2 {
-  display: flex;
-  background: #badcd8;
-}
-
-/* 출력 */
-.top2_item3 {
-  display: flex;
-  background: #badcd8;
-}
-
-/* 검색영역 */
-.container_search {
-  display: flex;
-  height: 40px;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid #1d7268;
-  border-bottom: 1px solid #259e90;
-}
-
-.search1 {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  background: #fafafa;
-}
-
-.search1_group1 {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  flex-direction: row; /* flex div 좌측 정렬 */
-  text-align: right;
-  align-items: center; /* 가로 중앙정렬 */
-}
-
-/* 검색항목 - 라벨1 */
-.search1_item1 {
-  display: flex;
-  background: #eaf5ec;
-  flex-basis: 8%;
-  text-align: right;
-}
-
-/* 검색항목 - 입력항목1 */
-.search1_item2 {
-  display: flex;
-  background: #f2f5ea;
-  flex-basis: 17%;
-}
-
-/* 검색항목 - 라벨2 */
-.search1_item3 {
-  display: flex;
-  background: #eaf5ec;
-  flex-basis: 8%;
-}
-
-/* 검색항목 - 입력항목2 */
-.search1_item4 {
-  display: flex;
-  background: #f2f5ea;
-  flex-basis: 17%;
-}
-
-/* 검색항목 - 라벨3 */
-.search1_item5 {
-  display: flex;
-  background: #eaf5ec;
-  flex-basis: 8%;
-}
-
-/* 검색항목 - 입력항목3 */
-.search1_item6 {
-  display: flex;
-  background: #f2f5ea;
-  flex-basis: 17%;
-}
-
-/* 검색항목 - 라벨4 */
-.search1_item7 {
-  display: flex;
-  background: #eaf5ec;
-  flex-basis: 8%;
-}
-
-/* 검색항목 - 입력항목4 */
-.search1_item8 {
-  display: flex;
-  background: #f2f5ea;
-  flex-basis: 17%;
-}
-
-/* 그리드제목 및 액션 */
-.container_control1 {
-  display: flex;
-  height: 26px;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: 1px solid #fafafa;
-}
-
-.title1 {
-  display: flex;
-  height: 100%;
-  flex-basis: 30%;
-  align-items: center;
-  text-align: left;
-}
-.title1_group1 {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: left;
-  align-items: center;
-}
-
-.title1_item1 {
-  display: flex;
-  background: #2a9d8f;
-  justify-content: left;
-  padding-left: 20px;
-  align-content: center;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  margin-left: 12px;
-  border-top: 1px solid #1d7268;
-  border-left: 1px solid #1d7268;
-  border-right: 1px solid #1d7268;
-}
-
-.action1 {
-  display: flex;
-  height: 100%;
-  flex-basis: 70%;
-  background: #fafafa;
-  flex-direction: row-reverse;
-  justify-content: flex-start;
-}
-
-.action1_group1 {
-  display: flex;
-  height: 100%;
-  width: 80px;
-  border-radius: 2px;
-  margin-inline-end: 2px;
-  align-content: center;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-}
-
-.action1_item1 {
-  display: flex;
-  background: #2a9d8f;
-  color: #eefcfa;
-  font-weight: bold;
-}
-
-.action1_item2 {
-  display: flex;
-  background: #badcd8;
-}
-
-.action1_item3 {
-  display: flex;
-  background: #badcd8;
-}
-
-.action1_item4 {
-  display: flex;
-  background: #badccb;
-  width: 120px;
-}
-
-.action1_item5 {
-  display: flex;
-  background: #badccb;
-  width: 120px;
-}
-
-/* 웹 폰트 */
-/* 검색조건 */
-.xi-bars {
-  font-size: 14px;
-  color: #eefcfa;
-}
-
-/* 그리드 제목 */
-.xi-sort-desc {
-  font-size: 14px;
-  color: #eefcfa;
-}
-
-/* 조회 */
-.xi-search {
-  font-size: 12px;
-  color: #eefcfa;
-}
-
-/* 초기화 */
-.xi-refresh {
-  font-size: 12px;
-  color: #062420;
-}
-
-/* 출력 */
-.xi-print {
-  font-size: 12px;
-  color: #062420;
-}
-
-/* 저장 */
-.xi-save {
-  font-size: 12px;
-  color: #eefcfa;
-}
-
-/* 행추가 */
-.xi-plus-min {
-  font-size: 12px;
-  color: #062420;
-}
-
-/* 행삭제 */
-.xi-minus-min {
-  font-size: 12px;
-  color: #062420;
-}
-
-/* 엑셀다운로드 */
-.xi-angle-down-min {
-  font-size: 12px;
-  color: #062420;
-}
-
-/* 엑셀업로드 */
-.xi-angle-up-min {
-  font-size: 12px;
-  color: #062420;
-}
-
-/* 버튼 : 조회, 저장 */
-.btn_main {
-  display: inline-block;
-  background-color: #2a9d8f;
-  text-align: center;
-  cursor: pointer;
-  color: var(--p1);
-  transition: box-shadow 0.9s, color 0.3s;
-  padding: 6px 12px;
-  height: 24px;
-  margin-left: 3px;
-  border: 0;
-  min-width: 90px;
-}
-.btn_main:hover {
-  color: #fff;
-}
-
-/* [활성] 조회 및 저장 */
-.btn_main.active:hover {
-  box-shadow: 200px 0 0 0 #006e62 inset;
-}
-
-/* [버튼] 출력, 초기화, 행추가, 행삭제 버튼 */
-.btn_sub {
-  display: inline-block;
-  background-color: #badcd8;
-  text-align: center;
-  cursor: pointer;
-  transition: box-shadow 0.9s, color 0.3s;
-  padding: 6px 12px;
-  height: 24px;
-  margin-left: 3px;
-  border: 0;
-  min-width: 90px;min-width: 95px;
-}
-.btn_sub:hover {
-  color: #fff;
-}
-
-/* [활성] 출력, 초기화, 행추가, 행삭제 버튼 */
-.btn_sub.active:hover {
-  box-shadow: 200px 0 0 0 #64cfbf inset;
-}
-
-
-/* [버튼] 팝업 */
-.btn_popup {
-  display: inline-block;
-  background-color: #badcd8;
-  text-align: center;
-  cursor: pointer;
-  transition: box-shadow 0.9s, color 0.3s;
-  padding: 6px 12px;
-  height: 30px;
-  margin-left: 3px;
-  border: 0;
-  min-width: 90px;min-width: 115px;
-}
-.btn_popup:hover {
-  color: #fff;
-}
-
-/* [활성] 팝업 */
-.btn_popup.active:hover {
-  box-shadow: 200px 0 0 0 #64cfbf inset;
-}
-
-/* [버튼] 엑셀다운로드, 엑셀업로드 버튼 */
-.btn_excel {
-  display: inline-block;
-  background-color: #badccb;
-  text-align: center;
-  cursor: pointer;
-  transition: box-shadow 0.9s, color 0.3s;
-  padding: 6px 12px;
-  height: 24px;
-  margin-left: 3px;
-  border: 0;  
-  min-width: 90px;
-}
-.btn_excel:hover {
-  color: #fff;
-}
-
-/* [활성] 엑셀다운로드, 엑셀업로드 버튼 */
-.btn_excel_active:hover {
-  box-shadow: 200px 0 0 0 #9ddbbd inset;
-}
-
-/*  */
-/*  */
-/*  */
-/*  */
-
-/* 검색조건 관련 css */
-.search-header {
-  display: flex;
-  align-items: center;
-  position: relative;
-  height: 26px;
-}
-
-.search-title {
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-  margin-left: 1rem;
-  background: #2a9d8f;
-  padding: 4px 12px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-top: 1px solid #1d7268;;
-  border-left: 1px solid #1d7268;;
-  border-right: 1px solid #1d7268;;
-}
-
-.search-buttons {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-}
-
-.search-content {
-  border-top: 1px solid #1d7268;
-  border-bottom: 1px solid #1d7268;
-  padding: 8px 4px;
-  background: #f3f7f6;
-}
-
-/* 그리드 관련 css */
-.grid-header {
-  display: flex;
-  align-items: center;
-  position: relative;
-  height: 26px;
-}
-
-.grid {
-  display: flex;
-}
-.grid-title {
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-  margin-left: 1rem;
-  background: #2a9d8f;
-  padding: 4px 12px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-top: 1px solid #1d7268;;
-  border-left: 1px solid #1d7268;;
-  border-right: 1px solid #1d7268;;
-}
-
-.grid-buttons {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-}
-
-.grid-content {
-  border-top: 1px solid #1d7268;
-  border-bottom: 1px solid #1d7268;
-  padding: 8px 4px;
-  background: #f3f7f6;
 }
 
 label {
@@ -500,11 +34,135 @@ form {
   margin: 0;
 }
 
-/* 모달팝업 백그라운드 컬럼 */
-.modal-backdrop {
-  z-index: 2500;
-  background-color: rgb(68, 65, 65);
+
+/* 검색조건 - 공통 */
+.search-header {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 28px;
+  background: var(--p7);
+  margin-top: 10px;
 }
+
+/* 조회조건 - 타이틀 */
+.search-title {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;  
+  margin-left: 0.5rem;  
+}
+.search-title > i, .grid-title > i {
+  color: var(--p8);
+  font-size: 15px !important;
+  font-weight: 800 !important;
+}
+
+/* 조회조건 - 버튼 */
+.search-buttons {
+  margin-left: auto;
+  display: flex;
+  align-items: center;  
+}
+/* 버튼 : 조회, 저장 */
+.btn_main {
+  display: inline-block;
+  background-color: var(--p9);
+  color: var(--p7);
+  text-align: center;
+  cursor: pointer;
+  padding: 6px 12px;
+  height: 24px;
+  margin-left: 3px;
+  border: 0;
+  min-width: 90px;
+  border-radius: 2px;
+}
+.btn_main:hover {
+  background-color: var(--p2);
+  color: var(--p7);
+}
+
+/* 버튼 : 엑셀다운로드, 엑셀업로드 버튼 */
+.btn_excel {
+  display: inline-block;
+  background-color: var(--p12);
+  color: var(--p7);
+  text-align: center;
+  cursor: pointer;
+  padding: 6px 12px;
+  height: 24px;
+  margin-left: 3px;
+  border: 0;
+  min-width: 90px;
+  border-radius: 2px;
+}
+.btn_excel:hover {
+  border-top: 2px solid var(--p2);
+}
+
+
+/* 버튼 : 조회, 저장외 버튼 */
+.btn_sub {
+  display: inline-block;
+  background-color: var(--p1);
+  color: var(--p7);
+  text-align: center;
+  cursor: pointer;  
+  padding: 6px 12px;
+  height: 24px;
+  margin-left: 3px;
+  border: 0;
+  min-width: 90px;
+  border-radius: 2px;
+}
+.btn_sub:hover {  
+  border-top: 2px solid var(--p2);
+}
+
+
+/* 조회조건 - 조회항목 */
+.search-content {
+  border-top: 2px solid var(--p1);
+  border-bottom: 1px solid var(--p4);
+  padding: 8px 4px;
+  margin-bottom: 10px;
+}
+
+
+/* 그리드 - 공통 */
+.grid-header {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 28px;
+  background: var(--p7);
+}
+
+/* 그리드 상단의 타이틀 설정 */
+.grid-title {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;  
+  margin-left: 0.5rem;  
+  color: var(--p1);
+}
+
+/* 그리드 상단의 버튼의 좌측 설정 */
+.grid-buttons {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+/* 그리드 내용 설정 */
+.grid-content {
+  border-top: 2px solid var(--p1);     /* 헤더 라인 */
+  border-bottom: 2px solid var(--p1);  /* 바텀 라인 */
+  background: var(--p7);               /* 바탕색 */
+}
+
+
 
 /* 모달팝업 위치 지정 */
 .modal {
@@ -514,74 +172,81 @@ form {
   z-index: 3000;  
 }
 
+/* 모달팝업 백그라운드 컬럼 */
+.modal-backdrop {
+  z-index: 2500;
+  background-color: var(--p8);
+}
+
 /* 모달팝업 헤더 색상, 폰트, 높이 지정 */
 .modal-header{
   cursor: move;
-  background-color: #259e90;
-  color: #eaf5ec;
+  background-color: var(--p1);
+  color: var(--p7);
   font-size: 15px;
   height: 48px;
-  padding: 12px;
+  padding: 10px;
 }
 
-/* 모달팝업 헤더 제목 위치 조정 */
-.xi-error-o, .modal-title {
-  margin-top: 0px;  
+/* 모달팝업 헤더 - 아이콘 */
+.xi-error-o {
+  margin-top: -2px; /* 위치 */
+  color: var(--p5); /* 색상 */
 }
 
-/* 모달팝업 헤더 닫기(x) 위치 조정 */
+/* 모달팝업 헤더 - X 버튼 */
 #cls {
-  margin-top: -11px;
+  margin-top: -10px; /* 위치 */
+}
+.close {  
+  color: var(--p7); /* 폰트 색상 */
+}
+.close:hover {  
+  color: var(--p11); /* 마우스 오버 폰트 색상 */
 }
 
-/* 모달파업 컨텐트 높이, 색상, 폰트 */
+
+/* 모달팝업 - 바디 - 공통 */
 .modal-content{
   height: 300px;
-  background-color: #fafafa;
+  background-color: var(--p7);
   font-size: 12pt;
   padding: 4px;
 }
 
-/* 모달파업 바디 마진 */
+/* 모달팝업 - 바디 - 마진 */
 .modal-body{
   padding: 2rem;
+  color: var(--p8);
 }
 
-/* 모달팝업 풋터 탑라인, 색상, 마진 */
+
+/* 모달팝업 - 풋터 - 공통 */
 .modal-footer{
-  border-top: 2px solid #259e90;
-  background-color: #fafafa;
+  border-top: 2px solid var(--p1);
+  background-color: var(--p7);
   margin-left: 15px;  
   margin-right: 15px;  
 }
-
-.modal-header > button{
-  color: #eefcfa
+/* 버튼 : 닫기 버튼 */
+.btn_popup {
+  background-color: var(--p1);
+  color: var(--p7);
+  text-align: center;
+  cursor: pointer;  
+  padding: 6px 12px;
+  height: 28px;
+  margin-left: 3px;
+  border: 0;
+  min-width: 110px;
+  border-radius: 2px;
+}
+.btn_popup:hover {  
+  background-color: var(--p2);
+  color: var(--p7);
 }
 
-/* 모달팝업 헤더 닫기(x) 마우스 오버 */
-.modal-header > button:hover {
-  transition: all 0.7s;
-  color: black;
-}
 
-/* 모달팝업 풋터 닫기 마진 */
-.modal-footer > button{
-  margin: 0px auto;
-}
-
-.xi-close-min {
-  color: black;
-}
-
-.xi-error-o {
-  color: #ff3c00;
-}
-
-.xi-star {
-  color: #ff3c00;
-  font-size: 4px;
-}
 
 
 /* 리얼그리드 Css Start */

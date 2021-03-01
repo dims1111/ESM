@@ -1,3 +1,20 @@
+:root {
+  --p1: #2196F3;
+  --p1-rgb: 42, 157, 143;
+  --p2: #FFA62B;
+  --p3: #EFEFEF;
+  --p4: #998FC7;
+  --p5: #EF6461;
+  --p6: #F8F8F8;
+  --p7: #FFFFFF;
+  --p8: #444444;
+  --p9: #304ffe;
+  --p10: #0C7CD5;
+  --p11: #000000;
+  --p12: #0bba82;
+  --p13: #dee2e6;
+}
+
 /* 구글 웹폰트 적용('Noto Sans KR') */
 html, body {
   font-family: 'Noto Sans KR', 'Nanum Gothic';
@@ -17,7 +34,7 @@ html, body {
     -ms-flex-align: center;
     align-items: center;
     justify-content: center;
-    background-color: #f5f5f5;
+    background-color: var(--p7);
   }
 
   .form-signin {
@@ -47,63 +64,3 @@ html, body {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
-
-
-  /* ------------------- */
-
-  
-.setting .btn-switch {
-  position: relative;
-  display: inline-block;
-  width: 36px;
-  height: 12px;
-  float: right;
-  margin: 3px 0 0 0;
-}
-.setting .btn-switch input {
-  display:none;
-}
-.setting .slide-object {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #ccc;
-  transition:0.4s;
-  -webkit-transition:0.4s;
-  -o-transition:0.4s;
-  -moz-transition:0.4s;
-  border-radius: 20px;
-}
-.setting .slide-object:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 0;
-  bottom: -3px;
-  background: #efefef;
-  transition: 0.4s;
-  -webkit-transition: 0.4s;
-  -o-transition: 0.4s;
-  -moz-transition: 0.4s;
-  border-radius:50%;
-  -webkit-border-radius:50%;
-  -moz-border-radius:50%;
-  box-shadow: 0 2px 2px #bfbebe;
-  -moz-box-shadow: 0 2px 2px #bfbebe;
-  -webkit-box-shadow: 0 2px 2px #bfbebe;
-}
-.setting input:checked + .slide-object {
-  background: rgba(81, 214, 151, 0.62);
-}
-.setting input:checked + .slide-object:before {
-  transform: translateX(16px);
-  -webkit-transform: translateX(16px);
-  -ms-transform: translateX(16px);
-  -moz-transform: translateX(16px);
-  -o-transform: translateX(16px);
-  background: #07ce72;
-}

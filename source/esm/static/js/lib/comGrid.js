@@ -423,8 +423,8 @@ function initGridStyle($grid) {
   $grid.find('div').each(function () {
     $(this).css({
       // 그리드 상단 및 하단 라인 색성 지정
-      "border-top": "solid #2a9d8f 0.2rem",
-      "border-bottom": "solid #2a9d8f 0.2rem",      
+      "border-top": "solid #2a9d8f 0.0rem",
+      "border-bottom": "solid #2a9d8f 0.0rem", 
       // "border-right": "solid #ffffff 3px"
       // "border-left": "solid #ffffff 5px"
     });

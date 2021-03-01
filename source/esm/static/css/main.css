@@ -6,12 +6,20 @@ html, body {
 }
 
 :root {
-  --p1: #2a9d8f;
+  --p1: #2196F3;  /* #2a9d8f */
   --p1-rgb: 42, 157, 143;
   --p2: #FFA62B;
   --p3: #EFEFEF;
   --p4: #998FC7;
   --p5: #EF6461;
+  --p6: #F8F8F8;
+  --p7: #FFFFFF;
+  --p8: #444444;
+  --p9: #304ffe;
+  --p10: #0C7CD5;
+  --p11: #000000;
+  --p12: #0bba82;
+  --p13: #dee2e6;
 }
 
 a:hover {
@@ -49,7 +57,7 @@ a {
   display: none;
 }
 .input-switch:checked+.label-switch {
-  background-color: #0bba82;
+  background-color: var(--p12);
 }
 .input-switch:checked+.label-switch .on {
   display: inline-block;

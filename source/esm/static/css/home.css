@@ -1,16 +1,18 @@
 html, body {
-    background: #f8f8f8;
+    background: var(--p7);
     font-family: 'Noto Sans KR', 'Nanum Gothic';
   }
+
+  /* 최상위  */
   .top {
     background: var(--p1);
-    height: 40px;
+    height: 56px;
     min-width: 960px;
   }
   
   .nav-tabs {
-    border-bottom: 2px var(--p1);
-    background: rgba(var(--p1-rgb), 0.3);    
+    border-bottom: 2px solid var(--p1);    
+    background: rgba(var(--p1), 0.3);
     box-shadow: 0px 5px 13px -11px;
   }
   
@@ -18,6 +20,7 @@ html, body {
     position: relative;
   }
 
+  /* 대메뉴 좌측 색상 */
   .nav-tabs>li>span {
     display: none;
     cursor: pointer;
@@ -25,7 +28,7 @@ html, body {
     right: 4px;
     top: 50%;
     transform: translateY(-50%);
-    color: #EF6461;
+    color: var(--p5);
   }
 
   ul.nav-tabs li:hover>span {
@@ -35,20 +38,21 @@ html, body {
   .nav-tabs .nav-link {
     margin-bottom: 0 !important;
     border: 0 !important;
-    background: rgba(var(--p1-rgb), 0.5);
+    /* background: rgba(var(--p1-rgb), 0.5); */
+    background: var(--p3);
     padding-right: 28px;
     font-weight: 500;
     font-size: 13px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    color: #777 !important;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 1.0rem;
+    color: var(--p8) !important;
   }
 
   .nav-tabs .nav-link.active {
     background: var(--p1);
     border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
-    color: white !important;
+    border-top-right-radius: 1.0rem;
+    color: var(--p7) !important;
   }
 
   .tab-content {
@@ -90,7 +94,7 @@ html, body {
     flex: 0 0 80px;
     text-align: center;
     font-size: 13px;
-    color: #fff;
+    color: var(--p7);
     z-index: 2;
     /* border-top-right-radius: 1rem; */
   }
@@ -101,7 +105,7 @@ html, body {
   }
   .sidebar-main__item:hover,
   .sidebar-main__item.active {
-    background: #fff;
+    background: var(--p7);
     color: var(--p1);
   }
   .sidebar-main__item.active:before {
@@ -120,8 +124,8 @@ html, body {
 
   .sidebar-sub {
     position: relative;
-    background: #fff;
-    color: #444;
+    background: var(--p7);
+    color: var(--p8);
     flex: 0 0 170px;
     font-size: 17px;
     box-shadow: 4px 0px 13px -11px;
@@ -150,19 +154,19 @@ html, body {
   }
 
   #menu-content .menu {
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid var(--p13);
   }
   #menu-content .menu:nth-child(1) {
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid var(--p13);
   }
 
   .sub-menu {
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid var(--p13);
   }
 
   .sub-menu li.active {
-    background: #eee;
-  }
+    background: var(--p13);
+  }  
   
   #menu-content .sub-menu:nth-last-child(1) {
     border-bottom: 0;
@@ -183,7 +187,7 @@ html, body {
  
   .nav-link:hover { 
     box-shadow: 0px -40px 0 0 var(--p1) inset;
-    color: white !important;
+    color: var(--p7); !important;
     transition: color 0.1s ease-in-out;
   }
 
