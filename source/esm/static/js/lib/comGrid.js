@@ -31,10 +31,10 @@ $.fn.gfnGridInit = function (columns, width, height) {
   });
   this.provider.setFields(fields);
 
-  this.provider.setOptions({
-    softDeleting: true, // true이면 삭제 시 RowState만 deleted or createAndDeleted로 변경되고 행이 삭제되지 않음
-    deleteCreated: true, // 상태가 createAndDeleted인 데이터는 화면에서 바로 지움
-  });
+  // this.provider.setOptions({
+  //   softDeleting: false, // true이면 삭제 시 RowState만 deleted or createAndDeleted로 변경되고 행이 삭제되지 않음
+  //   deleteCreated: true, // 상태가 createAndDeleted인 데이터는 화면에서 바로 지움
+  // });
 
   initGridField(this, columns);
   this.gridView.setColumns(columns);
@@ -99,11 +99,6 @@ function initGridField(grdObj, columns) {
     if (columnInfo.align) {
     //  right -> far 
     //  lett -> near
-      
-      // 오른쪽 정렬일 경우 far로 변경
-      if(columnInfo.align == 'right') {
-        columnInfo.align = 'far'
-      }      
       columnInfo.styles.textAlignment = columnInfo.align;
     }
 
@@ -2207,17 +2202,16 @@ function gfnDeleteRowChk(grid) {
   var rows = grid.gridView.getCheckedRows(true);
 
   if (!rows.length) {
-    // alert("선택된 데이터가 없습니다.");
     $("#errorModal #errorModalContents").html("선택된 데이터가 없습니다.");
     $("#errorModal").modal("show");
     return false;
   }
+  
+  $("#confirmModal #confirmModalContents").html("삭제하시겠습니까?");
+  $("#confirmModal").modal("show");
 
-  // 삭제상태로 변경
-  grid.provider.setRowStates(rows, 'deleted', false);
-
-  // 체크박스 해제
-  grid.gridView.checkRows(rows, false);
-
+  $('#confirmModal #confirm').unbind().click(function() {
+    grid.provider.removeRows(rows);
+  });
   return true;
 }

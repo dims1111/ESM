@@ -101,7 +101,7 @@
             <div id="infoModalContents" class="modal-body">
             </div>
             <div class="modal-footer" >
-              <button type="button" class="btn_sub active" btnId="close" data-dismiss="modal"><i class="xi-close"> 닫기</i></button>
+              <button type="button" class="btn_sub active" id="close" data-dismiss="modal"><i class="xi-close"> 닫기</i></button>
             </div>
           </div>
         </div>
@@ -114,16 +114,13 @@
             <div class="modal-header" >
               <i class="xi-error-o xi-2x"></i>
               <h5 class="modal-title" id="confirmModalTitle">&nbsp;확인 메시지</h5>
-              <button type="button" class="close" btnId="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div id="confirmModalContents" class="modal-body">
             </div>
             <div class="modal-footer" >              
-              <button type="button" class="btn_sub active" btnId="confirm" data-dismiss="modal"><i class="xi-close-min"> 확인</i></button>
-              <button type="button" class="btn_sub active" btnId="cancel" data-dismiss="modal"><i class="xi-close-min"> 취소</i></button>
-              <!-- <button type="button" class="btn_sub active" btnId="cancel" data-dismiss="modal">{{ld.cancel}}</button> -->
-              <hr>
-              <button type="button" class="btn_sub active" data-dismiss="modal"><i class="xi-close-min"> 닫기</i></button>
+              <button type="button" class="btn_popup active" id="confirm" data-dismiss="modal"><i class="xi-close-min"> 확인</i></button>
+              <button type="button" class="btn_popup active" id="cancel" data-dismiss="modal"><i class="xi-close-min"> 취소</i></button>
             </div>
           </div>
         </div>
