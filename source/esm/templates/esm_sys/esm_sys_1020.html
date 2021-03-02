@@ -1,50 +1,45 @@
 {% extends "esm_com/bizform.html" %} {% load static %} {% block header %}
 <script>
   var grid1;
+  var grid1Param = [
+    { leftFixedCol: 3,  rightFixedCol: 1},
+  ];
+
   $(function () {
     var comboYnList = [
-      {
-        code: '',
-        name: '선택',
-      },
-      {
-        code: 'Y',
-        name: 'Y',
-      },
-      {
-        code: 'N',
-        name: 'N',
-      },
+      { code: '',   name: '선택',   },
+      { code: 'Y',  name: 'Y',      },
+      { code: 'N',  name: 'N',      },
     ];
     // var comboYnList2 = gfnGetData({
     //   url: 
     // });
 
     grid1 = $("#grid1").gfnGridInit([
-      { fieldName: "menu_uid",         text: "메뉴UID",           width: 250, essential: true },
-      { fieldName: "parent_menu_cd",   text: "상위메뉴코드",      width: 80 , essential: true , align: 'center'},
-      { fieldName: "menu_cd",          text: "메뉴코드",          width: 80 , essential: true , align: 'center'},
-      { fieldName: "menu_name_ko",     text: "메뉴명(한글)",      width: 180, essential: true },
-      { fieldName: "menu_name_en",     text: "메뉴명(영문)",      width: 220, essential: true },
-      { fieldName: "url",              text: "url",              width: 190, essential: true },
-      { fieldName: "icons",            text: "아이콘",            width: 80  },
-      { fieldName: "sort_order",       text: "정렬순서",          width: 60, essential: true , align: 'far'},
-      { fieldName: "use_yn",           text: "사용",              width: 60, align: 'center', essential: true , type: 'combo', comboList: comboYnList },
-      { fieldName: "search_yn",        text: "조회",              width: 60, align: 'center', type: 'combo', comboList: comboYnList },
-      { fieldName: "add_row_yn",       text: "행추가",            width: 60, align: 'center', type: 'combo', comboList: comboYnList },
-      { fieldName: "del_row_yn",       text: "행삭제",            width: 60, align: 'center', type: 'combo', comboList: comboYnList },
-      { fieldName: "save_yn",          text: "저장",              width: 60, align: 'center', type: 'combo', comboList: comboYnList },
-      { fieldName: "copy_yn",          text: "복사",              width: 40, align: 'center', type: 'combo', comboList: comboYnList },
-      { fieldName: "batch_yn",         text: "생성",              width: 40, align: 'center', type: 'combo', comboList: comboYnList },
-      { fieldName: "print_yn",         text: "출력",              width: 40, align: 'center', type: 'combo', comboList: comboYnList },
-      { fieldName: "excel_down_yn",    text: "엑셀다운",           width: 80, align: 'center', type: 'combo', comboList: comboYnList },
-      { fieldName: "excel_up_yn",      text: "엑셀업로드",         width: 80, align: 'center', type: 'combo', comboList: comboYnList },
-      { fieldName: "remark",           text: "비고",              width: 300 },
-      { fieldName: "create_by",        text: "생성자UID",         width: 80  },
-      { fieldName: "create_date_time", text: "생성일시",          width: 150, align: 'center', type: 'date', format: 'DATETIME' },
-      { fieldName: "update_by",        text: "수정자ID",          width: 80  },
-      { fieldName: "update_date_time", text: "수정일시",          width: 150, align: 'center', type: 'date', format: 'DATETIME' },
-    ]);
+      { fieldName: "menu_uid",         text: "메뉴UID",      width: 250, essential: true , visible: false },
+      { fieldName: "parent_menu_cd",   text: "상위메뉴코드", width: 100, essential: true , align: 'center'},
+      { fieldName: "menu_cd",          text: "메뉴코드",     width: 80 , essential: true , align: 'center'},
+      { fieldName: "menu_name_ko",     text: "메뉴명(한글)", width: 180, essential: true },
+      { fieldName: "menu_name_en",     text: "메뉴명(영문)", width: 220, essential: true },
+      { fieldName: "url",              text: "url",          width: 120, essential: true },
+      { fieldName: "icons",            text: "아이콘",       width: 70   },
+      { fieldName: "sort_order",       text: "정렬순서",     width: 80,  essential: true , align: 'far'},
+      { fieldName: "use_yn",           text: "사용",         width: 50,  align: 'center', essential: true , type: 'combo', comboList: comboYnList },
+      { fieldName: "search_yn",        text: "조회",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "add_row_yn",       text: "행추가",       width: 50,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "del_row_yn",       text: "행삭제",       width: 50,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "save_yn",          text: "저장",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "copy_yn",          text: "복사",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "batch_yn",         text: "생성",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "print_yn",         text: "출력",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "excel_down_yn",    text: "엑셀다운",     width: 70,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "excel_up_yn",      text: "엑셀업로드",   width: 70,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "remark",           text: "비고",         width: 300  },
+      { fieldName: "create_by",        text: "생성자UID",    width: 220, visible: false },
+      { fieldName: "create_date_time", text: "생성일시",     width: 160, align: 'center', type: 'date', format: 'DATETIME' },
+      { fieldName: "update_by",        text: "수정자ID",     width: 220, visible: false },
+      { fieldName: "update_date_time", text: "수정일시",     width: 160, visible: false, align: 'center', type: 'date', format: 'DATETIME' },
+    ], grid1Param);
   });
 
   /* action1에대한 기능 */
