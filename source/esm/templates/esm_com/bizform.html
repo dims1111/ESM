@@ -125,6 +125,10 @@
           </div>
         </div>
       </div>
+
+      
+      <div class="mouse-detail"></div>
+      
     
     <script>
       // css var 포니필 적용
@@ -160,7 +164,33 @@
       $(document).ready(function () {
         $(".required-icon").text("*");
         // $(".required-icon").css("font-style","nomal");
+
+        $('label').hover(function(){
+          
+          var text = $(this).text();
+          var ofs = $(this).parents("td").offset();
+          console.log(text);
+          console.log(ofs.top);
+          console.log(ofs.left);
+
+          $(".mouse-detail").css({
+            "position" : "absolute",
+            "top" : ofs.top-10,
+            "left" : ofs.left+100,
+            "border" : "1px solid blue",
+            "background-color" : "royalblue"
+          });
+
+          $('<span class="showtip">' + text + '</span>').appendTo($(".mouse-detail"));
+        },
+        function () {
+            $('.showtip').remove();
+            $(".mouse-detail").css({
+              "border" : 0
+            });
+        });
       });
+
 
     </script>
   </body>

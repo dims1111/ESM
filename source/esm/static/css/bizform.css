@@ -757,3 +757,22 @@ form {
   font-size: 20px;
   padding-right: 5px;
 }
+/* 
+.form-control {
+  border: 1px solid rgb(118, 118, 118);
+} */
+
+.search-content table label {
+  width: 122px;
+  white-space:nowrap; 
+  display: inline-block; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.mouse-detail {
+  border : 1px solid blue;
+  background-color : royalblue;
+}
+
