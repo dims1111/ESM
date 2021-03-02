@@ -99,11 +99,6 @@ function initGridField(grdObj, columns) {
     if (columnInfo.align) {
     //  right -> far 
     //  lett -> near
-      
-      // 오른쪽 정렬일 경우 far로 변경
-      if(columnInfo.align == 'right') {
-        columnInfo.align = 'far'
-      }      
       columnInfo.styles.textAlignment = columnInfo.align;
     }
 
