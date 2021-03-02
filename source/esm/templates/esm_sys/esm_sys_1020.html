@@ -81,6 +81,10 @@
           mainParam: mainParam,
         };
 
+        // 모탈테스트 : 조회버튼 클릭 시 모달팝업 띄우기
+        // $("#myModal").modal("show");
+
+
         // 그리드 조회
         // 라이브러리 경로 : \static\js\lib\comTrans.js
         gfnGetGrdData(params);
@@ -142,7 +146,12 @@
         alert(gubun);
         break;
     }
+
+    
   }
+
+  
+    
 </script>
 {% endblock %} {% block contents %}
 <div class="container-fluid d-flex flex-column p-0 h-100">
@@ -163,12 +172,74 @@
         </div>
       </div>
       <form id="srchForm" class="search-content">
-        <label for="menuName"><i class="xi-star"></i>메뉴명</label>
-        <input type="text" name="menuName" id="menuName" />
-        <label for="url" style="margin-left: 15px">URL</label>
-        <input type="text" name="url" id="url" />
-        <label for="useYn" style="margin-left: 15px">사용여부</label>
-        <input type="checkbox" name="useYn" id="useYn" checked />
+        <table style="width: 100%;">
+          <colgroup>
+            <col width="7.5%">
+            <col width="17.5%">
+            <col width="7.5%">
+            <col width="17.5%">
+            <col width="7.5%">
+            <col width="17.5%">
+            <col width="7.5%">
+            <col width="17.5%">
+            <col width="7.5%">
+            <col width="17.5%">
+          </colgroup>
+          <tr style="width: 100%;">
+            <td class="search-menu">
+              <i class="required-icon"></i><label for="menuName">메뉴명1</label>
+            </td>
+            <td>
+              <input type="text" name="menuName" id="menuName" />
+            </td>
+            <td class="search-menu">
+              <label for="url" >URL</label>
+            </td>
+            <td>
+              <input type="text" name="url" id="url" />
+            </td>
+            <td class="search-menu">
+              <label for="useYn" ></label>사용여부</label>
+            </td>
+            <td>
+              <input type="checkbox" name="useYn" id="useYn" checked />
+            </td>
+            <td class="search-menu">
+              <label for="date" >생성일자</label>
+            </td>
+            <td>
+              <div class="input-group date">
+                <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+              </div>  
+            </td>
+          </tr>
+          <tr>
+            <td class="search-menu">
+              <label for="test" >test1</label>
+            </td>
+            <td>
+              <input type="text" name="test" id="test"/>
+            </td>
+            <td class="search-menu">
+              <label for="test" >test2</label>
+            </td>
+            <td>
+              <input type="text" name="test" id="test"/>
+            </td>
+            <td class="search-menu">
+              <!-- <label for="test" >test3</label> -->
+            </td>
+            <td>
+              <!-- <input type="text" name="test" id="test"/> -->
+            </td>
+            <td class="search-menu">
+              <!-- <label for="test" >test4</label> -->
+            </td>
+            <td>
+              <!-- <input type="text" name="test" id="test"/> -->
+            </td>
+          </tr>
+        </table> 
       </form>
     </div>
   </div>

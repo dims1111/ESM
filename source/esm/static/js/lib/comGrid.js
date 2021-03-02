@@ -113,6 +113,7 @@ function initGridField(grdObj, columns) {
         foreground: "#e74c3c",
         fontSize: 18,
         selectedForeground: "#e74c3d",
+        fontFamily: 'Noto Sans KR'
       };
     }
 

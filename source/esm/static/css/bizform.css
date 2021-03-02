@@ -744,3 +744,16 @@ form {
 .grid2{
   margin-top: 20px;
 }
+
+
+.search-menu{
+  text-align: right;
+  padding-right: 10px;
+}
+
+.required-icon {
+  /* display: inline-block; */
+  color: #e74c3c;
+  font-size: 20px;
+  padding-right: 5px;
+}
