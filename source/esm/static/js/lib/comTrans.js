@@ -22,6 +22,7 @@ function gfn_ajaxTransaction(svcID, callUrl, inDatasets, outDatasets, argument, 
   if (this.gfnIsNull(showProgress)) showProgress = true;
   if (this.gfnIsNull(async)) async = true;
   if (this.gfnIsNull(callbackParams)) cbParams = null;
+  if (this.gfnIsNull(showProgress)) showProgress = true;
   if (showProgress) gfnLoadshow();
   // console.log(callbackParams);
   var sendObj = new Object();
@@ -268,6 +269,110 @@ this.err_check_json = function (_data) {
   return result;
 };
 
+
+
+
+
+/**************
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
 function gfnGetData(params, callback) {
   $.ajax({
     type: "POST",
@@ -306,6 +411,9 @@ function gfnGetGrdData(params, callback) {
   for (grid of gridArr) {
     window[grid].gridView.commit(false);
     
+    // 로딩바 생성
+    gfnLoadshow(window[grid]);
+
     $.ajax({
       type: "POST",
       url: params.url,
@@ -338,6 +446,9 @@ function gfnGetGrdData(params, callback) {
             callback(); 
           }
         }
+
+        // 로딩바 제거
+        gfnLoadhide(window[grid]);
       },
       error: function (req, status, err) {
         if (req.status == "403") {
@@ -346,6 +457,9 @@ function gfnGetGrdData(params, callback) {
         }
 
         // 에러체킹 후 return할 예정
+
+        // 로딩바 제거
+        gfnLoadhide(window[grid]);
         return;
       },
     });    
@@ -376,6 +490,9 @@ function gfnSetGrdData(params, callback) {
 
     }
 
+    // 로딩바 생성
+    gfnLoadshow(window[grid]);
+
     $.ajax({
       type: "POST",
       url: params.url,
@@ -390,6 +507,8 @@ function gfnSetGrdData(params, callback) {
             $("#myModal #contents").html(res.msg);
             $("#myModal").modal("show");
             if (res.cd === "E") {
+              // 로딩바 제거
+              gfnLoadhide(window[grid]);
               return;
             }
           }
@@ -398,6 +517,8 @@ function gfnSetGrdData(params, callback) {
             callback();
           }
         }
+        // 로딩바 제거
+        gfnLoadhide(window[grid]);
       },
       error: function (req, status, err) {
         if (req.status == "403") {
@@ -406,6 +527,8 @@ function gfnSetGrdData(params, callback) {
         }
 
         // 에러체킹 후 return할 예정
+        // 로딩바 제거
+        gfnLoadhide(window[grid]);
         return;
       },
     });
