@@ -48,6 +48,31 @@ $.fn.gfnGridInit = function (columns, width, height) {
   // var srch_bar = '<span id="frowinfo_' + $(this).attr('id') + '"></span>';
   // $("." + this.attr("id")).append(srch_bar);
 
+  this.gridView.onValidationFail = function (gridView, itemIndex, column, err) {
+    // console.log("onValidationFail:" + itemIndex + "," + JSON.stringify(column) + "," + JSON.stringify(err));
+    $("#errorModal #errorModalContents").html(err.message);
+    $("#errorModal").modal("show");
+  }
+  
+  this.gridView.onValidateRow = function(gridView, itemIndex, dataRow, inserting, values) {
+    // console.log("onValidateRow:" + itemIndex + "," + dataRow + "," + inserting + ",");
+    for (var columnInfo of gridView.getColumns()) {
+      // 필수 체크
+      if (columnInfo.header.subText) {
+        var value = values[columnInfo.name];
+        if (!value && value !== 0) {
+          var headerText = columnInfo.header.text;
+          var error = {
+            level: RealGridJS.ValidationLevel.ERROR,
+            message: headerText + '은(는) 필수입력 값 입니다.'
+          };
+          return error;
+        }
+      }
+    }
+    return true;
+  }
+
   // 엔터키, 탭 입력 시 다음 줄 첫번째 컬럼으로 커서 옮기기
   this.gridView.onKeyDown = function (gridView, key, ctrl, shift, alt) {
     // key === 13(엔터), key === 9(Tab)키     
@@ -104,8 +129,7 @@ function initGridField(grdObj, columns) {
     }
 
     // 필수 컬럼일 경우 *표시 및 css 조정
-    if (columnInfo.required === true) {
-      delete columnInfo['required'];
+    if (columnInfo.essential === true) {
       columnInfo.header.subText = "*";
       columnInfo.header.subTextGap = 5;
       columnInfo.header.subTextLocation = "left";

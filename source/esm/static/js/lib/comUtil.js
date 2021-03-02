@@ -1,3 +1,5 @@
+var intervalIds = {};
+
 /* ************************************************************************************************
 # 프로젝트      : 전자식 복무관리 시스템
 # 프로그램 ID   : comUtil.js
@@ -239,35 +241,62 @@ this.gfnValidatePhone = function (gubun, value) {
  * 리턴형식 : N/A
  * 매개변수 : N/A
 **/
-function gfnLoadshow() {
-  //$('body').append('<div id="kkkkggggkkkk" class="alert alert-dark" role="alert">zzzzzzzzzzzzzzzzzzzzzzzzzzzz</div>');
-  $('#load_timer').text('00:00:00');
-  $('.quriloading').show();
-  if (intervalIds.length == 0) {
+function gfnLoadshow(grid) {
+  var $div = $('<div />', {
+    class: "col-xs-11 col-sm-1 alert alert-primary animated bounceInDown loadingbar",
+    style: "width:150px; margin: 0px auto; transition:0.5s ease-in-out; left: 50%; top: 50%; transform: translate(-50%, -50%); display: inline-block; position: absolute; z-index: 99999; animation-iteration-count: 1; max-width: none !important;",
+    role: 'alert',
+    'data-notify': "container",
+    'data-notify-position': "top-center",
+  });
 
-    var intervalId = setInterval(function () {
-      var arr = $('#load_timer').text().split(':');
-      var second = parseInt(arr[2]);
-      var minute = parseInt(arr[1]);
-      var hour = parseInt(arr[0]);
-      second += 1;
-      if (second == 60) {
-        second = 0;
-        minute += 1;
-      }
-      if (minute == 60) {
-        minute = 0
-        hour += 1;
-      }
-      hour = hour > 9 ? hour.toString() : '0' + hour.toString();
-      minute = minute > 9 ? minute.toString() : '0' + minute.toString();
-      second = second > 9 ? second.toString() : '0' + second.toString();
-      var timeString = hour + ':' + minute + ':' + second;
-      $('#load_timer').text(timeString);
-    }, 1000)
-    intervalIds.push(intervalId);
-  }
-  //$('#gl_loding').modal('show');
+  var $spinner = $('<div />', {
+    class:"spinner-border ml-auto close", 
+    role:"status", 
+    'aria-hidden' :"true"
+  })
+
+  var $title = $('<div />', {
+    'data-notify': 'title',
+    text: 'loading',
+    style: 'font-weight: 700;'
+  })
+
+  var $message = $('<span />', {
+    id: 'load_timer',
+    'data-notify': 'message',
+    text: ' 00:00:00'
+  })
+
+  $div
+    .append($spinner)
+    .append($title)
+    .append($message)
+
+  grid.append($div);
+
+  var intervalId = setInterval(function () {
+    var arr = $('#load_timer').text().split(':');
+    var hour = parseInt(arr[0]); // 시
+    var minute = parseInt(arr[1]); // 분
+    var second = parseInt(arr[2]); // 초
+
+    second += 1;
+    if (second == 60) {
+      second = 0;
+      minute += 1;
+    }
+    if (minute == 60) {
+      minute = 0;
+      hour += 1;
+    }
+    hour = ('0' + hour).substr(-2);
+    minute = ('0' + minute).substr(-2);
+    second = ('0' + second).substr(-2);
+    $('#load_timer').text(hour + ':' + minute + ':' + second);
+  }, 1000);
+
+  intervalIds[grid.attr('id')] = intervalId;
 }
 
 
@@ -277,14 +306,13 @@ function gfnLoadshow() {
  * 리턴형식 : N/A
  * 매개변수 : N/A
 **/
-function gfnLoadhide() {    
-  for (var index = 0; index < intervalIds.length; index++) {
-    clearInterval(intervalIds[index]);
-  }
-  intervalIds = [];
+function gfnLoadhide(grid) {
+  var gridId = grid.attr('id');
 
-  $('#load_timer').text('00:00:00');
-  $('.quriloading').hide();
+  clearInterval(intervalIds[gridId]);
+  delete intervalIds[gridId];
+
+  grid.find('.loadingbar').remove();
 }
 
 
