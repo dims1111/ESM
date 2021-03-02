@@ -21,15 +21,15 @@
     // });
 
     grid1 = $("#grid1").gfnGridInit([
-      { fieldName: "menu_uid",         text: "메뉴UID",           width: 250, required: true },
-      { fieldName: "parent_menu_cd",   text: "상위메뉴코드",      width: 80 , required: true , align: 'center'},
-      { fieldName: "menu_cd",          text: "메뉴코드",          width: 80 , required: true , align: 'center'},
-      { fieldName: "menu_name_ko",     text: "메뉴명(한글)",      width: 180, required: true },
-      { fieldName: "menu_name_en",     text: "메뉴명(영문)",      width: 220, required: true },
-      { fieldName: "url",              text: "url",              width: 190, required: true },
+      { fieldName: "menu_uid",         text: "메뉴UID",           width: 250, essential: true },
+      { fieldName: "parent_menu_cd",   text: "상위메뉴코드",      width: 80 , essential: true , align: 'center'},
+      { fieldName: "menu_cd",          text: "메뉴코드",          width: 80 , essential: true , align: 'center'},
+      { fieldName: "menu_name_ko",     text: "메뉴명(한글)",      width: 180, essential: true },
+      { fieldName: "menu_name_en",     text: "메뉴명(영문)",      width: 220, essential: true },
+      { fieldName: "url",              text: "url",              width: 190, essential: true },
       { fieldName: "icons",            text: "아이콘",            width: 80  },
-      { fieldName: "sort_order",       text: "정렬순서",          width: 60, required: true , align: 'far'},
-      { fieldName: "use_yn",           text: "사용",              width: 60, align: 'center', required: true , type: 'combo', comboList: comboYnList },
+      { fieldName: "sort_order",       text: "정렬순서",          width: 60, essential: true , align: 'far'},
+      { fieldName: "use_yn",           text: "사용",              width: 60, align: 'center', essential: true , type: 'combo', comboList: comboYnList },
       { fieldName: "search_yn",        text: "조회",              width: 60, align: 'center', type: 'combo', comboList: comboYnList },
       { fieldName: "add_row_yn",       text: "행추가",            width: 60, align: 'center', type: 'combo', comboList: comboYnList },
       { fieldName: "del_row_yn",       text: "행삭제",            width: 60, align: 'center', type: 'combo', comboList: comboYnList },
@@ -45,16 +45,6 @@
       { fieldName: "update_by",        text: "수정자ID",          width: 80  },
       { fieldName: "update_date_time", text: "수정일시",          width: 150, align: 'center', type: 'date', format: 'DATETIME' },
     ]);
-
-    grid1.gridView.onValidateRow = function(grid, itemIndex, dataRow, inserting, values) {
-      console.log('타니')
-      // console.log("onValidateRow:" + itemIndex + "," + dataRow + "," + inserting + "," + values.Quantity + "," + values.UnitPrice);
-
-      var error = {};
-      error.level = RealGridJS.ValidationLevel.ERROR;
-      error.message = "에러발생";
-      return error;
-    }
   });
 
   /* action1에대한 기능 */
