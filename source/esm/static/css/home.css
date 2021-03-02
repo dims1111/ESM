@@ -4,7 +4,7 @@ html, body {
   }
   .top {
     background: var(--p1);
-    height: 40px;
+    height: 50px;
     min-width: 960px;
   }
   
