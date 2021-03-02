@@ -96,14 +96,16 @@ function initGridField(grdObj, columns) {
     }
 
     // 정렬
+    // near: Left정렬
+    // center: Center정렬
+    // far: Right 정렬
     if (columnInfo.align) {
-    //  right -> far 
-    //  lett -> near
       columnInfo.styles.textAlignment = columnInfo.align;
     }
 
     // 필수 컬럼일 경우 *표시 및 css 조정
     if (columnInfo.required === true) {
+      delete columnInfo['required'];
       columnInfo.header.subText = "*";
       columnInfo.header.subTextGap = 5;
       columnInfo.header.subTextLocation = "left";
@@ -117,15 +119,13 @@ function initGridField(grdObj, columns) {
     if (columnInfo.type) {
       switch (columnInfo.type) {
         case "combo": // 콤보박스
-          var str = gubun2 + ediname;
-          if (gubun2 == "O") {
-            gridOptionCombo(ediname, grdObj, jobj.fieldName);
-          } else if (str.indexOf("&") == -1) {
-            gridCombo(gubun2 + ediname, grdObj, jobj.fieldName);
-          } else {
-            var arr = str.split("&");
-            gridCombo(arr[0], grdObj, jobj.fieldName, arr[1]);
-          }
+          columnInfo.editor = {
+            type: 'dropDown',
+            domainOnly: true,
+            textReadOnly: true,
+            values: columnInfo.comboList.map(function (item) { return item.code }),
+            labels: columnInfo.comboList.map(function (item) { return item.name }),
+          };
           break;
         case "search": // 조회버튼
           columnInfo.buttonVisibility = "always";
@@ -173,7 +173,7 @@ function initGridField(grdObj, columns) {
           columnInfo.editor = {
             type: "btdate",
             btOptions: {
-              language: "" + ld.datepickerlang + "",
+              language: 'kr',
             },
             datetimeFormat: "yyyyMMdd",
             commitOnSelect: true,
@@ -189,7 +189,7 @@ function initGridField(grdObj, columns) {
           columnInfo.displayRegExp = /(\d{4})(\d{2})(\d{2})/;
           columnInfo.displayReplace = "$1-$2-$3";
 
-          if (gubun2 == "M") {
+          if (columnInfo.format == "YYYYMM") {
             columnInfo.editor.btOptions.minViewMode = 1;
             columnInfo.editor.datetimeFormat = "yyyyMM";
             columnInfo.editor.mask = {
@@ -198,7 +198,7 @@ function initGridField(grdObj, columns) {
             };
             columnInfo.displayRegExp = /(\d{4})(\d{2})/;
             columnInfo.displayReplace = "$1-$2";
-          } else if (gubun2 == "Y") {
+          } else if (columnInfo.format == "YYYY") {
             columnInfo.editor.btOptions.minViewMode = 2;
             columnInfo.editor.datetimeFormat = "yyyy";
             columnInfo.editor.mask = {
@@ -207,8 +207,7 @@ function initGridField(grdObj, columns) {
             };
             columnInfo.displayRegExp = /(\d{4})/;
             columnInfo.displayReplace = "$1";
-          } else if (gubun2 == "T") {
-            columnInfo.editor.btOptions.minViewMode = 2;
+          } else if (columnInfo.format == "DATETIME") {
             columnInfo.editor.datetimeFormat = "yyyyMMddhhmmss";
             columnInfo.editor.mask = {
               editMask: "9999-99-99 99:99:99",
