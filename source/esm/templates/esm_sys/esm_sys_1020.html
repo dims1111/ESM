@@ -90,11 +90,18 @@
         break;
       // 행추가
       case "addRow":
+        grid1.gridView.commit(false);
         grid1.provider.insertRow(0, {});
+        grid1.gridView.setSelection({
+          startItem: 0,
+          endItem: 0,
+          style: "rows"
+        });
         break;
 
       // 행삭제  
       case "delRow":
+        grid1.gridView.commit(false);
         var curr = grid1.gridView.getCurrent();
         if (curr.dataRow === -1) {
           return alert("선택된 데이터가 없습니다.");
