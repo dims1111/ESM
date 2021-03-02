@@ -304,6 +304,8 @@ function gfnGetGrdData(params, callback) {
   }
 
   for (grid of gridArr) {
+    window[grid].gridView.commit(false);
+    
     $.ajax({
       type: "POST",
       url: params.url,
@@ -312,27 +314,28 @@ function gfnGetGrdData(params, callback) {
       dataType: "json",
       success: function (res) {
         console.log("res =>", res)
-        if (res) {          
+        if (res) {       
+          // 데이터가져오기
+          var result = res.data;
+
+          // 임시로 여기서 메뉴 건수 추가함
+          var titleCnt = result ? result.length : 0;
+          var titleCntText = gfnMakeComma(titleCnt) + '건';
+          window[grid].closest('.grid').find('.grid-title__cnt').text(titleCntText);
+
+          // console.log(result);
+          window[grid].provider.setRows(result);
+
           // 메시지 출력
           if (res.msg) {
             // 오류 또는 정상이지만 메시지가 존재하면 파업 메시지 출력
             $("#errorModal #errorModalContents").html(res.msg);
             $("#errorModal").modal("show");
-          } else {
-            // 데이터가져오기
-            var result = res.data;
-
-            // 임시로 여기서 메뉴 건수 추가함
-            var titleCnt = gfnMakeComma(result.length) + '건';
-            window[grid].closest('.grid').find('.grid-title__cnt').text(titleCnt);
-
-            // console.log(result);
-            window[grid].provider.setRows(result);
-          
-            // 콜백함수 호출  
-            if (callback) {
-              callback(); 
-            }
+          }
+        
+          // 콜백함수 호출  
+          if (callback) {
+            callback(); 
           }
         }
       },
