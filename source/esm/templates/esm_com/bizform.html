@@ -28,6 +28,10 @@
     {% load random_numbers %}
     <link rel="stylesheet" href="{% static 'css/bizform.css'%}?v={% random_number %}" />
 
+    <!-- Material 웹폰트 적용 -->
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined">
+
     <!-- css var 관련 포니필 추가 -->
     <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
 
@@ -41,6 +45,7 @@
     <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs-lic.js'%}"></script>
     <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs_eval.1.1.36.min.js'%}"></script>
     <script type="text/javascript" src="{% static '/plugins/realgridjs/realgridjs-api.1.1.36.js'%}"></script>
+    <script type="text/javascript" src="{% static '/plugins/realgridjs/jszip.min.js'%}"></script>
 
     <!-- 부트스트랩 DatePicker -->
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.min.css' %}"/>
@@ -55,56 +60,82 @@
     <script type="text/javascript" src="{% static '/js/lib/comTrans.js'%}"></script>
     <script type="text/javascript" src="{% static '/js/lib/comUtil.js'%}"></script>
     <script type="text/javascript" src="{% static '/js/lib/comModal.js'%}"></script>
-
-    <style>
-    </style>
-
-
     {% block header %} {% endblock %}
   </head>
 
-  <body>
-    
+  <body>    
       {% block contents %} {% endblock %}
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <!-- 오류 메시지 모달 -->
+      <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content ">
             <div class="modal-header" >
               <i class="xi-error-o xi-2x"></i>
-              <h5 class="modal-title" id="myModalLabel">&nbsp;오류 발생</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h5 class="modal-title" id="errorModalTitle">&nbsp;&nbsp;오류 메시지</h5>
+              <button type="button" class="close" id="cls" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <div id="contents" class="modal-body">
-              
+            <div id="errorModalContents" class="modal-body">
             </div>
             <div class="modal-footer" >
-              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <button type="button" class="btn_popup active" data-dismiss="modal"><i class="xi-close"> 닫기</i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 알림 메시지 모달 -->
+      <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content ">
+            <div class="modal-header" >
+              <i class="xi-error-o xi-2x"></i>
+              <h5 class="modal-title" id="infoModalTitle">&nbsp;알림 메시지</h5>
+              <button type="button" class="close" id="cls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div id="infoModalContents" class="modal-body">
+            </div>
+            <div class="modal-footer" >
+              <button type="button" class="btn_sub active" btnId="close" data-dismiss="modal"><i class="xi-close"> 닫기</i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 확인 메시지 모달 -->
+      <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content ">
+            <div class="modal-header" >
+              <i class="xi-error-o xi-2x"></i>
+              <h5 class="modal-title" id="confirmModalTitle">&nbsp;확인 메시지</h5>
+              <button type="button" class="close" btnId="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div id="confirmModalContents" class="modal-body">
+            </div>
+            <div class="modal-footer" >              
+              <button type="button" class="btn_sub active" btnId="confirm" data-dismiss="modal"><i class="xi-close-min"> 확인</i></button>
+              <button type="button" class="btn_sub active" btnId="cancel" data-dismiss="modal"><i class="xi-close-min"> 취소</i></button>
+              <!-- <button type="button" class="btn_sub active" btnId="cancel" data-dismiss="modal">{{ld.cancel}}</button> -->
+              <hr>
+              <button type="button" class="btn_sub active" data-dismiss="modal"><i class="xi-close-min"> 닫기</i></button>
             </div>
           </div>
         </div>
       </div>
     
     <script>
-      cssVars(); // css var 포니필 적용
+      // css var 포니필 적용
+      cssVars(); 
       RealGridJS.setRootContext("{% static '/plugins/realgridjs' %}");
 
-
       $(function () {
-
         // Modal 이동
-        $("#myModal").draggable({
-          handle: ".modal-header",
-          // containment: ".modal-open",
-          // scroll: false
-          
+        $("#errorModal").draggable({
+          handle: ".modal-header",  
         });
-
       });
     </script>
-
-
-
-
-
   </body>
 </html>

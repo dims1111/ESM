@@ -44,7 +44,7 @@ function setIcon() {
       '<span style="margin: 0px 0px 0px -21px; cursor:pointer; position:absolute; line-height:2.6rem; font-size:14px;">' +
         '<i class="fas fa-search"></i></span>'
     );
-    var tag_h = parseInt(extractNum($(this).css("height")));
+    var tag_h = parseInt(gfnExtractNum($(this).css("height")));
     if (tag_h < 29) {
       $(this).next("span").css("line-height", "2.2rem");
     }
@@ -55,7 +55,7 @@ function setIcon() {
       '<span style="margin: 0px 0px 0px -21px; cursor:pointer; position:absolute; line-height:2.6rem; font-size:14px;" class="cal-icon">' +
         '<i class="far fa-calendar-alt"></i></span>'
     );
-    var tag_h = parseInt(extractNum($(this).css("height")));
+    var tag_h = parseInt(gfnExtractNum($(this).css("height")));
     if (tag_h < 29) {
       $(this).next("span").css("line-height", "2.2rem");
     }
@@ -74,7 +74,7 @@ function setInitComm() {
 
 // input mask
 function setMask() {
-  // type에 대한 로직은 comUtil.js의 autoHypen 함수에 정의
+  // type에 대한 로직은 comUtil.js의 gfnAutoHypen 함수에 정의
   var typeArr = ["phone", "business"]; // 새로운 type은 여기에 추가해주세요.
 
   for (var i = 0; i < typeArr.length; i++) {
@@ -83,7 +83,7 @@ function setMask() {
         var val = $(this).val();
         var type = $(this).attr("mask");
 
-        $(this).val(autoHypen(val, type)); // autoHypen 함수는 comUtil.js 참고
+        $(this).val(gfnAutoHypen(val, type)); // gfnAutoHypen 함수는 comUtil.js 참고
       });
     });
   }
@@ -136,7 +136,7 @@ $(document).ready(function () {
     .find("input")
     .change(function () {
       var inputId = $(this).attr("id");
-      if (gfn_isNull($(this).val())) {
+      if (gfnIsNull($(this).val())) {
         $("#" + inputId + "_cd").val("");
       }
     });
@@ -145,7 +145,7 @@ $(document).ready(function () {
     .find("input")
     .change(function () {
       var inputId = $(this).attr("id");
-      if (gfn_isNull($(this).val())) {
+      if (gfnIsNull($(this).val())) {
         $("#" + inputId + "_cd").val("");
       }
     });
@@ -173,10 +173,10 @@ $(document).ready(function () {
           }
           var start_value = $(this).attr("reset_start_value");
           var end_value = $(this).attr("reset_end_value");
-          if (!gfn_isNull(start_value)) {
+          if (!gfnIsNull(start_value)) {
             $(this).datepicker("start_value", start_value);
           }
-          if (!gfn_isNull(end_value)) {
+          if (!gfnIsNull(end_value)) {
             $(this).datepicker("end_value", end_value);
           }
         } else {
@@ -270,9 +270,9 @@ function chkMustFeild(mustname) {
   if (!result) {
     if (chkTitle != "" && chkTitle !== undefined) {
       // gmessage(null, '[' + chkTitle + '] 입력값이 누락 되었습니다.');
-      gfn_noticeshow(ld.notice_modal, chkTitle + "입력값이 누락 되었습니다.");
+      gfnNoticeModalShow(ld.notice_modal, chkTitle + "입력값이 누락 되었습니다.");
     } else {
-      gfn_noticeshow(ld.notice_modal, "필수입력값이 누락 되었습니다.");
+      gfnNoticeModalShow(ld.notice_modal, "필수입력값이 누락 되었습니다.");
       // gmessage(null, '필수입력값이 누락 되었습니다.');
       //alert( '필수입력값이 누락 되었습니다.');
     }
@@ -361,7 +361,7 @@ function isGrdModified(_grd) {
 function fn_findActivetab() {
   var div = $(".nav-tabs .active");
   var tabId = "";
-  if (!gfn_isNull(div)) {
+  if (!gfnIsNull(div)) {
     tabId = div.attr("href");
   }
   return tabId;
@@ -377,8 +377,8 @@ function checkChangeData(isClose) {
   try {
     for (a in t) {
       var thisGrdId = t[a];
-      if (!gfn_isNull(tabObj)) {
-        if (!isClose && gfn_isNull(tabObj.find($("#" + thisGrdId)))) continue; //활성화된 탭이 아니면 Continue처리
+      if (!gfnIsNull(tabObj)) {
+        if (!isClose && gfnIsNull(tabObj.find($("#" + thisGrdId)))) continue; //활성화된 탭이 아니면 Continue처리
       }
 
       if ("object" != typeof window[t[a]]) continue;
@@ -453,10 +453,10 @@ this.gfn_initDropList = function (tag, magic_const, isAll, type_code, isSync, ur
   // addParams, changeFunc,  ??? 어떻게 처리하지
   //console.log("fn.setDropList....");
   //console.log("addParams....", addParams);
-  if (gfn_isNull(isAll)) isAll = false;
-  if (gfn_isNull(type_code)) type_code = "code_detail";
-  if (gfn_isNull(isSync)) isSync = false;
-  if (gfn_isNull(url)) url = "/comm/get_combo_data";
+  if (gfnIsNull(isAll)) isAll = false;
+  if (gfnIsNull(type_code)) type_code = "code_detail";
+  if (gfnIsNull(isSync)) isSync = false;
+  if (gfnIsNull(url)) url = "/comm/get_combo_data";
 
   // console.log(isAll);
   var select = $("#" + tag);
@@ -470,7 +470,7 @@ this.gfn_initDropList = function (tag, magic_const, isAll, type_code, isSync, ur
     isAll: isAll,
   };
 
-  if (!gfn_isNull(args)) {
+  if (!gfnIsNull(args)) {
     var keys = Object.keys(args);
     for (var index = 0; index < keys.length; index++) {
       var key = keys[index];
@@ -519,7 +519,7 @@ this.gfn_setCombos = function (tags, magic_consts, isAlls, type_codes) {
  */
 this.gfn_initMultiDropList = function (tag, magic_const, options, type_code) {
   // addParams, changeFunc,.... 추후 정의
-  if (gfn_isNull(type_code)) type_code = "code_detail";
+  if (gfnIsNull(type_code)) type_code = "code_detail";
 
   var select = $("#" + tag);
   // 비우기 먼저
@@ -736,7 +736,7 @@ this.gfn_setFormDisabled = function (formId, bYesNo) {
 this.checkValUid = function (valtag, uidtag) {
   var val = $("#" + valtag).val();
   var uid = $("#" + uidtag).val();
-  if (gfn_isNull(val) == false && gfn_isNull(uid)) {
+  if (gfnIsNull(val) == false && gfnIsNull(uid)) {
     return true;
   }
   return false;
@@ -781,13 +781,13 @@ this.gfn_checkStudent = function (stuTag, uidTag, modalTag, srchFunc, srchParam,
     };
     var tempObj = JSON.parse(JSON.stringify(otherObj));
 
-    if (gfn_isNull(otherObj.lecture_year)) {
+    if (gfnIsNull(otherObj.lecture_year)) {
       otherObj.lecture_year = tempObj.year;
     }
-    if (gfn_isNull(otherObj.semester_uid)) {
+    if (gfnIsNull(otherObj.semester_uid)) {
       otherObj.semester_uid = tempObj.semester;
     }
-    if (gfn_isNull(otherObj.lecture_month)) {
+    if (gfnIsNull(otherObj.lecture_month)) {
       otherObj.lecture_month = tempObj.month;
     }
 
@@ -866,7 +866,7 @@ this.gfn_checkBuseo = function (buseoTag, uidTag, modalTag, srchFunc, srchParam,
 
 this.checkCallback = function (trId, strErrorCode, strErrorMsg) {
   var isInner = dataset.addParam.isInner;
-  if (gfn_isNull(isInner)) isInner = false;
+  if (gfnIsNull(isInner)) isInner = false;
 
   switch (trId) {
     case "checkStudent":
@@ -894,48 +894,48 @@ this.checkCallback = function (trId, strErrorCode, strErrorMsg) {
         // }
 
         // 다른태그들의 값을 초기화 해야할때 필요시 추가 바람
-        if (!gfn_isNull(otherObj.otherTag)) {
+        if (!gfnIsNull(otherObj.otherTag)) {
           var otherTags = otherObj.otherTag;
           var stu_data = dataset.checkCallBackStudentData[0];
-          if (!gfn_isNull(otherTags.nameTag)) {
+          if (!gfnIsNull(otherTags.nameTag)) {
             $("#" + otherTags.nameTag).val(stu_data.student_name);
           }
-          if (!gfn_isNull(otherTags.numberTag)) {
+          if (!gfnIsNull(otherTags.numberTag)) {
             $("#" + otherTags.numberTag).val(stu_data.student_number);
           }
-          if (!gfn_isNull(otherTags.deptNameTag)) {
+          if (!gfnIsNull(otherTags.deptNameTag)) {
             $("#" + otherTags.deptNameTag).val(stu_data.department_name);
           }
-          if (!gfn_isNull(otherTags.bankNameTag)) {
+          if (!gfnIsNull(otherTags.bankNameTag)) {
             $("#" + otherTags.bankNameTag).val(stu_data.bank_name);
           }
-          if (!gfn_isNull(otherTags.accountNumTag)) {
+          if (!gfnIsNull(otherTags.accountNumTag)) {
             $("#" + otherTags.accountNumTag).val(stu_data.bank_account_number);
           }
-          if (!gfn_isNull(otherTags.depoStockTag)) {
+          if (!gfnIsNull(otherTags.depoStockTag)) {
             $("#" + otherTags.depoStockTag).val(stu_data.depositor);
           }
-          if (!gfn_isNull(otherTags.personUidTag)) {
+          if (!gfnIsNull(otherTags.personUidTag)) {
             $("#" + otherTags.personUidTag).val(stu_data.person_uid);
           }
-          if (!gfn_isNull(otherTags.deptUidTag)) {
+          if (!gfnIsNull(otherTags.deptUidTag)) {
             $("#" + otherTags.deptUidTag).val(stu_data.department_code_uid);
           }
-          if (!gfn_isNull(otherTags.statusNameTag)) {
+          if (!gfnIsNull(otherTags.statusNameTag)) {
             $("#" + otherTags.statusNameTag).val(stu_data.status_code_name);
           }
         }
 
-        if (gfn_isNull(srchParam)) {
+        if (gfnIsNull(srchParam)) {
           srchFunc();
         } else {
           srchFunc(srchParam);
         }
       } else {
         if (isInner === true) {
-          parent.window.gfn_noticeshow(ld.notice_modal, ld.search_stu_err);
+          parent.window.gfnNoticeModalShow(ld.notice_modal, ld.search_stu_err);
         } else {
-          gfn_noticeshow(ld.notice_modal, ld.search_stu_err);
+          gfnNoticeModalShow(ld.notice_modal, ld.search_stu_err);
         }
 
         if (modalTag.substring(0, 1) != "#") {
@@ -1004,7 +1004,7 @@ this.checkCallback = function (trId, strErrorCode, strErrorMsg) {
         }
         $(uidTag).val(dataset.checkCallBackDepartmentData[0].organization_uid);
         $(deptTag).val(dataset.checkCallBackDepartmentData[0].organization_name);
-        if (gfn_isNull(srchParam)) {
+        if (gfnIsNull(srchParam)) {
           srchFunc();
         } else {
           srchFunc(srchParam);
@@ -1014,7 +1014,7 @@ this.checkCallback = function (trId, strErrorCode, strErrorMsg) {
           modalTag = "#" + modalTag;
         }
         if (isInner === true) {
-          parent.window.gfn_noticeshow(ld.notice_modal, ld.search_buseo_err);
+          parent.window.gfnNoticeModalShow(ld.notice_modal, ld.search_buseo_err);
           parent.window.gfn_openInnerModal(modalTag.substring(1, modalTag.length), "/sch_pup_1030");
 
           parent.window.$(modalTag).on("shown.bs.modal", function () {
@@ -1024,7 +1024,7 @@ this.checkCallback = function (trId, strErrorCode, strErrorMsg) {
             parent.window.$(modalTag).off("shown.bs.modal");
           });
         } else {
-          gfn_noticeshow(ld.notice_modal, ld.search_buseo_err);
+          gfnNoticeModalShow(ld.notice_modal, ld.search_buseo_err);
           gfn_openModal(modalTag.substring(1, modalTag.length), "/sch_pup_1030");
 
           $(modalTag).on("shown.bs.modal", function () {
@@ -1052,7 +1052,7 @@ this.checkCallback = function (trId, strErrorCode, strErrorMsg) {
         }
         $(uidTag).val(dataset.checkCallBackBuseoData[0].organization_uid);
         $(buseoTag).val(dataset.checkCallBackBuseoData[0].organization_name);
-        if (gfn_isNull(srchParam)) {
+        if (gfnIsNull(srchParam)) {
           srchFunc();
         } else {
           srchFunc(srchParam);
@@ -1063,7 +1063,7 @@ this.checkCallback = function (trId, strErrorCode, strErrorMsg) {
         }
 
         if (isInner === true) {
-          parent.window.gfn_noticeshow(ld.notice_modal, ld.search_buseo_err);
+          parent.window.gfnNoticeModalShow(ld.notice_modal, ld.search_buseo_err);
           parent.window.gfn_openInnerModal(modalTag.substring(1, modalTag.length), "/sch_pup_1040");
           parent.window.$(modalTag).on("shown.bs.modal", function () {
             var idx = modalTag.indexOf("_modal");
@@ -1072,7 +1072,7 @@ this.checkCallback = function (trId, strErrorCode, strErrorMsg) {
             parent.window.$(modalTag).off("shown.bs.modal");
           });
         } else {
-          gfn_noticeshow(ld.notice_modal, ld.search_buseo_err);
+          gfnNoticeModalShow(ld.notice_modal, ld.search_buseo_err);
           gfn_openModal(modalTag.substring(1, modalTag.length), "/sch_pup_1040");
           $(modalTag).on("shown.bs.modal", function () {
             var idx = modalTag.indexOf("_modal");
@@ -1090,7 +1090,7 @@ this.checkCallback = function (trId, strErrorCode, strErrorMsg) {
 };
 
 this.gfn_getSysMsg = function (serviceId, output, callBack, programName, programId) {
-  if (gfn_isNull(callBack)) callBack = "this.fn_callBack";
+  if (gfnIsNull(callBack)) callBack = "this.fn_callBack";
   argument = {
     call_back: callBack,
     program_name: programName,
@@ -1105,7 +1105,7 @@ this.getMsgCallBack = function (id, errCode, errMessage, params) {
 
   //존재하지 않는 프로그램 호출
   if (errCode === 1) {
-    gfn_noticeshow(ld.notice_modal, "[ERROR] getMsgCallBack:: wrong program name or program id");
+    gfnNoticeModalShow(ld.notice_modal, "[ERROR] getMsgCallBack:: wrong program name or program id");
     return;
   }
 

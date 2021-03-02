@@ -1,3 +1,13 @@
+/* ************************************************************************************************
+# 프로젝트      : 전자식 복무관리 시스템
+# 프로그램 ID   : comGrid.js
+# 프로그램 Name : 그리드 공통 함수
+# -------------------------------------------------------------------------------------------------
+# 버전          변경일자         생성자       변경내용
+# -------------------------------------------------------------------------------------------------
+# v1.0          2020-02-01       송영진       최초작성
+************************************************************************************************ */
+
 /**
  * 그리드 초기화
  *
@@ -6,7 +16,7 @@
  * 8 : textAlignment L:left C: center R: right
  * 9 : editable Y: 수정가능 N: 수정 불가능  default: Y
  **/
-$.fn.gfn_gridInit = function (columns, width, height) {
+$.fn.gfnGridInit = function (columns, width, height) {
   width = width || "100%";
   height = height || "100%";
   this.css({ width: width, height: height }); // 그리드 width, height 지정
@@ -17,13 +27,13 @@ $.fn.gfn_gridInit = function (columns, width, height) {
 
   // columns에 선언된 fieldName을 Provider의 fielid로 정의
   var fields = columns.map(function (item) {
-    return item.fieldName;
+    return {fieldName: item.fieldName};
   });
   this.provider.setFields(fields);
 
-  // softDeleting: true이면 RowState만 deleted or createAndDeleted로 바꾼다. (바로 삭제하지 않음)
   this.provider.setOptions({
-    softDeleting: true,
+    softDeleting: true, // true이면 삭제 시 RowState만 deleted or createAndDeleted로 변경되고 행이 삭제되지 않음
+    deleteCreated: true, // 상태가 createAndDeleted인 데이터는 화면에서 바로 지움
   });
 
   initGridField(this, columns);
@@ -38,9 +48,10 @@ $.fn.gfn_gridInit = function (columns, width, height) {
   // var srch_bar = '<span id="frowinfo_' + $(this).attr('id') + '"></span>';
   // $("." + this.attr("id")).append(srch_bar);
 
-  // 엔터키 입력 시 다음 줄 첫번째 컬럼으로 커서 옮기기
+  // 엔터키, 탭 입력 시 다음 줄 첫번째 컬럼으로 커서 옮기기
   this.gridView.onKeyDown = function (gridView, key, ctrl, shift, alt) {
-    if (key === 13 || key == 9) {
+    // key === 13(엔터), key === 9(Tab)키     
+    if (key === 999) {
       var currentCell = gridView.getCurrent();
       var columns = gridView.getColumns();
 
@@ -73,9 +84,27 @@ function initGridField(grdObj, columns) {
     // header객체 초기화
     columnInfo.header = columnInfo.header || {};
 
+    // styles객체 초기화
+    columnInfo.styles = columnInfo.styles || {};
+
+    // editor객체 초기화
+    // columnInfo.editor = columnInfo.editor || {};
+
     // header.text 객체에 text값 넣기
     if (columnInfo.text) {
       columnInfo.header.text = columnInfo.text;
+    }
+
+    // 정렬
+    if (columnInfo.align) {
+    //  right -> far 
+    //  lett -> near
+      
+      // 오른쪽 정렬일 경우 far로 변경
+      if(columnInfo.align == 'right') {
+        columnInfo.align = 'far'
+      }      
+      columnInfo.styles.textAlignment = columnInfo.align;
     }
 
     // 필수 컬럼일 경우 *표시 및 css 조정
@@ -311,9 +340,12 @@ function initGridStyle($grid) {
       borderBottom: "#d5d5d5, 1",
 
       background: "#fffcfa",
-      paddingTop: "5",
-      paddingBottom: "5",
+      paddingTop: "10",
+      paddingBottom: "10",
+
+      // 그리드 헤더 글자 굵게
       // "fontBold": true,
+      // "height": 200,
       // "foreground": "#4b5a61",
 
       selectedBackground: "#fffcfa",
@@ -390,10 +422,11 @@ function initGridStyle($grid) {
 
   $grid.find('div').each(function () {
     $(this).css({
-      "border-top": "solid #2a9d8f 0.2rem",
+      // 그리드 상단 및 하단 라인 색성 지정
+      "border-top": "solid #2a9d8f 0.0rem",
+      "border-bottom": "solid #2a9d8f 0.0rem", 
       // "border-right": "solid #ffffff 3px"
       // "border-left": "solid #ffffff 5px"
-      "border-bottom": "solid #2a9d8f 0.2rem",
     });
     // $(this).css("border-bottom", "solid #d5d5d5 2px");
   });
@@ -401,8 +434,9 @@ function initGridStyle($grid) {
   // 필터에 CSS 스타일 적용 여부 설정
   gridView.setFilteringOptions({ selector: { useCssStyle: true } });
 
-  // rowHeight(default) = 28
-  gridView.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 35, drawBorderRight: false });
+  // 그리드 라인 간격 조정
+  // rowHeight(default) = 28  
+  gridView.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 30, drawBorderRight: false });
 
   // 패딩추가
   // gridView.setStyles({body:{paddingLeft:10}});
@@ -434,7 +468,7 @@ function initGridOption(gridView) {
   // });
 
   gridView.setCheckBar({
-    visible: false,
+    visible: true,
   });
 
   gridView.setCopyOptions({
@@ -507,7 +541,7 @@ this.gtn_setGridSumFooter = function (grd, sumTextColoumn, sumNumberColoumns) {
     footer: { visible: true },
   });
   grd.grid.setOptions({ summaryMode: "aggregate" });
-  if (!gfn_isNull(sumTextColoumn)) {
+  if (!gfnIsNull(sumTextColoumn)) {
     var t = sumTextColoumn.split(",");
     var col = grd.grid.columnByName(t[1]);
     col.footer = {};
@@ -540,10 +574,10 @@ this.gfn_setGridMultiFooter = function (grd, footerCount, footerHeight, sumTextC
   grd.grid.setOptions({ summaryMode: "aggregate" });
   for (var index = 0; index < sumTextColoumnArr.length; index++) {
     var sumTextColoumn = sumTextColoumnArr[index];
-    if (!gfn_isNull(sumTextColoumn)) {
+    if (!gfnIsNull(sumTextColoumn)) {
       var t = sumTextColoumn.split(",");
       var col = grd.grid.columnByName(t[1]);
-      if (gfn_isNull(col.footer.text)) {
+      if (gfnIsNull(col.footer.text)) {
         col.footer = {};
         col.footer.text = [t[0]];
       } else {
@@ -611,7 +645,7 @@ function gfn_getColumnNonNullCount(grd, columnName) {
   }
 
   for (var idx = 0; idx < rowCount; idx++) {
-    if (gfn_isNull(grd.grid.getValue(idx, columnName)) == false) {
+    if (gfnIsNull(grd.grid.getValue(idx, columnName)) == false) {
       count += 1;
     }
   }
@@ -626,7 +660,7 @@ function gfn_getColumnNonNullCount(grd, columnName) {
  * @param {*} start 병합을 시작할 컬럼의 인덱스
  */
 function gfn_mergeFooter(_grd, count, start) {
-  if (gfn_isNull(start)) start = 0;
+  if (gfnIsNull(start)) start = 0;
   var fields = _grd.provider.getFields();
   var mergeArr = [];
   // console.log(fields);
@@ -747,7 +781,7 @@ this.gfn_grdAddBtnDefault = function (grd, btnId, data) {
   // 배열의 경우
   if (Array.isArray(data)) {
     $(btnId).on("click", function () {
-      if (!gfn_gridCommit(grd)) return;
+      if (!gfnGridCommit(grd)) return;
       var appendData = [];
       for (var i = 0; i < data.length; i++) {
         var single_data = data[i];
@@ -764,7 +798,7 @@ this.gfn_grdAddBtnDefault = function (grd, btnId, data) {
   //json의 경우
   else if (dataType == "object") {
     $(btnId).on("click", function () {
-      if (!gfn_gridCommit(grd)) return;
+      if (!gfnGridCommit(grd)) return;
       var keys = Object.keys(data);
       var appendData = {};
       for (var i = 0; i < keys.length; i++) {
@@ -782,7 +816,7 @@ this.gfn_grdAddBtnDefault = function (grd, btnId, data) {
   else if (dataType == "string") {
     var array = data.split(",");
     $(btnId).on("click", function () {
-      if (!gfn_gridCommit(grd)) return;
+      if (!gfnGridCommit(grd)) return;
       var appendData = [];
       for (var i = 0; i < array.length; i++) {
         var single_data = array[i];
@@ -823,7 +857,7 @@ this.gfn_grdDelBtnDefault = function (grd, btnId) {
         grd.provider.hideRows(rows);
         grd.provider.removeRows(rows);
       } else {
-        gfn_noticeshow(ld.notice_modal, ld.delConfirmRow);
+        gfnNoticeModalShow(ld.notice_modal, ld.delConfirmRow);
       }
     } else {
       if (!confirm(ld.delConfirm)) return;
@@ -833,7 +867,7 @@ this.gfn_grdDelBtnDefault = function (grd, btnId) {
       grd.provider.removeRow(curr.dataRow);
     }
   });
-  if (!gfn_gridCommit(grd)) return;
+  if (!gfnGridCommit(grd)) return;
 };
 
 /**
@@ -846,7 +880,7 @@ this.gfn_grdDelBtnDefault = function (grd, btnId) {
  */
 this.gfn_setSizeContentZone = function (f_w, f_h, gridStr, grdArr, otherHeight) {
   // alert();
-  if (gfn_isNull(otherHeight)) otherHeight = 0;
+  if (gfnIsNull(otherHeight)) otherHeight = 0;
   $(window)
     .on("resize", function () {
       var grdIds = gridStr.split(",");
@@ -1478,7 +1512,7 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
     }
     column.renderer.showTooltip = true;
     grid.setColumn(column);
-    gfn_noticeshow("error", message);
+    gfnNoticeModalShow("error", message);
     return false;
   };
 };
@@ -1493,7 +1527,7 @@ this.gfn_setGridVaildate = function (grd, columns, option, args) {
  * @param {*} typeCode db상에서 분기할 type code 명
  */
 this.gridCombo = function (ediname, grd, fieldName, typeCode) {
-  if (gfn_isNull(typeCode)) typeCode = "code_detail";
+  if (gfnIsNull(typeCode)) typeCode = "code_detail";
   var jsonData = {
     p_type_code: typeCode,
     p_magic_const: ediname,
@@ -1524,7 +1558,7 @@ this.gridCombo = function (ediname, grd, fieldName, typeCode) {
  * @param {*} codeValue 코드값
  */
 this.gridOptionCombo = function (grd, fieldName, typeCode, masterConst, detailConst, codeName, codeValue) {
-  if (gfn_isNull(typeCode)) typeCode = "code_detail_option_scholarship_code";
+  if (gfnIsNull(typeCode)) typeCode = "code_detail_option_scholarship_code";
   var jsonData = {
     p_type_code: typeCode,
     p_code_master_magic_const: masterConst,
@@ -1599,7 +1633,7 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
       var fName = dataset.addParam.fName;
       var result = eval("dataset." + dataName);
       var col = grd.grid.columnByName(fName);
-      if (gfn_isNull(col.editor) == true) {
+      if (gfnIsNull(col.editor) == true) {
         col.editor = {};
       }
       col.editor.type = "dropDown";
@@ -1621,7 +1655,7 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
       var data = dataset.accntUnitData;
 
       var col = grd.grid.columnByName(fName);
-      if (gfn_isNull(col.editor) == true) {
+      if (gfnIsNull(col.editor) == true) {
         col.editor = {};
       }
       col.editor.type = "dropDown";
@@ -1660,7 +1694,7 @@ this.gridComboCallBack = function (id, errcode, errMsg) {
       var fName = dataset.addParam.fName;
       var result = dataset.sch_detail_data;
       var col = grd.grid.columnByName(fName);
-      if (gfn_isNull(col.editor) == true) {
+      if (gfnIsNull(col.editor) == true) {
         col.editor = {};
       }
       col.editor.type = "dropDown";
@@ -1730,7 +1764,7 @@ this.gfn_setNumCombo = function (grd, colName, maxNum) {
     col.labels.push(idx);
     col.values.push(idx);
   }
-  if (gfn_isNull(col.editor) == true) {
+  if (gfnIsNull(col.editor) == true) {
     col.editor = {};
   }
   col.editor.type = "dropDown";
@@ -1789,14 +1823,14 @@ this.gfn_isProcessCheckFalse = function (_grd, process_col, process_uid_arr, dis
   //   else {
   //     checkable = false;
   //     for (var i = 0; i < process_uid_arr.length; i++) {
-  //       if (process_uid_arr[i] == process_val || gfn_isNull(process_val)) {
+  //       if (process_uid_arr[i] == process_val || gfnIsNull(process_val)) {
   //         checkable = true;
   //       }
   //     }
   //   }
 
   //   if (!checkable) {
-  //     gfn_noticeshow(ld.notice_modal, ld.notDelete_selectedRow);
+  //     gfnNoticeModalShow(ld.notice_modal, ld.notDelete_selectedRow);
   //     grid.checkItem(itemIndex, false, false, false);
   //     // grid.setCheckable(itemIndex, false);
   //   }
@@ -1830,7 +1864,7 @@ this.gfn_isProcessEditFalse = function (_grd, process_col, process_uid_arr, disa
         }
       } else {
         for (var j = 0; j < grid.process_uid_arr.length; j++) {
-          if (process_val == grid.process_uid_arr[j] || gfn_isNull(process_val)) {
+          if (process_val == grid.process_uid_arr[j] || gfnIsNull(process_val)) {
             ret.editable = true;
           } else {
             ret.editable = false;
@@ -1854,7 +1888,7 @@ this.gfn_isProcessEditFalse = function (_grd, process_col, process_uid_arr, disa
  * @param {*} callBack
  */
 this.gfn_setAccntCombo = function (grd, fieldName, position, isSync, callBack) {
-  if (gfn_isNull(callBack)) {
+  if (gfnIsNull(callBack)) {
     callBack = "gridComboCallBack";
   }
   gfn_ajaxTransaction(
@@ -1913,7 +1947,7 @@ this.gfn_request_check = function (grd, p_student_number, p_bank_account_number,
   var rowCount = grd.grid.getItemCount();
 
   if (rowCount <= 0) {
-    gfn_noticeshow(ld.notice_modal, ld.request_check_msg);
+    gfnNoticeModalShow(ld.notice_modal, ld.request_check_msg);
     return false;
   }
 
@@ -1925,7 +1959,7 @@ this.gfn_request_check = function (grd, p_student_number, p_bank_account_number,
 
     // sch_fos_1100 의 process_status_code_uid 가 id 가 달라서 예외처리
     // TODO: sch_fos_1100 에서 id 를 맞춰주거나, 여기 하드코드 된 것을 제거해야 함.
-    //if (gfn_isNull(process_status)) {
+    //if (gfnIsNull(process_status)) {
     //process_status = grd.grid.getValue(idx, 'process_status_uid');
     //}
 
@@ -1943,9 +1977,9 @@ this.gfn_request_check = function (grd, p_student_number, p_bank_account_number,
         "\n"
     );
 
-    if (gfn_isNull(bank_account_number) || gfn_isNull(vendor_site_id) || vendor_site_id == 0 || vendor_site_id == -1) {
-      if (gfn_isNull(process_status)) {
-        gfn_noticeshow(ld.notice_modal, student_number + ld.request_check_msg2);
+    if (gfnIsNull(bank_account_number) || gfnIsNull(vendor_site_id) || vendor_site_id == 0 || vendor_site_id == -1) {
+      if (gfnIsNull(process_status)) {
+        gfnNoticeModalShow(ld.notice_modal, student_number + ld.request_check_msg2);
         return false;
       }
     }
@@ -1962,7 +1996,7 @@ this.gfn_request_check = function (grd, p_student_number, p_bank_account_number,
  * 그리드 데이터 JSON으로 변환
  * @param {String, Array} gridId 
  */
-function setGridDataToJson(gridId) {
+function gfnSetGridDataToJson(gridId) {
   var gridIds = [];
   if (typeof gridId === 'string') {
       gridIds.push(gridId);
@@ -1996,22 +2030,34 @@ function setGridDataToJson(gridId) {
   * @param {Object} grid 
   */
 function gfn_checkSaveData(grid) {
-  // if (!confirm(ld.saveConfirm) || !gfn_saveValidate(grid)) return false;
-  if (!gfn_saveValidate(grid) || !confirm('저장하시겠습니까?')) return false;
+  // if (!confirm(ld.saveConfirm) || !gfnSaveValidate(grid)) return false;
+  if (!gfnSaveValidate(grid) || !confirm('저장하시겠습니까?')) return false;
 
   /*
   var jsonData = gfn_getJsonChangedRows(grid);
   if (jsonData.length == 0) {
-    gfn_noticeshow(ld.notice_modal, ld.nothingSave);
+    gfnNoticeModalShow(ld.notice_modal, ld.nothingSave);
     return false;
   }
   */
   return true;
 };
 
-function gfn_saveValidate(grid) {
-  gfn_gridCommit(grid);
-  var log = grid.gridView.checkValidateCells();
+
+/** 
+ * 함 수 명 : gfnGridCommit
+ * 설    명 : 그리드 변경된 내용을 커밋
+ * 리턴형식 : true / false
+ * 매개변수 
+ * @param {*} grid 그리드 객체명(e.g. grid1, grid2 등)
+**/
+function gfnSaveValidate(grid) {
+  // 그리드 커밋 함수에서 오류면 리턴
+  if (!gfnGridCommit(grid)) return false;
+  
+  // 그리드 컬럼별 체크 널일 경우 정상
+  log = grid.gridView.checkValidateCells();
+
   if (log == null) {
     return true;
   } else {
@@ -2021,22 +2067,29 @@ function gfn_saveValidate(grid) {
       message += (itemIndex + 1).toString() + " " + ld.row + " " + log[i].message + "\n";
     }
 
-    // gfn_noticeshow("error", message);
-    alert(message);
+    gfnNoticeModalShow("필수항목을 입력하시기 바랍니다.");
     return false;
   }
 };
 
-function gfn_gridCommit(grid) {
+
+/** 
+ * 함 수 명 : gfnGridCommit
+ * 설    명 : 그리드 변경된 내용을 커밋
+ * 리턴형식 : true / false
+ * 매개변수 
+ * @param {*} grid 그리드 객체명(e.g. grid1, grid2 등)
+**/
+function gfnGridCommit(grid) {
   try {
     grid.gridView.commit(false);
     return true;
   } catch (e) {
-    // gfn_noticeshow("error", e.message);
-    alert('gridView 커밋 도중 에러 발생');
+    gfnNoticeModalShow("필수항목을 입력하시기 바랍니다.");
     return false;
   }
 };
+
 
 function gfn_getJsonChangedRows(_grd) {
   _grd.grid.commit(false);
@@ -2057,7 +2110,7 @@ function gfn_getJsonChangedRows(_grd) {
 
     var keys = _grd.provider.getOrgFieldNames();
 
-    if (keys.indexOf("err_msg") > -1 && !gfn_isNull(jsonObj.err_msg)) {
+    if (keys.indexOf("err_msg") > -1 && !gfnIsNull(jsonObj.err_msg)) {
       continue;
     }
 
@@ -2104,4 +2157,44 @@ function gfn_getJsonChangedRows(_grd) {
     jsonArray.push(jsonObj);
   }
   return jsonArray;
+}
+
+
+/** 
+ * 함 수 명 : gfnExcelDownload
+ * 설    명 : 엑셀 다운로드 함수
+ * 리턴형식 : N/A
+ * 매개변수 
+ * @param {*} grid 그리드 객체명(e.g. grid1, grid2 등)
+ * @param {*} fileName 엑셀파일명(e.g. 메뉴목록, 사용자목록 등)
+ * @param {*} sheetName 시트명(e.g. 메뉴자료, 사용자자료 등)
+**/
+function gfnExcelDownload(grid, fileName, sheetName) {
+  // 화면에 그리드가 1개일 경우 
+  // 화면의 그리드 타이틀을 출력
+  // 화면의 그리드가 1개 이상일 경우 파일명 및 시트명 필수
+  if (!fileName) {
+    fileName = grid.closest('.grid').find('.grid-title').text().trim();
+  }
+
+  // 시트명은 파일명과 동일하게 처리
+  if (!sheetName) {
+    sheetName = fileName;
+  }
+
+  RealGridJS.exportGrid({
+    type:"excel",
+    target:"local",
+    fileName: fileName +".xlsx",
+    compatibility: '2010',
+    done:function() {
+      // alert("done excel export")
+    },
+    exportGrids:[
+      { 
+          grid: grid.gridView,  // 그리드 객체
+          sheetName: sheetName // 시트명
+      }
+    ]
+  });
 }

@@ -2,7 +2,8 @@
 <script>
   var grid1;
   $(function () {
-    grid1 = $("#grid1").gfn_gridInit([
+    alert('사용안하는 화면')
+    grid1 = $("#grid1").gfnGridInit([
       { fieldName: "menu_uid",          text: "menu_uid",         width: 80, required: true },
       { fieldName: "menu_cd",           text: "menu_cd",          width: 80 },
       { fieldName: "path_ko",           text: "path_ko",          width: 80 },
@@ -17,15 +18,15 @@
       { fieldName: "sort_order",        text: "sort_order",       width: 80 },
       { fieldName: "use_yn",            text: "use_yn",           width: 80 },
       { fieldName: "search_yn",         text: "search_yn",        width: 80 },
-      { fieldName: "insert_yn",         text: "insert_yn",        width: 80 },
-      { fieldName: "update_yn",         text: "update_yn",        width: 80 },
-      { fieldName: "delete_yn",         text: "delete_yn",        width: 80 },
-      { fieldName: "print_yn",          text: "print_yn",         width: 80 },
+      { fieldName: "add_row_yn",        text: "add_row_yn",       width: 80 },
+      { fieldName: "del_row_yn",        text: "del_row_yn",       width: 80 },
+      { fieldName: "save_yn",           text: "save_yn",          width: 80 },
+      { fieldName: "copy_yn",           text: "copy_yn",          width: 80 },
       { fieldName: "batch_yn",          text: "batch_yn",         width: 80 },
+      { fieldName: "print_yn",          text: "print_yn",         width: 80 },      
       { fieldName: "excel_down_yn",     text: "excel_down_yn",    width: 80 },
       { fieldName: "excel_up_yn",       text: "excel_up_yn",      width: 80 },
       { fieldName: "remark",            text: "remark",           width: 80 },
-
       { fieldName: "create_date_time",  text: "create_date_time", width: 80 },
       { fieldName: "create_by",         text: "create_by",        width: 80 },
       { fieldName: "update_date_time",  text: "update_date_time", width: 80 },
@@ -93,19 +94,20 @@
         });
         break;
       case "reset":
-        console.log("gubun ->", gubun);
         break;
       case "print":
-        console.log("gubun ->", gubun);
         break;
       case "addRow":
-        console.log("gubun ->", gubun);
+        grid1.provider.insertRow(0, {});
         break;
       case "delRow":
-        console.log("gubun ->", gubun);
+        var curr = grid1.gridView.getCurrent();
+        if (curr.dataRow === -1) {
+          return alert('선택된 데이터가 없습니다.');
+        }
+        grid1.provider.removeRow(curr.dataRow);
         break;
       case "excelDownload":
-        console.log("gubun ->", gubun);
         break;
       case "excelUpload":
         alert(gubun);

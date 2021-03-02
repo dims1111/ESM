@@ -13,11 +13,12 @@ class SQLFormatter(logging.Formatter):
         # 쿼리 정렬
         sql = sqlparse.format(sql, reindent=True, comma_first=True)
 
-        # Highlight
+        # Highlight 
+        # pygments.STYLE_MAP 참조
         sql = pygments.highlight(
             sql,
             SqlLexer(),
-            TerminalTrueColorFormatter(style='manni') # pygments.STYLE_MAP 참조
+            TerminalTrueColorFormatter(style='manni') 
         )
 
         record.statement = sql

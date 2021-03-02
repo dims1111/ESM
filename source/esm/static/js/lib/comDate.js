@@ -93,7 +93,7 @@ function gfn_datepickerInit(_id, format, setDate, range, deleteMonArr) {
         option.format = "yyyy-mm"
         option.minViewMode = 1
 
-        if (!gfn_isNull(deleteMonArr)) {
+        if (!gfnIsNull(deleteMonArr)) {
             option.beforeShowMonth = function (date) {
                 for (var i = 0; i < deleteMonArr.length; i++) {
                     if (date.getMonth() + 1 == deleteMonArr[i]) {
@@ -211,7 +211,7 @@ function gfn_thisMonth(addMonth) {
     var nowYear = now.getYear();
     var firstDate, lastDate;
 
-    if (gfn_isNull(addMonth)) addMonth = 0;
+    if (gfnIsNull(addMonth)) addMonth = 0;
 
     var formatDate = function (date) {
         var myMonth = date.getMonth() + 1;
@@ -286,7 +286,7 @@ this.gfn_dateInit = function (yearTagId, semTagId, fall_semester) {
  * @param {*} diffMonth 지정한 년월에서 뺄 월 | Number
  */
 this.gfn_getPrevMonth = function (baseMonth, diffMonth) {
-    baseMonth = makePureStr(baseMonth);
+    baseMonth = gfnExtractNum(baseMonth);
     var month = baseMonth.slice(0, 4) + '-' + baseMonth.slice(4, 6);
     var m = new Date(month);
     m.setMonth(m.getMonth() - diffMonth);

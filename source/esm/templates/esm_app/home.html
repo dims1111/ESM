@@ -2,119 +2,6 @@
 <title>전자식 복무관리 시스템</title>
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}" />
-{% endblock %} {%block contents%}
-<div class="wrap d-flex flex-column h-100 pb-1">
-  <!-- Top -->
-  <div class="top w-100 sticky-top navbar navbar-dark sticky-top flex-md-nowrap p-0">
-    <div class="container" style="max-width: 100%">
-      <a href="/">
-        {% load static %}
-        <img src="{% static 'img/built1-logo.png' %}" style="width: 80px" />
-      </a>
-      <div class="d-flex mr-3">
-        <input type="checkbox" id="changeLang" name="switch" class="input-switch" checked />
-        <label for="changeLang" class="label-switch mr-3">
-          <span class="marble"></span>
-          <span class="on">KOR</span>
-          <span class="off">ENG</span>
-        </label>
-
-        <span class="text-white mr-3">{{request.session.user_name}}</span>
-        <a href="/logout">
-          <span class="text-white">logout</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="container-fluid d-flex h-100 pl-0 justify-content-center">
-    <div class="row w-100 flex-nowrap">
-      <!-- Sidebar start -->
-      <div class="sidebar-main mt-2 pt-3">
-        <ul id="mainList">
-          {% for item in mainMenuList %}
-          <li class="sidebar-main__item py-2 {{item.active}}" data-menu-cd="{{item.menuCd}}">
-            <span class="main__icon material-icons" mcd="{{item.mainCd}}">{{item.icons}}</span>
-            <div class="mt-1">{{item.menuNameKo}}</div>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="sidebar-sub px-3 mt-2">
-        <div id="toggleSidebar" class="sidebar-sub__toggle"></div>
-        <div class="font-weight-bold mt-3 mb-4 d-flex align-items-center overflow-hidden text-nowrap">
-          <span class="sidebar-sub__title">복무관리</span>
-          <div class="ml-auto">
-            <span id="showAll" class="material-icons border small" style="cursor: pointer">add</span>
-            <span id="hideAll" class="material-icons border small" style="cursor: pointer">remove</span>
-          </div>
-        </div>
-        <div class="overflow-hidden text-nowrap">
-          <!-- 서브메뉴 -->
-          <ul id="menu-content" class="menu-content collapse show out"></ul>
-        </div>
-      </div>
-      <!-- Sidebar end -->
-
-      <!-- Menu start -->
-      <div id="container_body" style="flex: 1 0 680px">
-        <div class="d-flex flex-column h-100">
-          <!-- Nav tabs -->
-          <ul id="navs" class="nav nav-tabs mb-0 ml-3 mt-2 rounded" style="overflow: hidden" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#home">Home</a><span class="material-icons small">clear</span>
-            </li>
-          </ul>
-          <!-- Tab panes -->
-          <div class="mt-2 tab-content ml-3">
-            <div id="home" class="tab-pane w-100 h-100 active">
-              <div id="cont_head_wrapper" class="mt-1 mb-2" style="display: none;">
-                <div id="cont_nav_wrap">
-                  <nav id="cont_nav" aria-label="breadcrumb" class="text-right" style="font-size: 13px">
-                    <div style="display: inline-block">
-                      <ol class="breadcrumb py-0">
-                        <li class="breadcrumb-item active">
-                          <span id="nav1Icon" class="material-icons small">settings</span>
-                          <span id="nav1Text"> 시스템</span>
-                        </li>
-                        <li id="nav2Text" class="breadcrumb-item active">기준정보</li>
-                        <li id="nav3Text" class="breadcrumb-item" aria-current="page">메뉴등록</li>
-                      </ol>
-                    </div>
-                  </nav>
-                </div>
-              </div>
-              {% block content %} {% endblock %}
-              <iframe id="content_frm" class="w-100 h-100" src="/esm_sys_1020"></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Menu end -->
-</div>
-
-<!-- New Tab Template -->
-<div id="newtab" class="container tab-pane active" style="display: none">
-  <div id="cont_head_wrapper" class="mt-1 mb-2" style="display: none;">
-    <div id="cont_nav_wrap">
-      <nav id="cont_nav" aria-label="breadcrumb" class="mt-1 mb-2 text-right" style="font-size: 13px">
-        <div style="display: inline-block">
-          <ol class="breadcrumb py-0">
-            <li class="breadcrumb-item active">
-              <span id="nav1Icon" class="material-icons small">home</span>
-              <span id="nav1Text"> 시스템</span>
-            </li>
-            <li id="nav2Text" class="breadcrumb-item active">중분류</li>
-            <li id="nav3Text" class="breadcrumb-item" aria-current="page"></li>
-          </ol>
-        </div>
-      </nav>
-    </div>
-  </div>
-  <iframe id="content_frm" class="w-100 h-100" src=""></iframe>
-</div>
 
 <script type="text/javascript">
   $(function () {
@@ -249,86 +136,87 @@
       var menuNm = $("#mainList > li.active div").html().trim();
 
       // 대메뉴 명칭표기
-      $('.sidebar-sub__title').html(menuNm);
+      $(".sidebar-sub__title").html(menuNm);
 
-      $.ajax({
-        type: "POST",
+      var mainParam = {
+        parentMenuCd: menuCd,
+      };
+
+      var params = {
         url: "/menu/getSubMenuList",
-        data: {
-          parentMenuCd: menuCd,
-        },
-        dataType: "json",
-        success: function (data) {
-          $("#menu-content").empty();
+        mainParam: mainParam,
+      };
 
-          var subMenuList = data.subMenuList;
-          var isgroup = false;
-          var $ul = $("<ul />", {
-            class: "sub-menu collapse show active",
-          });
+      gfnGetData(params, function (data) {
+        $("#menu-content").empty();
 
-          $ul.on("show.bs.collapse", function () {
-            $(this).prev().find("span.expand").removeClass("rotate");
-          });
+        var subMenuList = data.subMenuList;
+        var isgroup = false;
+        var $ul = $("<ul />", {
+          class: "sub-menu collapse show active",
+        });
 
-          $ul.on("hide.bs.collapse", function () {
-            $(this).prev().find("span.expand").addClass("rotate");
-          });
+        $ul.on("show.bs.collapse", function () {
+          $(this).prev().find("span.expand").removeClass("rotate");
+        });
 
-          subMenuList.forEach(function (item, index) {
-            if (item.treeLevel === 1) {
-              if (isgroup) {
-                isgroup = false;
-                $("#menu-content").append($ul);
-                $ul = $("<ul />", {
-                  class: "sub-menu collapse show active",
-                });
-                $ul.on("show.bs.collapse", function () {
-                  $(this).prev().find("span.expand").removeClass("rotate");
-                });
+        $ul.on("hide.bs.collapse", function () {
+          $(this).prev().find("span.expand").addClass("rotate");
+        });
 
-                $ul.on("hide.bs.collapse", function () {
-                  $(this).prev().find("span.expand").addClass("rotate");
-                });
-              }
-
-              // 중분류
-              var $li = $("<li />", {
-                class: "menu",
-                "data-toggle": "collapse",
-                "data-target": "#group" + item.menuCd,
+        subMenuList.forEach(function (item, index) {
+          if (item.treeLevel === 1) {
+            if (isgroup) {
+              isgroup = false;
+              $("#menu-content").append($ul);
+              $ul = $("<ul />", {
+                class: "sub-menu collapse show active",
               });
-              var $div = $("<div />", { text: item.menuNameKo, class: "menu__name font-weight-bold" });
-              var $span = $("<span />", { text: "expand_less", class: "expand material-icons" });
-
-              $li.append($div);
-              $li.append($span);
-              $("#menu-content").append($li);
-            } else if (item.treeLevel === 2) {
-              var $li = $("<li />", {
-                text: item.menuNameKo,
-                class: "pl-2",
-                "data-menu-nm": item.menuNameKo,
-                "data-toggle": "tooltip",
-                "data-placement": "right",
-                "data-url": item.url,
-                "data-parent-menu-cd": item.parentMenuCd,
-                "data-menu-cd": item.menuCd,
+              $ul.on("show.bs.collapse", function () {
+                $(this).prev().find("span.expand").removeClass("rotate");
               });
-              $ul.attr("id", "group" + item.parentMenuCd);
-              $li.click(openMenu);
-              $ul.append($li);
-              isgroup = true;
 
-              if (subMenuList.length - 1 === index) {
-                $("#menu-content").append($ul);
-                $ul = $("<ul />", {
-                  class: "sub-menu collapse show active",
-                });
-              }
+              $ul.on("hide.bs.collapse", function () {
+                $(this).prev().find("span.expand").addClass("rotate");
+              });
             }
-          });
-        },
+
+            // 중분류
+            var $li = $("<li />", {
+              class: "menu",
+              "data-toggle": "collapse",
+              "data-target": "#group" + item.menuCd,
+            });
+            var $div = $("<div />", { text: item.menuNameKo, class: "menu__name font-weight-bold" });
+            var $span = $("<span />", { text: "expand_less", class: "expand material-icons" });
+
+            $li.append($div);
+            $li.append($span);
+            $("#menu-content").append($li);
+          } else if (item.treeLevel === 2) {
+            var $li = $("<li />", {
+              text: item.menuNameKo,
+              class: "pl-2",
+              "data-menu-nm": item.menuNameKo,
+              "data-toggle": "tooltip",
+              "data-placement": "right",
+              "data-url": item.url,
+              "data-parent-menu-cd": item.parentMenuCd,
+              "data-menu-cd": item.menuCd,
+            });
+            $ul.attr("id", "group" + item.parentMenuCd);
+            $li.click(openMenu);
+            $ul.append($li);
+            isgroup = true;
+
+            if (subMenuList.length - 1 === index) {
+              $("#menu-content").append($ul);
+              $ul = $("<ul />", {
+                class: "sub-menu collapse show active",
+              });
+            }
+          }
+        });
       });
     }
     getSubMenuList();
@@ -372,7 +260,7 @@
             }
           },
         },
-        colseOthers: {
+        closeOthers: {
           name: "다른 탭 닫기",
           callback: function (itemKey, opt, e) {
             opt.$trigger.siblings().each(function () {
@@ -415,10 +303,142 @@
             }
           },
         },
+        closeAll: {
+          name: "모두 닫기",
+          callback: function (itemKey, opt, e) {
+            opt.$trigger.parent().children().each(function () {
+              var $a = $(this).find("a");
+
+              var isActive = $a.hasClass("active");
+              var tabId = $a.attr("href");
+              var tabWin = $(tabId).find("#content_frm").get(0).contentWindow;
+
+              $(tabId).remove();
+              $(this).remove();
+            });
+
+            opt.$trigger.find("a").click();
+          },
+          disabled: function (key, opt) {
+          },
+        },
       },
       // autoHide: true, // 컨텍스트메뉴에서 마우스가 멀어지면 자동으로 닫는 기능
     });
   });
 </script>
+{% endblock %} {%block contents%}
 
+<div class="wrap d-flex flex-column h-100 pb-1">
+  <!-- Top -->
+  <div class="top w-100 sticky-top navbar navbar-dark sticky-top flex-md-nowrap p-0">
+    <div class="container" style="max-width: 100%">
+      <a href="/">
+        {% load static %}
+        <img src="{% static 'img/built1-logo.png' %}" style="width: 80px" />
+      </a>
+      <div class="d-flex mr-3">
+        <input type="checkbox" id="changeLang" name="switch" class="input-switch" checked />
+        <label for="changeLang" class="label-switch mr-3">
+          <span class="marble"></span>
+          <span class="on">KOR</span>
+          <span class="off">ENG</span>
+        </label>
+
+        <span class="text-white mr-3">{{request.session.user_name}}</span>
+        <a href="/logout">
+          <span class="text-white">logout</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid d-flex h-100 pl-0 justify-content-center">
+    <div class="row w-100 flex-nowrap">
+      <!-- Sidebar start -->
+      <div class="sidebar-main mt-2 pt-3">
+        <ul id="mainList">
+          {% for item in mainMenuList %}
+          <li class="sidebar-main__item py-2 {{item.active}}" data-menu-cd="{{item.menuCd}}">
+            <span class="main__icon material-icons">{{item.icons}}</span>
+            <div class="mt-1">{{item.menuNameKo}}</div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="sidebar-sub px-3 mt-2">
+        <div id="toggleSidebar" class="sidebar-sub__toggle"></div>
+        <div class="font-weight-bold mt-3 mb-4 d-flex align-items-center overflow-hidden text-nowrap">
+          <span class="sidebar-sub__title">복무관리</span>
+          <div class="ml-auto">
+            <span id="showAll" class="material-icons border small" style="cursor: pointer">add</span>
+            <span id="hideAll" class="material-icons border small" style="cursor: pointer">remove</span>
+          </div>
+        </div>
+        <div class="overflow-hidden text-nowrap">
+          <!-- 서브메뉴 -->
+          <ul id="menu-content" class="menu-content collapse show out"></ul>
+        </div>
+      </div>
+      <!-- Sidebar end -->
+
+      <!-- Menu start -->
+      <div id="container_body" style="flex: 1 0 680px">
+        <div class="d-flex flex-column h-100">
+          <!-- Nav tabs -->
+          <ul id="navs" class="nav nav-tabs mb-0 ml-3 mt-2 rounded" style="overflow: hidden; min-height: 35px" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#home">Home</a><span class="material-icons small">clear</span>
+            </li>
+          </ul>
+          <!-- Tab panes -->
+          <div class="mt-2 tab-content ml-3">
+            <div id="home" class="tab-pane w-100 h-100 active">
+              <div id="cont_head_wrapper" class="mt-1 mb-2" style="display: none">
+                <div id="cont_nav_wrap">
+                  <nav id="cont_nav" aria-label="breadcrumb" class="text-right" style="font-size: 13px">
+                    <div style="display: inline-block">
+                      <ol class="breadcrumb py-0">
+                        <li class="breadcrumb-item active">
+                          <span id="nav1Icon" class="material-icons small">settings</span>
+                          <span id="nav1Text"> 시스템</span>
+                        </li>
+                        <li id="nav2Text" class="breadcrumb-item active">기준정보</li>
+                        <li id="nav3Text" class="breadcrumb-item" aria-current="page">메뉴등록</li>
+                      </ol>
+                    </div>
+                  </nav>
+                </div>
+              </div>
+              {% block content %} {% endblock %}
+              <iframe id="content_frm" class="w-100 h-100" src="/esm_sys_1020"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Menu end -->
+</div>
+
+<!-- New Tab Template -->
+<div id="newtab" class="container tab-pane active" style="display: none">
+  <div id="cont_head_wrapper" class="mt-1 mb-2" style="display: none">
+    <div id="cont_nav_wrap">
+      <nav id="cont_nav" aria-label="breadcrumb" class="mt-1 mb-2 text-right" style="font-size: 13px">
+        <div style="display: inline-block">
+          <ol class="breadcrumb py-0">
+            <li class="breadcrumb-item active">
+              <span id="nav1Icon" class="material-icons small">home</span>
+              <span id="nav1Text"> 시스템</span>
+            </li>
+            <li id="nav2Text" class="breadcrumb-item active">중분류</li>
+            <li id="nav3Text" class="breadcrumb-item" aria-current="page"></li>
+          </ol>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <iframe id="content_frm" class="w-100 h-100" src=""></iframe>
+</div>
 {%endblock%}

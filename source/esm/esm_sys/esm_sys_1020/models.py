@@ -1,3 +1,12 @@
+# #################################################################################################
+# 프로젝트      : 전자식 복무관리 시스템
+# 프로그램 ID   : esm_sys_1020
+# 프로그램 Name : 메뉴등록
+# -------------------------------------------------------------------------------------------------
+# 버전          변경일자         생성자       변경내용
+# -------------------------------------------------------------------------------------------------
+# v1.0          2020-02-01       강정기       최초작성
+# #################################################################################################
 # UUID 클래스 임포트
 import uuid
 
@@ -33,7 +42,6 @@ from django.db.models.indexes import Index
 # #################################################################################################
 
 
-# Create your models here.
 # 메뉴 클래스 (UUID 사용 : To-Be 모델로 사용)
 class SysMenu(models.Model):
     menu_uid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name="메뉴UID")
@@ -44,15 +52,16 @@ class SysMenu(models.Model):
     parent_menu_cd = models.CharField(max_length=20, verbose_name="상위메뉴코드")
     icons = models.CharField(max_length=1000, blank=True, null=True, verbose_name="아이콘")
     sort_order = models.IntegerField(blank=True, null=True, verbose_name="정렬순서")
-    use_yn = models.CharField(max_length=1, verbose_name="사용여부(Y/N)", default="Y")
-    search_yn = models.CharField(max_length=1, verbose_name="조회여부(Y/N)", default="Y")
-    insert_yn = models.CharField(max_length=1, verbose_name="신규여부(Y/N)", default="Y")
-    update_yn = models.CharField(max_length=1, verbose_name="수정여부(Y/N)", default="Y")
-    delete_yn = models.CharField(max_length=1, verbose_name="삭제여부(Y/N)", default="Y")
-    print_yn = models.CharField(max_length=1, verbose_name="출력여부(Y/N)", default="N")
-    batch_yn = models.CharField(max_length=1, verbose_name="생성여부(Y/N)", default="N")
-    excel_down_yn = models.CharField(max_length=1, verbose_name="엑셀다운로드여부(Y/N)", default="Y")
-    excel_up_yn = models.CharField(max_length=1, verbose_name="엑셀업로드여부(Y/N)", default="N")
+    use_yn = models.CharField(max_length=1, verbose_name="사용(Y/N)", default="Y")    
+    search_yn = models.CharField(max_length=1, verbose_name="조회(Y/N)", default="Y")    
+    add_row_yn = models.CharField(max_length=1, verbose_name="행추가(Y/N)", default="Y")
+    del_row_yn = models.CharField(max_length=1, verbose_name="행삭제(Y/N)", default="Y")    
+    save_yn = models.CharField(max_length=1, verbose_name="저장(Y/N)", default="Y")
+    copy_yn = models.CharField(max_length=1, verbose_name="자료복사(Y/N)", default="N")
+    batch_yn = models.CharField(max_length=1, verbose_name="자료생성(Y/N)", default="N")
+    print_yn = models.CharField(max_length=1, verbose_name="출력(Y/N)", default="N")
+    excel_down_yn = models.CharField(max_length=1, verbose_name="엑셀다운로드(Y/N)", default="Y")
+    excel_up_yn = models.CharField(max_length=1, verbose_name="엑셀업로드(Y/N)", default="N")
     remark = models.CharField(max_length=2000, blank=True, null=True, verbose_name="비고")
     create_date_time = models.DateTimeField(blank=True, null=True, auto_now_add=True, verbose_name="생성일시")
     create_by = models.IntegerField(blank=True, null=True, default=-1, verbose_name="생성자ID")
@@ -60,6 +69,7 @@ class SysMenu(models.Model):
     update_by = models.IntegerField(blank=True, null=True, default=-1, verbose_name="수정자ID")
 
     class Meta:        
+        managed = False
         db_table = 'sys_menu'    
         verbose_name = '메뉴'
         verbose_name_plural = '메뉴'
@@ -88,11 +98,12 @@ class SysMenuV(models.Model):
     sort_order = models.IntegerField()
     use_yn = models.CharField(max_length=1)
     search_yn = models.CharField(max_length=1)
-    insert_yn = models.CharField(max_length=1)
-    update_yn = models.CharField(max_length=1)
-    delete_yn = models.CharField(max_length=1)
-    print_yn = models.CharField(max_length=1)
+    add_row_yn = models.CharField(max_length=1)
+    del_row_yn = models.CharField(max_length=1)
+    save_yn = models.CharField(max_length=1)
+    copy_yn = models.CharField(max_length=1)
     batch_yn = models.CharField(max_length=1)
+    print_yn = models.CharField(max_length=1)
     excel_down_yn = models.CharField(max_length=1)
     excel_up_yn = models.CharField(max_length=1)
     remark = models.CharField(max_length=2000)    

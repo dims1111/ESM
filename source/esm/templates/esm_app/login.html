@@ -1,68 +1,40 @@
-{% extends "esm_com/base.html" %}
+{% extends "esm_com/base.html" %} {% block header %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}" />
+<script>
+  $(function () {
+    // 최상단 window인지 체크
+    moveToLoginPage();
+  });
+</script>
+{% endblock %} {% block contents %}
+<form class="form-signin text-center" method="POST">
+  {% csrf_token %}
+  <img class="mb-4 rounded-circle" src="https://source.unsplash.com/random/350x350" alt="" width="150" height="150" />
 
-{% block header %}
-	{% load static %}
-	<link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  <div class="text-left font-weight-bolder">
+    <label for="userAccount" class="mb-1">User name or Email address</label>
+    <input
+      type="text"
+      id="userAccount"
+      name="userAccount"
+      value="kjg"
+      class="form-control mb-2"
+      placeholder="User name or Email address"
+      required
+      autofocus
+    />
+  </div>
+
+  <div class="text-left font-weight-bolder">
+    <label for="password" class="mb-1">Password</label>
+    <input type="password" id="password" name="password" value="kjg" class="form-control" placeholder="Password" required="" />
+  </div>
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">login</button>
+  <p class="mt-5 mb-5 text-muted">© Copyright Built1 Corporation 2021</p>
+
+  <div class="row tm-5">
+    <div class="row-12">{{ msg }}</div>
+  </div>
+</form>
 {% endblock %}
-
-{% block contents %}
-    <form class="form-signin text-center" method="POST">
-      	{% csrf_token %}
-      	<img
-        	class="mb-4 rounded-circle"
-        	src="https://source.unsplash.com/random/350x350"
-        	alt=""
-        	width="150"
-        	height="150"
-      	/>
-
-      	<div class="text-left font-weight-bolder">
-        	<label for="userAccount" class="mb-1">User name or Email address</label>      	
-			<input
-				type="text"
-				id="userAccount"
-				name="userAccount"
-				value="kjg"
-				class="form-control mb-2"
-				placeholder="User name or Email address"
-				required
-				autofocus
-			/>
-		</div>
-		
-      	<div class="text-left font-weight-bolder">
-        	<label for="password" class="mb-1">Password</label>      	
-			<input
-				type="password"
-				id="password"
-				name="password"
-				value="kjg"
-				class="form-control"
-				placeholder="Password"
-				required=""
-			/>
-		</div>
-
-      	<section class="setting st-login" style="display: inline-block;">
-        	<p>한국어
-         		<label class="btn-switch">
-           			<input 
-					   type="checkbox"
-					   id="lang_cd"
-					   name="lang_cd"
-					/>
-           			<i class="slide-object"></i>
-         		</label>
-        	</p>
-      	</section>
-      
-      	<button class="btn btn-lg btn-primary btn-block" type="submit">login</button>
-      	<p class="mt-5 mb-5 text-muted">© Copyright Built1 Corporation 2021</p>
-		
-		<div class="row tm-5">
-			<div class="row-12">
-				{{ msg }}
-			</div>
-		</div>
-    </form>
-  {% endblock %}

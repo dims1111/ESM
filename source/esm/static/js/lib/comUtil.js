@@ -1,9 +1,22 @@
-/**
- * 입력값이 null에 해당하는 경우 모두를 한번에 체크한다.
- * @param {object} sValue object
- * @return {Boolean] sValue가 undefined, null, NaN, "", Array.length = 0인 경우 = true, 이외의 경우 = false
- */
-this.gfn_isNull = function (sValue) {
+/* ************************************************************************************************
+# 프로젝트      : 전자식 복무관리 시스템
+# 프로그램 ID   : comUtil.js
+# 프로그램 Name : 자바스크립트 공통 함수
+# 참고          : 자바스크립트 셀프 테스트 사이트 : http://jsbin.com/?js,console,output
+# -------------------------------------------------------------------------------------------------
+# 버전          변경일자         생성자       변경내용
+# -------------------------------------------------------------------------------------------------
+# v1.0          2020-02-01       강정기       최초작성
+************************************************************************************************ */
+
+/** 
+ * 함 수 명 : gfnIsNull
+ * 설    명 : 매개변수 값이 널인지 체크
+ * 리턴형식 : Boolean → undefined, null, NaN, "", Array.length = 0인 경우 = true, 그외의 경우 = false
+ * 매개변수 
+ * @param {*} sValue 오브젝트 
+**/
+this.gfnIsNull = function (sValue) {
   if (new String(sValue).valueOf() == "undefined") {
     return true;
   }
@@ -22,18 +35,211 @@ this.gfn_isNull = function (sValue) {
   if (new String(sValue).trim(' ') == "") {
     return true;
   }
-
   return false;
 }
 
 
 /**
- *
- * 로딩 모달 show
- */
-function loadshow() {
-  //gmessage('loading', '', 'primary');
+ * 함 수 명 : gfnAutoHypen
+ * 설    명 : 형식이 존재하는 데이터에 대한 포멧을 지원하는 함수
+ * 리턴형식 : 문자
+ * 매개변수
+ * @param {*} str   문자
+ * @param {*} type  phone: 전화번호, business: 사업자등록번호
+ **/
+function gfnAutoHypen(str, type) {
+  str = String(str);
 
+  if (type == 'phone') {
+    str = str.replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})/, "$1-$2-$3").replace("--", "-");
+  }
+  if (type == 'business') {
+    str = str.replace(/[^0-9]/g, "").replace(/([0-9]{3})([0-9]{2})([0-9]{5})/, "$1-$2-$3").replace("--", "-");
+  }
+  return str;
+}
+
+
+/**
+ * 함 수 명 : gfnRemoveBlank
+ * 설    명 : 문자열의 공백을 제거하는 함수
+ * 리턴형식 : 문자
+ * 매개변수
+ * @param {*} str 문자
+**/
+function gfnRemoveBlank(str) {
+  str = String(str);
+  str = str.replace(/ /gi, "");
+  return str;
+}
+
+
+/**
+ * 함 수 명 : gfnExtractNum
+ * 설    명 : 문자열에서 숫자만 추출하는 함수
+ * 리턴형식 : 문자
+ * 매개변수
+ * @param {*} str 문자
+**/
+function gfnExtractNum(str) {
+  str = String(str);
+  str = str.replace(/[^0-9]/g, "");
+  return result;
+}
+
+
+/**
+ * 함 수 명 : gfnMakeComma
+ * 설    명 : 천단위 콤마를 표기하는 함수
+ * 리턴형식 : 문자
+ * 매개변수
+ * @param {*} str 문자
+**/
+function gfnMakeComma(str) {
+  if (str == null || str == '' || str == undefined) {
+    return '0';
+  }
+
+  str = String(str);
+  str = str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+  if (str.length < 1) {
+    str = '0';
+  }
+  return str;
+}
+
+
+/**
+ * 함 수 명 : gfnMakeYM
+ * 설    명 : YYYY-MM 형식으로 문자열 변환 함수
+ * 리턴형식 : 문자
+ * 매개변수
+ * @param {*} str 문자
+**/
+function gfnMakeYM(str) {
+  str = String(str);
+  str = str.substring(0, 6);
+  str = str.replace(/(\d{4})+(\d{2})/, '$1-$2');
+  if (gfnValidateYM(str) === false) {
+    return ''
+  }
+  return str;
+
+}
+
+
+/**
+ * 함 수 명 : gfnMakeYMD
+ * 설    명 : YYYY-MM-DD 형식으로 문자열 변환 함수
+ * 리턴형식 : 문자
+ * 매개변수
+ * @param {*} str 문자
+**/
+function gfnMakeYMD(str) {
+  str = gfnExtractNum(String(str));
+  str = str.substring(0, 8);
+  str = str.replace(/(\d{4})+(\d{2})+(\d{2})/, '$1-$2-$3');
+
+  if (gfngfnValidateYMD(str) === false) {
+    return ''
+  }
+  return str;
+}
+
+
+/**
+ * 함 수 명 : gfngfnValidateYMD
+ * 설    명 : YYYY-MM-DD 날짜형식으로 일치하는지 검증하는 함수
+ * 리턴형식 : 문자
+ * 매개변수
+ * @param {*} Boolean true: 정상, false: 오류
+**/
+function gfngfnValidateYMD(str) {
+  var date = new Date(str);
+  var year, month, day;
+  year = date.getFullYear().toString();
+  month = date.getMonth() + 1;
+  day = date.getDate();
+  month = month > 9 ? month.toString() : '0' + month.toString();
+  day = day > 9 ? day.toString() : '0' + day.toString();
+
+  var str = gfnExtractNum(str);
+  var tempStr = year + month + day;
+
+  if (str === tempStr) {
+    return true;
+  }
+  return false;
+}
+
+
+/**
+ * 함 수 명 : gfnValidateYM
+ * 설    명 : YYYY-MM 형식에 일치하는지 검증하는 함수
+ * 리턴형식 : 문자
+ * 매개변수 
+ * @param {*} Boolean true: 정상, false: 오류
+**/
+function gfnValidateYM(str) {
+  var date = new Date(str + '-01');
+  var year, month;
+
+  year = date.getFullYear().toString();
+  month = date.getMonth() + 1;
+  month = month > 9 ? month.toString() : '0' + month.toString();
+
+  var str = gfnExtractNum(str);
+  var tempStr2 = year + month;
+
+  if (str === tempStr2) {
+    return true;
+  }
+  return false;
+}
+
+
+/**
+ * 함 수 명 : gfnValidatePhone
+ * 설    명 : 해당 값이 전화번호로 표기를 검증하는 함수
+ * 리턴형식 : Boolean → true: 정상, false: 오류
+ * 매개변수
+ * @param {*} gubun 전화유형
+ * @param {*} value 전화번호       
+**/
+this.gfnValidatePhone = function (gubun, value) {
+  var expression;
+  var returnValue = false;
+
+  if (gubun == "TEL_NO") {
+    expression = new RegExp(/^0(2{1}|[0-9]{2,3})[0-9]{3,4}[0-9]{4}$/);
+  }
+  else if (gubun == "HP_NO") {
+    expression = new RegExp(/^(010|011|016|017|018|019)[0-9]{3,4}[0-9]{4}$/);
+  }
+  else {
+    alert("전화번호 형식에 일치하지 않습니다.");
+    return false;
+  }
+
+  if (!this.gfnIsNull(value)) {
+    value = value.replace(/-/g, "");
+    returnValue = expression.test(value);
+  }
+  else {
+    returnValue = false;
+  }
+
+  return returnValue;
+}
+
+
+/**
+ * 함 수 명 : gfnLoadshow
+ * 설    명 : 데이터 조회시 로딩 시간을 표기
+ * 리턴형식 : N/A
+ * 매개변수 : N/A
+**/
+function gfnLoadshow() {
   //$('body').append('<div id="kkkkggggkkkk" class="alert alert-dark" role="alert">zzzzzzzzzzzzzzzzzzzzzzzzzzzz</div>');
   $('#load_timer').text('00:00:00');
   $('.quriloading').show();
@@ -64,9 +270,14 @@ function loadshow() {
   //$('#gl_loding').modal('show');
 }
 
-function loadhide() {
-  //$('#gl_loding').modal('hide');
-  //alert('z');
+
+/**
+ * 함 수 명 : gfnLoadhide
+ * 설    명 : 데이터 조회 후 로딩 숨기기
+ * 리턴형식 : N/A
+ * 매개변수 : N/A
+**/
+function gfnLoadhide() {    
   for (var index = 0; index < intervalIds.length; index++) {
     clearInterval(intervalIds[index]);
   }
@@ -76,53 +287,52 @@ function loadhide() {
   $('.quriloading').hide();
 }
 
-/**
- *
- *
- * @param {*} _tstr 모달의 제목
- * @param {*} _msg 메세지
- * @param {*} arr 변수
- */
-this.gfn_noticeshow = function (_tstr, _msg, arr) {
-  if (!gfn_isNull(arr)) {
-    var j = 1;
-    for (var i = 0; i < arr.length; i++) {
-      _msg = _msg.replace("{" + j + "}", arr[i]);
-      j = j + 1;
-    }
-  }
-  loadhide();
-  $('#gl_notice .modal-title span').text(_tstr);
-  $('#gl_notice .modal-body pre').text(_msg);
-  $('#gl_notice').modal('show');
-}
 
 /**
- * 알림모달 hide
- *
- */
-function noticehide() {
+ * 함 수 명 : gfnNoticeModalShow
+ * 설    명 : 알림 모달 오픈
+ * 리턴형식 : N/A
+ * 매개변수  
+ * @param {*} _msg  모달 컨텐츠 메세지 
+**/
+this.gfnNoticeModalShow = function (errMessage) {  
+  // gfnLoadhide();
+  // 오류 또는 정상이지만 메시지가 존재하면 파업 메시지 출력
+  $("#errorModal #errorModalContents").html(errMessage);
+  $("#errorModal").modal("show");
+
+  // $('#gl_notice .modal-title span').text(_tstr);
+  // $('#gl_notice .modal-body pre').text(_msg);
+  // $('#gl_notice').modal('show');
+}
+
+
+/**
+ * 함 수 명 : gfnNoticeModalShow
+ * 설    명 : 알림 모달 숨기기
+ * 리턴형식 : N/A
+ * 매개변수 : N/A
+**/
+function gfnNoticeModalHide() {
   $('#gl_notice').modal('hide');
 }
 
+
 /**
- *
- *
- * @param {*} _tstr 모달제목
- * @param {*} _msg 메세지
- * @returns
- */
-function waringshow(_tstr, _msg) {
-  //alert(getMsg(_msg,100));
+ * 함 수 명 : gfnErrorModalShow
+ * 설    명 : 오류 모달 오픈
+ * 리턴형식 : N/A
+ * 매개변수
+ * @param {*} _tstr 모달 제목
+ * @param {*} _msg  모달 컨텐츠 메세지
+**/
+function gfnErrorModalShow(_tstr, _msg) {
   var orgMsg = _msg;
-  //_tstr = '( sti' + _tstr + ' ) Exception Informations';
-  // console.log("_tstr::", _tstr.trim() + "@@@@");
-  // console.log("_msg::", _msg);
-  // console.log(typeof(_tstr));
+
   if (typeof (_tstr) == 'number') {
     _tstr = toString(_tstr);
   }
-  if (_tstr.trim() == '-99') { //session out 시 
+  if (_tstr.trim() == '-99') {
     if (self == top) {
       location.href = "/";
     } else {
@@ -130,18 +340,17 @@ function waringshow(_tstr, _msg) {
     }
     return;
   }
-  //  개발기간 동안 주석처리
-   _tstr = ld.errMsg;
-   if (_msg.indexOf('ORA-') >= 0 || _msg.indexOf('TBR-') >= 0) {
-     _msg = ld.errComment;
-   }
 
-  loadhide();
+  // 개발기간 동안 주석처리
+  _tstr = ld.errMsg;
+  if (_msg.indexOf('ORA-') >= 0 || _msg.indexOf('TBR-') >= 0) {
+    _msg = ld.errComment;
+  }
+
+  gfnLoadhide();
   var ttw = $('#gl_waring');
   if (ttw.length > 0) {
-    $('#gl_waring .modal-title .hmsg').text(_tstr);
-    //$('#gl_waring .modal-body pre').html(getMsg(_msg,100));
-    //if (_msg.indexOf('req :') < 0) _msg = getMsgLen(_msg, 70)
+    $('#gl_waring .modal-title .hmsg').text(_tstr);  
     $('#gl_waring .modal-body pre').html(_msg);
     $('#gl_waring .modal-footer button').text(ld.close);
     $('#gl_waring').modal('show');
@@ -149,7 +358,6 @@ function waringshow(_tstr, _msg) {
   }
   else {
     $('#gl_waring .modal-title .hmsg', parent.document).text(_tstr);
-    //$('#gl_waring .modal-body pre', parent.document).text(_msg);
     $('#gl_waring .modal-body pre', parent.document).html(_msg);
     $('#gl_waring .modal-footer button', parent.document).text(ld.close);
     $('#gl_waring', parent.document).modal('show');
@@ -158,29 +366,13 @@ function waringshow(_tstr, _msg) {
 }
 
 
-
-/*
-*getMsgLen : len 단위로 칸내려서 써준다
-*/
-function getMsgLen(_msg, _len) {
-  if (_msg.length <= _len) return _msg;
-  rStr = _msg.substring(0, _len);
-  var cnt = parseInt(_msg.length / _len);
-  for (var i = 1; i <= cnt; i++) {
-    if (_len > _msg.substring(_len * i).length) {
-      rStr += "<br>" + _msg.substring(_len * i);
-    } else {
-      rStr += "<br>" + _msg.substring(_len * i, _len * (i + 1));
-    }
-  }
-  return rStr;
-}
-
 /**
- * 에러모달 숨기기
- *
- */
-function waringhide() {
+ * 함 수 명 : gfnErrorModalHide
+ * 설    명 : 오류 모달 숨기기
+ * 리턴형식 : N/A
+ * 매개변수 : N/A
+**/
+function gfnErrorModalHide() {
   var ttw = $('#gl_waring');
   if (ttw.length > 0) {
     $('#gl_waring').modal('hide');
@@ -190,290 +382,53 @@ function waringhide() {
   }
 }
 
-// Ajax 파일 다운로드
+
+/**
+ * 함 수 명 : jQuery.download
+ * 설    명 : Ajax 파일 다운로드
+ * 리턴형식 : N/A
+ * 매개변수
+ * @param {*} url 다운받을 URL
+ * @param {*} data  string, arrary, object
+ * @param {*} method  post 방식으로 폼에 전달
+**/
 jQuery.download = function (url, data, method) {
   // url과 data를 입력받음
   if (url && data) {
-    // data 는  string 또는 array/object 를 파라미터로 받는다.
+    // data는 string 또는 array/object를 파라미터로 받음
     data = typeof data == 'string' ? data : jQuery.param(data);
-    // 파라미터를 form의  input으로 만든다.
+    // 파라미터를 form의  input으로 만듦
     var inputs = '';
     jQuery.each(data.split('&'), function () {
       var pair = this.split('=');
       inputs += '<input type="hidden" name="' + pair[0] + '" value="' + pair[1] + '" />';
     });
-    // request를 보낸다.
+    // request를 보냄
     jQuery('<form action="' + url + '" method="' + (method || 'post') + '">' + inputs + '</form>')
       .appendTo('body').submit().remove();
   };
 };
 
+
 /**
- *
- *
+ * 함 수 명 : gfnFileDownload
+ * 설    명 : 서버의 파일을 다운로드
+ * 리턴형식 : N/A
+ * 매개변수 :
  * @param {*} srvFilePath 서버 파일 경로
- * @param {*} downFileName 파일명
- */
-this.gfn_file_download = function (srvFilePath, downFileName) {
+ * @param {*} downFileName  파일명
+**/
+this.gfnFileDownload = function (srvFilePath, downFileName) {
   $.download('/file/filedownload', "path_to_file=" + srvFilePath + "&file_name=" + downFileName, 'post');
 }
 
 
-
+/**
+ * 함 수 명 : rand
+ * 설    명 : 레덤 값을 찾는 함수
+ * 리턴형식 : 정수
+ * 매개변수 : N/A
+**/
 function rand() {
   return Math.round(Math.random() * 999999);
-}
-
-// case에 따라 '-' 자동으로 달아주기 (사용 여부는 미정)
-function autoHypen(str, type) {
-  str = String(str);
-
-  if (type == 'phone') {
-    str = str.replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})/, "$1-$2-$3").replace("--", "-");
-  }
-
-  if (type == 'business') {
-    str = str.replace(/[^0-9]/g, "").replace(/([0-9]{3})([0-9]{2})([0-9]{5})/, "$1-$2-$3").replace("--", "-");
-  }
-
-  return str;
-}
-
-// 문자열 내 모든 공백 제거
-/**
- *
- *
- * @param {*} str 문자열
- * @returns 공백이 제거된 문자열 
- */
-function removeBlank(str) {
-  str = String(str);
-  str = str.replace(/ /gi, "");
-  return str;
-}
-
-// 문자열에서 숫자만 문자열로 반환
-/**
- *
- *
- * @param {*} str 문자열
- * @returns 숫자만 남은 문자열
- */
-function extractNum(str) {
-  str = String(str);
-  str = str.replace(/[^0-9]/g, "");
-  return str;
-}
-
-/**
- * 금액에 , 삽입하기
- *
- * @param {*} str 금액 문자열
- * @returns ,가 삽입된 문자열
- */
-function makeComma(str) {
-  if (str == null || str == '' || str == undefined) {
-    return '0';
-  }
-
-  str = String(str);
-  str = str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-  if (str.length < 1) {
-    str = '0';
-  }
-  return str;
-}
-
-/**
- * 금액에 , 삽입하기
- *
- * @param {*} str 금액 문자열
- * @returns ,가 삽입된 문자열
- */
-function makeComma2(str) {
-  return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-/**
- *
- *
- * @param {*} str 문자열
- * @returns yyyy-mm 형태의 문자열 
- */
-function makeYM(str) {
-  str = String(str);
-  str = str.substring(0, 6);
-  str = str.replace(/(\d{4})+(\d{2})/, '$1-$2');
-  if (validateYM(str) === false) {
-    return ''
-  }
-  return str;
-
-}
-
-/**
- *
- *
- * @param {*} str 문자열
- * @returns yyyy-mm-dd 형태의 문자열
- */
-function makeYMD(str) {
-  str = makePureStr(String(str));
-  str = str.substring(0, 8);
-  str = str.replace(/(\d{4})+(\d{2})+(\d{2})/, '$1-$2-$3');
-
-  if (validateYMD(str) === false) {
-    return ''
-  }
-  return str;
-}
-
-function makePureStr(str) {
-  str = String(str);
-  return str.replace(/[^0-9 ]/g, "");
-}
-
-
-
-/**
- *
- * yyyy-mm-dd 형태로 표현가능한 형태인지 확인
- * @param {*} str 문자열 
- * @returns true 변환가능 false 변환불가능
- */
-function validateYMD(str) {
-  var date = new Date(str);
-  var year, month, day;
-  year = date.getFullYear().toString();
-  month = date.getMonth() + 1;
-  day = date.getDate();
-  month = month > 9 ? month.toString() : '0' + month.toString();
-  day = day > 9 ? day.toString() : '0' + day.toString();
-
-  var str = makePureStr(str);
-  var tempStr = year + month + day;
-
-  if (str === tempStr) {
-    return true;
-  }
-  return false;
-}
-
-/**
- *
- * yyyy-mm 으로 표현가능한 문자열인지 확인하는 함수
- * @param {*} str 문자열
- * @returns true 변환가능 false 변환불가능
- */
-function validateYM(str) {
-  var date = new Date(str + '-01');
-  var year, month;
-
-  year = date.getFullYear().toString();
-  month = date.getMonth() + 1;
-  month = month > 9 ? month.toString() : '0' + month.toString();
-
-  var str = makePureStr(str);
-  var tempStr2 = year + month;
-
-  if (str === tempStr2) {
-    return true;
-  }
-  return false;
-}
-
-
-/**
- *
- * 장학금의 uid를 가져오는 함수 
- * bas_1020 화면에 보이는 장학금의 UID
- * @param {*} svcId 콜백의 서비스 id
- * @param {*} magic_const 장학금의 매직상수
- * @param {*} callBack 콜백
- * @param {*} isSync 동기 비동기 여부 
- */
-this.gfn_getBasUid = function (svcId, magic_const, callBack, isSync) {
-  if (gfn_isNull(isSync)) isSync = false
-  var jsonData = {
-    magic_const: magic_const
-  }
-  if (isSync) {
-    gfn_ajaxTransaction(svcId, '/comm/get_bas_scholarship_code_uid', '', svcId + '=output', jsonData, callBack, '', false, false);
-  }
-  else {
-    gfn_ajaxTransaction(svcId, '/comm/get_bas_scholarship_code_uid', '', svcId + '=output', jsonData, callBack, '', false);
-  }
-}
-
-
-/**
- * 공통코드의 디테일 코드중 1개의 uid 를 가져오는 함수
- *
- * @param {*} svcId 콜백의 서비스 아이디
- * @param {*} master_const 공통코드 마스터의 매직상수
- * @param {*} detail_const 공통코드 디테일의 매직상수
- * @param {*} callBack 콜백함수명
- * @param {*} type_code db상의 type_code 분기
- * @param {*} isSync 동기 비동기 여부
- */
-this.gfn_getSingleUid = function (svcId, master_const, detail_const, callBack, type_code, isSync) {
-  if (gfn_isNull(isSync)) isSync = false
-  if (gfn_isNull(type_code)) type_code = 'code_detail'
-  var jsonData = {
-    'p_type_code': type_code
-    , 'p_master_magic_const': master_const
-    , 'p_detail_magic_const': detail_const
-  }
-  if (isSync) {
-    gfn_ajaxTransaction(svcId, '/comm/get_single_uid', '', svcId + '=output', jsonData, callBack, '', false, false);
-  }
-  else {
-    gfn_ajaxTransaction(svcId, '/comm/get_single_uid', '', svcId + '=output', jsonData, callBack, '', false);
-  }
-}
-
-/**
- *
- *
- * @returns 
- */
-this.gfn_getUUID = function () {
-  //svcID, callUrl, inDatasets, outDatasets, argument, callbackFunc, showProgress, bAsync
-  gfn_ajaxTransaction('get_uuid', "/comm/get_uuid", "", "rdata=output", null, null, null, false);
-  var uuid = dataset.rdata[0].uuid;
-  // console.log("uuid..", uuid);
-  return uuid;
-}
-
-/**
- * 해당 값이 번호로 표현된 값인지 확인
- *
- * @param {*} gubun 전화번호 구분 (핸드폰 or 유선)
- * @param {*} value 번호 값
- * @returns true: 적합한 값 false: 비적합
- */
-this.gfn_isPhone = function (gubun, value) {
-  var expression;
-  var returnValue = false;
-
-  if (gubun == "TEL_NO") {
-    expression = new RegExp(/^0(2{1}|[0-9]{2,3})[0-9]{3,4}[0-9]{4}$/);
-  }
-  else if (gubun == "HP_NO") {
-    expression = new RegExp(/^(010|011|016|017|018|019)[0-9]{3,4}[0-9]{4}$/);
-  }
-  else {
-    alert("isPhone함수의 첫번째 인자는 HP_NO 또는 TEL_NO 이어야합니다.");
-    return false;
-  }
-
-  if (!this.gfn_isNull(value)) {
-    value = value.replace(/-/g, "");
-    returnValue = expression.test(value);
-  }
-  else {
-    returnValue = false;
-  }
-
-  return returnValue;
 }
