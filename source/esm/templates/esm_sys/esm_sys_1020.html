@@ -105,6 +105,8 @@
 
       // 행삭제  
       case "delRow":
+        gfnDeleteRow(grid1);
+
         grid1.gridView.commit(false);
         var curr = grid1.gridView.getCurrent();
         if (curr.dataRow === -1) {
@@ -141,15 +143,53 @@
           <button class="btn_sub active" onclick="doAction1('reset');"><i class="xi-refresh"> 초기화</i></button>
           <button class="btn_main active" onclick="doAction1('search');"><i class="xi-search"> 조회</i></button>
           <button class="btn_main active" onclick="doAction1('save');"><i class="xi-save"> 저장</i></button>
+          <button class="btn_main active" onclick="doAction1('save');"><i class="xi-save"> 저장2</i></button>
         </div>
       </div>
       <form id="srchForm" class="search-content">
-        <label for="menuName"><i class="xi-star"></i>메뉴명</label>
-        <input type="text" name="menuName" id="menuName" />
-        <label for="url" style="margin-left: 15px">URL</label>
-        <input type="text" name="url" id="url" />
-        <label for="useYn" style="margin-left: 15px">사용여부</label>
-        <input type="checkbox" name="useYn" id="useYn" checked />
+        <table>
+          <!-- <colgroup>
+            <col width="15%">
+            <col width="35%">
+            <col width="15%">
+            <col width="35%">
+          </colgroup> -->
+          <tr>
+            <th>
+              <label for="menuName"><i class="xi-star"></i>메뉴명</label>
+            </th>
+            <td>
+              <input type="text" name="menuName" id="menuName" />
+            </td>
+            <th>
+              <label for="url" style="margin-left: 15px">URL</label>
+            </th>
+            <td>
+              <input type="text" name="url" id="url" />
+            </td>
+            <th>
+              <label for="useYn" style="margin-left: 15px">사용여부</label>
+            </th>
+            <td>
+              <input type="checkbox" name="useYn" id="useYn" checked />
+            </td>
+            <th>
+              <label for="date" style="margin-left: 15px">날짜</label>
+            </th>
+            <td>
+              달력
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <label for="useYn" style="margin-left: 15px">사용여부</label>
+            </th>
+            <td>
+              <input type="checkbox" name="useYn" id="useYn" checked />
+            </td>
+            <td colspan="2"></td>
+          </tr>
+        </table> 
       </form>
     </div>
   </div>
