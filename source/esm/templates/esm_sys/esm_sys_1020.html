@@ -101,12 +101,7 @@
 
       // 행삭제  
       case "delRow":
-        grid1.gridView.commit(false);
-        var curr = grid1.gridView.getCurrent();
-        if (curr.dataRow === -1) {
-          return alert("선택된 데이터가 없습니다.");
-        }
-        grid1.provider.removeRow(curr.dataRow);
+        gfnDeleteRowChk(grid1);
         break;
 
       // 엑셀다운로드

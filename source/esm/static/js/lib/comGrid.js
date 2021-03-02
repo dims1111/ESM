@@ -2198,3 +2198,25 @@ function gfnExcelDownload(grid, fileName, sheetName) {
     ]
   });
 }
+
+
+// 체크박스 된 데이터 행삭제
+function gfnDeleteRowChk(grid) {
+  grid.gridView.commit(false);
+  var rows = grid.gridView.getCheckedRows(true);
+
+  if (!rows.length) {
+    // alert("선택된 데이터가 없습니다.");
+    $("#errorModal #errorModalContents").html("선택된 데이터가 없습니다.");
+    $("#errorModal").modal("show");
+    return false;
+  }
+
+  // 삭제상태로 변경
+  grid.provider.setRowStates(rows, 'deleted', false);
+
+  // 체크박스 해제
+  grid.gridView.checkRows(rows, false);
+
+  return true;
+}
