@@ -399,70 +399,72 @@ function gfnGetData(params, callback) {
 
 function gfnGetGrdData(params, callback) {
   // params.grid 내용을 배열로 다건을 받을 경우, 배열 순서대로 콜할 예정
-  var defaultAsync = false;
   var gridArr = [];
   if (typeof params.grid === "string") {
     gridArr.push(params.grid);
-    defaultAsync = true; // 그리드 단건은 기본 비동기처리하도록 함
   } else {
     gridArr = params.grid;
   }
 
-  for (grid of gridArr) {
-    window[grid].gridView.commit(false);
+  for (var grid of gridArr) {
+    // IIFE ( Immediately Invoked Function Expression)
+    (function(grid) {
+      window[grid].gridView.commit(false);
     
-    // 로딩바 생성
-    gfnLoadshow(window[grid]);
-
-    $.ajax({
-      type: "POST",
-      url: params.url,
-      data: params.mainParam,
-      async: params.aync || defaultAsync,
-      dataType: "json",
-      success: function (res) {
-        console.log("res =>", res)
-        if (res) {       
-          // 데이터가져오기
-          var result = res.data;
-
-          // 임시로 여기서 메뉴 건수 추가함
-          var titleCnt = result ? result.length : 0;
-          var titleCntText = gfnMakeComma(titleCnt) + '건';
-          window[grid].closest('.grid').find('.grid-title__cnt').text(titleCntText);
-
-          // console.log(result);
-          window[grid].provider.setRows(result);
-
-          // 메시지 출력
-          if (res.msg) {
-            // 오류 또는 정상이지만 메시지가 존재하면 파업 메시지 출력
-            $("#errorModal #errorModalContents").html(res.msg);
-            $("#errorModal").modal("show");
+      // 로딩바 생성
+      gfnLoadshow(window[grid]);
+  
+      $.ajax({
+        type: "POST",
+        url: params.url,
+        data: params.mainParam,
+        async: params.aync || true,
+        dataType: "json",
+        success: function (res) {
+          console.log("res =>", res)
+          if (res) {       
+            // 데이터가져오기
+            var result = res.data;
+  
+            // 임시로 여기서 메뉴 건수 추가함
+            var titleCnt = result ? result.length : 0;
+            var titleCntText = gfnMakeComma(titleCnt) + '건';
+            window[grid].closest('.grid').find('.grid-title__cnt').text(titleCntText);
+  
+            // console.log(result);
+            window[grid].provider.setRows(result);
+  
+            // 메시지 출력
+            if (res.msg) {
+              // 오류 또는 정상이지만 메시지가 존재하면 파업 메시지 출력
+              $("#errorModal #errorModalContents").html(res.msg);
+              $("#errorModal").modal("show");
+            }
+          
+            // 콜백함수 호출  
+            if (callback) {
+              callback(); 
+            }
           }
-        
-          // 콜백함수 호출  
-          if (callback) {
-            callback(); 
+  
+          // 로딩바 제거
+          console.log(grid, window[grid].attr('id'))
+          gfnLoadhide(window[grid]);
+        },
+        error: function (req, status, err) {
+          if (req.status == "403") {
+            // 로그인 페이지로 호출
+            moveToLoginPage();
           }
-        }
-
-        // 로딩바 제거
-        gfnLoadhide(window[grid]);
-      },
-      error: function (req, status, err) {
-        if (req.status == "403") {
-          // 로그인 페이지로 호출
-          moveToLoginPage();
-        }
-
-        // 에러체킹 후 return할 예정
-
-        // 로딩바 제거
-        gfnLoadhide(window[grid]);
-        return;
-      },
-    });    
+  
+          // 에러체킹 후 return할 예정
+  
+          // 로딩바 제거
+          gfnLoadhide(window[grid]);
+          return;
+        },
+      });    
+    })(grid);
   }
 }
 
@@ -478,59 +480,62 @@ function gfnSetGrdData(params, callback) {
   }
 
   // 그리드 검증
-  for (grid of gridArr) {
+  for (var grid of gridArr) {
     if (!gfn_checkSaveData(window[grid])) return;
   }
 
-  for (grid of gridArr) {
-    var data = gfnSetGridDataToJson(grid);
+  for (var grid of gridArr) {
+    // IIFE ( Immediately Invoked Function Expression)
+    (function(grid) {
+      var data = gfnSetGridDataToJson(grid);
 
-    // 추가적인 파라미터 있으면 어떻게할건지
-    if (params.subParam) {
+      // 추가적인 파라미터 있으면 어떻게할건지
+      if (params.subParam) {
 
-    }
+      }
 
-    // 로딩바 생성
-    gfnLoadshow(window[grid]);
+      // 로딩바 생성
+      gfnLoadshow(window[grid]);
 
-    $.ajax({
-      type: "POST",
-      url: params.url,
-      data: JSON.stringify(data),
-      async: params.aync || defaultAsync,
-      dataType: "json",
-      success: function (res) {
-        if (res) {
-          // 에러가 발생할 경우 모달 출력
-          console.log("res =>", res)
-          if (res.msg) {               
-            $("#myModal #contents").html(res.msg);
-            $("#myModal").modal("show");
-            if (res.cd === "E") {
-              // 로딩바 제거
-              gfnLoadhide(window[grid]);
-              return;
+      $.ajax({
+        type: "POST",
+        url: params.url,
+        data: JSON.stringify(data),
+        async: params.aync || defaultAsync,
+        dataType: "json",
+        success: function (res) {
+          if (res) {
+            // 에러가 발생할 경우 모달 출력
+            console.log("res =>", res)
+            if (res.msg) {               
+              $("#myModal #contents").html(res.msg);
+              $("#myModal").modal("show");
+              if (res.cd === "E") {
+                // 로딩바 제거
+                gfnLoadhide(window[grid]);
+                return;
+              }
+            }
+
+            if (callback) {
+              callback();
             }
           }
-
-          if (callback) {
-            callback();
+          // 로딩바 제거
+          gfnLoadhide(window[grid]);
+        },
+        error: function (req, status, err) {
+          if (req.status == "403") {
+            // 로그인 페이지로 호출
+            moveToLoginPage();
           }
-        }
-        // 로딩바 제거
-        gfnLoadhide(window[grid]);
-      },
-      error: function (req, status, err) {
-        if (req.status == "403") {
-          // 로그인 페이지로 호출
-          moveToLoginPage();
-        }
 
-        // 에러체킹 후 return할 예정
-        // 로딩바 제거
-        gfnLoadhide(window[grid]);
-        return;
-      },
-    });
+          // 에러체킹 후 return할 예정
+          // 로딩바 제거
+          gfnLoadhide(window[grid]);
+          return;
+        },
+      });
+    })(grid);
   }
 }
