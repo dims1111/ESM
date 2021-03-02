@@ -448,7 +448,6 @@ function gfnGetGrdData(params, callback) {
           }
   
           // 로딩바 제거
-          console.log(grid, window[grid].attr('id'))
           gfnLoadhide(window[grid]);
         },
         error: function (req, status, err) {
