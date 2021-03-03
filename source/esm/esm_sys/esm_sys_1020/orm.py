@@ -54,13 +54,12 @@ def doInsert(dataList, commParam):
     i = 0
     bulkDataLists = []
     userId = commParam['userInfo']['userId']
-    print("====================doInsert===================")
+    
     # 신규 데이터 확인
     for ca in dataList:
       # 신규 클래스 생성
       newData = SysMenu()
-      print("ca===>", ca)
-
+    
       # 신규 클래스 항목별 값 할당
       newData.menu_uid          = None
       newData.menu_cd           = ca.get('menu_cd')

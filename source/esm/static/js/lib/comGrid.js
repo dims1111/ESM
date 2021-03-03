@@ -62,7 +62,7 @@ $.fn.gfnGridInit = function (columns, options) {
   }
   
   // 그리드 필수 항목체크 및 리얼그리드 오류 메시지 발생
-  this.gridView.onValidateRow = function(gridView, itemIndex, dataRow, inserting, values) { 
+  this.gridView.onValidateRow = function(gridView, itemIndex, dataRow, inserting, values) {     
     for (var columnInfo of gridView.getColumns()) {
       // 필수 체크
       if (columnInfo.header.subText) {
@@ -2240,15 +2240,18 @@ function gfnExcelDownload(grid, fileName, sheetName) {
 
 
 // 체크박스 된 데이터 행삭제
-function gfnDeleteRowChk(grid) {
-  grid.gridView.commit(false);
-  var rows = grid.gridView.getCheckedRows(true);
+function gfnDeleteRowChk(grid) {  
+  var curr = grid.gridView.getCurrent();
+  grid.dataProvider.removeRow(curr.dataRow);
 
+  var rows = grid.gridView.getCheckedRows(true);
+  
   if (!rows.length) {
     $("#errorModal #errorModalContents").html("선택된 데이터가 없습니다.");
     $("#errorModal").modal("show");
     return false;
   }
+  grid.gridView.cancel;
   
   $("#confirmModal #confirmModalContents").html("삭제하시겠습니까?");
   $("#confirmModal").modal("show");
