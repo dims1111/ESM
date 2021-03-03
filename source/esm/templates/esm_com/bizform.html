@@ -127,10 +127,10 @@
       </div>
 
       
-      <!-- 조호조건 호버이벤트 박스 -->
-      <!-- <div class="mouse-detail"></div> -->
-      
-    
+    <!-- 부트스트랩  -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script>
       // css var 포니필 적용
       cssVars(); 
@@ -163,31 +163,17 @@
       });
 
       $(document).ready(function () {
-        $(".required-icon").text("*");
-        // $(".required-icon").css("font-style","nomal");
+        // $(".required-icon").text("*");
 
-        // $('label').hover(function(){
-          
-        //   var text = $(this).text();
-        //   var ofs = $(this).offset();
-        //   console.log(text);
-        //   console.log(ofs.top);
-        //   console.log(ofs.left);
 
-        //   $(".mouse-detail").css({
-        //     "position" : "absolute",
-        //     "top" : ofs.top-10,
-        //     "left" : ofs.left+100
-        //   });
+        // $(function () {
+        //   $('[data-toggle="tooltip"]').tooltip()
+        // })
 
-        //   $('<span class="showtip">' + text + '</span>').appendTo($(".mouse-detail"));
-        // },
-        // function () {
-        //     $('.showtip').remove();
-        //     $(".mouse-detail").css({
-        //       "border" : 0
-        //     });
-        // });
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
       });
 
 
