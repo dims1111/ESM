@@ -790,7 +790,7 @@ form {
 
 .search-content table label {
   position: relative;
-  width: 100%;
+  max-width: 100%;
   white-space:nowrap; 
   display: inline-block; 
   overflow: hidden; 
@@ -813,22 +813,62 @@ form {
   max-width: 100%;
 }
 
-.mouse-detail {
+/* .mouse-detail {
   border : 1px solid blue;
   background-color : royalblue;
-}
+} */
 
+/* 조회조건 Title hover Tool Tip */
 .tooltip-inner {
   color: #000;
   background-color: #fff;
   border: 1px solid #ddd;
+  font-weight: bold;
 }
 
 .bs-tooltip-bottom .arrow::before {
   border-bottom-color: #ddd;
-  right: -50px !important;
+  left: 10px !important;
 }
+/* ============================ */
+
 
 #srchForm td{
   padding-bottom: 5px;
+}
+
+.xi-calendar-check {
+  /* position: relative;
+  left: -24px; */
+  font-size: 26px;
+  cursor: pointer;
+  color: var(--p1);
+}
+
+.datepicker table tr td span{
+  height: 42px !important;
+  line-height: 42px !important;
+}
+
+/* input css */
+input[type="text"] { 
+  border: solid 1px var(--p4); 
+  border-radius: 2px; 
+}
+
+/* input focus css */
+input:focus {
+  outline:none;
+  box-shadow: 0 0 3px 2px var(--p4);
+}
+
+/* 달력 테이블 이동화살표 사이즈 */
+table .prev, table .next {
+  font-size: 24px;
+}
+
+/* 달력 아이콘 테두리 */
+.input-group-addon {
+  border: solid 1px var(--p4);
+  margin-left: -1px;
 }
