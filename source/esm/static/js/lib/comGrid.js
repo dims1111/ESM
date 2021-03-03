@@ -397,6 +397,8 @@ function initGridStyle($grid) {
       background: "#e6f2fd",
       paddingTop: "10",
       paddingBottom: "10",
+      figureInactiveBackground: "#e74c3c",
+      figureBackground : "#e74c3c",
 
       // 그리드 헤더 글자 굵게
       // "fontBold": true,
