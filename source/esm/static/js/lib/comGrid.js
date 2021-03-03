@@ -2266,7 +2266,10 @@ function gfnDeleteRowChk(grid) {
   $("#confirmModal").modal("show");
 
   $('#confirmModal #confirm').unbind().click(function() {
-    grid.provider.removeRows(rows);
+    grid.provider.setRowStates(rows, "deleted", false, false);
+    grid.provider.hideRows(rows);
+    // grid.provider.removeRows(rows);
+    // grid.gridView.commit(false);
   });
   return true;
 }
