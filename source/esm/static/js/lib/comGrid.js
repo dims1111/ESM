@@ -2198,8 +2198,7 @@ function gfnExcelDownload(grid, fileName, sheetName) {
 
 // 체크박스 된 데이터 행삭제
 function gfnDeleteRowChk(grid) {
-  // if (!gfnGridCommit(grid)) return;
-  var rows = grid.gridView.getCheckedRows(true);
+  var rows = grid.gridView.getCheckedItems(true);
   
   if (!rows.length) {
     $("#errorModal #errorModalContents").html("선택된 데이터가 없습니다.");
