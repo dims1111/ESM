@@ -366,7 +366,7 @@ function initGridStyle($grid) {
       paddingTop: "15",
       paddingBottom: "15",
       border: "#00ffffff, 1",
-      selectedBackground: "#FFA62B",
+      selectedBackground: "#e8ad55d9",
     },
 
     // 그리드 바디 스타일
@@ -409,9 +409,63 @@ function initGridStyle($grid) {
         borderRight: "#d5d5d5, 1",
         borderBottom: "#d5d5d5, 1",
         // "borderTop": "#1f8ecd, 2"
-      },
+      },      
     },
     
+    //
+    //
+    selection: {
+      // background: "#2f1e90ff",
+      background: "#211111ff",
+      booleanFormat: null,
+      border: "#e8ad55d9,2px",
+      borderBottom: null,
+      borderLeft: null,
+      borderRight: null,
+      borderTop: null,
+      contentFit: "auto",
+      datetimeFormat: null,
+      figureBackground: "#e8ad55d9",
+      // figureBackground: "#ff008800",
+      figureBorder: null,
+      // figureInactiveBackground: "#ffd3d3d3",
+      figureInactiveBackground: "#e8ad55d9",
+      figureName: null,
+      figureSize: null,
+      figureState: null,
+      fontBold: false,
+      foreground: "#ff000000",
+      hoveredBackground: null,
+      hoveredForeground: null,
+      hoveredMaskBackground: "#e8ad55d9",
+      // hoveredMaskBackground: "#1f5292f7",
+      hoveredMaskBorder: "#e8ad55d9,1px",
+      iconAlignment: "center",
+      iconIndex: 0,
+      iconLocation: "left",
+      iconOffset: 0,
+      iconPadding: 2,
+      inactiveBackground: "#e8ad55d9",
+      // inactiveBackground: "#ffd3d3d3",
+      // inactiveForeground: "#ff808080",
+      inactiveForeground: "#e8ad55d9",
+      line: null,
+      lineAlignment: "center",
+      numberFormat: null,
+      paddingBottom: 0,
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingTop: 0,
+      prefix: null,
+      renderer: undefined,
+      // selectedBackground: "#ff696969",
+      selectedBackground: "#e8ad55d9",
+      selectedForeground: "#ffffffff",
+      selectionDisplay: "mask",
+      suffix: null,
+      textAlignment: "center",
+      textWrap: "none",
+    },
     // 그리드 풋터 스타일
     footer: {
       background: "#fafad2",
@@ -460,7 +514,7 @@ function initGridStyle($grid) {
       borderRight: "#d5d5d5, 1",
       borderBottom: "#d5d5d5, 1",
     },
-  });
+  });  
 
   $grid.each(function () {
     $(this).css({
