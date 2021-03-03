@@ -8,17 +8,17 @@
 # v1.0          2020-02-01       송영진       최초작성
 ************************************************************************************************ */
 
-/**
- * 그리드 초기화
- *
- * 4 : edi bind ( char1 : 컴포넌트 구분, char2 : 표현구분, char3 : common 데이터 구분값)
- * 7 : must coloumn 인지 * 표기 Y
- * 8 : textAlignment L:left C: center R: right
- * 9 : editable Y: 수정가능 N: 수정 불가능  default: Y
- **/
-$.fn.gfnGridInit = function (columns, width, height) {
-  width = width || "100%";
-  height = height || "100%";
+/** 
+ * 함 수 명 : gfnGridInit
+ * 설    명 : 그리드 초기화
+ * 리턴형식 : N/A
+ * 매개변수 
+ * @param {*} columns 그리드 각 컬럼 설정을 위한 기준 데이터(배열)
+ * @param {*} gridParam 그리드 설정을 위한 변수 (배열)
+**/
+$.fn.gfnGridInit = function (columns, gridParam) {
+  var width = "100%";
+  var height ="100%";
   this.css({ width: width, height: height }); // 그리드 width, height 지정
 
   this.gridView = new RealGridJS.GridView(this.attr("id")); // GridView 객체
@@ -41,24 +41,38 @@ $.fn.gfnGridInit = function (columns, width, height) {
 
   initGridField(this, columns);
   this.gridView.setColumns(columns);
+  
   //스타일 초기화
   initGridStyle(this);
 
   //옵션 초기화
   initGridOption(this.gridView);
 
-  // 무슨 내용인지 몰라서 주석처리
-  // var srch_bar = '<span id="frowinfo_' + $(this).attr('id') + '"></span>';
-  // $("." + this.attr("id")).append(srch_bar);
+  // 컬럼 고정 : 왼쪽
+  console.log("gridParam => ", gridParam)
+  if (gridParam[0].leftFixedCol > 0) {
+    this.gridView.setFixedOptions({ colCount: gridParam[0].leftFixedCol, colBarWidth: 0 });
+  
+  }
+  // 컬럼 고정 : 오른쪽
+  if (gridParam[0].rightFixedCol > 0) {
+    this.gridView.setFixedOptions({ rightColCount: gridParam[0].rightFixedCol, colBarWidth: 0 });
+  }  
+  
+  var column = this.gridView.columnByName($("#columnList").val());
+  if (column) {
+    var visible = !gridView.getColumnProperty(column, "visible");
+    gridView.setColumnProperty(column, "visible", visible);
+  }
 
-  this.gridView.onValidationFail = function (gridView, itemIndex, column, err) {
-    // console.log("onValidationFail:" + itemIndex + "," + JSON.stringify(column) + "," + JSON.stringify(err));
+  // 그리드 필수항목 오류 메시지를 모달 팝업에 출력
+  this.gridView.onValidationFail = function (err) {    
     $("#errorModal #errorModalContents").html(err.message);
     $("#errorModal").modal("show");
   }
   
-  this.gridView.onValidateRow = function(gridView, itemIndex, dataRow, inserting, values) {
-    // console.log("onValidateRow:" + itemIndex + "," + dataRow + "," + inserting + ",");
+  // 그리드 필수 항목체크 및 리얼그리드 오류 메시지 발생
+  this.gridView.onValidateRow = function(gridView, values) {    
     for (var columnInfo of gridView.getColumns()) {
       // 필수 체크
       if (columnInfo.header.subText) {
@@ -102,6 +116,15 @@ $.fn.gfnGridInit = function (columns, width, height) {
   return this;
 };
 
+
+/** 
+ * 함 수 명 : initGridField
+ * 설    명 : 그리드 컬럼에 대한 속성 초기화
+ * 리턴형식 : N/A
+ * 매개변수 
+ * @param {*} grdObj 그리드 객체
+ * @param {*} columns 그리드 각 컬럼 설정을 위한 기준 데이터(배열)
+**/
 function initGridField(grdObj, columns) {
   for (var columnInfo of columns) {
     // GridView의 name이 없을 경우 fieldName의 값을 넣음
@@ -123,7 +146,7 @@ function initGridField(grdObj, columns) {
       columnInfo.header.text = columnInfo.text;
     }
 
-    // 정렬
+    // 컬럼의 텍스트 정렬
     // near: Left정렬
     // center: Center정렬
     // far: Right 정렬
@@ -131,7 +154,8 @@ function initGridField(grdObj, columns) {
       columnInfo.styles.textAlignment = columnInfo.align;
     }
 
-    // 필수 컬럼일 경우 *표시 및 css 조정
+    // 필수 컬럼 정의
+    // 필수 항목은 *표시하며 css 설정
     if (columnInfo.essential === true) {
       columnInfo.header.subText = "*";
       columnInfo.header.subTextGap = 5;
@@ -144,6 +168,7 @@ function initGridField(grdObj, columns) {
       };
     }
 
+    // 컬럼유형에 따른 오브젝트 설정
     if (columnInfo.type) {
       switch (columnInfo.type) {
         case "combo": // 콤보박스
@@ -322,46 +347,42 @@ function initGridField(grdObj, columns) {
   }
 }
 
+
+/** 
+ * 함 수 명 : initGridStyle
+ * 설    명 : 그리드 CSS  스타일 정의
+ * 리턴형식 : N/A
+ * 매개변수 
+ * @param {*} grdObj 그리드 객체
+**/
 function initGridStyle($grid) {
   var gridView = $grid.gridView;
 
   //  그리드 스타일 설정
   gridView.setStyles({
+    // 그리드 전체 스타일
     grid: {
       fontSize: "12",
       paddingTop: "15",
       paddingBottom: "15",
-
       border: "#00ffffff, 1",
-      // "borderRight": "#ffffff, 1"
-      // "borderLeft": "#ffffff, 1",
-      // "borderTop": "#ffffffff, 1",
-      // "borderBottom": "#ffffffff, 1"
+      selectedBackground: "#FFA62B",
     },
 
+    // 그리드 바디 스타일
     body: {
-      // "border": "#00ffffff, 1",
       paddingTop: "15",
       paddingBottom: "15",
       foreground: "#ff4b5a61",
-      // "fontBold": true,
-      // "borderLeft": "#ffffff, 1",
-      // "borderRight": "#ffffff, 1",
-      // "borderTop": "#ffffffff, 1",
-      // "borderBottom": "#ffffffff, 1",
-
       empty: {
-        // "borderTop": "d5d5d5, 1"
       },
     },
 
+    // 그리드 헤더 스타일
     header: {
-      // "border": "#00ffffff, 1",
-      // "borderTop": "#1F8ECD, 2",
       borderRight: "#d5d5d5, 1",
       borderBottom: "#d5d5d5, 1",
-
-      background: "#fffcfa",
+      background: "#e6f2fd",
       paddingTop: "10",
       paddingBottom: "10",
 
@@ -370,7 +391,7 @@ function initGridStyle($grid) {
       // "height": 200,
       // "foreground": "#4b5a61",
 
-      selectedBackground: "#fffcfa",
+      selectedBackground: "#e6f2fd",
       selectedForeground: "#000000",
       "subStyles ": {
         foreground: "#e74c3c",
@@ -378,6 +399,7 @@ function initGridStyle($grid) {
         selectedForeground: "#e74c3c",
       },
 
+      // 그리드 헤더 그룹 스타일
       group: {
         background: "#fffcfa",
         paddingTop: "12",
@@ -389,7 +411,8 @@ function initGridStyle($grid) {
         // "borderTop": "#1f8ecd, 2"
       },
     },
-
+    
+    // 그리드 풋터 스타일
     footer: {
       background: "#fafad2",
       paddingTop: "5",
@@ -402,35 +425,38 @@ function initGridStyle($grid) {
       borderLeft: "#d5d5d5, 1",
     },
 
+    // 그리드 인디케이터 스타일
+    // 그리드 컬럼 중 자동번호 색상 정의 
     indicator: {
-      // "border": "#d5d5d5, 1",
       background: "#ffffff",
-      fontBold: true,
-
+      fontBold: false,
       borderRight: "#d5d5d5, 1",
-      // "borderLeft": "#ffffff, 3",
-      // "borderTop": "#d5d5d5, 1",
       borderBottom: "#d5d5d5, 1",
-
       foot: {
         borderLeft: "#00ffffff, 1",
       },
     },
 
+    // 그리드 인디케이터 스타일
+    // 체크박스 색상 정의
     checkBar: {
       borderRight: "#d5d5d5, 1",
-      // "borderLeft": "#d5d5d5, 1",
-      // "borderTop": "#ffffff, 1",
+      borderBottom: "#d5d5d5, 1",
+      figureBackground:'#EF6461',
+    },
+
+    // 그리드 인디케이터 스타일
+    // 입력/수정/삭제 상태변경 색상 정의
+    statusBar: {
+      borderRight: "#d5d5d5, 1",
       borderBottom: "#d5d5d5, 1",
     },
 
-    statusBar: {
-      borderRight: "#d5d5d5, 1",
-    },
-
+    // 고정컬럼 정의 스타일
     fixed: {
       background: "#ffffff",
       foreground: "#ff4b5a61",
+      borderleft: "#d5d5d5, 1",
       borderRight: "#d5d5d5, 1",
       borderBottom: "#d5d5d5, 1",
     },
@@ -447,22 +473,19 @@ function initGridStyle($grid) {
       // 그리드 상단 및 하단 라인 색성 지정
       "border-top": "solid #2a9d8f 0.0rem",
       "border-bottom": "solid #2a9d8f 0.0rem", 
-      // "border-right": "solid #ffffff 3px"
-      // "border-left": "solid #ffffff 5px"
     });
-    // $(this).css("border-bottom", "solid #d5d5d5 2px");
   });
 
   // 필터에 CSS 스타일 적용 여부 설정
   gridView.setFilteringOptions({ selector: { useCssStyle: true } });
 
-  // 그리드 라인 간격 조정
-  // rowHeight(default) = 28  
+  // 그리드 바디 라인 간격 조정
   gridView.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 30, drawBorderRight: false });
 
-  // 패딩추가
+  // 그리드 바디 패딩 설정
   // gridView.setStyles({body:{paddingLeft:10}});
 
+  // 그리드 행추가시 스타일
   gridView.addCellStyle(
     "found",
     {
@@ -473,26 +496,33 @@ function initGridStyle($grid) {
   );
 }
 
+
+
 function initGridOption(gridView) {
   // 그리드 옵션 설정
   gridView.setSelectOptions({ style: "singleRow" }); //rows, columns, singleRow, singleColumn, none, block
 
+  // 그리드 패널 설정
   gridView.setPanel({
     visible: false,
   });
 
+  // 그리드 인디케이터 헤더 컬럼명 설정
   gridView.setIndicator({
     headText: "No",
   });
 
+  // 그리드 상태바 설정
   // gridView.setStateBar({
   //   visible: false
   // });
 
+  //그리드 체크박스 설정
   gridView.setCheckBar({
     visible: true,
   });
 
+  // 그리드 오브젝트 설정
   gridView.setCopyOptions({
     singleMode: true,
     lookupDisplay: true,
@@ -1761,15 +1791,6 @@ this.gfn_isGridChanged = function (grd) {
   return true;
 };
 
-/**
- *
- *
- * @param {*} grd 그리드
- * @param {*} cnt 고정할 컬럼의 갯수
- */
-this.gfn_setFixedOptions = function (grd, cnt) {
-  grd.grid.setFixedOptions({ colCount: cnt });
-};
 
 /**
  * 그리드에 숫자 콤보 박스 생성하기 (1부터 maxNum 이하)
