@@ -51,12 +51,18 @@ form {
   display: inline-flex;
   align-items: center;
   height: 100%;  
-  margin-left: 0.5rem;  
+  margin-left: 0.5rem;
+  font-size: 15px;
+  font-weight: 800;
 }
-.search-title > i, .grid-title > i {
+
+.search-title__icon {
   color: var(--p8);
-  font-size: 15px !important;
-  font-weight: 800 !important;
+  font-size: 20px;
+}
+
+.search-title__name {
+  margin-left: 3px;
 }
 
 /* 조회조건 - 버튼 */
@@ -146,7 +152,21 @@ form {
   align-items: center;
   height: 100%;  
   margin-left: 0.5rem;  
-  color: var(--p1);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.grid-title__icon {
+  color: var(--p8);
+  font-size: 20px;
+}
+
+.grid-title__name {
+  margin-left: 3px;
+}
+
+.grid-title__cnt {
+  margin-left: 3px;
 }
 
 /* 그리드 상단의 버튼의 좌측 설정 */
@@ -763,8 +783,13 @@ form {
   border: 1px solid rgb(118, 118, 118);
 } */
 
+.search-content {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
 .search-content table label {
-  width: 122px;
+  width: 100%;
   white-space:nowrap; 
   display: inline-block; 
   overflow: hidden; 
@@ -772,10 +797,11 @@ form {
   /* cursor: pointer; */
 }
 
-/* .mouse-detail {
-  padding: 5px;
-  text-align: center;
-  background-color : #2196F3;
-  color: white;
+.search-content table input {
+  max-width: 100%;
 }
- */
+
+.mouse-detail {
+  border : 1px solid blue;
+  background-color : royalblue;
+}

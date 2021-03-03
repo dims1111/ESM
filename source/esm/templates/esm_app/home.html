@@ -203,6 +203,7 @@
               "data-url": item.url,
               "data-parent-menu-cd": item.parentMenuCd,
               "data-menu-cd": item.menuCd,
+              "title": item.menuNameKo,
             });
             $ul.attr("id", "group" + item.parentMenuCd);
             $li.click(openMenu);
@@ -366,27 +367,29 @@
           {% endfor %}
         </ul>
       </div>
-      <div class="sidebar-sub px-3 mt-2">
+      <div class="sidebar-sub pl-3 pr-1 mt-2">
         <div id="toggleSidebar" class="sidebar-sub__toggle"></div>
-        <div class="font-weight-bold mt-3 mb-4 d-flex align-items-center overflow-hidden text-nowrap">
-          <span class="sidebar-sub__title">복무관리</span>
-          <div class="ml-auto">
-            <span id="showAll" class="material-icons border small" style="cursor: pointer">add</span>
-            <span id="hideAll" class="material-icons border small" style="cursor: pointer">remove</span>
+        <div class="test pr-2" style="overflow: auto; height: 100%;">
+          <div class="font-weight-bold mt-3 mb-4 d-flex align-items-center overflow-hidden text-nowrap">
+            <span class="sidebar-sub__title">복무관리</span>
+            <div class="ml-auto">
+              <span id="showAll" class="material-icons border small" style="cursor: pointer">add</span>
+              <span id="hideAll" class="material-icons border small" style="cursor: pointer">remove</span>
+            </div>
           </div>
-        </div>
-        <div class="overflow-hidden text-nowrap">
-          <!-- 서브메뉴 -->
-          <ul id="menu-content" class="menu-content collapse show out"></ul>
+          <div class="overflow-hidden text-nowrap">
+            <!-- 서브메뉴 -->
+            <ul id="menu-content" class="menu-content collapse show out"></ul>
+          </div>
         </div>
       </div>
       <!-- Sidebar end -->
 
       <!-- Menu start -->
-      <div id="container_body" style="flex: 1 0 680px">
+      <div id="container_body" class="mt-2" style="flex: 1 0 680px">
         <div class="d-flex flex-column h-100">
           <!-- Nav tabs -->
-          <ul id="navs" class="nav nav-tabs mb-0 ml-3 mt-2 rounded" style="overflow: hidden; min-height: 35px" role="tablist">
+          <ul id="navs" class="nav nav-tabs mb-0 ml-3 rounded" style="overflow: hidden; min-height: 35px" role="tablist">
             <li class="nav-item">
               <a class="nav-link active" data-toggle="tab" href="#home">Home</a><span class="material-icons small">clear</span>
             </li>
