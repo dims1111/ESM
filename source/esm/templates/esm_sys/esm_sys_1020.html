@@ -22,7 +22,7 @@
 
     grid1 = $("#grid1").gfnGridInit([
       { fieldName: "menu_uid",         text: "메뉴UID",           width: 250, essential: true },
-      { fieldName: "parent_menu_cd",   text: "상위메뉴코드",      width: 80 , essential: true , align: 'center'},
+      { fieldName: "parent_menu_cd",   text: "상위메뉴코드",      width: 100 , essential: true , align: 'center'},
       { fieldName: "menu_cd",          text: "메뉴코드",          width: 80 , essential: true , align: 'center'},
       { fieldName: "menu_name_ko",     text: "메뉴명(한글)",      width: 180, essential: true },
       { fieldName: "menu_name_en",     text: "메뉴명(영문)",      width: 220, essential: true },
@@ -150,7 +150,8 @@
     <div class="col-12">
       <div class="search-header">
         <div class="search-title">
-          <i class="xi-bars"> 조회조건</i>
+          <i class="search-title__icon xi-bars"></i>
+          <span class="search-title__name">조회조건</span>
         </div>
         <div class="search-buttons">
           <button class="btn_sub active" onclick="doAction1('print');"><i class="xi-print"> 출력</i></button>
@@ -162,7 +163,7 @@
         </div>
       </div>
       <form id="srchForm" class="search-content">
-        <table style="width: 100%;">
+        <table style="width: 100%; table-layout: fixed;">
           <colgroup>
             <col width="10%">
             <col width="15%">
@@ -237,7 +238,9 @@
     <div class="grid col-12 d-flex flex-column">
       <div class="grid-header">
         <div class="grid-title">
-          <i class="xi-sort-desc"> 메뉴목록 (<span class="grid-title__cnt">0건</span>)</i>
+          <i class="grid-title__icon xi-sort-desc"></i>
+          <span class="grid-title__name">메뉴목록</span>
+          <span class="grid-title__cnt"></span>
         </div>
         <div class="grid-buttons">
           <button class="btn_excel active" onclick="doAction1('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button>

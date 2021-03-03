@@ -31,6 +31,9 @@ $.fn.gfnGridInit = function (columns, width, height) {
   });
   this.provider.setFields(fields);
 
+  // 기본 0건으로 초기화
+  this.closest('.grid').find('.grid-title__cnt').text("(0건)");
+
   // this.provider.setOptions({
   //   softDeleting: false, // true이면 삭제 시 RowState만 deleted or createAndDeleted로 변경되고 행이 삭제되지 않음
   //   deleteCreated: true, // 상태가 createAndDeleted인 데이터는 화면에서 바로 지움
@@ -2193,7 +2196,7 @@ function gfnExcelDownload(grid, fileName, sheetName) {
   // 화면의 그리드 타이틀을 출력
   // 화면의 그리드가 1개 이상일 경우 파일명 및 시트명 필수
   if (!fileName) {
-    fileName = grid.closest('.grid').find('.grid-title').text().trim();
+    fileName = grid.closest('.grid').find('.grid-title__name').text().trim();
   }
 
   // 시트명은 파일명과 동일하게 처리

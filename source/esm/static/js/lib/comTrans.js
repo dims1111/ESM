@@ -428,7 +428,7 @@ function gfnGetGrdData(params, callback) {
   
             // 임시로 여기서 메뉴 건수 추가함
             var titleCnt = result ? result.length : 0;
-            var titleCntText = gfnMakeComma(titleCnt) + '건';
+            var titleCntText = "(" + gfnMakeComma(titleCnt) + "건)";
             window[grid].closest('.grid').find('.grid-title__cnt').text(titleCntText);
   
             // console.log(result);
