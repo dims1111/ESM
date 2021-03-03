@@ -828,3 +828,7 @@ form {
   border-bottom-color: #ddd;
   right: -50px !important;
 }
+
+#srchForm td{
+  padding-bottom: 5px;
+}
