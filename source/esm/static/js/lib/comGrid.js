@@ -2198,9 +2198,9 @@ function gfnExcelDownload(grid, fileName, sheetName) {
 
 // 체크박스 된 데이터 행삭제
 function gfnDeleteRowChk(grid) {
-  var rows = grid.gridView.getCheckedItems(true);
+  var items = grid.gridView.getCheckedItems(true);
   
-  if (!rows.length) {
+  if (!items.length) {
     $("#errorModal #errorModalContents").html("선택된 데이터가 없습니다.");
     $("#errorModal").modal("show");
     return false;
@@ -2210,6 +2210,11 @@ function gfnDeleteRowChk(grid) {
   $("#confirmModal").modal("show");
 
   $('#confirmModal #confirm').unbind().click(function() {
+    // itemIndex로 gridView의 dataRow 찾기
+    var rows = items.map(function(item) {
+      return grid.gridView.getDataRow(item); 
+    });
+    
     grid.gridView.cancel();
     grid.provider.hideRows(rows);
     grid.provider.removeRows(rows);
