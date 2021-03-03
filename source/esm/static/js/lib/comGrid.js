@@ -14,12 +14,14 @@
  * 리턴형식 : N/A
  * 매개변수 
  * @param {*} columns 그리드 각 컬럼 설정을 위한 기준 데이터(배열)
- * @param {*} gridParam 그리드 설정을 위한 변수 (배열)
+ * @param {*} options 그리드 설정을 위한 변수 (배열)
 **/
-$.fn.gfnGridInit = function (columns, gridParam) {
-  var width = "100%";
-  var height ="100%";
-  this.css({ width: width, height: height }); // 그리드 width, height 지정
+$.fn.gfnGridInit = function (columns, options) {
+  // 그리드 width, height 지정
+  this.css({
+    width: options.width || '100%',
+    height: options.height || '100%'
+  });
 
   this.gridView = new RealGridJS.GridView(this.attr("id")); // GridView 객체
   this.provider = new RealGridJS.LocalDataProvider(); // LocalDataProvider 객체
@@ -49,14 +51,14 @@ $.fn.gfnGridInit = function (columns, gridParam) {
   initGridOption(this.gridView);
 
   // 컬럼 고정 : 왼쪽
-  console.log("gridParam => ", gridParam)
-  if (gridParam[0].leftFixedCol > 0) {
-    this.gridView.setFixedOptions({ colCount: gridParam[0].leftFixedCol, colBarWidth: 0 });
+  console.log("options => ", options)
+  if (options.leftFixedCol > 0) {
+    this.gridView.setFixedOptions({ colCount: options.leftFixedCol, colBarWidth: 0 });
   
   }
   // 컬럼 고정 : 오른쪽
-  if (gridParam[0].rightFixedCol > 0) {
-    this.gridView.setFixedOptions({ rightColCount: gridParam[0].rightFixedCol, colBarWidth: 0 });
+  if (options.rightFixedCol > 0) {
+    this.gridView.setFixedOptions({ rightColCount: options.rightFixedCol, colBarWidth: 0 });
   }  
   
   var column = this.gridView.columnByName($("#columnList").val());
@@ -66,13 +68,13 @@ $.fn.gfnGridInit = function (columns, gridParam) {
   }
 
   // 그리드 필수항목 오류 메시지를 모달 팝업에 출력
-  this.gridView.onValidationFail = function (err) {    
+  this.gridView.onValidationFail = function (gridView, itemIndex, column, err) {
     $("#errorModal #errorModalContents").html(err.message);
     $("#errorModal").modal("show");
   }
   
   // 그리드 필수 항목체크 및 리얼그리드 오류 메시지 발생
-  this.gridView.onValidateRow = function(gridView, values) {    
+  this.gridView.onValidateRow = function(gridView, itemIndex, dataRow, inserting, values) { 
     for (var columnInfo of gridView.getColumns()) {
       // 필수 체크
       if (columnInfo.header.subText) {
@@ -366,7 +368,7 @@ function initGridStyle($grid) {
       paddingTop: "15",
       paddingBottom: "15",
       border: "#00ffffff, 1",
-      selectedBackground: "#FFA62B",
+      selectedBackground: "rgba(11,186,130,1)",
     },
 
     // 그리드 바디 스타일
@@ -409,9 +411,15 @@ function initGridStyle($grid) {
         borderRight: "#d5d5d5, 1",
         borderBottom: "#d5d5d5, 1",
         // "borderTop": "#1f8ecd, 2"
-      },
+      },      
     },
     
+    //
+    //
+    selection: {
+      background: "rgba(11,186,130,0.2)",
+      border: "#330bbaff,2px",
+    },
     // 그리드 풋터 스타일
     footer: {
       background: "#fafad2",
@@ -460,7 +468,7 @@ function initGridStyle($grid) {
       borderRight: "#d5d5d5, 1",
       borderBottom: "#d5d5d5, 1",
     },
-  });
+  });  
 
   $grid.each(function () {
     $(this).css({
