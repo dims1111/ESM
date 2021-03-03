@@ -1,7 +1,7 @@
 {% extends "esm_com/bizform.html" %} {% load static %} {% block header %}
 <script>
   var grid1;
-  var grid1Param = [
+  var grid1Options = [
     { leftFixedCol: 3,  rightFixedCol: 1},
   ];
 
@@ -39,7 +39,7 @@
       { fieldName: "create_date_time", text: "생성일시",     width: 160, align: 'center', type: 'date', format: 'DATETIME' },
       { fieldName: "update_by",        text: "수정자ID",     width: 220, visible: false },
       { fieldName: "update_date_time", text: "수정일시",     width: 160, visible: false, align: 'center', type: 'date', format: 'DATETIME' },
-    ], grid1Param);
+    ], grid1Options);
 
     $('#date').parents(".input-group").datepicker({
 
