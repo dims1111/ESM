@@ -14,7 +14,7 @@
  * 리턴형식 : N/A
  * 매개변수 
  * @param {*} columns 그리드 각 컬럼 설정을 위한 기준 데이터(배열)
- * @param {*} options 그리드 설정을 위한 변수 (배열)
+ * @param {*} options 그리드 설정을 위한 변수
 **/
 $.fn.gfnGridInit = function (columns, options) {
   // 그리드 width, height 지정
@@ -36,11 +36,7 @@ $.fn.gfnGridInit = function (columns, options) {
   // 기본 0건으로 초기화
   this.closest('.grid').find('.grid-title__cnt').text("(0건)");
 
-  // this.provider.setOptions({
-  //   softDeleting: false, // true이면 삭제 시 RowState만 deleted or createAndDeleted로 변경되고 행이 삭제되지 않음
-  //   deleteCreated: true, // 상태가 createAndDeleted인 데이터는 화면에서 바로 지움
-  // });
-
+  // 그리드 컬럼별 속성 설정
   initGridField(this, columns);
   this.gridView.setColumns(columns);
   
@@ -51,22 +47,14 @@ $.fn.gfnGridInit = function (columns, options) {
   initGridOption(this.gridView);
 
   // 컬럼 고정 : 왼쪽
-  console.log("options => ", options)
   if (options.leftFixedCol > 0) {
-    this.gridView.setFixedOptions({ colCount: options.leftFixedCol, colBarWidth: 0 });
-  
+    this.gridView.setFixedOptions({ colCount: options.leftFixedCol, colBarWidth: 0 });  
   }
   // 컬럼 고정 : 오른쪽
   if (options.rightFixedCol > 0) {
     this.gridView.setFixedOptions({ rightColCount: options.rightFixedCol, colBarWidth: 0 });
   }  
-  
-  var column = this.gridView.columnByName($("#columnList").val());
-  if (column) {
-    var visible = !gridView.getColumnProperty(column, "visible");
-    gridView.setColumnProperty(column, "visible", visible);
-  }
-
+ 
   // 그리드 필수항목 오류 메시지를 모달 팝업에 출력
   this.gridView.onValidationFail = function (gridView, itemIndex, column, err) {
     $("#errorModal #errorModalContents").html(err.message);
@@ -368,7 +356,7 @@ function initGridStyle($grid) {
       paddingTop: "15",
       paddingBottom: "15",
       border: "#00ffffff, 1",
-      selectedBackground: "#e8ad55d9",
+      selectedBackground: "rgba(11,186,130,1)",
     },
 
     // 그리드 바디 스타일
@@ -414,58 +402,12 @@ function initGridStyle($grid) {
       },      
     },
     
-    //
-    //
+    // 그리드 바디 선택행 색상 및 박스라인 스타일    
     selection: {
-      background: "#2f1e90ff",
-      background: "#211111ff",
-      booleanFormat: null,
-      border: "#FFA62Bd9,2px",
-      borderBottom: null,
-      borderLeft: null,
-      borderRight: null,
-      borderTop: null,
-      contentFit: "auto",
-      datetimeFormat: null,
-      figureBackground: "#e8ad55d9",
-      figureBorder: null,
-      figureInactiveBackground: "#FFA62B",
-      figureInactiveBackground: "#FFA62B",
-      figureName: null,
-      figureSize: null,
-      figureState: null,
-      fontBold: false,
-      foreground: "#ff000000",
-      hoveredBackground: null,
-      hoveredForeground: null,
-      hoveredMaskBackground: "#FFA62B",
-      hoveredMaskBackground: "#FFA62B",
-      hoveredMaskBorder: "#FFA62B, 1px",
-      iconAlignment: "center",
-      iconIndex: 0,
-      iconLocation: "left",
-      iconOffset: 0,
-      iconPadding: 2,
-      inactiveBackground: "#FFA62B",
-      inactiveBackground: "#FFA62B",
-      inactiveForeground: "#FFA62B",
-      inactiveForeground: "#FFA62B",
-      line: null,
-      lineAlignment: "center",
-      numberFormat: null,
-      paddingBottom: 0,
-      paddingLeft: 0,
-      paddingRight: 0,
-      paddingTop: 0,
-      prefix: null,
-      renderer: undefined,
-      selectedBackground: "#FFA62B",
-      selectedForeground: "#FFA62B",
-      selectionDisplay: "mask",
-      suffix: null,
-      textAlignment: "center",
-      textWrap: "none",
+      background: "rgba(11,186,130,0.2)",
+      border: "#330bbaff,2px",
     },
+
     // 그리드 풋터 스타일
     footer: {
       background: "#fafad2",
