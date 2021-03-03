@@ -33,6 +33,10 @@ $.fn.gfnGridInit = function (columns, options) {
   });
   this.provider.setFields(fields);
 
+  this.provider.setOptions({
+    softDeleting: true
+  });
+
   // 기본 0건으로 초기화
   this.closest('.grid').find('.grid-title__cnt').text("(0건)");
 
@@ -2194,9 +2198,7 @@ function gfnExcelDownload(grid, fileName, sheetName) {
 
 // 체크박스 된 데이터 행삭제
 function gfnDeleteRowChk(grid) {
-  if (!gfnGridCommit(grid)) return;
-  var rows = grid.gridView.getCheckedRows(true);
-
+  // if (!gfnGridCommit(grid)) return;
   var rows = grid.gridView.getCheckedRows(true);
   
   if (!rows.length) {
@@ -2204,14 +2206,14 @@ function gfnDeleteRowChk(grid) {
     $("#errorModal").modal("show");
     return false;
   }
-  grid.gridView.cancel;
-  
+
   $("#confirmModal #confirmModalContents").html("삭제하시겠습니까?");
   $("#confirmModal").modal("show");
 
   $('#confirmModal #confirm').unbind().click(function() {
-    grid.provider.setRowStates(rows, "deleted", false, false);
+    grid.gridView.cancel();
     grid.provider.hideRows(rows);
+    grid.provider.removeRows(rows);
   });
   return true;
 }
