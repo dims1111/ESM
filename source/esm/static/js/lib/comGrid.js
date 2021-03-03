@@ -2215,8 +2215,8 @@ function gfnDeleteRowChk(grid) {
       return grid.gridView.getDataRow(item); 
     });
     
-    grid.gridView.cancel();
     grid.provider.hideRows(rows);
+    grid.gridView.cancel();
     grid.provider.removeRows(rows);
   });
   return true;
