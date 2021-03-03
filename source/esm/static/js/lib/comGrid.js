@@ -162,11 +162,6 @@ function initGridField(grdObj, columns) {
       };
     }
 
-    // 컬럼 숨기기
-    if (columnInfo.visible === false) {
-      grdObj.visible = false;
-    }    
-
     // 컬럼유형에 따른 오브젝트 설정
     if (columnInfo.type) {
       switch (columnInfo.type) {
