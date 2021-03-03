@@ -42,8 +42,8 @@ def defaultYn(value, defaultValue):
     else:
       return 'Y'
   else:
-    value
-    
+    return value    
+
 
 # 여부(1/0 <-> Y/N) 값 변환
 def changeYn(case, value):    
