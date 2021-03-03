@@ -769,11 +769,13 @@ form {
   display: inline-block; 
   overflow: hidden; 
   text-overflow: ellipsis;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
-.mouse-detail {
-  border : 1px solid blue;
-  background-color : royalblue;
+/* .mouse-detail {
+  padding: 5px;
+  text-align: center;
+  background-color : #2196F3;
+  color: white;
 }
-
+ */
