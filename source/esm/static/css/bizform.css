@@ -789,12 +789,24 @@ form {
 }
 
 .search-content table label {
+  position: relative;
   width: 100%;
   white-space:nowrap; 
   display: inline-block; 
   overflow: hidden; 
   text-overflow: ellipsis;
   cursor: pointer;
+  padding-left: 10px;
+}
+
+.search-content label.required::before {
+  content: '*';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  color: var(--p5);
+  font-size: 20px;
 }
 
 .search-content table input {
