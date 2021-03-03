@@ -127,7 +127,8 @@
       </div>
 
       
-      <div class="mouse-detail"></div>
+      <!-- 조호조건 호버이벤트 박스 -->
+      <!-- <div class="mouse-detail"></div> -->
       
     
     <script>
@@ -165,30 +166,28 @@
         $(".required-icon").text("*");
         // $(".required-icon").css("font-style","nomal");
 
-        $('label').hover(function(){
+        // $('label').hover(function(){
           
-          var text = $(this).text();
-          var ofs = $(this).parents("td").offset();
-          console.log(text);
-          console.log(ofs.top);
-          console.log(ofs.left);
+        //   var text = $(this).text();
+        //   var ofs = $(this).offset();
+        //   console.log(text);
+        //   console.log(ofs.top);
+        //   console.log(ofs.left);
 
-          $(".mouse-detail").css({
-            "position" : "absolute",
-            "top" : ofs.top-10,
-            "left" : ofs.left+100,
-            "border" : "1px solid blue",
-            "background-color" : "royalblue"
-          });
+        //   $(".mouse-detail").css({
+        //     "position" : "absolute",
+        //     "top" : ofs.top-10,
+        //     "left" : ofs.left+100
+        //   });
 
-          $('<span class="showtip">' + text + '</span>').appendTo($(".mouse-detail"));
-        },
-        function () {
-            $('.showtip').remove();
-            $(".mouse-detail").css({
-              "border" : 0
-            });
-        });
+        //   $('<span class="showtip">' + text + '</span>').appendTo($(".mouse-detail"));
+        // },
+        // function () {
+        //     $('.showtip').remove();
+        //     $(".mouse-detail").css({
+        //       "border" : 0
+        //     });
+        // });
       });
 
 
