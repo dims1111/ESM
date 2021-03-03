@@ -1,10 +1,7 @@
 {% extends "esm_com/bizform.html" %} {% load static %} {% block header %}
 <script>
   var grid1;
-  var grid1Param = [
-    { leftFixedCol: 3,  rightFixedCol: 1},
-  ];
-
+  
   $(function () {
     var comboYnList = [
       { code: '',   name: '선택',   },
@@ -15,6 +12,7 @@
     //   url: 
     // });
 
+    var options = { leftFixedCol: 3, rightFixedCol: 1 };
     grid1 = $("#grid1").gfnGridInit([
       { fieldName: "menu_uid",         text: "메뉴UID",      width: 250, essential: true , visible: false },
       { fieldName: "parent_menu_cd",   text: "상위메뉴코드", width: 100, essential: true , align: 'center'},
@@ -39,7 +37,7 @@
       { fieldName: "create_date_time", text: "생성일시",     width: 160, align: 'center', type: 'date', format: 'DATETIME' },
       { fieldName: "update_by",        text: "수정자ID",     width: 220, visible: false },
       { fieldName: "update_date_time", text: "수정일시",     width: 160, visible: false, align: 'center', type: 'date', format: 'DATETIME' },
-    ], grid1Param);
+    ], options);
   });
 
   /* action1에대한 기능 */
