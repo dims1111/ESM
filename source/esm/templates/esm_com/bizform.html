@@ -144,36 +144,41 @@
       // 달력 포멧 
       $(function(){
 
-        $('.input-group.date').datepicker({
+        
 
-          calendarWeeks: false,
+        
 
-          todayHighlight: true,
+        // $('.input-group.month').datepicker({
 
-          autoclose: true,
+        //   calendarWeeks: false,
 
-          format: "yyyy-mm-dd",
+        //   todayHighlight: true,
 
-          language: "kr"
+        //   autoclose: true,
 
-        });
+        //   format: "yyyy-mm",
+
+        //   language: "kr"
+
+        // });
 
       });
 
       $(document).ready(function () {
 
+        // $('.input-group.month').gfn_datepickerInit('month','m');
 
         // $(function () {
         //   $('[data-toggle="tooltip"]').tooltip()
         // })
         
         // tooltip 스트립트
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
           return new bootstrap.Tooltip(tooltipTriggerEl)
         })
 
-
+        // gfn_datepickerInit('year','y');
         
       });
 

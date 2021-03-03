@@ -50,6 +50,8 @@ $.fn.gfnGridInit = function (columns, options) {
   //옵션 초기화
   initGridOption(this.gridView);
 
+  console.log("options.leftFixedCol => ", options.leftFixedCol)
+
   // 컬럼 고정 : 왼쪽
   if (options.leftFixedCol > 0) {
     this.gridView.setFixedOptions({ colCount: options.leftFixedCol, colBarWidth: 0 });  
@@ -2200,9 +2202,9 @@ function gfnExcelDownload(grid, fileName, sheetName) {
 
 // 체크박스 된 데이터 행삭제
 function gfnDeleteRowChk(grid) {
-  var rows = grid.gridView.getCheckedItems(true);
+  var items = grid.gridView.getCheckedItems(true);
   
-  if (!rows.length) {
+  if (!items.length) {
     $("#errorModal #errorModalContents").html("선택된 데이터가 없습니다.");
     $("#errorModal").modal("show");
     return false;
@@ -2212,8 +2214,13 @@ function gfnDeleteRowChk(grid) {
   $("#confirmModal").modal("show");
 
   $('#confirmModal #confirm').unbind().click(function() {
-    grid.gridView.cancel();
+    // itemIndex로 gridView의 dataRow 찾기
+    var rows = items.map(function(item) {
+      return grid.gridView.getDataRow(item); 
+    });
+    
     grid.provider.hideRows(rows);
+    grid.gridView.cancel();
     grid.provider.removeRows(rows);
   });
   return true;
