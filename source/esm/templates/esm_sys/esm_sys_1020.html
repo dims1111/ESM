@@ -40,7 +40,42 @@
       { fieldName: "update_by",        text: "수정자ID",     width: 220, visible: false },
       { fieldName: "update_date_time", text: "수정일시",     width: 160, visible: false, align: 'center', type: 'date', format: 'DATETIME' },
     ], grid1Param);
+
+    $('#date').parents(".input-group").datepicker({
+
+      calendarWeeks: false,
+
+      todayHighlight: true,
+
+      autoclose: true,
+
+      format: "yyyy-mm-dd",
+
+      language: "kr"
+
+    });
+
+    $('#month').parents(".input-group").datepicker({
+
+      calendarWeeks: false,
+
+      todayHighlight: true,
+
+      autoclose: true,
+
+      format: "yyyy-mm",
+
+      startView: "months", 
+
+      minViewMode: "months",  
+
+      language: "kr"
+
+    });
+
   });
+
+
 
   /* action1에대한 기능 */
   function doAction1(gubun) {
@@ -167,44 +202,44 @@
           </colgroup>
           <tr style="width: 100%;">
             <td class="search-menu">
-              <label class="required" for="menuName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="메뉴명입니다아dkkddkdkkddddddddddddddddddddk">메뉴명입니다아dkkddkdkkddddddddddddddddddddk</label>
+              <label class="required" for="menuName" data-toggle="tooltip" data-placement="bottom" title="메뉴명입니다아dkkddkdkk">메뉴명입니다아dkkddkdkkk</label>
             </td>
             <td>
-              <input type="text" name="menuName" id="menuName" />
+              <input type="text" name="menuName" id="menuName" autocomplete="off"/>
             </td>
             <td class="search-menu">
-              <label for="url" data-bs-toggle="tooltip" data-bs-placement="right" title="URL">URL</label>
+              <label for="url" data-toggle="tooltip" data-placement="bottom" title="URL">URL</label>
             </td>
             <td>
-              <input type="text" name="url" id="url" />
+              <input type="text" name="url" id="url" autocomplete="off"/>
             </td>
             <td class="search-menu">
-              <label for="useYn" title="사용여부">사용여부</label>
+              <label for="useYn" data-toggle="tooltip" data-placement="bottom"  title="사용여부">사용여부</label>
             </td>
             <td>
-              <input type="checkbox" name="useYn" id="useYn" checked />
+              <input type="checkbox" name="useYn" id="useYn" checked autocomplete="off"/>
             </td>
             <td class="search-menu">
-              <label for="date" title="생성일자">생성일자</label>
+              <label for="date" data-toggle="tooltip" data-placement="bottom"  title="생성일자" >생성일자</label>
             </td>
             <td>
               <div class="input-group date">
-                <input type="text"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-              </div>  
+                <input type="text" id="date" name="date"/><span class="input-group-addon" autocomplete="off"><i class="xi-calendar-check"></i></span>
+              </div>
             </td>
           </tr>
           <tr>
             <td class="search-menu">
-              <label for="test" title="test1">test1</label>
+              <label for="test"  data-toggle="tooltip" data-placement="bottom" title="test1" >test1</label>
             </td>
             <td>
-              <input type="text" name="test" id="test"/>
+              <input type="text" name="test" id="test" autocomplete="off"/>
             </td>
             <td class="search-menu">
-              <label for="test" title="test2">test2</label>
+              <label for="test" data-toggle="tooltip" data-placement="bottom" title="test2" >test2</label>
             </td>
             <td>
-              <input type="text" name="test" id="test"/>
+              <input type="text" name="test" id="test" autocomplete="off"/>
             </td>
             <td class="search-menu">
               <!-- <label for="test" >test3</label> -->
@@ -213,10 +248,12 @@
               <!-- <input type="text" name="test" id="test"/> -->
             </td>
             <td class="search-menu">
-              <!-- <label for="test" >test4</label> -->
+              <label for="month" data-toggle="tooltip" data-placement="bottom"  title="생성년월" >생성년월</label>
             </td>
             <td>
-              <!-- <input type="text" name="test" id="test"/> -->
+              <div class="input-group date">
+                <input type="text" id="month" name="month" autocomplete="off"/><span class="input-group-addon"><i class="xi-calendar-check"></i></span>
+              </div>
             </td>
           </tr>
         </table> 
