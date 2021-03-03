@@ -409,7 +409,8 @@ function gfnGetGrdData(params, callback) {
   for (var grid of gridArr) {
     // IIFE ( Immediately Invoked Function Expression)
     (function(grid) {
-      window[grid].gridView.commit(false);
+      // window[grid].gridView.commit(false);
+      window[grid].gridView.cancel();
     
       // 로딩바 생성
       gfnLoadshow(window[grid]);

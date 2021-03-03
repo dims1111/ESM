@@ -125,12 +125,11 @@ def doSave(request, *args, **kwargs):
   # 사용자정보 할당
   commParams['userInfo'] = {'userId': request.session['user_id']}
   
-  try:
-    print("=================사용자정보 할당================================")
+  try:    
     json_data = json.loads(request.body)
-    print("json_data =>", json_data)
+    # print("json_data =>", json_data)
 
-    insertedData = json_data.get('grid1').get('inserted')
+    insertedData = json_data.get('grid1').get('created')
     updatedData = json_data.get('grid1').get('updated')
     deletedData = json_data.get('grid1').get('deleted')
 

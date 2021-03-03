@@ -33,6 +33,10 @@ $.fn.gfnGridInit = function (columns, options) {
   });
   this.provider.setFields(fields);
 
+  this.provider.setOptions({
+    softDeleting: true
+  });
+
   // 기본 0건으로 초기화
   this.closest('.grid').find('.grid-title__cnt').text("(0건)");
 
@@ -57,17 +61,35 @@ $.fn.gfnGridInit = function (columns, options) {
  
   // 그리드 필수항목 오류 메시지를 모달 팝업에 출력
   this.gridView.onValidationFail = function (gridView, itemIndex, column, err) {
-    $("#errorModal #errorModalContents").html(err.message);
-    $("#errorModal").modal("show");
+    // console.log('onValidationFail')
+    var errorMessage = err.message;
+    gfnShowErrorModal(errorMessage);
   }
   
   // 그리드 필수 항목체크 및 리얼그리드 오류 메시지 발생
   this.gridView.onValidateRow = function(gridView, itemIndex, dataRow, inserting, values) { 
+    // console.log(gridView, itemIndex, dataRow, inserting, values);
+
+    // // item index로 data row index 가져오기
+    // var rowState = gridView.getDataProvider().getRowState(dataRow);
+    // // 신규 행 입력 시 값이 모두 비어있으면 validation하지 않음.
+    // if (rowState === 'created') {
+    //   var isAllEmpty = Object
+    //     .keys(values)
+    //     .every(function(key) {
+    //       return !values[key] || !values[key].trim();
+    //     });
+
+    //   if (isAllEmpty) {
+    //     return true;
+    //   }
+    // }
+    
     for (var columnInfo of gridView.getColumns()) {
       // 필수 체크
       if (columnInfo.header.subText) {
         var value = values[columnInfo.name];
-        if (!value && value !== 0) {
+        if ((!value || !value.trim()) && value !== 0) {
           var headerText = columnInfo.header.text;
           var error = {
             level: RealGridJS.ValidationLevel.ERROR,
@@ -2045,7 +2067,7 @@ function gfnSetGridDataToJson(gridId) {
   
   return gridIds.reduce(function(acc, gridId) {
       var grid = window[gridId];
-      grid.gridView.commit(false); // Edit 중인 데이터 반영
+      if (!gfnGridCommit(grid)) return;
 
       var allStateRows = grid.provider.getAllStateRows();
 
@@ -2063,71 +2085,6 @@ function gfnSetGridDataToJson(gridId) {
       return acc;
   }, {});
 }
-
- /**
-  * 
-  * @param {Object} grid 
-  */
-function gfn_checkSaveData(grid) {
-  // if (!confirm(ld.saveConfirm) || !gfnSaveValidate(grid)) return false;
-  if (!gfnSaveValidate(grid) || !confirm('저장하시겠습니까?')) return false;
-
-  /*
-  var jsonData = gfn_getJsonChangedRows(grid);
-  if (jsonData.length == 0) {
-    gfnNoticeModalShow(ld.notice_modal, ld.nothingSave);
-    return false;
-  }
-  */
-  return true;
-};
-
-
-/** 
- * 함 수 명 : gfnGridCommit
- * 설    명 : 그리드 변경된 내용을 커밋
- * 리턴형식 : true / false
- * 매개변수 
- * @param {*} grid 그리드 객체명(e.g. grid1, grid2 등)
-**/
-function gfnSaveValidate(grid) {
-  // 그리드 커밋 함수에서 오류면 리턴
-  if (!gfnGridCommit(grid)) return false;
-  
-  // 그리드 컬럼별 체크 널일 경우 정상
-  log = grid.gridView.checkValidateCells();
-
-  if (log == null) {
-    return true;
-  } else {
-    var message = "";
-    for (var i = log.length - 1; i > -1; i--) {
-      var itemIndex = grid.gridView.getItemIndex(log[i].dataRow);
-      message += (itemIndex + 1).toString() + " " + ld.row + " " + log[i].message + "\n";
-    }
-
-    gfnNoticeModalShow("필수항목을 입력하시기 바랍니다.");
-    return false;
-  }
-};
-
-
-/** 
- * 함 수 명 : gfnGridCommit
- * 설    명 : 그리드 변경된 내용을 커밋
- * 리턴형식 : true / false
- * 매개변수 
- * @param {*} grid 그리드 객체명(e.g. grid1, grid2 등)
-**/
-function gfnGridCommit(grid) {
-  try {
-    grid.gridView.commit(false);
-    return true;
-  } catch (e) {
-    gfnNoticeModalShow("필수항목을 입력하시기 바랍니다.");
-    return false;
-  }
-};
 
 
 function gfn_getJsonChangedRows(_grd) {
@@ -2241,23 +2198,87 @@ function gfnExcelDownload(grid, fileName, sheetName) {
 
 // 체크박스 된 데이터 행삭제
 function gfnDeleteRowChk(grid) {
-  grid.gridView.commit(false);
-  var rows = grid.gridView.getCheckedRows(true);
-
+  var rows = grid.gridView.getCheckedItems(true);
+  
   if (!rows.length) {
     $("#errorModal #errorModalContents").html("선택된 데이터가 없습니다.");
     $("#errorModal").modal("show");
     return false;
   }
-  
+
   $("#confirmModal #confirmModalContents").html("삭제하시겠습니까?");
   $("#confirmModal").modal("show");
 
   $('#confirmModal #confirm').unbind().click(function() {
-    grid.provider.setRowStates(rows, "deleted", false, false);
+    grid.gridView.cancel();
     grid.provider.hideRows(rows);
-    // grid.provider.removeRows(rows);
-    // grid.gridView.commit(false);
+    grid.provider.removeRows(rows);
   });
   return true;
+}
+
+
+
+/** 
+ * 함 수 명 : gfnGridCommit
+ * 설    명 : 그리드 변경된 내용을 커밋
+ * 리턴형식 : true / false
+ * 매개변수 
+ * @param {*} grid 그리드 객체명(e.g. grid1, grid2 등)
+**/
+function gfnGridCommit(grid, force) {
+  if (!force) {
+    force = false; 
+  }
+  
+  try {
+    grid.gridView.commit(force);
+    return true;
+  } catch (e) {
+    gfnShowErrorModal(e.message);
+    return false;
+  }
+};
+
+/** 
+ * 함 수 명 : gfnGridCommit
+ * 설    명 : 그리드 변경된 내용을 커밋
+ * 리턴형식 : true / false
+ * 매개변수 
+ * @param {*} grid 그리드 객체명(e.g. grid1, grid2 등)
+**/
+function gfnSaveValidate(grid) {
+  // 그리드 커밋 함수에서 오류면 리턴
+  if (!gfnGridCommit(grid)) return false;
+  
+  // 그리드 컬럼별 체크 널일 경우 정상
+  log = grid.gridView.checkValidateCells();
+
+  if (!log) {
+    return true;
+  } else {
+    var message = "";
+    for (var i = log.length - 1; i > -1; i--) {
+      var itemIndex = grid.gridView.getItemIndex(log[i].dataRow);
+      message += (itemIndex + 1).toString() + " " + ld.row + " " + log[i].message + "\n";
+    }
+
+    gfnShowErrorModal("필수항목을 입력하시기 바랍니다.");
+    return false;
+  }
+};
+
+ /**
+  * 
+  * @param {Object} grid 
+  */
+ function gfn_checkSaveData(grid) {
+  if (!gfnSaveValidate(grid) || !confirm('저장하시겠습니까?')) return false;
+  return true;
+};
+
+// 에러메시지 모달 띄우기
+function gfnShowErrorModal(errorMessage) {
+  $("#errorModal #errorModalContents").html(errorMessage || "");
+  $("#errorModal").modal("show");
 }
