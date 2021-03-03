@@ -1,6 +1,7 @@
 html, body {
     background: var(--p7);
     font-family: 'Noto Sans KR', 'Nanum Gothic';
+    overflow: hidden;
   }
 
   /* 최상위  */
@@ -131,6 +132,7 @@ html, body {
     box-shadow: 4px 0px 13px -11px;
     transition: all 0.2s ease-out;
     z-index: 1;
+    max-width: 200px;
   }
 
   .sidebar-sub.collapsed {
