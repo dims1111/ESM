@@ -34,6 +34,13 @@ def resultMsg(commParam):
   print('batch   →', commParam['processCnt']['B'])
   print('===========================================================================')
 
+# 기본 값을 할당
+def defaultYn(value, defaultValue)
+  if not value
+    if defaultValue = 'N'
+      return 'N'
+    else:
+      return 'Y'
 
 # 여부(1/0 <-> Y/N) 값 변환
 def changeYn(case, value):    
