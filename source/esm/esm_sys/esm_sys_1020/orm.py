@@ -14,7 +14,7 @@ from django.db import transaction
 import datetime, json
 
 # resultMsg 클래스 임포트
-from esm_com.util import resultMsg
+from esm_com import util
 
 # 로그인 모델 내 SysMenu 클래스 임포트
 from . models import SysMenu
@@ -69,16 +69,16 @@ def doInsert(dataList, commParam):
       newData.parent_menu_cd    = ca.get('parent_menu_cd')
       newData.icons             = ca.get('icons')
       newData.sort_order        = ca.get('sort_order')
-      newData.use_yn            = ca.get('use_yn')
-      newData.search_yn         = ca.get('search_yn')
-      newData.add_row_yn        = ca.get('add_row_yn')
-      newData.del_row_yn        = ca.get('del_row_yn')
-      newData.save_yn           = ca.get('save_yn')
-      newData.copy_yn           = ca.get('copy_yn')
-      newData.batch_yn          = ca.get('batch_yn')
-      newData.print_yn          = ca.get('print_yn')      
-      newData.excel_down_yn     = ca.get('excel_down_yn')
-      newData.excel_up_yn       = ca.get('excel_down_yn')
+      newData.use_yn            = util.defaultYn(ca.get('use_yn'), 'N')
+      newData.search_yn         = util.defaultYn(ca.get('search_yn'), 'N')
+      newData.add_row_yn        = util.defaultYn(ca.get('add_row_yn'), 'N')
+      newData.del_row_yn        = util.defaultYn(ca.get('del_row_yn'), 'N')
+      newData.save_yn           = util.defaultYn(ca.get('save_yn'), 'N')
+      newData.copy_yn           = util.defaultYn(ca.get('copy_yn'), 'N')
+      newData.batch_yn          = util.defaultYn(ca.get('batch_yn'), 'N')
+      newData.print_yn          = util.defaultYn(ca.get('print_yn'), 'N')
+      newData.excel_down_yn     = util.defaultYn(ca.get('excel_down_yn'), 'N')
+      newData.excel_up_yn       = util.defaultYn(ca.get('excel_down_yn'), 'N')
       newData.remark            = ca.get('remark')
       newData.create_date_time  = now
       newData.create_by         = userId
@@ -88,6 +88,8 @@ def doInsert(dataList, commParam):
       # 리스트에 신규 클래스 값 추가
       bulkDataLists.append(newData)
       i += 1
+
+      print("newData =>", newData)
 
     # 대량 데이터 일괄 저장
     SysMenu.objects.bulk_create(bulkDataLists)
@@ -121,16 +123,16 @@ def doUpdate(dataList, commParam):
         updateData.parent_menu_cd   = ca.get('parent_menu_cd')
         updateData.icons            = ca.get('icons')
         updateData.sort_order       = ca.get('sort_order')
-        updateData.use_yn           = ca.get('use_yn')
-        updateData.search_yn        = ca.get('search_yn')
-        updateData.add_row_yn       = ca.get('add_row_yn')
-        updateData.del_row_yn       = ca.get('del_row_yn')
-        updateData.save_yn          = ca.get('save_yn')
-        updateData.copy_yn          = ca.get('copy_yn')
-        updateData.batch_yn         = ca.get('batch_yn')
-        updateData.print_yn         = ca.get('print_yn')        
-        updateData.excel_down_yn    = ca.get('excel_down_yn')
-        updateData.excel_up_yn      = ca.get('excel_up_yn')
+        updateData.use_yn           = util.defaultYn(ca.get('use_yn'), 'N')
+        updateData.search_yn        = util.defaultYn(ca.get('search_yn'), 'N')
+        updateData.add_row_yn       = util.defaultYn(ca.get('add_row_yn'), 'N')
+        updateData.del_row_yn       = util.defaultYn(ca.get('del_row_yn'), 'N')
+        updateData.save_yn          = util.defaultYn(ca.get('save_yn'), 'N')
+        updateData.copy_yn          = util.defaultYn(ca.get('copy_yn'), 'N')
+        updateData.batch_yn         = util.defaultYn(ca.get('batch_yn'), 'N')
+        updateData.print_yn         = util.defaultYn(ca.get('print_yn'), 'N')
+        updateData.excel_down_yn    = util.defaultYn(ca.get('excel_down_yn'), 'N')
+        updateData.excel_up_yn      = util.defaultYn(ca.get('excel_up_yn'), 'N')
         updateData.remark           = ca.get('remark')
         updateData.update_date_time = now
         updateData.update_by        = userId        
