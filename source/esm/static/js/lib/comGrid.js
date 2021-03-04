@@ -452,9 +452,13 @@ function initGridStyle($grid) {
 
     // 그리드 인디케이터 스타일
     // 입력/수정/삭제 상태변경 색상 정의
-    statusBar: {
+    stateBar: {
       borderRight: "#d5d5d5, 1",
       borderBottom: "#d5d5d5, 1",
+      foreground: "#e74c3c",
+      selectedForeground: "#e74c3c",
+      figureInactiveBackground: "#e74c3c",
+      figureBackground : "#e74c3c",
     },
 
     // 고정컬럼 정의 스타일
