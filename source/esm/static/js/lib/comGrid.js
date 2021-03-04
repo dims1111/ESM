@@ -50,8 +50,8 @@ $.fn.gfnGridInit = function (columns, options) {
   //옵션 초기화
   initGridOption(this.gridView);
 
+  
   console.log("options.leftFixedCol => ", options.leftFixedCol)
-
   // 컬럼 고정 : 왼쪽
   if (options.leftFixedCol > 0) {
     this.gridView.setFixedOptions({ colCount: options.leftFixedCol, colBarWidth: 0 });  
@@ -70,22 +70,22 @@ $.fn.gfnGridInit = function (columns, options) {
   
   // 그리드 필수 항목체크 및 리얼그리드 오류 메시지 발생
   this.gridView.onValidateRow = function(gridView, itemIndex, dataRow, inserting, values) { 
-    // console.log(gridView, itemIndex, dataRow, inserting, values);
+  // console.log(gridView, itemIndex, dataRow, inserting, values);
 
-    // // item index로 data row index 가져오기
-    // var rowState = gridView.getDataProvider().getRowState(dataRow);
-    // // 신규 행 입력 시 값이 모두 비어있으면 validation하지 않음.
-    // if (rowState === 'created') {
-    //   var isAllEmpty = Object
-    //     .keys(values)
-    //     .every(function(key) {
-    //       return !values[key] || !values[key].trim();
-    //     });
+  // // item index로 data row index 가져오기
+  // var rowState = gridView.getDataProvider().getRowState(dataRow);
+  // // 신규 행 입력 시 값이 모두 비어있으면 validation하지 않음.
+  // if (rowState === 'created') {
+  //   var isAllEmpty = Object
+  //     .keys(values)
+  //     .every(function(key) {
+  //       return !values[key] || !values[key].trim();
+  //     });
 
-    //   if (isAllEmpty) {
-    //     return true;
-    //   }
-    // }
+  //   if (isAllEmpty) {
+  //     return true;
+  //   }
+  // }
     
     for (var columnInfo of gridView.getColumns()) {
       // 필수 체크
@@ -181,6 +181,11 @@ function initGridField(grdObj, columns) {
         fontFamily: 'Noto Sans KR'
       };
     }
+
+    // 컬럼 읽기 전용으로 변경
+    // if (!columnInfo.editable) {
+    //   columnInfo.editable = true;
+    // }
 
     // 컬럼유형에 따른 오브젝트 설정
     if (columnInfo.type) {
