@@ -1,0 +1,77 @@
+-- 테이블 삭제
+drop table esm.sys_code_detail cascade constraint;
+
+-- 테이블 생성
+create table esm.sys_code_detail
+(
+   code_detail_uid             varchar2(0032) not null
+  ,master_cd                   varchar2(0030) not null
+  ,detail_cd                   varchar2(0030) not null
+  ,name_ko                     varchar2(0100) not null
+  ,name_en                     varchar2(0200) not null
+  ,sort_order                  number         default 1 not null
+  ,begin_date                  date           default trunc(sysdate)
+  ,end_date                    date
+  ,remark                      varchar2(2000)
+  ,create_date_time            date           default sysdate
+  ,create_by                   varchar2(0032) default '000000000000000000000000000000-1'
+  ,update_date_time            date           default sysdate
+  ,update_by                   varchar2(0032) default '000000000000000000000000000000-1'
+)
+tablespace esm
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64k
+    minextents 1
+    maxextents unlimited
+  );
+  
+-- add comments to the table 
+comment on table esm.sys_code_detail                         is '[시스템] 상세코드';
+
+-- add comments to the columns 
+comment on column esm.sys_code_detail.code_detail_uid        is '상세코드UID';
+comment on column esm.sys_code_detail.master_cd              is '마스터코드';
+comment on column esm.sys_code_detail.detail_cd              is '상세코드';
+comment on column esm.sys_code_detail.name_ko                is '상세코드명(한글)';
+comment on column esm.sys_code_detail.name_en                is '상세코드명(영문)';
+comment on column esm.sys_code_detail.sort_order             is '정렬순서';
+comment on column esm.sys_code_detail.begin_date             is '시작일자';
+comment on column esm.sys_code_detail.end_date               is '종료일시';
+comment on column esm.sys_code_detail.remark                 is '비고';
+comment on column esm.sys_code_detail.create_date_time       is '생성일시';
+comment on column esm.sys_code_detail.create_by              is '생성자ID';
+comment on column esm.sys_code_detail.update_date_time       is '수정일시';
+comment on column esm.sys_code_detail.update_by              is '수정자ID';
+
+-- create/recreate primary, unique and foreign key constraints 
+alter table esm.sys_code_detail
+  add constraint sys_code_detail_pk primary key (code_detail_uid)
+  using index 
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+create index esm.sys_code_detail_uk on esm.sys_code_detail (master_cd, detail_cd)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+
+  
+-- create/recreate indexes 
+create index esm.sys_code_detail_ix1 on esm.sys_code_detail (master_cd, detail_cd, begin_date, sort_order)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+create index esm.sys_code_detail_ix2 on esm.sys_code_detail (name_ko)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;  
