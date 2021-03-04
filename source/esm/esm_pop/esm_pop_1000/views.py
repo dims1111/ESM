@@ -28,8 +28,11 @@ from esm_com import util
 def home(request, *args, **kwargs):
   if request.POST.get('popupName') == 'codeDetail':
     return render(request, 'esm_pop/esm_pop_1000.html', kwargs)
-  elif request.POST.get('popupName') == 'codeDetail':
+  elif request.POST.get('popupName') == 'person':
     pass
+  elif request.POST.get('popupName') == 'dept':
+    pass
+
 
 # 공통코드 조회
 @util.sessionDecorator
@@ -39,10 +42,13 @@ def searchCodeDetail(request, *args, **kwargs):
 
   try:
     print("request.session.is_empty()", request.POST.get('searchMasterCd', None))
-
-    dictParams = {}
+    dictParams = {}    
     dictParams["&p_lang_cd"] = request.session['lang_cd']
     dictParams["&p_master_cd"] = request.POST.get('searchMasterCd', None)
+    dictParams["&p_detail_cd"] = request.POST.get('searchDetailCd', None)
+    dictParams["&p_detail_cd_name"] = request.POST.get('searchDetailCdName', None)
+    print("print(dictParams) =>", dictParams)
+   
 
     # 공통코드 조회    
     commParams['data'] = esmComViews.searchExecute(sql.searchCodeDetail, dictParams)

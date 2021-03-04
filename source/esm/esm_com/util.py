@@ -96,16 +96,16 @@ def sessionDecorator(orginalFunction):
       # 화면 로딩시 화면에 대한 URI를 값을 받아 뒷자리 '/' 제거 후 URL만 추출
       absoluteURI = (request.build_absolute_uri())[:-1].strip("/")
       url = absoluteURI[absoluteURI.rfind('/'):]
-      print ("url =>", url)
+      # print ("url =>", url)
 
       # 함수 및 변수 값 초기화
       orginalFucntionCall = None
       # args = ('searchBtn', 'addRowBtn', 'deleteRowBtn', 'saveBtn', 'copyBtn', 'batchBtn', 'printBtn', 'excelDownBtn', 'excelUpBtn')
       args = ()
       kwargs = {}
-      
+
       # 팝업의 경우 권한별 버튼 체크하지 않음
-      if url != '/esm_pop_1000':        
+      if url.find('esm_pop') == -1:
         # home 함수 확인
         if orginalFunction.__name__ == 'home':
           try:

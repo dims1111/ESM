@@ -26,6 +26,8 @@ class sql:
            where 1=1
              and scm.master_cd  = &p_master_cd
              and trunc(sysdate) between scm.begin_date and nvl(scm.end_date, to_date('4712-12-31', 'yyyy-mm-dd'))
+             and scd.detail_cd  like &p_detail_cd || '%'
+             and case when &p_lang_cd = 'ko' then scm.name_ko else scm.name_en end like &p_detail_cd_name || '%'
            order by scd.sort_order
         """
     

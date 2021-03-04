@@ -132,7 +132,7 @@ form {
 .search-content {
   border-top: 2px solid var(--p1);
   border-bottom: 1px solid var(--p4);
-  padding: 8px 4px;
+  padding: 8px 4px 4px 4px;
   margin-bottom: 10px;
 }
 
@@ -858,12 +858,20 @@ form {
 input[type="text"] { 
   border: solid 1px var(--p4); 
   border-radius: 2px; 
+  font-family: inherit; /* 폰트 상속 */
+}
+
+/* select css */
+select { 
+  border: solid 1px var(--p4); 
+  border-radius: 2px; 
+  font-family: inherit; /* 폰트 상속 */
 }
 
 /* input focus css */
 input:focus {
   outline:none;
-  box-shadow: 0 0 3px 2px var(--p4);
+  /* box-shadow: 0 0 3px 2px var(--p4); */
 }
 
 /* 달력 테이블 이동화살표 사이즈 */

@@ -4,24 +4,6 @@
   var grid1; // var grid1, grid2, grid3, grid4 ..... ;
 
   $(function () {
-    $('#date').parents(".input-group").datepicker({
-      calendarWeeks: false,
-      todayHighlight: true,
-      autoclose: true,
-      showMonthAfterYear: true,
-      format: "yyyy-mm-dd",
-      language: "kr"
-    });
-
-    $('#month').parents(".input-group").datepicker({
-      calendarWeeks: false,
-      todayHighlight: true,
-      autoclose: true,
-      format: "yyyy-mm",
-      minViewMode: "months",  
-      language: "kr"
-    });
-
     // 그리드 초기화
     (function initGrid() {
       initGrid1(); // 메뉴목록
@@ -38,25 +20,24 @@
         { fieldName: "masterCd",          text: "상위코드",       width: 80,   editable: false, visible: false },
         { fieldName: "masterCdName",      text: "상위코드명",     width: 120,  editable: false, visible: false },
         { fieldName: "detailCd",          text: "상세코드",       width: 80,   editable: false, align: 'center' },
-        { fieldName: "detailCdName",      text: "상세코드명",     width: 160,  editable: false },
-        { fieldName: "beginDate",         text: "시작일자",       width: 90,   type: 'date', format: 'YYYYMMDD', editable: false, align: 'center' },
-        { fieldName: "endDate",           text: "종료일자",       width: 90,   type: 'date', format: 'YYYYMMDD', editable: false, align: 'center' },
-        { fieldName: "sortOrder",         text: "정렬순서",       width: 60,   editable: false },
+        { fieldName: "detailCdName",      text: "상세코드명",     width: 200,  editable: false },
+        { fieldName: "beginDate",         text: "시작일자",       width: 80,   type: 'date', format: 'YYYYMMDD', editable: false, align: 'center' },
+        { fieldName: "endDate",           text: "종료일자",       width: 80,   type: 'date', format: 'YYYYMMDD', editable: false, align: 'center' },
+        { fieldName: "sortOrder",         text: "정렬순서",       width: 60,   type: 'number', editable: false },
 
         { fieldName: "codeDetailUid",     text: "상위메뉴코드",   width: 100,   editable: false, visible: false },
         { fieldName: "codeMasterUid",     text: "메뉴코드",       width: 80 ,   editable: false, visible: false },
       ], options);
 
-
       // 그리드 상태바 설정
       grid1.gridView.setStateBar({
         visible: false
       });
+
       //그리드 체크박스 설정
       grid1.gridView.setCheckBar({
         visible: false,
       });
-
     }
   });
 
@@ -64,18 +45,16 @@
   function doAction1(gubun) {
     switch (gubun) {
       case "search": // 조회
-        var menuName = $("#menuName").val();
-        var url = $("#url").val();
-        var useYn = $("#useYn").is(":checked") ? "1" : "0";
+        var searchDetailCd = $("#detailCd").val();
+        var searchDetailCdName = $("#detailCdName").val();
 
         // 화면 조회조건 항목별 값 
-        var mainParam = {
-          menuName: menuName,
-          url: url,
-          useYn: useYn,
+        var mainParam = {          
           searchMasterCd: 'GENDER_CD',
+          searchDetailCd: searchDetailCd,
+          searchDetailCdName: searchDetailCdName,
         };
-        console.log("mainParam ->", mainParam);
+        // console.log("mainParam ->", mainParam);
 
         // 조회조건, url, grid
         var params = {
@@ -85,12 +64,12 @@
         };
         gfnGetGrdData(params);
         break;
+
       case "reset": // 초기화
         console.log(gubun)
         document.getElementById("menuName").values='';
         break;
-      case "selectRow": // 선택
-        
+      case "selectRow": // 선택        
         break;
     }    
   }
@@ -102,6 +81,11 @@
         console.log('test')
         break;
     }
+  }
+
+  // 영문자만 입력
+  function handleOnInput(e)  {
+    e.value = e.value.replace(/[^A-Za-z]/ig, '')
   }
 </script>
 {% endblock %} {% block contents %}
@@ -122,24 +106,19 @@
       <form id="srchForm" class="search-content">
         <table style="width: 100%; table-layout: fixed;">
           <colgroup>
-            <col width="13%">
-            <col width="20%">
-            <col width="13%">
-            <col width="20%">
-            <col width="13%">
-            <col width="20%">
+            <col width="13%"><col width="20%">
+            <col width="13%"><col width="20%">
+            <col width="13%"><col width="20%">
           </colgroup>
           <tr style="width: 100%;">
-            <td class="search-menu"><label class="required" for="menuName" data-toggle="tooltip" data-placement="bottom" title="상세코드">상세코드</label></td>
-            <td><input type="text" name="menuName" id="menuName" autocomplete="off"/></td>
+            <td class="search-menu"><label for="detailCd" data-toggle="tooltip" data-placement="bottom" title="상세코드">상세코드</label></td>
+            <td><input type="text" name="detailCd" id="detailCd" autocomplete="off" style="text-transform: uppercase;" oninput="handleOnInput(this)"/></td>
 
-            <td class="search-menu"><label class="required" for="menuName" data-toggle="tooltip" data-placement="bottom" title="상세코드명">상세코드명</label></td>
-            <td><input type="text" name="url" id="url" autocomplete="off"/></td>
+            <td class="search-menu"><label for="detailCdName" data-toggle="tooltip" data-placement="bottom" title="상세코드명">상세코드명</label></td>
+            <td><input type="text" name="detailCdName" id="detailCdName" autocomplete="off"/></td>
 
-            <td class="search-menu"></td>
-            <td></td>
-            <td class="search-menu"></td>
-            <td></td>
+            <td class="search-menu"></td><td></td>
+            <td class="search-menu"></td><td></td>
           </tr>          
         </table> 
       </form>
@@ -152,7 +131,7 @@
       <div class="grid-header">
         <div class="grid-title">
           <i class="grid-title__icon xi-sort-desc"></i>
-          <span class="grid-title__name">메뉴목록</span>
+          <span class="grid-title__name">조회결과</span>
           <span class="grid-title__cnt"></span>
         </div>
         <div class="grid-buttons">
