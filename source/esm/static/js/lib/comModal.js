@@ -2,6 +2,7 @@
 var modalPopup = (function () {
   var dialogs = {};
   var callbacks = {};
+  var curWindow;
 
   return {
     open: function (obj) {
@@ -17,6 +18,8 @@ var modalPopup = (function () {
       var _position = obj.position || {};
       var _PageUrl = _url;
       var _method = obj.method || "post";
+
+      curWindow = window;
   
       // 앞 '&'문자 지우기
       if (_params && _params[0] === "&") {
@@ -37,7 +40,7 @@ var modalPopup = (function () {
         var $iframe = $(document.createDocumentFragment()).append(
           $("<iframe/>", {
             id: _popupId + "Iframe",
-            name: _popupId + "Iframe",
+            name: _popupId,
             src: _method === "get" ? _url + "?" + _params : "",
             css: {
               width: "100%",
@@ -67,7 +70,7 @@ var modalPopup = (function () {
               var form = document.createElement("form");
               form.setAttribute("charset", "UTF-8");
               form.setAttribute("method", "post");
-              form.setAttribute("target", _popupId + "Iframe");
+              form.setAttribute("target", _popupId);
               form.setAttribute("action", _PageUrl);
   
               var input;
@@ -109,20 +112,13 @@ var modalPopup = (function () {
         });
       }
     },
-    callback: function (id, param) {
-      console.log('callbacks', callbacks)
-      console.log('ModalPopup.prototype.close', callbacks[id]);
-      window[callbacks[id]](id, param);
+    callback: function (param) {
+      var name = callbacks[window.name];
+      console.log(callbacks, window, window.name, name);
+      curWindow[name](name, param);
     },
-    close: function(id) {
-      console.log('ModalPopup.prototype.close', id)
-      if (dialogs[id]) {
-        dialogs[id].dialog("close");
-      } else {
-        for (var openedLayer of dialogs) {
-          openedLayer.dialog("close");
-        }
-      }
+    close: function() {
+      dialogs[window.name].dialog("close");
     }
   };
 })();
