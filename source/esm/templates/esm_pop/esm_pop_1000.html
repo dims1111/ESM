@@ -122,74 +122,25 @@
       <form id="srchForm" class="search-content">
         <table style="width: 100%; table-layout: fixed;">
           <colgroup>
-            <col width="10%">
-            <col width="15%">
-            <col width="10%">
-            <col width="15%">
-            <col width="10%">
-            <col width="15%">
-            <col width="10%">
-            <col width="15%">
+            <col width="13%">
+            <col width="20%">
+            <col width="13%">
+            <col width="20%">
+            <col width="13%">
+            <col width="20%">
           </colgroup>
           <tr style="width: 100%;">
-            <td class="search-menu">
-              <label class="required" for="menuName" data-toggle="tooltip" data-placement="bottom" title="메뉴명">메뉴명</label>
-            </td>
-            <td>
-              <input type="text" name="menuName" id="menuName" autocomplete="off"/>
-            </td>
-            <td class="search-menu">
-              <label for="url" data-toggle="tooltip" data-placement="bottom" title="URL">URL</label>
-            </td>
-            <td>
-              <input type="text" name="url" id="url" autocomplete="off"/>
-            </td>
-            <td class="search-menu">
-              <label for="useYn" data-toggle="tooltip" data-placement="bottom"  title="사용여부">사용여부</label>
-            </td>
-            <td>
-              <input type="checkbox" name="useYn" id="useYn" checked autocomplete="off"/>
-            </td>
-            <td class="search-menu">
-              <label for="date" data-toggle="tooltip" data-placement="bottom"  title="생성일자" >생성일자</label>
-            </td>
-            <td>
-              <div class="input-group date">
-                <input type="text" id="date" name="date"/><span class="input-group-addon" autocomplete="off"><i class="xi-calendar-check"></i></span>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="search-menu">
-              <label for="test"  data-toggle="tooltip" data-placement="bottom" title="test1" >test1</label>
-            </td>
-            <td>
-              <input type="text" name="test" id="test" autocomplete="off"/>
-            </td>
-            <td class="search-menu">
-              <label for="test2" data-toggle="tooltip" data-placement="bottom" title="test2" >test2</label>
-            </td>
-            <td>
-              <input type="text" name="test" id="test2" autocomplete="off"/>
-            </td>
-            <td class="search-menu"  >
-              <label for="gender" data-toggle="tooltip" data-placement="bottom"  title="성별">성별</label>
-            </td>
-            <td>
-              <select name="gender" id="gender">
-                <option value="M">남</option>
-                <option value="F">여</option>
-              </select>
-            </td>
-            <td class="search-menu">
-              <label for="month" data-toggle="tooltip" data-placement="bottom"  title="생성년월" >생성년월</label>
-            </td>
-            <td>
-              <div class="input-group date">
-                <input type="text" id="month" name="month" autocomplete="off"/><span class="input-group-addon"><i class="xi-calendar-check"></i></span>
-              </div>
-            </td>
-          </tr>
+            <td class="search-menu"><label class="required" for="menuName" data-toggle="tooltip" data-placement="bottom" title="상세코드">상세코드</label></td>
+            <td><input type="text" name="menuName" id="menuName" autocomplete="off"/></td>
+
+            <td class="search-menu"><label class="required" for="menuName" data-toggle="tooltip" data-placement="bottom" title="상세코드명">상세코드명</label></td>
+            <td><input type="text" name="url" id="url" autocomplete="off"/></td>
+
+            <td class="search-menu"></td>
+            <td></td>
+            <td class="search-menu"></td>
+            <td></td>
+          </tr>          
         </table> 
       </form>
     </div>
@@ -205,7 +156,7 @@
           <span class="grid-title__cnt"></span>
         </div>
         <div class="grid-buttons">
-          <button class="btn_sub active" onclick="doAction1('selectRow');"><i class="xi-plus-min"> 선택</i></button>
+          <button class="btn_sub active" onclick="doAction1('selectRow');"><i class="xi-check-circle-o"> 선택</i></button>
         </div>
       </div>
       <div class="grid-content flex-grow-1">
