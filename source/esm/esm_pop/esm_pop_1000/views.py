@@ -27,7 +27,7 @@ from esm_com import util
 @util.sessionDecorator
 def home(request, *args, **kwargs):
   if request.POST.get('popupName') == 'codeDetail':
-    return render(request, '/esm_pop/esm_pop_1010.html', kwargs)
+    return render(request, 'esm_pop/esm_pop_1000.html', kwargs)
   elif request.POST.get('popupName') == 'codeDetail':
     pass
 
