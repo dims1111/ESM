@@ -136,22 +136,14 @@ function initGridField(grdObj, columns) {
     columnInfo.styles = columnInfo.styles || {};
 
     // editor객체 초기화
-    // columnInfo.editor = columnInfo.editor || {};
+    columnInfo.editor = columnInfo.editor || {};
 
-    // header.text 객체에 text값 넣기
+    // 그리드 헤더 객체에 text값 넣기
     if (columnInfo.text) {
       columnInfo.header.text = columnInfo.text;
     }
 
-    // 컬럼의 텍스트 정렬
-    // near: Left정렬
-    // center: Center정렬
-    // far: Right 정렬
-    if (columnInfo.align) {
-      columnInfo.styles.textAlignment = columnInfo.align;
-    }
-
-    // 필수 컬럼 정의
+    // 그리드 헤더 필수 컬럼 정의
     // 필수 항목은 *표시하며 css 설정
     if (columnInfo.essential === true) {
       columnInfo.header.subText = "*";
@@ -176,6 +168,22 @@ function initGridField(grdObj, columns) {
             values: columnInfo.comboList.map(function (item) { return item.code }),
             labels: columnInfo.comboList.map(function (item) { return item.name }),
           };
+          break;
+        case "number": // 숫자
+          columnInfo.editor = {};
+          columnInfo.editor = {
+            "type" : "number",
+            "textAlignment": "far",
+            "editFormat": "#,##0",
+            "multipleChar": "+",
+          };
+          columnInfo.styles = {};
+          columnInfo.styles = {
+            "textAlignment": "far",
+            "numberFormat": "#,##0",
+          };
+          columnInfo.displayRegExp = /\B(?=(\d{3})+(?!\d))/g;
+          columnInfo.displayReplace = ",";
           break;
         case "search": // 조회버튼
           columnInfo.buttonVisibility = "always";
@@ -263,7 +271,7 @@ function initGridField(grdObj, columns) {
               editMask: "9999-99-99 99:99:99",
               includedFormat: false,
             };
-            columnInfo.displayRegExp = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+            columnInfo.displayRegExp = /(\d{4}).*?(\d{2}).*?(\d{2}).*?(\d{2}).*?(\d{2}).*?(\d{2}).*/;
             columnInfo.displayReplace = "$1-$2-$3 $4:$5:$6";
           }
           break;
@@ -303,16 +311,6 @@ function initGridField(grdObj, columns) {
           columnInfo.displayRegExp = "([0-9]{2})([0-9]{2})";
           columnInfo.displayReplace = "$1:$2";
           break;
-        case "grade": // 평점
-          var fieldsArr = grdObj.provider.getFields();
-          fieldsArr[i].dataType = "number";
-          grdObj.provider.setFields(fieldsArr);
-          columnInfo.editor = {};
-          columnInfo.editor.type = "number";
-          columnInfo.editor.editFormat = "0.00";
-          columnInfo.styles = {};
-          columnInfo.styles.numberFormat = "0.00";
-          break;
         case "y": // y
           columnInfo.renderer = {
             type: "check",
@@ -332,6 +330,15 @@ function initGridField(grdObj, columns) {
           columnInfo.displayRegExp = "([0-9]{3})([0-9]{4})([0-9]{4,})";
           columnInfo.displayReplace = "$1-$2-$3";
           break;
+      }
+
+      // 컬럼의 텍스트 정렬
+      // near: Left정렬
+      // center: Center정렬
+      // far: Right 정렬
+      if (columnInfo.align) {
+        columnInfo.styles.textAlignment = columnInfo.align;
+        columnInfo.editor.textAlignment = columnInfo.align;
       }
     }
     /*

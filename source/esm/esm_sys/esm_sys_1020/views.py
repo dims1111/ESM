@@ -74,41 +74,40 @@ def doSearch(request, *args, **kwargs):
       langMsg.msgParam['errNum'] = 'ERR-1020'
       raise langMsg.noDataFound(langMsg.errMsg())
 
+    # 화면에 리턴할 데이터를 commParams['data'] 할당
+    if querySet.exists():  
+      commParams['data'] = list(querySet.values(
+        'menu_uid',
+        'menu_cd',
+        'menu_name_ko',
+        'menu_name_en',
+        'url',
+        'parent_menu_cd',
+        'icons',
+        'sort_order',
+        'use_yn',
+        'search_yn',
+        'add_row_yn',
+        'del_row_yn',
+        'save_yn',
+        'copy_yn',
+        'batch_yn',
+        'print_yn',
+        'excel_down_yn',
+        'excel_up_yn',
+        'remark',
+        'create_by',
+        'create_date_time',
+        'update_date_time',
+        'update_by'
+      ))
   except langMsg.noDataFound as e:
     commParams['cd'] = 'S'
     commParams['msg'] = e.args[0]
   except Exception as e:
     commParams['cd'] = 'E'
-    commParams['msg'] = e.args[0]
+    commParams['msg'] = '[오류내용] 시스템 오류가 발생하였습니다.<br>[오류상세] ' + e.args[0]
  
-  # 화면에 리턴할 데이터를 commParams['data'] 할당
-  if querySet.exists():  
-    commParams['data'] = list(querySet.values(
-      'menu_uid',
-      'menu_cd',
-      'menu_name_ko',
-      'menu_name_en',
-      'url',
-      'parent_menu_cd',
-      'icons',
-      'sort_order',
-      'use_yn',
-      'search_yn',
-      'add_row_yn',
-      'del_row_yn',
-      'save_yn',
-      'copy_yn',
-      'batch_yn',
-      'print_yn',
-      'excel_down_yn',
-      'excel_up_yn',
-      'remark',
-      'create_by',
-      'create_date_time',
-      'update_date_time',
-      'update_by'
-    ))
-
   # 서버에서 처리한 결과를 터미널에 출력  
   util.resultMsg(commParams)
 

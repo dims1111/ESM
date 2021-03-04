@@ -79,6 +79,10 @@ function gfnGetGrdData(params, callback) {
           if (req.status == "403") {
             // 로그인 페이지로 호출
             moveToLoginPage();
+          } else if (req.status == "500") {
+            console.log("req.status =>", req.status);
+            $("#errorModal #errorModalContents").html('서버 에러');
+            $("#errorModal").modal("show");
           }
 
           // 에러체킹 후 return할 예정
