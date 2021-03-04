@@ -55,7 +55,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.min.css' %}"/>
     <script type="text/javascript" src="{% static 'plugins/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js' %}"></script>
 
-    <script type="text/javascript" src="{% static '/js/lib/comConstants.js'%}"></script>
     <script type="text/javascript" src="{% static '/js/lib/comDate.js'%}"></script>
     <script type="text/javascript" src="{% static '/js/lib/comExcel.js'%}"></script>
     <script type="text/javascript" src="{% static '/js/lib/comForm.js'%}"></script>
@@ -65,6 +64,8 @@
     <script type="text/javascript" src="{% static '/js/lib/comUtil.js'%}"></script>
     <script type="text/javascript" src="{% static '/js/lib/comModal.js'%}"></script>
 
+    <!-- 모달 관련 Migrate 스크립트, 임시로 사용-->
+    <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
     {% block header %} {% endblock %}
   </head>
 

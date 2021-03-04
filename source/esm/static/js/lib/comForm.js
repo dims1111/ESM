@@ -1,3 +1,5 @@
+var dataset = {};
+
 var checkChangeObj = function () {
   this.grdArr = [];
   this.getGrdArr = function () {
