@@ -13,6 +13,11 @@
     <!-- Jquery -->
     <script src="{% static 'plugins/jquery-3.5.1/jquery.min.js' %}"></script>
 
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-4.6.0/css/bootstrap.min.css' %}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="{% static 'plugins/bootstrap-4.6.0/js/bootstrap.min.js' %}"></script>
+
     <!-- Jquery Ui -->
     <script src="{% static 'plugins/jquery-ui-1.11.4/js/jquery-ui.js' %}"></script>
     <link rel="stylesheet" href="{% static 'plugins/jquery-ui-1.11.4/css/jquery-ui.css' %}" />
@@ -28,10 +33,6 @@
     <!-- xeicon -->
     <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" />
 
-    <!-- bootstrap -->
-    <link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-4.6.0/css/bootstrap.min.css' %}" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="{% static 'plugins/bootstrap-4.6.0/js/bootstrap.min.js' %}"></script>
     {% load random_numbers %}
     <link rel="stylesheet" href="{% static 'css/bizform.css'%}?v={% random_number %}" />
 
@@ -88,7 +89,7 @@
             <div id="errorModalContents" class="modal-body">
             </div>
             <div class="modal-footer" >
-              <button type="button" class="btn_popup active" data-dismiss="modal"><i class="xi-close"> 닫기</i></button>
+              <button type="button" class="btn_popup active" data-dismiss="modal"><i class="xi-close-circle-o"> 닫기</i></button>
             </div>
           </div>
         </div>
@@ -106,7 +107,7 @@
             <div id="infoModalContents" class="modal-body">
             </div>
             <div class="modal-footer" >
-              <button type="button" class="btn_sub active" id="close" data-dismiss="modal"><i class="xi-close"> 닫기</i></button>
+              <button type="button" class="btn_sub active" id="close" data-dismiss="modal"><i class="xi-close-circle-o"> 닫기</i></button>
             </div>
           </div>
         </div>
@@ -123,9 +124,9 @@
             </div>
             <div id="confirmModalContents" class="modal-body">
             </div>
-            <div class="modal-footer" >              
-              <button type="button" class="btn_popup active" id="confirm" data-dismiss="modal"><i class="xi-close-min"> 확인</i></button>
-              <button type="button" class="btn_popup active" id="cancel" data-dismiss="modal"><i class="xi-close-min"> 취소</i></button>
+            <div class="modal-footer" >
+              <button type="button" class="btn_popup active" id="confirm" data-dismiss="modal"><i class="xi-check-circle-o"> 확인</i></button>
+              <button type="button" class="btn_popup active" id="cancel" data-dismiss="modal"><i class="xi-close-circle-o"> 취소</i></button>
             </div>
           </div>
         </div>

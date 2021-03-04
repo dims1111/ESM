@@ -239,6 +239,8 @@ form {
 .modal-body{
   padding: 2rem;
   color: var(--p8);
+  overflow-y: auto;
+  margin-bottom: 12px;
 }
 
 
@@ -911,6 +913,19 @@ table .prev, table .next {
 }
 
 
+
+/* 공통 모달 */
+.modal-popup {
+  z-index: 3000;
+  font-family: inherit;
+}
+
+/* 모달 헤더 */
+.modal-popup .ui-dialog-titlebar {
+  background-color: var(--p1);
+  color: #fff;
+  font-size: 15px;
+}
 
 
 /* 달력 현재날짜 css

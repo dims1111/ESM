@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------------------------
 # v1.0          2020-02-01       강정기       최초작성
 # #################################################################################################
+from django.http.response import JsonResponse
 from django.shortcuts import render
 
 # 오라클 접속하기 위한 패키지 임포트
@@ -18,17 +19,26 @@ from . query import sql
 # query 실행을 위한 클래스 임포트
 from esm_com import views as esmComViews
 
+# 사용자 함수 클래스 임포트
+from esm_com import util
+
 
 # 공통코드 조회
-def searchCodeDetal(dictParams):  
-  try:
-    dictParams = {}
-    dictParams["&p_lang_cd"] = 'ko'
+@util.sessionDecorator
+def searchCodeDetail(request, *args, **kwargs):
+  # 화면별 코드 및 메시지 전달 변수 값 초기화
+  commParams = kwargs['commParams']
 
-    # 공통코드 조회
-    params = {}
-    params['resultData'] = esmComViews.searchExecute(sql.codeMasterDetail, dictParams)
-    return JsonResponse(params)
+  try:
+    print("request.session.is_empty()", request.POST.get('searchMasterCd', None))
+
+    dictParams = {}
+    dictParams["&p_lang_cd"] = request.session['lang_cd']
+    dictParams["&p_master_cd"] = request.POST.get('searchMasterCd', None)
+
+    # 공통코드 조회    
+    commParams['data'] = esmComViews.searchExecute(sql.searchCodeDetail, dictParams)
+    return JsonResponse(commParams)
     
-  except (Exception) as e:
+  except Exception as e:
     return JsonResponse( {'cd' : 'E', 'msg' : str(e)} )
