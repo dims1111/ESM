@@ -50,7 +50,7 @@ def home(request):
   # 대 메뉴 조회
   params = {}
   dictParams = {}
-  params['mainMenuList'] = esmComViews.searchExecute(request, sql.masterMenu, dictParams)
+  params['mainMenuList'] = esmComViews.searchExecute(sql.masterMenu, dictParams)
 
   # 메인화면 렌더링
   return render(request, 'esm_app/home.html', params)
@@ -64,7 +64,7 @@ def getSubMenuList(request):
 
     # 대 메뉴 조회
     params = {}
-    params['subMenuList'] = esmComViews.searchExecute(request, sql.subMenu, dictParams)
+    params['subMenuList'] = esmComViews.searchExecute(sql.subMenu, dictParams)
     return JsonResponse(params)
     
   except (Exception) as e:
