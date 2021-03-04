@@ -42,7 +42,7 @@ var modalPopup = (function () {
         $("<iframe/>", {
           id: _popupId + "Iframe",
           name: _popupId + "Iframe",
-          src: _method === "get" ? _url + "?" + _params : "_blank",
+          src: _method === "get" ? _url + "?" + _params : "",
           css: {
             width: "100%",
             height: "100%",
