@@ -889,3 +889,16 @@ table .prev, table .next {
 .input-group input {
   width: 100px;
 }
+
+.modal-popup {
+  z-index: 3000;
+  font-family: inherit;
+}
+
+/* 모달 헤더 */
+.modal-popup .ui-dialog-titlebar {
+  background-color: var(--p1);
+  color: #fff;
+  font-size: 15px;
+}
+

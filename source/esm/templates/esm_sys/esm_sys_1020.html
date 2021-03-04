@@ -98,6 +98,15 @@
         document.getElementById("menuName").values='';
         break;
       case "print": // 출력
+        gfnOpenModalPopup({
+          title:"공통코드 팝업",
+          height:"500",
+          width:"850",
+          popupId:"getCommonCode",
+          url:"/esm_sys_1020/",
+          callbackFn: "popupCallback",
+          params:"&test1=1&test2=2&test3=3",
+        });
         break;
       case "copy": // 복사
         break;
@@ -133,7 +142,16 @@
         alert(gubun);
         break;
     }    
-  }  
+  }
+
+  // 팝업 콜백
+  function popupCallback(gubun) {
+    switch(gubun) {
+      case 'getCommonCode': // 공통코드 조회
+        console.log('test')
+        break;
+    }
+  }
 </script>
 {% endblock %} {% block contents %}
 <div class="container-fluid d-flex flex-column p-0 h-100">
