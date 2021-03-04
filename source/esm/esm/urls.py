@@ -29,4 +29,6 @@ urlpatterns = [
 	path('esm_sys_1020/', include ("esm_sys.esm_sys_1020.urls")),   # 언어코드등록
     
 	path('esm_dev_1000/', include ("esm_dev.esm_dev_1000.urls")),   # 테스트1
+
+	path('esm_pop_1000/', include ("esm_pop.esm_pop_1000.urls")),   # 팝업
 ]

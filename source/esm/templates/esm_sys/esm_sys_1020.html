@@ -8,6 +8,9 @@
       calendarWeeks: false,
       todayHighlight: true,
       autoclose: true,
+
+      showMonthAfterYear: true,
+
       format: "yyyy-mm-dd",
       language: "kr"
     });
@@ -16,8 +19,13 @@
       calendarWeeks: false,
       todayHighlight: true,
       autoclose: true,
+
+      // showMonthAfterYear: true,
+
       format: "yyyy-mm",
-      startView: "months", 
+
+      // startView: "months", 
+
       minViewMode: "months",  
       language: "kr"
     });
@@ -49,7 +57,7 @@
         { fieldName: "menu_name_en",     text: "메뉴명(영문)", width: 220, essential: true },
         { fieldName: "url",              text: "url",          width: 120, essential: true },
         { fieldName: "icons",            text: "아이콘",       width: 70   },
-        { fieldName: "sort_order",       text: "정렬순서",     width: 80,  essential: true , align: 'far'},
+        { fieldName: "sort_order",       text: "정렬순서",     width: 80,  essential: true , type: 'number' },
         { fieldName: "use_yn",           text: "사용",         width: 50,  align: 'center', essential: true , type: 'combo', comboList: comboYnList },
         { fieldName: "search_yn",        text: "조회",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
         { fieldName: "add_row_yn",       text: "행추가",       width: 50,  align: 'center', type: 'combo', comboList: comboYnList },
@@ -186,7 +194,7 @@
           </colgroup>
           <tr style="width: 100%;">
             <td class="search-menu">
-              <label class="required" for="menuName" data-toggle="tooltip" data-placement="bottom" title="메뉴명입니다아dkkddkdkk">메뉴명입니다아dkkddkdkkk</label>
+              <label class="required" for="menuName" data-toggle="tooltip" data-placement="bottom" title="메뉴명">메뉴명</label>
             </td>
             <td>
               <input type="text" name="menuName" id="menuName" autocomplete="off"/>

@@ -50,7 +50,7 @@ def home(request):
   # 대 메뉴 조회
   params = {}
   dictParams = {}
-  params['mainMenuList'] = esmComViews.searchExecute(request, sql.masterMenu, dictParams)
+  params['mainMenuList'] = esmComViews.searchExecute(sql.masterMenu, dictParams)
 
   # 메인화면 렌더링
   return render(request, 'esm_app/home.html', params)
@@ -64,7 +64,7 @@ def getSubMenuList(request):
 
     # 대 메뉴 조회
     params = {}
-    params['subMenuList'] = esmComViews.searchExecute(request, sql.subMenu, dictParams)
+    params['subMenuList'] = esmComViews.searchExecute(sql.subMenu, dictParams)
     return JsonResponse(params)
     
   except (Exception) as e:
@@ -117,7 +117,8 @@ def login(request):
               # 세션에 사용자정보 추가 
               request.session['user_id'] = ca.get('user_id')
               request.session['user_name'] = ca.get('user_name')
-              request.session['user_account'] = ca.get('user_ccount')          
+              request.session['user_account'] = ca.get('user_ccount')
+              request.session['lang_cd'] = 'ko'
               # 홈으로 이동
               return redirect('/')
             else:

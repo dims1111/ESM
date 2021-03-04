@@ -89,8 +89,6 @@ def doInsert(dataList, commParam):
       bulkDataLists.append(newData)
       i += 1
 
-      print("newData =>", newData)
-
     # 대량 데이터 일괄 저장
     SysMenu.objects.bulk_create(bulkDataLists)
 
