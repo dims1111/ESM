@@ -18,12 +18,11 @@ from esm_com.util import rowsToDictList
 
 
 # 조회 쿼리 수행
-def searchExecute(request, sqlString, dictParams):
+def searchExecute(sqlString, dictParams):
     resultSet = {}
     try:
         # DB연결, 커서생성
-        with cx_Oracle.connect(connDns) as connection, connection.cursor() as cursor:
-            # 쿼리 실행
+        with cx_Oracle.connect(connDns) as connection, connection.cursor() as cursor:            
             # print('sqlString =>' ,sqlString, type(sqlString))
             cursor.execute(sqlString, dictParams)
 

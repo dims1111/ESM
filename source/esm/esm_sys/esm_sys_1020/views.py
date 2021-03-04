@@ -74,9 +74,11 @@ def doSearch(request, *args, **kwargs):
       langMsg.msgParam['errNum'] = 'ERR-1020'
       raise langMsg.noDataFound(langMsg.errMsg())
 
-  except langMsg.noDataFound as e:    
+  except langMsg.noDataFound as e:
+    commParams['cd'] = 'S'
     commParams['msg'] = e.args[0]
   except Exception as e:
+    commParams['cd'] = 'E'
     commParams['msg'] = e.args[0]
  
   # 화면에 리턴할 데이터를 commParams['data'] 할당

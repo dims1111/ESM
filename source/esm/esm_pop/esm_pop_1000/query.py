@@ -10,7 +10,7 @@
 
 class sql:
     # 공통코드 조회
-    codeMasterDetail = \
+    searchCodeDetail = \
         """
           select scm.code_master_uid                                               as code_master_uid
                 ,scd.code_detail_uid                                               as code_detail_uid
