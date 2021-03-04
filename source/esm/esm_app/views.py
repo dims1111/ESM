@@ -49,8 +49,8 @@ def home(request):
 
   # 대 메뉴 조회
   params = {}
-  sqlParams = ()
-  params['mainMenuList'] = esmComViews.searchExecute(request, sql.masterMenu, sqlParams)
+  dictParams = {}
+  params['mainMenuList'] = esmComViews.searchExecute(request, sql.masterMenu, dictParams)
 
   # 메인화면 렌더링
   return render(request, 'esm_app/home.html', params)
@@ -58,13 +58,17 @@ def home(request):
 
 # 서브 메뉴 조회
 def getSubMenuList(request):
-  parentMenuCd = request.POST['parentMenuCd']
+  try:
+    dictParams = {}
+    dictParams["&p_parent_menu_cd"] = request.POST['parentMenuCd']
 
-  # 대 메뉴 조회
-  params = {}
-  params['subMenuList'] = esmComViews.searchExecute2(request, sql.subMenu, parentMenuCd)
-  return JsonResponse(params)
-
+    # 대 메뉴 조회
+    params = {}
+    params['subMenuList'] = esmComViews.searchExecute(request, sql.subMenu, dictParams)
+    return JsonResponse(params)
+    
+  except (Exception) as e:
+    return JsonResponse({'cd' : 'E', 'msg' : str(e)})
 
 # 로그인 함수
 @transaction.atomic

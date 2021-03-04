@@ -1,16 +1,56 @@
 {% extends "esm_com/bizform.html" %} {% load static %} {% block header %}
 <script>
-  // 그리드 전역변수 설정
-  var grid1; // var grid1, grid2, grid3, grid4 ..... ;
+  var grid1;
+  var grid1Options = { 
+      leftFixedCol: 3,
+      rightFixedCol: 1
+    };
 
   $(function () {
+    var comboYnList = [
+      { code: '',   name: '선택',   },
+      { code: 'Y',  name: 'Y',      },
+      { code: 'N',  name: 'N',      },
+    ];
+    // var comboYnList2 = gfnGetData({
+    //   url: 
+    // });
+
+    grid1 = $("#grid1").gfnGridInit([
+      { fieldName: "menu_uid",         text: "메뉴UID",      width: 250, visible: false },
+      { fieldName: "parent_menu_cd",   text: "상위메뉴코드", width: 100, essential: true , align: 'center'},
+      { fieldName: "menu_cd",          text: "메뉴코드",     width: 80 , essential: true , align: 'center'},
+      { fieldName: "menu_name_ko",     text: "메뉴명(한글)", width: 180, essential: true },
+      { fieldName: "menu_name_en",     text: "메뉴명(영문)", width: 220, essential: true },
+      { fieldName: "url",              text: "url",          width: 120, essential: true },
+      { fieldName: "icons",            text: "아이콘",       width: 70   },
+      { fieldName: "sort_order",       text: "정렬순서",     width: 80,  essential: true , align: 'far'},
+      { fieldName: "use_yn",           text: "사용",         width: 50,  align: 'center', essential: true , type: 'combo', comboList: comboYnList },
+      { fieldName: "search_yn",        text: "조회",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "add_row_yn",       text: "행추가",       width: 50,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "del_row_yn",       text: "행삭제",       width: 50,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "save_yn",          text: "저장",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "copy_yn",          text: "복사",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "batch_yn",         text: "생성",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "print_yn",         text: "출력",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "excel_down_yn",    text: "엑셀다운",     width: 70,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "excel_up_yn",      text: "엑셀업로드",   width: 70,  align: 'center', type: 'combo', comboList: comboYnList },
+      { fieldName: "remark",           text: "비고",         width: 300  },
+      { fieldName: "create_by",        text: "생성자UID",    width: 220, visible: false, editable: false  },
+      { fieldName: "create_date_time", text: "생성일시",     width: 160, align: 'center', type: 'date', format: 'DATETIME', editable: false  },
+      { fieldName: "update_by",        text: "수정자ID",     width: 220, visible: false, editable: false  },
+      { fieldName: "update_date_time", text: "수정일시",     width: 160, visible: false, align: 'center', type: 'date', format: 'DATETIME', editable: false },
+    ], grid1Options);
+
+    var column = $("#columnList").val();
+if (column) {
+    gridView.setColumnProperty(column, "readOnly", $("#chkReadOnly").is(":checked"));
+}
+
     $('#date').parents(".input-group").datepicker({
       calendarWeeks: false,
       todayHighlight: true,
       autoclose: true,
-
-      showMonthAfterYear: true,
-
       format: "yyyy-mm-dd",
       language: "kr"
     });
@@ -19,68 +59,21 @@
       calendarWeeks: false,
       todayHighlight: true,
       autoclose: true,
-
-      // showMonthAfterYear: true,
-
       format: "yyyy-mm",
-
-      // startView: "months", 
-
+      startView: "months", 
       minViewMode: "months",  
       language: "kr"
     });
 
-    // 그리드 초기화
-    (function initGrid() {
-      initGrid1(); // 메뉴목록
-      // initGrid2(); // 메뉴목록2
-    })();
-
-    // 메뉴목록
-    function initGrid1() {
-      // Temp Data
-      var comboYnList = [
-        { code: '',   name: '선택',   },
-        { code: 'Y',  name: 'Y',      },
-        { code: 'N',  name: 'N',      },
-      ];
-
-      // 그리드 옵션
-      var options = { leftFixedCol: 3, rightFixedCol: 1 };
-
-      // 그리드 초기화
-      grid1 = $("#grid1").gfnGridInit([
-        { fieldName: "menu_uid",         text: "메뉴UID",      width: 250, visible: false },
-        { fieldName: "parent_menu_cd",   text: "상위메뉴코드", width: 100, essential: true , align: 'center'},
-        { fieldName: "menu_cd",          text: "메뉴코드",     width: 80 , essential: true , align: 'center'},
-        { fieldName: "menu_name_ko",     text: "메뉴명(한글)", width: 180, essential: true },
-        { fieldName: "menu_name_en",     text: "메뉴명(영문)", width: 220, essential: true },
-        { fieldName: "url",              text: "url",          width: 120, essential: true },
-        { fieldName: "icons",            text: "아이콘",       width: 70   },
-        { fieldName: "sort_order",       text: "정렬순서",     width: 80,  essential: true , align: 'far'},
-        { fieldName: "use_yn",           text: "사용",         width: 50,  align: 'center', essential: true , type: 'combo', comboList: comboYnList },
-        { fieldName: "search_yn",        text: "조회",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "add_row_yn",       text: "행추가",       width: 50,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "del_row_yn",       text: "행삭제",       width: 50,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "save_yn",          text: "저장",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "copy_yn",          text: "복사",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "batch_yn",         text: "생성",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "print_yn",         text: "출력",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "excel_down_yn",    text: "엑셀다운",     width: 70,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "excel_up_yn",      text: "엑셀업로드",   width: 70,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "remark",           text: "비고",         width: 300  },
-        { fieldName: "create_by",        text: "생성자UID",    width: 220, visible: false, editable: false  },
-        { fieldName: "create_date_time", text: "생성일시",     width: 160, align: 'center', type: 'date', format: 'DATETIME', editable: false  },
-        { fieldName: "update_by",        text: "수정자ID",     width: 220, visible: false, editable: false  },
-        { fieldName: "update_date_time", text: "수정일시",     width: 160, visible: false, align: 'center', type: 'date', format: 'DATETIME', editable: false },
-      ], options);
-    }
   });
+
+
 
   /* action1에대한 기능 */
   function doAction1(gubun) {
     switch (gubun) {
-      case "search": // 조회
+      /* 조회 */
+      case "search":
         var menuName = $("#menuName").val();
         var url = $("#url").val();
         var useYn = $("#useYn").is(":checked") ? "1" : "0";
@@ -99,19 +92,36 @@
           grid: "grid1", // or ['grid1', 'grid2', ...]
           mainParam: mainParam,
         };
+
+        // 모탈테스트 : 조회버튼 클릭 시 모달팝업 띄우기
+        // $("#myModal").modal("show");
+
+
+        // 그리드 조회
+        // 라이브러리 경로 : \static\js\lib\comTrans.js
         gfnGetGrdData(params);
         break;
-      case "reset": // 초기화
+
+      // 초기화
+      case "reset":
         console.log(gubun)
         document.getElementById("menuName").values='';
         break;
-      case "print": // 출력
+
+      // 출력
+      case "print":
         break;
-      case "copy": // 복사
+
+      // 복사
+      case "copy":
         break;
-      case "batch": // 생성
+
+      // 생성
+      case "batch":
         break;
-      case "save": // 저장
+
+      // 저장
+      case "save":
         var params = {
           url: "/esm_sys_1020/save",
           grid: "grid1", // or ['grid1']
@@ -122,7 +132,8 @@
           doAction1("search");
         });
         break;
-      case "addRow": // 행추가
+      // 행추가
+      case "addRow":
         grid1.gridView.commit(false);
         grid1.provider.insertRow(0, {});
         grid1.gridView.setSelection({
@@ -131,17 +142,24 @@
           style: "rows"
         });
         break;
-      case "delRow":  // 행삭제 
+
+      // 행삭제  
+      case "delRow":
         gfnDeleteRowChk(grid1);
         break;
-      case "excelDownload":    // 엑셀다운로드     
+
+      // 엑셀다운로드
+      case "excelDownload":        
         gfnExcelDownload(grid1);
         break;
-      case "excelUpload": // 엑셀업로드
+
+      // 엑셀업로드
+      case "excelUpload":
         alert(gubun);
         break;
     }    
   }  
+    
 </script>
 {% endblock %} {% block contents %}
 <div class="container-fluid d-flex flex-column p-0 h-100">
@@ -210,10 +228,10 @@
               <input type="text" name="test" id="test" autocomplete="off"/>
             </td>
             <td class="search-menu">
-              <label for="test2" data-toggle="tooltip" data-placement="bottom" title="test2" >test2</label>
+              <label for="test" data-toggle="tooltip" data-placement="bottom" title="test2" >test2</label>
             </td>
             <td>
-              <input type="text" name="test" id="test2" autocomplete="off"/>
+              <input type="text" name="test" id="test" autocomplete="off"/>
             </td>
             <td class="search-menu">
               <!-- <label for="test" >test3</label> -->

@@ -1,0 +1,73 @@
+-- 테이블 삭제
+drop table esm.sys_code_master cascade constraint;
+
+-- 테이블 생성
+create table esm.sys_code_master
+(
+   code_master_uid             varchar2(0032) not null
+  ,master_cd                   varchar2(0030) not null
+  ,name_ko                     varchar2(0100) not null
+  ,name_en                     varchar2(0200) not null
+  ,begin_date                  date           default trunc(sysdate)
+  ,end_date                    date
+  ,remark                      varchar2(2000)
+  ,create_date_time            date           default sysdate
+  ,create_by                   varchar2(0032) default '000000000000000000000000000000-1'
+  ,update_date_time            date           default sysdate
+  ,update_by                   varchar2(0032) default '000000000000000000000000000000-1'
+)
+tablespace esm
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64k
+    minextents 1
+    maxextents unlimited
+  );
+  
+-- add comments to the table 
+comment on table esm.sys_code_master                         is '[시스템] 마스터코드';
+
+-- add comments to the columns 
+comment on column esm.sys_code_master.code_master_uid        is '마스터코드UID';
+comment on column esm.sys_code_master.master_cd              is '마스터코드';
+comment on column esm.sys_code_master.name_ko                is '마스코드명(한글)';
+comment on column esm.sys_code_master.name_en                is '마스터코드명(영문)';
+comment on column esm.sys_code_master.begin_date             is '시작일자';
+comment on column esm.sys_code_master.end_date               is '종료일시';
+comment on column esm.sys_code_master.remark                 is '비고';
+comment on column esm.sys_code_master.create_date_time       is '생성일시';
+comment on column esm.sys_code_master.create_by              is '생성자ID';
+comment on column esm.sys_code_master.update_date_time       is '수정일시';
+comment on column esm.sys_code_master.update_by              is '수정자ID';
+
+-- create/recreate primary, unique and foreign key constraints 
+alter table esm.sys_code_master
+  add constraint sys_code_master_pk primary key (code_master_uid)
+  using index 
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+create index sys_code_master_uk on sys_code_master (master_cd)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+
+  
+-- create/recreate indexes 
+create index esm.sys_code_master_ix1 on esm.sys_code_master (master_cd, begin_date)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+  
+create index esm.sys_code_master_ix2 on esm.sys_code_master (name_ko)
+  tablespace esm
+  pctfree 10
+  initrans 2
+  maxtrans 255;
