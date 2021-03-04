@@ -421,7 +421,7 @@ function initGridStyle($grid) {
     // 그리드 바디 선택행 색상 및 박스라인 스타일    
     selection: {
       background: "rgba(11,186,130,0.2)",
-      border: "#330bbaff,2px",
+      border: "#330bbaff,1px",
     },
 
     // 그리드 풋터 스타일
