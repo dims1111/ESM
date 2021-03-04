@@ -51,4 +51,5 @@ class SysCodeDetailAdmin(admin.ModelAdmin):
     )
 
 # 장고 Admin 등록
+admin.site.register(SysCodeMaster, SysCodeMasterAdmin)
 admin.site.register(SysCodeDetail, SysCodeDetailAdmin)
