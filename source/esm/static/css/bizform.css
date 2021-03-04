@@ -837,14 +837,16 @@ form {
   padding-bottom: 5px;
 }
 
+/* 달력아이콘 */
 .xi-calendar-check {
   /* position: relative;
   left: -24px; */
-  font-size: 26px;
+  font-size: 20px;
   cursor: pointer;
-  color: var(--p1);
+  color: var(--p10);
 }
 
+/* 달력 크기 */
 .datepicker table tr td span{
   height: 42px !important;
   line-height: 42px !important;
@@ -868,11 +870,27 @@ table .prev, table .next {
   padding-bottom: 5px;
 }
 
+
+
+.input-group {
+  height: 23px;
+  width: 200px;
+}
+
+.input-group input {
+  width: 100px;
+  height: 23px;
+}
+
 /* 달력 아이콘 테두리 */
 .input-group-addon {
   border: solid 1px var(--p4);
   margin-left: -1px;
+  height: 23px;
+  background: var(--p6);
 }
+
+
 
 /* 달력 헤더 */
 .table-condensed .prev,  .table-condensed .datepicker-switch, .table-condensed .next{
@@ -886,29 +904,68 @@ table .prev, table .next {
 /*=============*/
 
 
-
+/* 달력 헤더 hover 이벤트 */
 .datepicker .datepicker-switch:hover, .datepicker .next:hover, .datepicker .prev:hover, .datepicker tfoot tr th:hover{
   background-color: var(--p1) !important;
   color: var(--p11);
 }
 
 
-.input-group input {
-  width: 100px;
-}
 
 
-/* 달력 현재날짜 css */
+/* 달력 현재날짜 css
 .today.day{
   background: var(--p2) !important;
 }
 
 .month.focused {
   background: var(--p2) !important;
-}
+} */
 /* ================= */
 
 
+/* 주말 색상 변경 */
+.datepicker-days tbody tr td:first-child {
+  color: var(--p5);
+}
 
-.ui-datepicker-week-end{ color: red; }
-.ui-datepicker-week-end:last-child a { color: blue; }
+.datepicker-days tbody tr td:last-child {
+  color: var(--p9);
+}
+/* ============== */
+
+
+/* 달력 날짜 hover 이벤트 */
+.datepicker div table tr td.today.day:hover, .datepicker div table tr td.day:hover {
+  background: var(--p1);
+  color: var(--p3);
+  cursor: pointer;
+}
+
+.datepicker div table tr td span:hover {
+  background: var(--p1);
+  color: var(--p3);
+}
+/* ====================== */
+
+/* 현재 달, 날짜 색상 변경 */
+.datepicker div table tr td span.month.focused {
+  background: var(--p4);
+}
+
+.datepicker div table tr td.today.day{
+  background: var(--p4);
+}
+/* ====================== */
+
+/* 날짜 선택시 색상 변경 */
+.datepicker div table tr td.active.day{
+  background: var(--p1);
+}
+
+.datepicker div table tr td span.month.focused.active {
+  background: var(--p1);
+}
+/* ====================== */
+
+

@@ -8,9 +8,7 @@
       calendarWeeks: false,
       todayHighlight: true,
       autoclose: true,
-
       showMonthAfterYear: true,
-
       format: "yyyy-mm-dd",
       language: "kr"
     });
@@ -19,13 +17,7 @@
       calendarWeeks: false,
       todayHighlight: true,
       autoclose: true,
-
-      // showMonthAfterYear: true,
-
       format: "yyyy-mm",
-
-      // startView: "months", 
-
       minViewMode: "months",  
       language: "kr"
     });
@@ -215,11 +207,14 @@
             <td>
               <input type="text" name="test" id="test2" autocomplete="off"/>
             </td>
-            <td class="search-menu">
-              <!-- <label for="test" >test3</label> -->
+            <td class="search-menu"  >
+              <label for="gender" data-toggle="tooltip" data-placement="bottom"  title="성별">성별</label>
             </td>
             <td>
-              <!-- <input type="text" name="test" id="test"/> -->
+              <select name="gender" id="gender">
+                <option value="M">남</option>
+                <option value="F">여</option>
+              </select>
             </td>
             <td class="search-menu">
               <label for="month" data-toggle="tooltip" data-placement="bottom"  title="생성년월" >생성년월</label>
