@@ -874,18 +874,41 @@ table .prev, table .next {
   margin-left: -1px;
 }
 
-
+/* 달력 헤더 */
 .table-condensed .prev,  .table-condensed .datepicker-switch, .table-condensed .next{
   border-radius: 0;
-  background-color: var(--p4);
+  background-color: var(--p1);
+  color: var(--p7);
 }
+.table-condensed .datepicker-switch {
+  font-size: 15px;
+}
+/*=============*/
+
+
 
 .datepicker .datepicker-switch:hover, .datepicker .next:hover, .datepicker .prev:hover, .datepicker tfoot tr th:hover{
-  background-color: var(--p4) !important;
-  color: var(--p14);
+  background-color: var(--p1) !important;
+  color: var(--p11);
 }
 
 
 .input-group input {
   width: 100px;
 }
+
+
+/* 달력 현재날짜 css */
+.today.day{
+  background: var(--p2) !important;
+}
+
+.month.focused {
+  background: var(--p2) !important;
+}
+/* ================= */
+
+
+
+.ui-datepicker-week-end{ color: red; }
+.ui-datepicker-week-end:last-child a { color: blue; }
