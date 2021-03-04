@@ -35,16 +35,16 @@
 
       // 그리드 초기화
       grid1 = $("#grid1").gfnGridInit([
-        { fieldName: "masterCd",          text: "상위코드",       width: 70   , editable: false },
-        { fieldName: "masterCdName",      text: "상위코드명",     width: 80,  essential: true , align: 'far', editable: false },
-        { fieldName: "detailCd",          text: "상세코드", width: 180, essential: true , editable: false },
-        { fieldName: "detailCdName",      text: "상세코드명", width: 220, essential: true , editable: false },
-        { fieldName: "beginDate",         text: "시작일자",      width: 250, type: 'date', format: 'DATETIME', editable: false },
-        { fieldName: "endDate",           text: "종료일자",          width: 120, essential: true , editable: false },
-        { fieldName: "sortOrder",         text: "정렬순서",         width: 50,  align: 'center' , editable: false },
+        { fieldName: "masterCd",          text: "상위코드",       width: 80,   editable: false, visible: false },
+        { fieldName: "masterCdName",      text: "상위코드명",     width: 120,  editable: false, visible: false },
+        { fieldName: "detailCd",          text: "상세코드",       width: 80,   editable: false, align: 'center' },
+        { fieldName: "detailCdName",      text: "상세코드명",     width: 160,  editable: false },
+        { fieldName: "beginDate",         text: "시작일자",       width: 90,   type: 'date', format: 'YYYYMMDD', editable: false, align: 'center' },
+        { fieldName: "endDate",           text: "종료일자",       width: 90,   type: 'date', format: 'YYYYMMDD', editable: false, align: 'center' },
+        { fieldName: "sortOrder",         text: "정렬순서",       width: 60,   editable: false },
 
-        { fieldName: "codeDetailUid",     text: "상위메뉴코드", width: 100, essential: true , align: 'center', editable: false , visible: false },
-        { fieldName: "codeMasterUid",     text: "메뉴코드",     width: 80 , essential: true , align: 'center', editable: false , visible: false },
+        { fieldName: "codeDetailUid",     text: "상위메뉴코드",   width: 100,   editable: false, visible: false },
+        { fieldName: "codeMasterUid",     text: "메뉴코드",       width: 80 ,   editable: false, visible: false },
       ], options);
 
 

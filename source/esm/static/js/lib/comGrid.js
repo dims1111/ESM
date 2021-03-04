@@ -49,9 +49,7 @@ $.fn.gfnGridInit = function (columns, options) {
 
   //옵션 초기화
   initGridOption(this.gridView);
-
   
-  console.log("options.leftFixedCol => ", options.leftFixedCol)
   // 컬럼 고정 : 왼쪽
   if (options.leftFixedCol > 0) {
     this.gridView.setFixedOptions({ colCount: options.leftFixedCol, colBarWidth: 0 });  
