@@ -38,8 +38,8 @@ def home(request, *args, **kwargs):
   #   print("args==========>", ca)
 
   # sessionDecorator 데코레이터를 통한 버튼의 명칭 및 값을 확인(사용여부) : 딕셔너리
-  for k, v in kwargs['buttonShowHide'].items():
-    print("kwargs - 버튼명칭 ==>", k, "kwargs - 사용여부 ==>", v)
+  # for k, v in kwargs['buttonShowHide'].items():
+  #   print("kwargs - 버튼명칭 ==>", k, "kwargs - 사용여부 ==>", v)
 
   # kwargs 리턴 값을 받아 화면에서 버튼 show, hide 처리
   return render(request, 'esm_sys/esm_sys_1020.html', kwargs)

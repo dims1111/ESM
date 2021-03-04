@@ -96,7 +96,7 @@ def sessionDecorator(orginalFunction):
       # 화면 로딩시 화면에 대한 URI를 값을 받아 뒷자리 '/' 제거 후 URL만 추출
       absoluteURI = (request.build_absolute_uri())[:-1].strip("/")
       url = absoluteURI[absoluteURI.rfind('/'):]
-      # print ("url =>", url)
+      print ("url =>", url)
 
       # 함수 및 변수 값 초기화
       orginalFucntionCall = None
@@ -104,37 +104,39 @@ def sessionDecorator(orginalFunction):
       args = ()
       kwargs = {}
       
-      # home 함수 확인
-      if orginalFunction.__name__ == 'home':
-        try:
-          querySet = SysMenuV.objects.filter(Q(url=url) ,Q(use_yn='Y'))
-          
-          # 버튼에 대한 사용여부 확인
-          for ca in querySet:
-            kwargs['buttonShowHide'] = {
-              'searchBtn'    : ca.search_yn,
-              'addRowBtn'    : ca.add_row_yn,
-              'delRowBtn'    : ca.del_row_yn,
-              'saveBtn'      : ca.save_yn,
-              'copyBtn'      : ca.copy_yn,
-              'batchBtn'     : ca.batch_yn,              
-              'printBtn'     : ca.print_yn,
-              'excelDownBtn' : ca.excel_down_yn,
-              'excelUpBtn'   : ca.excel_up_yn,
-            }
+      # 팝업의 경우 권한별 버튼 체크하지 않음
+      if url != '/esm_pop_1000':        
+        # home 함수 확인
+        if orginalFunction.__name__ == 'home':
+          try:
+            querySet = SysMenuV.objects.filter(Q(url=url) ,Q(use_yn='Y'))
+            
+            # 버튼에 대한 사용여부 확인
+            for ca in querySet:
+              kwargs['buttonShowHide'] = {
+                'searchBtn'    : ca.search_yn,
+                'addRowBtn'    : ca.add_row_yn,
+                'delRowBtn'    : ca.del_row_yn,
+                'saveBtn'      : ca.save_yn,
+                'copyBtn'      : ca.copy_yn,
+                'batchBtn'     : ca.batch_yn,              
+                'printBtn'     : ca.print_yn,
+                'excelDownBtn' : ca.excel_down_yn,
+                'excelUpBtn'   : ca.excel_up_yn,
+              }
 
-        except Exception as e:
-          kwargs['buttonShowHide'] = {
-            'searchBtn'    : 'N',
-            'addRowBtn'    : 'N',
-            'delRowBtn'    : 'N',
-            'saveBtn'      : 'N',
-            'copyBtn'      : 'N',
-            'batchBtn'     : 'N',
-            'printBtn'     : 'N',
-            'excelDownBtn' : 'N',
-            'excelUpBtn'   : 'N',
-          }
+          except Exception as e:
+            kwargs['buttonShowHide'] = {
+              'searchBtn'    : 'N',
+              'addRowBtn'    : 'N',
+              'delRowBtn'    : 'N',
+              'saveBtn'      : 'N',
+              'copyBtn'      : 'N',
+              'batchBtn'     : 'N',
+              'printBtn'     : 'N',
+              'excelDownBtn' : 'N',
+              'excelUpBtn'   : 'N',
+            }
 
       # 화면별 공통메시지 초기화 변수
       kwargs['commParams'] = {'cd': 'S', 'msg': '', 'processCnt': {'S': 0, 'I': 0, 'U': 0, 'D': 0, 'B': 0}} 
