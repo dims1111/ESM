@@ -7,28 +7,13 @@
 # -------------------------------------------------------------------------------------------------
 # v1.0          2020-02-01       강정기       최초작성
 # #################################################################################################
-from django.shortcuts import render
+from django.urls import path
 
-# 오라클 접속하기 위한 패키지 임포트
-import cx_Oracle
-
-# 공통 쿼리 클랙스 임포트
-from . query import sql
-
-# query 실행을 위한 클래스 임포트
-from esm_com import views as esmComViews
+# 현재 앱의 뷰를 임포트
+from . import views
 
 
-# 공통코드 조회
-def searchCodeDetal(dictParams):  
-  try:
-    dictParams = {}
-    dictParams["&p_lang_cd"] = 'ko'
-
-    # 공통코드 조회
-    params = {}
-    params['resultData'] = esmComViews.searchExecute(sql.codeMasterDetail, dictParams)
-    return JsonResponse(params)
-    
-  except (Exception) as e:
-    return JsonResponse( {'cd' : 'E', 'msg' : str(e)} )
+# 현재 앱에서 사용하는 기능을 패턴으로 정의
+urlpatterns = [  
+  path('searchCodeDetal', views.searchCodeDetal),
+]

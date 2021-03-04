@@ -180,6 +180,44 @@ class SysAuthMenu(models.Model):
         db_table = 'sys_auth_menu'
 
 
+class SysCodeDetail(models.Model):
+    code_detail_uid = models.CharField(primary_key=True, max_length=32)
+    master_cd = models.CharField(max_length=30)
+    detail_cd = models.CharField(max_length=30)
+    name_ko = models.CharField(max_length=100)
+    name_en = models.CharField(max_length=200)
+    sort_order = models.FloatField()
+    begin_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    remark = models.CharField(max_length=2000, blank=True, null=True)
+    create_date_time = models.DateField(blank=True, null=True)
+    create_by = models.CharField(max_length=32, blank=True, null=True)
+    update_date_time = models.DateField(blank=True, null=True)
+    update_by = models.CharField(max_length=32, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sys_code_detail'
+
+
+class SysCodeMaster(models.Model):
+    code_master_uid = models.CharField(primary_key=True, max_length=32)
+    master_cd = models.CharField(max_length=30)
+    name_ko = models.CharField(max_length=100)
+    name_en = models.CharField(max_length=200)
+    begin_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    remark = models.CharField(max_length=2000, blank=True, null=True)
+    create_date_time = models.DateField(blank=True, null=True)
+    create_by = models.CharField(max_length=32, blank=True, null=True)
+    update_date_time = models.DateField(blank=True, null=True)
+    update_by = models.CharField(max_length=32, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sys_code_master'
+
+
 class SysLangCode(models.Model):
     lang_id = models.FloatField(primary_key=True)
     lang_type_cd = models.CharField(max_length=100)
@@ -237,12 +275,11 @@ class SysMenu20210223(models.Model):
     sort_order = models.FloatField(blank=True, null=True)
     use_yn = models.CharField(max_length=1)
     search_yn = models.CharField(max_length=1)
-    add_row_yn = models.CharField(max_length=1)
-    del_row_yn = models.CharField(max_length=1)
-    save_yn = models.CharField(max_length=1)
-    copy_yn = models.CharField(max_length=1)
+    insert_yn = models.CharField(max_length=1)
+    update_yn = models.CharField(max_length=1)
+    delete_yn = models.CharField(max_length=1)
+    print_yn = models.CharField(max_length=1)
     batch_yn = models.CharField(max_length=1)
-    print_yn = models.CharField(max_length=1)    
     excel_down_yn = models.CharField(max_length=1)
     excel_up_yn = models.CharField(max_length=1)
     remark = models.CharField(max_length=2000, blank=True, null=True)
