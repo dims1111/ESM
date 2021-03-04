@@ -58,7 +58,7 @@ class sql:
                 ,sm.update_by
             from esm.sys_menu sm
             where 1=1
-            start with sm.parent_menu_cd = :p_parent_menu_cd
-            connect by prior sm.menu_cd = sm.parent_menu_cd
+            start with sm.parent_menu_cd = &p_parent_menu_cd
+            connect by prior sm.menu_cd  = sm.parent_menu_cd
             order siblings by sm.sort_order
         """
