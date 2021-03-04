@@ -23,6 +23,14 @@ from esm_com import views as esmComViews
 from esm_com import util
 
 
+# 메뉴 클릭 후 첫 화면 오픈
+@util.sessionDecorator
+def home(request, *args, **kwargs):
+  if request.POST.get('popupName') == 'codeDetail':
+    return render(request, '/esm_pop/esm_pop_1010.html', kwargs)
+  elif request.POST.get('popupName') == 'codeDetail':
+    pass
+
 # 공통코드 조회
 @util.sessionDecorator
 def searchCodeDetail(request, *args, **kwargs):
