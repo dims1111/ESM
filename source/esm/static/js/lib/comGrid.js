@@ -1953,9 +1953,20 @@ function gfnSaveValidate(grid) {
   * 
   * @param {Object} grid 
   */
- function gfn_checkSaveData(grid) {
-  if (!gfnSaveValidate(grid) || !confirm('저장하시겠습니까?')) return false;
-  return true;
+ function gfnCheckSaveData(grid) {
+  if (!gfnSaveValidate(grid)) {
+    return false;
+  } else {
+    // 확인 메시지 출력  
+    $("#confirmModal #confirmModalContents").html("저장하시겠습니까?");
+    $("#confirmModal").modal("show");
+    $('#confirmModal #confirm').unbind().click(function() {    
+      return true;
+    });
+    $('#confirmModal #cancel').unbind().click(function() {    
+      return false;
+    });  
+  }  
 };
 
 // 에러메시지 모달 띄우기
