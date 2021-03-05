@@ -882,23 +882,6 @@ table .prev, table .next {
 
 
 
-.input-group {
-  height: 23px;
-  /* width: 200px; */
-}
-
-.input-group input {
-  width: 91%;
-  height: 23px;
-}
-
-/* 달력 아이콘 테두리 */
-.input-group-addon {
-  border: solid 1px var(--p4);
-  margin-left: -1px;
-  height: 23px;
-  background: var(--p6);
-}
 
 
 
@@ -996,4 +979,54 @@ table .prev, table .next {
 }
 /* ====================== */
 
+/* 달력 셀렉트박스 위로 z-index */
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
+  z-index: 2000 !important;
+}
 
+.search-iconbox {
+  display: inline-block;
+  border: solid 1px var(--p4);
+  margin-left: -1px;
+  height: 23px;
+  margin-bottom: 4px;
+  background: var(--p6);
+}
+
+/* select 박스 선택시 보더제거 */
+td select {
+  outline: 0;
+}
+
+/* 인풋 그룹 */
+.input-group {
+  height: 23px;
+  /* width: 100px; */
+}
+
+.input-group input {
+  width: 91%;
+  height: 23px;
+}
+
+/* 달력 아이콘 테두리 */
+.input-group-addon {
+  border: solid 1px var(--p4);
+  margin-left: -1px;
+  height: 23px;
+  background: var(--p6);
+  width: 9%;
+}
+
+
+/* 인풋그룹 안의 돋보기 아이콘 */
+.input-group .xi-search {
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--p10);
+}
+
+/* 돋보기 아이콘 박스 */
+.search-iconbox {
+  width: 9%;
+}

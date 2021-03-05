@@ -51,6 +51,7 @@ def home(request, *args, **kwargs):
 @util.sessionDecorator
 def doSearch(request, *args, **kwargs):
   # 화면별 코드 및 메시지 전달 변수 값 초기화
+
   commParams = kwargs['commParams']
   
   # 화면에서 검색조건의 값
