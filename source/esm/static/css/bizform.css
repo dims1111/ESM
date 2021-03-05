@@ -884,11 +884,11 @@ table .prev, table .next {
 
 .input-group {
   height: 23px;
-  width: 200px;
+  /* width: 200px; */
 }
 
 .input-group input {
-  width: 100px;
+  width: 91%;
   height: 23px;
 }
 
@@ -960,20 +960,20 @@ table .prev, table .next {
 
 /* 달력 날짜 hover 이벤트 */
 .datepicker div table tr td.today.day:hover, .datepicker div table tr td.day:hover {
-  background: var(--p1);
+  background: var(--p2);
   color: var(--p3);
   cursor: pointer;
 }
 
 .datepicker div table tr td span:hover {
-  background: var(--p1);
+  background: var(--p2);
   color: var(--p3);
 }
 /* ====================== */
 
 /* 현재 달, 날짜 색상 변경 */
 .datepicker div table tr td span.month.focused {
-  background: var(--p4);
+  background: var(--p7);
 }
 
 .datepicker div table tr td.today.day{
@@ -983,11 +983,11 @@ table .prev, table .next {
 
 /* 날짜 선택시 색상 변경 */
 .datepicker div table tr td.active.day{
-  background: var(--p1);
+  background: var(--p2);
 }
 
 .datepicker div table tr td span.month.focused.active {
-  background: var(--p1);
+  background: var(--p2);
 }
 /* ====================== */
 

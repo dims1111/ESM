@@ -567,6 +567,7 @@ function initGridOption(gridView) {
   gridView.setDisplayOptions({
     fitStyle: "even",
     drawBorderRight: false,
+    focusColor:"#2196F3"
   });
 }
 
