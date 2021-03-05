@@ -1,19 +1,19 @@
 html, body {
-    background: var(--p7);
+    background: #FFFFFF;
     font-family: 'Noto Sans KR', 'Nanum Gothic';
     overflow: hidden;
   }
 
   /* 최상위  */
   .top {
-    background: var(--p1);
+    background: #2196F3;
     height: 56px;
     min-width: 960px;
   }
   
   .nav-tabs {
-    border-bottom: 2px solid var(--p1);    
-    background: rgba(var(--p1), 0.3);
+    border-bottom: 2px solid #2196F3;    
+    background: rgba(#2196F3, 0.3);
     box-shadow: 0px 5px 13px -11px;
   }
   
@@ -29,7 +29,7 @@ html, body {
     right: 4px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--p5);
+    color: #EF6461;
   }
 
   ul.nav-tabs li:hover>span {
@@ -40,20 +40,20 @@ html, body {
     margin-bottom: 0 !important;
     border: 0 !important;
     /* background: rgba(var(--p1-rgb), 0.5); */
-    background: var(--p3);
+    background: #EFEFEF;
     padding-right: 28px;
     font-weight: 500;
     font-size: 13px;
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 1.0rem;
-    color: var(--p8) !important;
+    color: #444444 !important;
   }
 
   .nav-tabs .nav-link.active {
-    background: var(--p1);
+    background: #2196F3;
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 1.0rem;
-    color: var(--p7) !important;
+    color: #FFFFFF !important;
   }
 
   .tab-content {
@@ -91,11 +91,11 @@ html, body {
   }
 
   .sidebar-main {
-    background: var(--p1);
+    background: #2196F3;
     flex: 0 0 80px;
     text-align: center;
     font-size: 13px;
-    color: var(--p7);
+    color: #FFFFFF;
     z-index: 2;
     /* border-top-right-radius: 1rem; */
   }
@@ -106,8 +106,8 @@ html, body {
   }
   .sidebar-main__item:hover,
   .sidebar-main__item.active {
-    background: var(--p7);
-    color: var(--p1);
+    background: #FFFFFF;
+    color: #2196F3;
   }
   .sidebar-main__item.active:before {
     content: '';
@@ -116,7 +116,7 @@ html, body {
     bottom: 0;
     left: 0;
     width: 4px;
-    background: var(--p5);
+    background: #EF6461;
   }
 
   .sidebar-main__icon {
@@ -125,8 +125,8 @@ html, body {
 
   .sidebar-sub {
     position: relative;
-    background: var(--p7);
-    color: var(--p8);
+    background: #FFFFFF;
+    color: #444444;
     flex: 0 0 170px;
     font-size: 17px;
     box-shadow: 4px 0px 13px -11px;
@@ -139,14 +139,14 @@ html, body {
     flex-basis: 0;
     width: 0;
     padding: 0 !important;
-    border-right: 2px solid var(--p2);
+    border-right: 2px solid #FFA62B;
   }
 
   .sidebar-sub__toggle {
     position: absolute;
     top: 0;
     right: 0;
-    background: var(--p2);
+    background: #FFA62B;
     width: 10px;
     height: 37px;
     transform: translateX(100%);
@@ -156,18 +156,18 @@ html, body {
   }
 
   #menu-content .menu {
-    border-bottom: 1px solid var(--p13);
+    border-bottom: 1px solid #d4e5f5;
   }
   #menu-content .menu:nth-child(1) {
-    border-top: 1px solid var(--p13);
+    border-top: 1px solid #d4e5f5;
   }
 
   .sub-menu {
-    border-bottom: 1px solid var(--p13);
+    border-bottom: 1px solid #d4e5f5;
   }
 
   .sub-menu li.active {
-    background: var(--p13);
+    background: #d4e5f5;
   }  
   
   #menu-content .sub-menu:nth-last-child(1) {
@@ -175,11 +175,11 @@ html, body {
   }
 
   .menu__name {
-    color: var(--p1);
+    color: #2196F3;
   }
 
   .sidebar-sub__title {
-    color: var(--p1);
+    color: #2196F3;
   }
 
   .nav-link {
@@ -188,8 +188,8 @@ html, body {
   }
  
   .nav-link:hover { 
-    box-shadow: 0px -40px 0 0 var(--p1) inset;
-    color: var(--p7) !important;
+    box-shadow: 0px -40px 0 0 #2196F3 inset;
+    color: #FFFFFF !important;
     transition: color 0.1s ease-in-out;
   }
 
