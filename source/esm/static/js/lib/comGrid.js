@@ -1936,47 +1936,93 @@ function gfnGridCommit(grid, force) {
 **/
 function gfnSaveValidate(grid) {
   // 그리드 커밋 함수에서 오류면 리턴
-  if (!gfnGridCommit(grid)) return false;
-  
-  // 그리드 컬럼별 체크 널일 경우 정상
-  log = grid.gridView.checkValidateCells();
+  if (!gfnGridCommit(grid)) {
+    return false;
+  } 
 
-  if (!log) {
-    return true;
-  } else {
-    var message = "";
-    for (var i = log.length - 1; i > -1; i--) {
-      var itemIndex = grid.gridView.getItemIndex(log[i].dataRow);
-      message += (itemIndex + 1).toString() + " " + ld.row + " " + log[i].message + "\n";
-    }
-
-    gfnShowErrorModal("필수항목을 입력하시기 바랍니다.");
+  if (grid.provider.getRowCount() === 0) {    
+    gfnShowErrorModal("저장할 데이터가 존재하지 않습니다.");
     return false;
   }
+
+  if(!gfnGridIsChanged(grid)) {
+    gfnShowErrorModal("변경된 내역이 없습니다.");
+    return false;
+  }  
+  // var message = "";      
+  // // 그리드 컬럼별 체크 널일 경우 정상
+  // log = grid.gridView.checkValidateCells();      
+
+  // if (!log) {    
+  //   return true;
+  // } else {
+  //   for (var i = log.length - 1; i > -1; i--) {
+  //     var itemIndex = grid.gridView.getItemIndex(log[i].dataRow);
+  //     message += (itemIndex + 1).toString() + " " + ld.row + " " + log[i].message + "\n";
+  //   }
+
+  //   gfnShowErrorModal("필수항목을 입력하시기 바랍니다.");
+  //   return false;
+  // }
+  
+  return true;
 };
 
  /**
   * 
   * @param {Object} grid 
   */
- function gfnCheckSaveData(grid) {
-  if (!gfnSaveValidate(grid)) {
-    return false;
-  } else {
-    // 확인 메시지 출력  
-    $("#confirmModal #confirmModalContents").html("저장하시겠습니까?");
-    $("#confirmModal").modal("show");
-    $('#confirmModal #confirm').unbind().click(function() {    
-      return true;
-    });
-    $('#confirmModal #cancel').unbind().click(function() {    
-      return false;
-    });  
-  }  
+//  function gfnCheckSaveData(grid) {
+//   if (!gfnSaveValidate(grid)) return false;
+
+//   var resultValue = false;
+//   // 확인 메시지 출력  
+//   $("#confirmModal #confirmModalContents").html("저장하시겠습니까?");
+//   $("#confirmModal").modal("show");
+//   $('#confirmModal #confirm').unbind().click(function() {
+//     resultValue = true;
+//   });
+//   $('#confirmModal #cancel').unbind().click(function() {    
+//     resultValue = false;
+//   });
+//   return resultValue;
+// };
+
+// 확인 메시지
+function gfnConfirm(message, callback) {
+  // 확인 메시지 출력  
+  $("#confirmModal #confirmModalContents").html(message);
+  $("#confirmModal").modal("show");
+  $('#confirmModal #confirm').unbind().click(function() {
+    callback();
+  });
 };
 
 // 에러메시지 모달 띄우기
 function gfnShowErrorModal(errorMessage) {
   $("#errorModal #errorModalContents").html(errorMessage || "");
   $("#errorModal").modal("show");
+}
+
+// 변경내역 확인
+function gfnGridIsChanged(grid) {
+  var allStateRows = grid.provider.getAllStateRows();
+  var isUpdated = 
+    Object
+      .keys(grid.provider.getAllStateRows())
+      .some(function(key) {
+          return allStateRows[key].length;
+      });
+  return isUpdated;
+}
+
+// 변경내역 확인2
+function gfnGetGridStateCount(grid) {
+  var allStateRows = grid.provider.getAllStateRows();
+  return Object
+      .keys(grid.provider.getAllStateRows())
+      .reduce(function(acc, key) {
+          acc[key] = allStateRows[key].length;
+          return acc;
+      }, {});
 }

@@ -242,6 +242,7 @@ this.gfnValidatePhone = function (gubun, value) {
  * 매개변수 : N/A
 **/
 function gfnLoadshow(grid) {
+  var $target = grid ? grid : $('body');
   var $div = $('<div />', {
     class: "col-xs-11 col-sm-1 alert alert-primary animated bounceInDown loadingbar",
     style: "width:150px; margin: 0px auto; transition:0.5s ease-in-out; left: 50%; top: 50%; transform: translate(-50%, -50%); display: inline-block; position: absolute; z-index: 99999; animation-iteration-count: 1; max-width: none !important;",
@@ -271,9 +272,9 @@ function gfnLoadshow(grid) {
   $div
     .append($spinner)
     .append($title)
-    .append($message)
+    .append($message);
 
-  grid.append($div);
+  $target.append($div);
 
   var intervalId = setInterval(function () {
     var arr = $('#load_timer').text().split(':');
@@ -296,7 +297,7 @@ function gfnLoadshow(grid) {
     $('#load_timer').text(hour + ':' + minute + ':' + second);
   }, 1000);
 
-  intervalIds[grid.attr('id')] = intervalId;
+  intervalIds[$target.attr('id') || 'body'] = intervalId;
 }
 
 
@@ -307,12 +308,13 @@ function gfnLoadshow(grid) {
  * 매개변수 : N/A
 **/
 function gfnLoadhide(grid) {
-  var gridId = grid.attr('id');
+  var $target = grid ? grid : $('body')
+  var targetId = grid ? grid.attr('id') : 'body';
 
-  clearInterval(intervalIds[gridId]);
-  delete intervalIds[gridId];
+  clearInterval(intervalIds[targetId]);
+  delete intervalIds[targetId];
 
-  grid.find('.loadingbar').remove();
+  $target.find('.loadingbar').remove();
 }
 
 

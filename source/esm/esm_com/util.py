@@ -27,11 +27,12 @@ def resultMsg(commParam):
   print('===========================================================================')
   print('code    →', commParam['cd'])
   print('message →', commParam['msg'])  
-  print('search  →', commParam['processCnt']['S'])
-  print('insert  →', commParam['processCnt']['I'])
-  print('update  →', commParam['processCnt']['U'])
-  print('delete  →', commParam['processCnt']['D'])
-  print('batch   →', commParam['processCnt']['B'])
+  if commParam.get('processCnt'):
+    print('search  →', commParam['processCnt'].get('S', None))
+    print('insert  →', commParam['processCnt'].get('I', None))
+    print('update  →', commParam['processCnt'].get('U', None))
+    print('delete  →', commParam['processCnt'].get('D', None))
+    print('batch   →', commParam['processCnt'].get('B', None))
   print('===========================================================================')
 
 # 기본 값 할당
