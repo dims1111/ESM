@@ -30,7 +30,8 @@ function gfnGetGrdData(params, callback) {
     gridArr = params.grid;
   }
 
-  for (var grid of gridArr) {
+  for (var i = 0; i < gridArr.length; i++) {
+    var grid = gridArr[i];
     // IIFE ( Immediately Invoked Function Expression)
     (function (grid) {
       // window[grid].gridView.commit(false);
@@ -107,7 +108,8 @@ function gfnSetGrdData(params, callback) {
   }
 
   // 그리드 검증
-  for (var grid of gridArr) {
+  for (var i = 0; i < gridArr.length; i++) {
+    var grid = gridArr[i];
     if (!gfnSaveValidate(window[grid])) return;
   }
 

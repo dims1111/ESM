@@ -68,7 +68,9 @@ $.fn.gfnGridInit = function (columns, options) {
   
   // 그리드 필수 항목체크 및 리얼그리드 오류 메시지 발생
   this.gridView.onValidateRow = function(gridView, itemIndex, dataRow, inserting, values) {     
-    for (var columnInfo of gridView.getColumns()) {
+    var columns = gridView.getColumns();
+    for (var i = 0; i < columns.length; i++) {
+      var columnInfo = columns[i];
       // 필수 체크
       if (columnInfo.header.subText) {
         var value = values[columnInfo.name];
@@ -121,7 +123,8 @@ $.fn.gfnGridInit = function (columns, options) {
  * @param {*} columns 그리드 각 컬럼 설정을 위한 기준 데이터(배열)
 **/
 function initGridField(grdObj, columns) {
-  for (var columnInfo of columns) {
+  for (var i = 0; i < columns.length; i++) {
+    var columnInfo = columns[i];
     // GridView의 name이 없을 경우 fieldName의 값을 넣음
     if (!columnInfo.name) {
       columnInfo.name = columnInfo.fieldName;

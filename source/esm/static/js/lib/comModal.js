@@ -74,7 +74,9 @@ var modalPopup = (function () {
               form.setAttribute("action", _PageUrl);
   
               var input;
-              for (var param of _params.split("&")) {
+              var ppp = _params.split("&");
+              for (var i = 0; i < ppp.length; i++) {
+                var param = ppp[i];
                 var key = param.split("=")[0];
                 var value = param.split("=")[1];
   
