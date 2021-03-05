@@ -25,7 +25,7 @@
     // 그리드 초기화
     (function initGrid() {
       initGrid1(); // 메뉴목록
-      initGrid2(); // 메뉴목록2
+      // initGrid2(); // 메뉴목록2
     })();
 
     // 메뉴목록
@@ -42,46 +42,6 @@
 
       // 그리드 초기화
       grid1 = $("#grid1").gfnGridInit([
-        { fieldName: "menu_uid",         text: "메뉴UID",      width: 250, visible: false },
-        { fieldName: "parent_menu_cd",   text: "상위메뉴코드", width: 100, essential: true , align: 'center'},
-        { fieldName: "menu_cd",          text: "메뉴코드",     width: 80 , essential: true , align: 'center'},
-        { fieldName: "menu_name_ko",     text: "메뉴명(한글)", width: 180, essential: true },
-        { fieldName: "menu_name_en",     text: "메뉴명(영문)", width: 220, essential: true },
-        { fieldName: "url",              text: "url",          width: 120, essential: true },
-        { fieldName: "icons",            text: "아이콘",       width: 70   },
-        { fieldName: "sort_order",       text: "정렬순서",     width: 80,  essential: true , type: 'number' },
-        { fieldName: "use_yn",           text: "사용",         width: 50,  align: 'center', essential: true , type: 'combo', comboList: comboYnList },
-        { fieldName: "search_yn",        text: "조회",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "add_row_yn",       text: "행추가",       width: 50,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "del_row_yn",       text: "행삭제",       width: 50,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "save_yn",          text: "저장",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "copy_yn",          text: "복사",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "batch_yn",         text: "생성",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "print_yn",         text: "출력",         width: 40,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "excel_down_yn",    text: "엑셀다운",     width: 70,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "excel_up_yn",      text: "엑셀업로드",   width: 70,  align: 'center', type: 'combo', comboList: comboYnList },
-        { fieldName: "remark",           text: "비고",         width: 300  },
-        { fieldName: "create_by",        text: "생성자UID",    width: 220, visible: false, editable: false  },
-        { fieldName: "create_date_time", text: "생성일시",     width: 160, align: 'center', type: 'date', format: 'DATETIME', editable: false  },
-        { fieldName: "update_by",        text: "수정자ID",     width: 220, visible: false, editable: false  },
-        { fieldName: "update_date_time", text: "수정일시",     width: 160, visible: false, align: 'center', type: 'date', format: 'DATETIME', editable: false },
-      ], options);
-    }
-
-    // 메뉴목록2
-    function initGrid2() {
-      // Temp Data
-      var comboYnList = [
-        { code: '',   name: '선택',   },
-        { code: 'Y',  name: 'Y',      },
-        { code: 'N',  name: 'N',      },
-      ];
-
-      // 그리드 옵션
-      var options = { leftFixedCol: 3, rightFixedCol: 0 };
-
-      // 그리드 초기화
-      grid2 = $("#grid2").gfnGridInit([
         { fieldName: "menu_uid",         text: "메뉴UID",      width: 250, visible: false },
         { fieldName: "parent_menu_cd",   text: "상위메뉴코드", width: 100, essential: true , align: 'center'},
         { fieldName: "menu_cd",          text: "메뉴코드",     width: 80 , essential: true , align: 'center'},
@@ -128,7 +88,7 @@
         // 조회조건, url, grid
         var params = {
           url: "/esm_sys_1020/search",
-          grid: ["grid1", "grid2"], // or ['grid1', 'grid2', ...]
+          grid: "grid1", // or ['grid1', 'grid2', ...]
           mainParam: mainParam,
         };
         gfnGetGrdData(params);
@@ -156,7 +116,7 @@
       case "save": // 저장
         var params = {
           url: "/esm_sys_1020/save",
-          grid: ["grid1", "grid2"], // or ['grid1']
+          grid: "grid1", // or ['grid1']
           // subParam: {},
         };
         
@@ -189,42 +149,6 @@
         break;
       case "excelDownload":    // 엑셀다운로드     
         gfnExcelDownload(grid1);
-        break;
-      case "excelUpload": // 엑셀업로드
-        alert(gubun);
-        break;
-    }    
-  }
-
-
-  /* action1에대한 기능 */
-  function doAction2(gubun) {
-    switch (gubun) {
-      case "addRow": // 행추가
-        grid2.gridView.commit(false);
-        grid2.provider.insertRow(0, {"sort_order"    : 1,
-                                     "use_yn"        : "Y",
-                                     "search_yn"     : "Y",
-                                     "add_row_yn"    : "Y",
-                                     "del_row_yn"    : "Y",
-                                     "save_yn"       : "Y",
-                                     "copy_yn"       : "N",
-                                     "batch_yn"      : "N",
-                                     "print_yn"      : "N",
-                                     "excel_down_yn" : "Y",
-                                     "excel_up_yn"   : "N",
-                                    });
-        grid2.gridView.setSelection({
-          startItem: 0,
-          endItem: 0,
-          style: "rows"
-        });
-        break;
-      case "delRow":  // 행삭제 
-        gfnDeleteRowChk(grid2);
-        break;
-      case "excelDownload":    // 엑셀다운로드     
-        gfnExcelDownload(grid2);
         break;
       case "excelUpload": // 엑셀업로드
         alert(gubun);
@@ -323,27 +247,6 @@
       </div>
       <div class="grid-content flex-grow-1">
         <div id="grid1"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row no-gutters flex-grow-1 mt-3">
-    <div class="grid col-12 d-flex flex-column">
-      <div class="grid-header">
-        <div class="grid-title">
-          <i class="grid-title__icon xi-sort-desc"></i>
-          <span class="grid-title__name">메뉴목록</span>
-          <span class="grid-title__cnt"></span>
-        </div>
-        <div class="grid-buttons">
-          {% if buttonShowHide.excelUpBtn == 'Y' %} <button class="btn_excel active" onclick="doAction2('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button> {% endif %}
-          {% if buttonShowHide.excelDownBtn == 'Y' %} <button class="btn_excel active" onclick="doAction2('excelDownload');"><i class="xi-download"> 엑셀다운로드</i></button> {% endif %}
-          {% if buttonShowHide.delRowBtn == 'Y' %} <button class="btn_sub active" onclick="doAction2('delRow');"><i class="xi-minus-min"> 행삭제</i></button> {% endif %}
-          {% if buttonShowHide.addRowBtn == 'Y' %} <button class="btn_sub active" onclick="doAction2('addRow');"><i class="xi-plus-min"> 행추가</i></button> {% endif %}
-        </div>
-      </div>
-      <div class="grid-content flex-grow-1">
-        <div id="grid2"></div>
       </div>
     </div>
   </div>

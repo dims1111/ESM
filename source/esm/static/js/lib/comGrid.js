@@ -1930,17 +1930,17 @@ function gfnGridCommit(grid, force) {
 function gfnSaveValidate(grid) {
   // 그리드 커밋 함수에서 오류면 리턴
   if (!gfnGridCommit(grid)) {
-    return;
+    return false;
   } 
 
   if (grid.provider.getRowCount() === 0) {    
     gfnShowErrorModal("저장할 데이터가 존재하지 않습니다.");
-    return;
+    return false;
   }
 
   if(!gfnGridIsChanged(grid)) {
     gfnShowErrorModal("변경된 내역이 없습니다.");
-    return;
+    return false;
   }  
   // var message = "";      
   // // 그리드 컬럼별 체크 널일 경우 정상
@@ -1957,6 +1957,8 @@ function gfnSaveValidate(grid) {
   //   gfnShowErrorModal("필수항목을 입력하시기 바랍니다.");
   //   return false;
   // }
+  
+  return true;
 };
 
  /**
