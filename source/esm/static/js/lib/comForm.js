@@ -92,6 +92,23 @@ function setMask() {
 }
 
 $(document).ready(function () {
+
+  // tooltip 스트립트
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+
+
+  // key event
+  $(document).keydown(function(event) {
+    
+    if(event.keyCode == '13') {
+      doAction1('search');
+    }
+
+  });
+
   setInitComm();
 
   $(window).on("beforeunload", function () {
@@ -121,6 +138,8 @@ $(document).ready(function () {
         }
       }
     });
+
+  
 
   $("#popForm")
     .find("input")

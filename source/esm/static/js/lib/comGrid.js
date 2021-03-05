@@ -17,6 +17,9 @@
  * @param {*} options 그리드 설정을 위한 변수
 **/
 $.fn.gfnGridInit = function (columns, options) {
+
+  
+  
   // 그리드 width, height 지정
   this.css({
     width: options.width || '100%',
@@ -166,6 +169,7 @@ function initGridField(grdObj, columns) {
             type: 'dropDown',
             domainOnly: true,
             textReadOnly: true,
+            dropDownWhenClick: true,
             values: columnInfo.comboList.map(function (item) { return item.code }),
             labels: columnInfo.comboList.map(function (item) { return item.name }),
           };
@@ -511,6 +515,8 @@ function initGridStyle($grid) {
     },
     true
   );
+
+
 }
 
 
@@ -570,6 +576,7 @@ function initGridOption(gridView) {
   gridView.setDisplayOptions({
     fitStyle: "even",
     drawBorderRight: false,
+    focusColor:"#2196F3"
   });
 }
 
