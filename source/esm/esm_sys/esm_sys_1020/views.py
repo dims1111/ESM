@@ -163,7 +163,7 @@ def doSave(request, *args, **kwargs):
       commParams['msg'] = langMsg.errMsg()
 
   except (langMsg.userException, Exception) as e:
-    commParams['msg'] = e.args[0]
+    commParams['msg'] = str(e)
 
   # 서버에서 처리한 결과를 터미널에 출력
   util.resultMsg(commParams)
