@@ -96,74 +96,70 @@ function gfnGetGrdData(params, callback) {
   }
 }
 
+
 function gfnSetGrdData(params, callback) {
-  // params.grid 내용을 배열로 다건을 받을 경우, 배열 순서대로 콜할 예정
-  var defaultAsync = false;
   var gridArr = [];
   
   if (typeof params.grid === "string") {
     gridArr.push(params.grid);
-    defaultAsync = true; // 그리드 단건은 기본 비동기처리하도록 함
   } else {
     gridArr = params.grid;
   }
 
   // 그리드 검증
   for (var grid of gridArr) {
-    if (!gfnCheckSaveData(window[grid])) return;
+    if (!gfnSaveValidate(window[grid])) return;
   }
 
-  for (var grid of gridArr) {
-    // IIFE ( Immediately Invoked Function Expression)
-    (function (grid) {
-      var data = gfnSetGridDataToJson(grid);
-
-      // 추가적인 파라미터 있으면 어떻게할건지
-      if (params.subParam) {
-      }
-
-      // 로딩바 생성
-      gfnLoadshow(window[grid]);
-
-      $.ajax({
-        type: "POST",
-        url: params.url,
-        data: JSON.stringify(data),
-        async: params.aync || defaultAsync,
-        dataType: "json",
-        success: function (res) {
-          if (res) {
-            // 에러가 발생할 경우 모달 출력
-            console.log("res =>", res);
-            if (res.msg) {
-              $("#myModal #contents").html(res.msg);
-              $("#myModal").modal("show");
-              if (res.cd === "E") {
-                // 로딩바 제거
-                gfnLoadhide(window[grid]);
-                return;
-              }
-            }
-
-            if (callback) {
-              callback();
+  gfnConfirm("저장하시겠습니까?", function() {
+    var data = gfnSetGridDataToJson(gridArr);
+    // 추가적인 파라미터 있으면 어떻게할건지
+    if (params.subParam) {
+    }
+    
+    // 로딩바 생성
+    gfnLoadshow();
+  
+    $.ajax({
+      type: "POST",
+      url: params.url,
+      data: JSON.stringify(data),
+      async: params.aync || true,
+      dataType: "json",
+      success: function (res) {
+        if (res) {
+          // 에러가 발생할 경우 모달 출력
+          console.log("res =>", res);
+          if (res.msg) {
+            $("#errorModal #errorModalContents").html(res.msg);
+            $("#errorModal").modal("show");
+            if (res.cd === "E") {
+              // 로딩바 제거
+              gfnLoadhide();
+              return;
             }
           }
-          // 로딩바 제거
-          gfnLoadhide(window[grid]);
-        },
-        error: function (req, status, err) {
-          if (req.status == "403") {
-            // 로그인 페이지로 호출
-            moveToLoginPage();
+  
+          if (callback) {
+            callback();
           }
+        }
+        // 로딩바 제거
+        gfnLoadhide();
+      },
+      error: function (req, status, err) {
+        if (req.status == "403") {
+          // 로그인 페이지로 호출
+          moveToLoginPage();
+        }
+  
+        // 에러체킹 후 return할 예정
+        // 로딩바 제거
+        gfnLoadhide();
+        return;
+      },
+    });
+  });
 
-          // 에러체킹 후 return할 예정
-          // 로딩바 제거
-          gfnLoadhide(window[grid]);
-          return;
-        },
-      });
-    })(grid);
-  }
+
 }
