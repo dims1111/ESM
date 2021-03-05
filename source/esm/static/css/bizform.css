@@ -43,7 +43,7 @@ form {
   position: relative;
   height: 28px;
   background: var(--p7);
-  margin-top: 10px;
+  margin-top: 2px;
 }
 
 /* 조회조건 - 타이틀 */
@@ -931,10 +931,15 @@ table .prev, table .next {
 /* 모달 헤더 */
 .modal-popup .ui-dialog-titlebar {
   background-color: var(--p1);
-  color: #fff;
+  color: var(--p7);
   font-size: 15px;
+  font-weight: 500;
+  padding: 12px;
 }
 
+.ui-dialog .ui-dialog-titlebar-close {
+  right: .5em;
+}
 
 /* 달력 현재날짜 css
 .today.day{

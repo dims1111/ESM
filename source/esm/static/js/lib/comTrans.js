@@ -100,6 +100,7 @@ function gfnSetGrdData(params, callback) {
   // params.grid 내용을 배열로 다건을 받을 경우, 배열 순서대로 콜할 예정
   var defaultAsync = false;
   var gridArr = [];
+  
   if (typeof params.grid === "string") {
     gridArr.push(params.grid);
     defaultAsync = true; // 그리드 단건은 기본 비동기처리하도록 함
@@ -109,7 +110,7 @@ function gfnSetGrdData(params, callback) {
 
   // 그리드 검증
   for (var grid of gridArr) {
-    if (!gfn_checkSaveData(window[grid])) return;
+    if (!gfnCheckSaveData(window[grid])) return;
   }
 
   for (var grid of gridArr) {
