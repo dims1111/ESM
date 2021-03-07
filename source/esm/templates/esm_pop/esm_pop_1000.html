@@ -69,18 +69,31 @@
         console.log(gubun)
         document.getElementById("menuName").values='';
         break;
-      case "selectRow": // 선택        
-        break;
-    }    
-  }
+      case "selectRow": // 선택
+        // 선택된 데이터
+        var selectedData = grid1.gridView.getSelectionData();
 
-  // 팝업 콜백
-  function popupCallback(gubun) {
-    switch(gubun) {
-      case 'getCommonCode': // 공통코드 조회
-        console.log('test')
+        // 선택된 데이터 유무 확인
+        if (!selectedData) {
+          $("#errorModal #errorModalContents").html('선택된 데이터가 없습니다.');
+          $("#errorModal").modal("show");
+          return;
+        }
+
+        try {
+          // 선택된 행 데이터 보내기
+          gfnCallbackModalPopup(selectedData[0]);
+
+          // 모달 닫기
+          gfnCloseModalPopup();
+        } catch(errorMsg) {
+          // 콜백함수에서 throw할 경우 메시지 출력
+          $("#errorModal #errorModalContents").html(errorMsg);
+          $("#errorModal").modal("show");
+        }
+
         break;
-    }
+      }    
   }
 
   // 영문자만 입력

@@ -235,11 +235,19 @@
     }    
   }
 
-  // 팝업 콜백
-  function popupCallback(gubun) {
+  // 팝업 콜백함수
+  function popupCallback(gubun, data) {
     switch(gubun) {
       case 'getCommonCode': // 공통코드 조회
-        console.log('test')
+        console.log('받은 데이터 :', data);
+
+        // 검증 Test
+        // 상세코드가 'F' 이면 에러 후 팝업 닫지 않기
+        if (data.detailCd === 'F') {
+          // 모달로 에러메시지 전달
+          var errorMsg = '남자만 선택 가능함.';
+          throw errorMsg;
+        }
         break;
     }
   }

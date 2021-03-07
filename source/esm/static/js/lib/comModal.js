@@ -2,7 +2,6 @@
 var modalPopup = (function () {
   var dialogs = {};
   var callbacks = {};
-  var curWindow;
 
   return {
     open: function (obj) {
@@ -18,8 +17,6 @@ var modalPopup = (function () {
       var _position = obj.position || {};
       var _PageUrl = _url;
       var _method = obj.method || "post";
-
-      curWindow = window;
   
       // 앞 '&'문자 지우기
       if (_params && _params[0] === "&") {
@@ -100,38 +97,38 @@ var modalPopup = (function () {
             }
           },
           close: function (event) {
-            // 콜백이 있을 경우 닫기 전 호출
-            if (_callback) {
-              var success = window[_callback] && window[_callback](_popupId);
-  
-              // 콜백에서 false로 리턴했을 경우 닫지 않음
-              if (success === false) {
-                return;
-              }
-            }
             $("#" + _popupId).remove();
           },
         });
       }
     },
-    callback: function (param) {
-      var name = callbacks[window.name];
-      console.log(callbacks, window, window.name, name);
-      curWindow[name](name, param);
+    callback: function (data, windowName) {
+      var name = callbacks[windowName];
+      window[name](windowName, data);
     },
-    close: function() {
-      dialogs[window.name].dialog("close");
+    close: function(windowName) {
+      dialogs[windowName].dialog("close");
     }
   };
 })();
 
-function gfnOpenModalPopup(e) {
-  modalPopup.open(e);
+// 모달 호출
+function gfnOpenModalPopup(obj) {
+  modalPopup.open(obj);
 }
 
-function gfnCallbackModalPopup(e, t) {
-  modalPopup.callback(e, t);
+//////////////////////////////////////////////////////////
+
+// 콜백함수 호출 (모달window 내에서 실행하는 함수)
+function gfnCallbackModalPopup(data) {
+  var windowName = window.name;
+
+  // parent의 modalPopup객체에서 콜백함수 찾음
+  parent.modalPopup.callback(data, windowName);
 }
-function gfnCloseModalPopup(e) {
-  modalPopup.close(e);
+
+// 모달 닫기 (모달window 내에서 실행하는 함수)
+function gfnCloseModalPopup() {
+  var windowName = window.name;
+  parent.modalPopup.close(windowName);
 }

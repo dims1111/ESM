@@ -185,11 +185,8 @@ form {
 
 
 
-/* 모달팝업 위치 지정 */
+/* 모달팝업 */
 .modal {
-  position: fixed;
-  left: auto;
-  top: 200px;
   z-index: 3000;  
 }
 
