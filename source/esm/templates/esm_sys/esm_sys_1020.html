@@ -149,7 +149,11 @@
           popupId:"getCommonCode",
           url:"/esm_pop_1000/",
           callbackFn: "popupCallback",
-          params:"&popupName=codeDetail&test2=2&test3=3",
+          params: {
+            popupName: 'codeDetail',
+            test2: '2',
+            test3: '3'
+          }
         });
         break;
       case "copy": // 복사

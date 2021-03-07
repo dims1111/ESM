@@ -12,16 +12,16 @@ var modalPopup = (function () {
       var _draggable = !obj.fullLayer;
       var _resizable = obj.resizable || false;
       var _url = obj.url;
-      var _params = obj.params;
+      var _params = '';
+      if (obj.params) {
+        _params = Object.entries(obj.params).map(e => {
+          return e[0] + '=' + decodeURIComponent(e[1]);
+        }).join('&');
+      }
       var _callback = obj.callbackFn;
       var _position = obj.position || {};
       var _PageUrl = _url;
       var _method = obj.method || "post";
-  
-      // 앞 '&'문자 지우기
-      if (_params && _params[0] === "&") {
-        _params = _params.substr(1);
-      }
   
       if ($("#" + _popupId).length === 0) {
         $("body").append(
