@@ -1018,9 +1018,10 @@ td select {
 
 /* 인풋그룹 안의 돋보기 아이콘 */
 .input-group .xi-search {
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
   color: #0C7CD5;
+  padding: 2px 2px;
 }
 
 /* 돋보기 아이콘 박스 */

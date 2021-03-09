@@ -161,10 +161,14 @@ function initGridField(grdObj, columns) {
       };
     }
 
+    
+    
+
     // 컬럼유형에 따른 오브젝트 설정
     if (columnInfo.type) {
       switch (columnInfo.type) {
         case "combo": // 콤보박스
+          console.log("통과콤보박스")
           columnInfo.editor = {
             type: 'dropDown',
             domainOnly: true,
@@ -345,6 +349,20 @@ function initGridField(grdObj, columns) {
         columnInfo.styles.textAlignment = columnInfo.align;
         columnInfo.editor.textAlignment = columnInfo.align;
       }
+
+      // 수정불가(editable : false) 스타일 설정
+      if(columnInfo.editable === false) {
+
+        
+        columnInfo.styles = {
+          textAlignment: "center",
+          lineAlignment: "center",
+          foreground: "#000",
+          background: "#b4b4b4"
+        };
+        console.log("통과")
+      }
+
     }
     /*
     C: 콤보박스
@@ -375,7 +393,7 @@ function initGridStyle($grid) {
       paddingTop: "15",
       paddingBottom: "15",
       border: "#00ffffff, 1",
-      selectedBackground: "rgba(11,186,130,1)",
+      selectedBackground: "rgba(11,186,130,1)"
     },
 
     // 그리드 바디 스타일
@@ -501,7 +519,7 @@ function initGridStyle($grid) {
   gridView.setFilteringOptions({ selector: { useCssStyle: true } });
 
   // 그리드 바디 라인 간격 조정
-  gridView.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 30, drawBorderRight: false });
+  gridView.setDisplayOptions({ useCssStyleProgress: true, rowHeight: 30, drawBorderRight: false});
 
   // 그리드 바디 패딩 설정
   // gridView.setStyles({body:{paddingLeft:10}});
