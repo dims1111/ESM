@@ -951,14 +951,14 @@ table .prev, table .next {
 }
 
 .datepicker div table tr td span:hover {
-  background: #FFA62B;
+  background: #FFA62B !important;
   color: #EFEFEF;
 }
 /* ====================== */
 
 /* 현재 달, 날짜 색상 변경 */
-.datepicker div table tr td span.month.focused {
-  background: #FFFFFF;
+.datepicker table tr td span.month.focused {
+  background: none;
 }
 
 .datepicker div table tr td.today.day{
@@ -968,7 +968,7 @@ table .prev, table .next {
 
 /* 날짜 선택시 색상 변경 */
 .datepicker div table tr td.active.day{
-  background: #FFA62B;
+  background: #FFA62B !important;
 }
 
 .datepicker div table tr td span.month.focused.active {

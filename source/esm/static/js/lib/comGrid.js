@@ -168,7 +168,6 @@ function initGridField(grdObj, columns) {
     if (columnInfo.type) {
       switch (columnInfo.type) {
         case "combo": // 콤보박스
-          console.log("통과콤보박스")
           columnInfo.editor = {
             type: 'dropDown',
             domainOnly: true,
@@ -350,20 +349,24 @@ function initGridField(grdObj, columns) {
         columnInfo.editor.textAlignment = columnInfo.align;
       }
 
-      // 수정불가(editable : false) 스타일 설정
-      if(columnInfo.editable === false) {
-
-        
-        columnInfo.styles = {
-          textAlignment: "center",
-          lineAlignment: "center",
-          foreground: "#000",
-          background: "#b4b4b4"
-        };
-        console.log("통과")
-      }
+      
 
     }
+
+    // 수정불가(editable : false) 스타일 설정
+    if(columnInfo.editable === false) {
+
+        
+      columnInfo.styles = {
+        textAlignment: "center",
+        lineAlignment: "center",
+        foreground: "#000",
+        background: "#b4b4b4"
+      };
+
+    }
+
+    
     /*
     C: 콤보박스
     I: contentFit: auto,
@@ -401,6 +404,7 @@ function initGridStyle($grid) {
       paddingTop: "15",
       paddingBottom: "15",
       foreground: "#ff4b5a61",
+      line: "#00ffffff, 1px",
       empty: {
       },
     },
