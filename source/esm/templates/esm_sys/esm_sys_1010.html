@@ -1,36 +1,88 @@
 {% extends "esm_com/bizform.html" %} {% load static %} {% block header %}
 <script>
-	// 코드마스터 그리드
-  var grid1;
+  // 그리드 전역변수 설정
+  var grid1; // var grid1, grid2, grid3, grid4 ..... ;
+
   $(function () {
-	  grid1 = $("#grid1").gfnGridInit([
-		{ fieldName: "code_master_uid",         text: "공통코드",     		width: 150, required: true },
-		{ fieldName: "code_name_ko",          	text: "코드명(한글)",     	width: 150 , required: true },
-		{ fieldName: "code_name_en",     		text: "코드명(영문)",		width: 150, required: true },
-		{ fieldName: "being_date",     			text: "시작일자", 			width: 190, required: true, align: 'center', editor : { type: "date", datetimeFormat: "yyyy-MM-dd" }},
-		{ fieldName: "end_date",              	text: "종료일자",         	width: 190, align: 'center', editor : { type: "date", datetimeFormat: "yyyy-MM-dd" }},
-		{ fieldName: "remark",              	text: "비고",         		width: 210 },
-	  ]);
-   });
-   
-	// 코드디테일 그리드
-  var grid2;
-  $(function () {
-	  grid2 = $("#grid2").gfnGridInit([
-		{ fieldName: "code_detail_uid",         text: "상세코드",     		width: 150, required: true },
-		{ fieldName: "code_name_ko",          	text: "코드명(한글)",     	width: 150 , required: true },
-		{ fieldName: "code_name_en",     		text: "코드명(영문)",		width: 150, required: true },
-		{ fieldName: "sort_order",     			text: "순서", 				width: 190, required: true },
-		{ fieldName: "being_date",     			text: "시작일자", 			width: 190, required: true, align: 'center', editor : { type: "date", datetimeFormat: "yyyy-MM-dd" }},
-		{ fieldName: "end_date",              	text: "종료일자",         	width: 190, align: 'center', editor : { type: "date", datetimeFormat: "yyyy-MM-dd" }},
-		{ fieldName: "remark",              	text: "비고",         		width: 210 },
-	  ]);
-   });
+    
+    
+
+    $('#date').parents(".input-group").datepicker({
+      calendarWeeks: false,
+      // todayHighlight: true,
+      autoclose: true,
+      showMonthAfterYear: true,
+      format: "yyyy-mm-dd",
+      language: "kr"
+    });
+
+    $('#month').parents(".input-group").datepicker({
+      calendarWeeks: false,
+      // todayHighlight: true,
+      autoclose: true,
+      format: "yyyy-mm",
+      minViewMode: "months",  
+      language: "kr"
+    });
+
+    // 그리드 초기화
+    (function initGrid() {
+      initGrid1(); // 메뉴목록
+      initGrid2(); // 메뉴목록2
+    })();
+
+    // 메뉴목록
+    function initGrid1() {
+      // Temp Data
+      var comboYnList = [
+        { code: '',   name: '선택',   },
+        { code: 'Y',  name: 'Y',      },
+        { code: 'N',  name: 'N',      },
+      ];
+
+      // 그리드 옵션
+      var options = { leftFixedCol: 3, rightFixedCol: 0 };
+
+      // 그리드 초기화
+      grid1 = $("#grid1").gfnGridInit([
+        { fieldName: "code_master_uid",         text: "공통코드",     		  width: 150, essential: true,  visible: false },
+        { fieldName: "code_name_ko",          	text: "코드명(한글)",     	width: 150  },
+        { fieldName: "code_name_en",     		    text: "코드명(영문)",		    width: 150, essential: true },
+        { fieldName: "being_date",     			    text: "시작일자", 			    width: 190, essential: true,  align: 'center',  type: 'date',       format: 'DATETIME'},
+        { fieldName: "end_date",              	text: "종료일자",         	width: 190, align: 'center',  type: 'date',     format: 'DATETIME'},
+        { fieldName: "remark",              	  text: "비고",         		  width: 210 },
+      ], options);
+    }
+
+    // 메뉴목록2
+    function initGrid2() {
+      // Temp Data
+      var comboYnList = [
+        { code: '',   name: '선택',   },
+        { code: 'Y',  name: 'Y',      },
+        { code: 'N',  name: 'N',      },
+      ];
+
+      // 그리드 옵션
+      var options = { leftFixedCol: 3, rightFixedCol: 0 };
+
+      // 그리드 초기화
+      grid2 = $("#grid2").gfnGridInit([
+        { fieldName: "code_detail_uid",         text: "상세코드",     		  width: 150,   essential: true },
+        { fieldName: "code_name_ko",          	text: "코드명(한글)",     	width: 150 ,  essential: true },
+        { fieldName: "code_name_en",     		    text: "코드명(영문)",		    width: 150,   essential: true },
+        { fieldName: "sort_order",     			    text: "순서", 				      width: 190,   essential: true },
+        { fieldName: "being_date",     			    text: "시작일자", 			    width: 190,   align: 'center', type: 'date', format: 'DATETIME'},
+        { fieldName: "end_date",              	text: "종료일자",         	width: 190,   type: 'date', format: 'DATETIME'},
+        { fieldName: "remark",              	  text: "비고",         		  width: 210 },
+      ], options);
+    }
+  });
+
   /* action1에대한 기능 */
   function doAction1(gubun) {
     switch (gubun) {
-      /* 조회 */
-      case "search":
+      case "search": // 조회
         var menuName = $("#menuName").val();
         var url = $("#url").val();
         var useYn = $("#useYn").is(":checked") ? "1" : "0";
@@ -46,84 +98,127 @@
         // 조회조건, url, grid
         var params = {
           url: "/esm_sys_1020/search",
-          grid: "grid1", // or ['grid1', 'grid2', ...]
+          grid: ["grid1", "grid2"], // or ['grid1', 'grid2', ...]
           mainParam: mainParam,
         };
-
-        // 모탈테스트 : 조회버튼 클릭 시 모달팝업 띄우기
-        // $("#myModal").modal("show");
-
-
-        // 그리드 조회
-        // 라이브러리 경로 : \static\js\lib\comTrans.js
         gfnGetGrdData(params);
         break;
-
-      // 초기화
-      case "reset": 
+      case "reset": // 초기화
+        console.log(gubun)
+        // document.getElementById("menuName").values='';
+        window.location.reload(true);
         break;
-
-      // 출력
-      case "print":
+      case "print": // 출력
+        gfnOpenModalPopup({
+          title:"공통코드",
+          height:"500",
+          width:"850",
+          popupId:"getCommonCode",
+          url:"/esm_pop_1000/",
+          callbackFn: "popupCallback",
+          params: {
+            popupName: 'codeDetail',
+            test2: '2',
+            test3: '3'
+          }
+        });
         break;
-
-      // 복사
-      case "copy":
+      case "copy": // 복사
         break;
-
-      // 생성
-      case "batch":
+      case "batch": // 생성
         break;
-
-      // 저장
-      case "save":
+      case "save": // 저장
         var params = {
           url: "/esm_sys_1020/save",
-          grid: "grid1", // or ['grid1']
+          grid: ["grid1", "grid2"], // or ['grid1']
           // subParam: {},
         };
-
+        
         gfnSetGrdData(params, function () {
           doAction1("search");
         });
-
-      // 행추가
-      case "addRow":
-        grid1.provider.insertRow(0, {});
         break;
-	  case "addRow_detail":
-        grid2.provider.insertRow(0, {});
-
-		// gfn_grdAddBtnDefault(grid1,'addRow',['']);
-        // gfn_grdAddBtnDefault(grid2,'addRow_detaoil',['']);
-
-
+      case "addRow": // 행추가
+        grid1.gridView.commit(false);
+        grid1.provider.insertRow(0, {"sort_order"    : 1,
+                                     "use_yn"        : "Y",
+                                     "search_yn"     : "Y",
+                                     "add_row_yn"    : "Y",
+                                     "del_row_yn"    : "Y",
+                                     "save_yn"       : "Y",
+                                     "copy_yn"       : "N",
+                                     "batch_yn"      : "N",
+                                     "print_yn"      : "N",
+                                     "excel_down_yn" : "Y",
+                                     "excel_up_yn"   : "N",
+                                    });
+        grid1.gridView.setSelection({
+          startItem: 0,
+          endItem: 0,
+          style: "rows"
+        });
         break;
-
-      // 행삭제  
-      case "delRow":
-        var curr = grid1.gridView.getCurrent();
-        if (curr.dataRow === -1) {
-          return alert("선택된 데이터가 없습니다.");
-        }
-        grid1.provider.removeRow(curr.dataRow);
+      case "delRow":  // 행삭제 
+        gfnDeleteRowChk(grid1);
         break;
-	  case "delRow_detail":
-        var curr = grid2.gridView.getCurrent();
-        if (curr.dataRow === -1) {
-          return alert("선택된 데이터가 없습니다.");
-        }
-        grid2.provider.removeRow(curr.dataRow);
-        break;
-
-      // 엑셀다운로드
-      case "excelDownload":        
+      case "excelDownload":    // 엑셀다운로드     
         gfnExcelDownload(grid1);
         break;
-
-      // 엑셀업로드
-      case "excelUpload":
+      case "excelUpload": // 엑셀업로드
         alert(gubun);
+        break;
+    }    
+  }
+
+
+  /* action1에대한 기능 */
+  function doAction2(gubun) {
+    switch (gubun) {
+      case "addRow": // 행추가
+        grid2.gridView.commit(false);
+        grid2.provider.insertRow(0, {"sort_order"    : 1,
+                                     "use_yn"        : "Y",
+                                     "search_yn"     : "Y",
+                                     "add_row_yn"    : "Y",
+                                     "del_row_yn"    : "Y",
+                                     "save_yn"       : "Y",
+                                     "copy_yn"       : "N",
+                                     "batch_yn"      : "N",
+                                     "print_yn"      : "N",
+                                     "excel_down_yn" : "Y",
+                                     "excel_up_yn"   : "N",
+                                    });
+        grid2.gridView.setSelection({
+          startItem: 0,
+          endItem: 0,
+          style: "rows"
+        });
+        break;
+      case "delRow":  // 행삭제 
+        gfnDeleteRowChk(grid2);
+        break;
+      case "excelDownload":    // 엑셀다운로드     
+        gfnExcelDownload(grid2);
+        break;
+      case "excelUpload": // 엑셀업로드
+        alert(gubun);
+        break;
+    }    
+  }
+
+  // 팝업 콜백함수
+  function popupCallback(gubun, data) {
+    switch(gubun) {
+      case 'getCommonCode': // 공통코드 조회
+        console.log('받은 데이터 :', data);
+
+        // 검증 Test
+        // 상세코드가 'F' 이면 에러 후 팝업 닫지 않기
+        if (data.detailCd === 'F') {
+          // 모달로 에러메시지 전달
+          var errorMsg = '남자만 선택 가능함.';
+          throw errorMsg;
+        }
         break;
     }
   }
@@ -135,62 +230,99 @@
     <div class="col-12">
       <div class="search-header">
         <div class="search-title">
-          <i class="xi-bars"> 조회조건</i>
+          <i class="search-title__icon xi-bars"></i>
+          <span class="search-title__name">조회조건</span>
         </div>
         <div class="search-buttons">
-          <!-- <button class="btn_sub active" onclick="doAction1('print');"><i class="xi-print"> 출력</i></button>
+          <button class="btn_sub active" onclick="doAction1('print');"><i class="xi-print"> 출력</i></button>
           <button class="btn_sub active" onclick="doAction1('batch');"><i class="xi-flash"> 자료생성</i></button>
-          <button class="btn_sub active" onclick="doAction1('copy');"><i class="xi-folder-add-o"> 자료복사</i></button> -->
+          <button class="btn_sub active" onclick="doAction1('copy');"><i class="xi-folder-add-o"> 자료복사</i></button>
           <button class="btn_sub active" onclick="doAction1('reset');"><i class="xi-refresh"> 초기화</i></button>
           <button class="btn_main active" onclick="doAction1('search');"><i class="xi-search"> 조회</i></button>
           <button class="btn_main active" onclick="doAction1('save');"><i class="xi-save"> 저장</i></button>
         </div>
       </div>
       <form id="srchForm" class="search-content">
-        <label for="menuName"><i class="xi-star"></i>공통코드</label>
-        <input type="text" name="menuName" id="menuName" />
-        <label for="url" style="margin-left: 15px">코드명</label>
-        <input type="text" name="url" id="url" />
+        <table style="width: 100%; table-layout: fixed;">
+          <colgroup>
+            <col width="10%">
+            <col width="15%">
+            <col width="10%">
+            <col width="15%">
+            <col width="10%">
+            <col width="15%">
+            <col width="10%">
+            <col width="15%">
+          </colgroup>
+          <tr style="width: 100%;">
+            <td class="search-menu"><label class="required" for="menuName" data-toggle="tooltip" data-placement="bottom" title="메뉴명">공통코드</label></td>
+            <td><input type="text" name="menuName" id="menuName" autocomplete="off" style="width: 100%;"/></td>
+            
+            <td class="search-menu"><label for="url" data-toggle="tooltip" data-placement="bottom" title="URL">코드명</label></td>
+            <td><input type="text" name="url" id="url" autocomplete="off" style="width: 100%;"/></td>
+
+            <td class="search-menu"></td>
+            <td></td>
+
+            <td class="search-menu"></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="search-menu"></td>
+            <td></td>
+
+            <td class="search-menu"></td>
+            <td></td>
+            
+            <td class="search-menu"></td>
+            <td></td>
+
+            <td class="search-menu" ></td>
+            <td ></td>
+          </tr>
+        </table> 
       </form>
     </div>
   </div>
 
-  <!-- 그리드 영역 master -->
+  <!-- 그리드 영역 -->
   <div class="row no-gutters flex-grow-1">
     <div class="grid col-12 d-flex flex-column">
       <div class="grid-header">
         <div class="grid-title">
-          <i class="xi-sort-desc"> 코드목록 (<span class="grid-title__cnt">0건</span>)</i>
+          <i class="grid-title__icon xi-sort-desc"></i>
+          <span class="grid-title__name">메뉴목록</span>
+          <span class="grid-title__cnt"></span>
         </div>
         <div class="grid-buttons">
-          <!-- <button class="btn_excel active" onclick="doAction1('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button> -->
+          <button class="btn_excel active" onclick="doAction1('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button>
           <button class="btn_excel active" onclick="doAction1('excelDownload');"><i class="xi-download"> 엑셀다운로드</i></button>
           <button class="btn_sub active" onclick="doAction1('delRow');"><i class="xi-minus-min"> 행삭제</i></button>
           <button class="btn_sub active" onclick="doAction1('addRow');"><i class="xi-plus-min"> 행추가</i></button>
         </div>
       </div>
-      <div class="grid-content flex-grow-1">
+      <div class="grid-content h-100">
         <div id="grid1"></div>
       </div>
     </div>
   </div>
 
-
-  <!-- 그리드 영역 detail -->
-  <div class="row no-gutters flex-grow-1 grid2">
+  <div class="row no-gutters flex-grow-1 mt-3">
     <div class="grid col-12 d-flex flex-column">
       <div class="grid-header">
         <div class="grid-title">
-          <i class="xi-sort-desc"> 상세코드 목록 (<span class="grid-title__cnt">0건</span>)</i>
+          <i class="grid-title__icon xi-sort-desc"></i>
+          <span class="grid-title__name">메뉴목록</span>
+          <span class="grid-title__cnt"></span>
         </div>
         <div class="grid-buttons">
-          <!-- <button class="btn_excel active" onclick="doAction1('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button> -->
-          <button class="btn_excel active" onclick="doAction1('excelDownload_detail');"><i class="xi-download"> 엑셀다운로드</i></button>
-          <button class="btn_sub active" onclick="doAction1('delRow_detail');"><i class="xi-minus-min"> 행삭제</i></button>
-          <button class="btn_sub active" onclick="doAction1('addRow_detail');"><i class="xi-plus-min"> 행추가</i></button>
+          <button class="btn_excel active" onclick="doAction2('excelUpload');"><i class="xi-upload"> 엑셀업로드</i></button>
+          <button class="btn_excel active" onclick="doAction2('excelDownload');"><i class="xi-download"> 엑셀다운로드</i></button>
+          <button class="btn_sub active" onclick="doAction2('delRow');"><i class="xi-minus-min"> 행삭제</i></button>
+          <button class="btn_sub active" onclick="doAction2('addRow');"><i class="xi-plus-min"> 행추가</i></button>
         </div>
       </div>
-      <div class="grid-content flex-grow-1">
+      <div class="grid-content h-100">
         <div id="grid2"></div>
       </div>
     </div>
